@@ -131,6 +131,11 @@ public class UsersService implements UsersRepository {
     }
 
     @Override
+    public Users findByUserAccount(String userAccount) {
+        return usersRepository.findByUserAccount(userAccount);
+    }
+
+    @Override
     public boolean existsById(Long id) {
         // TODO Auto-generated method stub
         return false;

@@ -19,8 +19,8 @@ public class UsersController {
     @Autowired
     private UsersService usersService;
     
-    @Operation(summary="Get test", description="Get test")
-    @GetMapping("/testGet")
+    @Operation(summary="infoUser", description="usersIdx기반 유저 정보 조회(테스트용)")
+    @GetMapping("/infoUser")
     public String TestGet(
         @Parameter(name="usersIdx", description="조회할 유저 인덱스")
         @RequestParam("usersIdx") String usersIdx
@@ -29,17 +29,12 @@ public class UsersController {
         return query.toString();
     }
 
-    @Operation(summary="Post test", description="Post test")
-    @PostMapping("/testPost")
+    @Operation(summary="signUp", description="회원가입")
+    @PostMapping("/signUp")
     public Users TestPost(Users param) {
-        System.out.printf("# %s", param.toString());
+        // System.out.printf("# %s", param.toString());
         return usersService.save(param);
     }
 
-    @Operation(summary="Post test02", description="Post test02")
-    @PostMapping("/testPost02")
-    public String TestPost(@RequestParam(value="column1")String column1, @RequestParam(value="column2")String column2) {
-        return column1; 
-    }
 
 }
