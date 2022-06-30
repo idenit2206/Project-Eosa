@@ -12,8 +12,10 @@ import javax.persistence.Table;
 import org.hibernate.annotations.ColumnDefault;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @Entity
 @Table(name="Users")
 public class Users {
@@ -65,5 +67,31 @@ public class Users {
     @Column(nullable=false)
     @ColumnDefault("0")
     private int usersDelete;
+
+    
+    public Users(String usersAccount, String usersName, int usersGender, String usersNick, String usersPhone,
+            String usersEmail, String usersRole, int usersAge, String usersRegion1, String usersRegion2,
+            LocalDateTime usersJoinDate) {
+        this.usersAccount = usersAccount;
+        this.usersName = usersName;
+        this.usersGender = usersGender;
+        this.usersNick = usersNick;
+        this.usersPhone = usersPhone;
+        this.usersEmail = usersEmail;
+        this.usersRole = usersRole;
+        this.usersAge = usersAge;
+        this.usersRegion1 = usersRegion1;
+        this.usersRegion2 = usersRegion2;
+        this.usersJoinDate = usersJoinDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Users [usersAccount=" + usersAccount + ", usersAge=" + usersAge + ", usersDelete=" + usersDelete
+                + ", usersEmail=" + usersEmail + ", usersEnabled=" + usersEnabled + ", usersGender=" + usersGender
+                + ", usersIdx=" + usersIdx + ", usersJoinDate=" + usersJoinDate + ", usersName=" + usersName
+                + ", usersNick=" + usersNick + ", usersPhone=" + usersPhone + ", usersRegion1=" + usersRegion1
+                + ", usersRegion2=" + usersRegion2 + ", usersRole=" + usersRole + "]";
+    }
 
 }

@@ -44,6 +44,7 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+            .csrf().disable()
             // 모든 요청에 대한 권한 해제
             .authorizeRequests()
                 .anyRequest().permitAll();
