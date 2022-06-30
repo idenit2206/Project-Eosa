@@ -3,6 +3,8 @@
 *.properties
 *.yml
 .gradle
+.zip
+.7z
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
