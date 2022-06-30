@@ -57,10 +57,7 @@ public class UsersController {
     }
     
     @PostMapping("/registUser")
-    public CustomResponseData registUser(
-        HttpServletRequest req,
-        Users param
-    ) {
+    public CustomResponseData registUser(HttpServletRequest req, Users param) {
         String requester = req.getLocalAddr();
         logger.info("{} has \"/registUser\" Request", requester);
         CustomResponseData result = new CustomResponseData();
@@ -76,6 +73,16 @@ public class UsersController {
             result.setResultItem(param.getUsersAccount() + " 가입에 실패했습니다.");
             result.setResponseDateTime(currentTime);
         }
+
+        return result;
+    }
+
+    @PostMapping("/signIn")
+    public CustomResponseData signIn(HttpServletRequest req, Users Param) {
+        String requester = req.getLocalAddr();
+        logger.info("{} has \"/signIn\" Request", requester);
+        CustomResponseData result = new CustomResponseData();
+        LocalDateTime currentTime = LocalDateTime.now();
 
         return result;
     }
