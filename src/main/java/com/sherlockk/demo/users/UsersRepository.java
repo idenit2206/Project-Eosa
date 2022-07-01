@@ -27,5 +27,11 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
         ":#{#Users.usersEnabled})"
     ,nativeQuery=true)
     int userSave(@Param("Users") Users user);
+
+    @Query(
+        value="SELECT * FROM Users WHERE usersAccount = ?1", 
+        nativeQuery=true
+    )
+    Users findByUsersAccount(String usersAccount);
      
 }

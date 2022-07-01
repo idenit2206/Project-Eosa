@@ -47,26 +47,26 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
             .csrf().disable()
             // 모든 요청에 대한 권한 해제
             .authorizeRequests()
-                .anyRequest().permitAll();
+                .anyRequest().permitAll()
             // .authorizeRequests()
+                // .anyRequest()
             // .antMatchers(PERMIT_URL_ARRAY)
-            //     .hasAnyAuthority("ADMIN")        
-            // .and()
-            // .formLogin()
-            //     .loginPage("/admin")
-            //     .usernameParameter("id")
-            //     .passwordParameter("pwd")
-            //     .loginProcessingUrl("/admin/login.do")
-            //     // .defaultSuccessUrl("/admin/project/list") // login에 성공했을 때 이동할 페이지
-            //     .successForwardUrl("/admin/login_success_handler") // login에 성공했을 때 처리할 핸들러 메서드URL을 매개변수로 사용
-            //     .failureHandler(new CustomLoginFailHandler())
-            //     // .failureUrl("/admin/login_failure") // login에 실패했을때 전달 URL                
-            //     .permitAll()
-            // .and()
-            // .logout()
-            //     .logoutUrl("/admin/logout.do")
-            //     // .logoutSuccessUrl("/") // 로그아웃에 성공한 사용자에게 보여줄 페이지의 URL을 매개변수로 사용
-            //     .permitAll()
+                // .hasAnyAuthority("ADMIN")        
+            .and()
+            .formLogin()
+                .loginPage("http://localhost:3000/")
+                .usernameParameter("usersAccount")
+                .passwordParameter("usersPass")
+                .loginProcessingUrl("/api/user/signIn.do")
+                // .defaultSuccessUrl("http://localhost:3000") // login에 성공했을 때 이동할 페이지
+                .successForwardUrl("/api/user/signIn.success") // login에 성공했을 때 연결할 URL을 매개변수로 사용
+                .failureForwardUrl("/api/user/signIn.failure")          
+                .permitAll()
+            .and()
+            .logout()
+                .logoutUrl("/admin/logout.do")
+                .logoutSuccessUrl("/") // 로그아웃에 성공한 사용자에게 보여줄 페이지의 URL을 매개변수로 사용
+                .permitAll();
             // .and()
             // // // 권한외의 접근을 시도할 때 출력할 페이지
             // // .exceptionHandling()

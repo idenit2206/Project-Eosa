@@ -63,6 +63,10 @@ public class UsersService implements UsersRepository {
         return result;
     }
 
+    public Users findByUsersAccount(String usersAccount) {
+        return usersRepository.findByUsersAccount(usersAccount);
+    }
+
     /**
      * 모든 사용자 계정정보 조회(개발시 테스트용)
      */
@@ -72,7 +76,7 @@ public class UsersService implements UsersRepository {
     }
 
     /**
-     * 모든 사용자 계정정보 조회 정렬하여 출력(개발시 테스트용)
+     * 모든 사용자 계정정보 조회 정렬하여 출력(개발 테스트용)
      */
     @Override
     public List<Users> findAll(Sort sort) {
