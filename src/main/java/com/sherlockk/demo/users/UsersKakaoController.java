@@ -13,7 +13,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping(value="/api/user")
-public class UsersSNSController {
+public class UsersKakaoController {
 
     private final Logger logger = LoggerFactory.getLogger(UsersController.class);
 
@@ -77,6 +80,24 @@ public class UsersSNSController {
         result.setResponseDateTime(currentTime);
 
         return result;
+    }
+
+    public String getAccessTokenByCode(String code) {
+        // 참고 URL - https://mangchhe.github.io/springboot/2021/07/18/SpringKakaoLogin/
+        final String CLIENT_ID =  "bc8cb20bc2e3cd4dd484ef5657c1769b";
+        final String CLIENT_SECRET = "FfAs3gRxRDQzwbKaMmgHfKukYjWOUBvE";
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", "authorization_code");
+        params.add("client_id", CLIENT_ID);
+        params.add("redirect_uri", "http://localhost:8081" + "/api/user/oauth/kakao");
+        params.add("code", code);
+        params.add("client_secret", CLIENT_SECRET);
+
+        return "";
     }
 
 
