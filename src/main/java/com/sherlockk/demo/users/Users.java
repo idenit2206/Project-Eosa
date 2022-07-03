@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +13,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.ColumnDefault;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -45,8 +48,9 @@ public class Users {
     @Column(nullable=false, length=30)
     private String usersEmail;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable=false, length=30)
-    private String usersRole;
+    private UsersRole usersRole;
 
     @Column(nullable=false)
     private int usersAge;
@@ -68,30 +72,23 @@ public class Users {
     @ColumnDefault("0")
     private int usersDelete;
 
-    
-    public Users(String usersAccount, String usersName, int usersGender, String usersNick, String usersPhone,
-            String usersEmail, String usersRole, int usersAge, String usersRegion1, String usersRegion2,
-            LocalDateTime usersJoinDate) {
+    // OAuth2를 이용하는 경우 활용하는 플랫폼 이름(google, kakao, naver, ...)
+    @Column
+    private String provider;
+
+    // OAuth2를 이용할 경우 플랫폼에서의 사용자 아이디
+    @Column
+    private String providerId;
+
+
+    @Builder(builderClassName = "OAuth2Register", builderMethodName = "oauth2Register")
+    public Users(String usersAccount, String usersPass, String usersEmail, UsersRole usersRole, String provider, String providerId) {
         this.usersAccount = usersAccount;
-        this.usersName = usersName;
-        this.usersGender = usersGender;
-        this.usersNick = usersNick;
-        this.usersPhone = usersPhone;
+        this.usersPass = usersPass;
         this.usersEmail = usersEmail;
         this.usersRole = usersRole;
-        this.usersAge = usersAge;
-        this.usersRegion1 = usersRegion1;
-        this.usersRegion2 = usersRegion2;
-        this.usersJoinDate = usersJoinDate;
-    }
-
-    @Override
-    public String toString() {
-        return "Users [usersAccount=" + usersAccount + ", usersAge=" + usersAge + ", usersDelete=" + usersDelete
-                + ", usersEmail=" + usersEmail + ", usersEnabled=" + usersEnabled + ", usersGender=" + usersGender
-                + ", usersIdx=" + usersIdx + ", usersJoinDate=" + usersJoinDate + ", usersName=" + usersName
-                + ", usersNick=" + usersNick + ", usersPhone=" + usersPhone + ", usersRegion1=" + usersRegion1
-                + ", usersRegion2=" + usersRegion2 + ", usersRole=" + usersRole + "]";
+        this.provider = provider;
+        this.providerId = providerId;
     }
 
 }
