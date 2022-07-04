@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.nimbusds.jose.shaded.json.parser.JSONParser;
 import com.sherlockk.demo.util.CustomResponseData;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -168,13 +167,13 @@ public class UsersKakaoController {
             conn.setRequestMethod("GET");
             conn.setDoOutput(true);
             conn.setRequestProperty("Authorization", "Bearer " + Access_Token);
-            conn.setRequestProperty("Content-type", "application/x-www-form-urlencoded;charset=utf-8");      
+            conn.setRequestProperty("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");      
 
             int responseCode = conn.getResponseCode();            
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line = "";
             String result = "";
-
+            
             while((line = br.readLine()) != null) {
                 result += line;
             }
@@ -206,7 +205,7 @@ public class UsersKakaoController {
             // System.out.println("## id & nickName" + id + " " + nickName);
 
             data = id + " " + nickName;
-            // System.out.println("## element: " + element);
+            System.out.println("## element: " + element);
         }
         catch(Exception e) {
             e.printStackTrace();

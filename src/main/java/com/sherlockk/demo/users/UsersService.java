@@ -24,7 +24,6 @@ public class UsersService implements UsersRepository {
     @Autowired
     private UsersRepository usersRepository;
 
-
     /**
      * 사용자 정보 DB저장 (회원가입) - JPA Repository 기본형
      * @param <Users>entity Users 형태의 데이터를 매개변수로 받는다.
@@ -66,6 +65,14 @@ public class UsersService implements UsersRepository {
     public Users findByUsersAccount(String usersAccount) {
         return usersRepository.findByUsersAccount(usersAccount);
     }
+
+    /**
+     * 사용자 색인번호 기반 사용자(DETECTIVE) 존재 여부 조회
+     */
+    public int findDetectiveByUsersIdx(Long usersIdx) {
+        return usersRepository.findDetectiveByUsersIdx(usersIdx);
+    }
+
 
     /**
      * 모든 사용자 계정정보 조회(개발시 테스트용)

@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-
 @Repository
 public interface UsersRepository extends JpaRepository<Users, Long> {
    
@@ -33,5 +32,11 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
         nativeQuery=true
     )
     Users findByUsersAccount(String usersAccount);
+
+    @Query(
+        value="SELECT 1 FROM Users WHERE usersIdx = ?1 AND usersRole = 'DETECTIVE' ",
+        nativeQuery=true
+    )
+    int findDetectiveByUsersIdx(Long usersIdx);
      
 }
