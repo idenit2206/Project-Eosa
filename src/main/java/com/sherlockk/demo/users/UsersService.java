@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -20,6 +22,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UsersService implements UsersRepository {
+
+    private Logger logger = LoggerFactory.getLogger(UsersService.class);
 
     @Autowired
     private UsersRepository usersRepository;
@@ -56,7 +60,8 @@ public class UsersService implements UsersRepository {
         }
         catch(Exception e) {
             result = 0;
-            System.out.println("XXX: " + e);
+            logger.error("[ERROR] {}\n[ERROR TIME] {}", e, currentTime);
+            // System.out.println("[Error] userSave(): " + e);
         }
                
         return result;

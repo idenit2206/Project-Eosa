@@ -37,10 +37,7 @@ public class Users {
     private String usersPass;
 
     @Column(nullable=false, length=30)
-    private String usersName;
-
-    @Column(nullable=false)
-    private int usersGender;
+    private String usersName;    
 
     @Column(nullable=false, length=30)
     private String usersNick;
@@ -51,9 +48,9 @@ public class Users {
     @Column(nullable=false, length=30)
     private String usersEmail;
 
-    @Enumerated(EnumType.STRING)
+    // @Enumerated(EnumType.STRING)
     @Column(nullable=false, length=30)
-    private UsersRole usersRole;
+    private String usersRole;
 
     @Column(nullable=false)
     private int usersAge;
@@ -63,6 +60,9 @@ public class Users {
 
     @Column(nullable=false, length=30)
     private String usersRegion2;
+
+    @Column(nullable=false)
+    private int usersGender;
 
     @Column(nullable=false)
     private LocalDateTime usersJoinDate;

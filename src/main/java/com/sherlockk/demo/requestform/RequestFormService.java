@@ -1,12 +1,10 @@
-package com.sherlockk.demo.companysmember;
+package com.sherlockk.demo.requestform;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -16,54 +14,46 @@ import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuer
 import org.springframework.stereotype.Service;
 
 @Service
-public class CompanysMemberService implements CompanysMemberRepository {
-
-    Logger logger = LoggerFactory.getLogger(CompanysMemberService.class);
+public class RequestFormService implements RequestFormRepository {
 
     @Autowired
-    private CompanysMemberRepository companysMemberRepository;
-
+    private RequestFormRepository requestFormRepository;
+    
     @Override
-    public <S extends CompanysMember> S save(S entity) {
-       return null;
+    public <S extends RequestForm> S save(S entity) {
+        // return requestFormRepository.save(entity);
+        return null;
     }
 
-    public int customValdSave(CompanysMember entity) {
-        int result = 0;
+    public int requestFormSave(RequestForm entity) {
         LocalDateTime currentTime = LocalDateTime.now();
-        entity.setRegistDate(currentTime);
-
-        try {
-            result = companysMemberRepository.customValdSave(entity);
-        }
-        catch(Exception e) {
-            result = 0;
-            logger.error("{}", e);
-        }
-
-        return result;
+        
+        entity.setRequestFormStatus("REQUEST");
+        entity.setRequestFormDate(currentTime);
+    
+        return requestFormRepository.requestFormSave(entity);
     }
 
     @Override
-    public List<CompanysMember> findAll() {
+    public List<RequestForm> findAll() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<CompanysMember> findAll(Sort sort) {
+    public List<RequestForm> findAll(Sort sort) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<CompanysMember> findAllById(Iterable<Long> ids) {
+    public List<RequestForm> findAllById(Iterable<Long> ids) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <S extends CompanysMember> List<S> saveAll(Iterable<S> entities) {
+    public <S extends RequestForm> List<S> saveAll(Iterable<S> entities) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -75,19 +65,19 @@ public class CompanysMemberService implements CompanysMemberRepository {
     }
 
     @Override
-    public <S extends CompanysMember> S saveAndFlush(S entity) {
+    public <S extends RequestForm> S saveAndFlush(S entity) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <S extends CompanysMember> List<S> saveAllAndFlush(Iterable<S> entities) {
+    public <S extends RequestForm> List<S> saveAllAndFlush(Iterable<S> entities) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public void deleteAllInBatch(Iterable<CompanysMember> entities) {
+    public void deleteAllInBatch(Iterable<RequestForm> entities) {
         // TODO Auto-generated method stub
         
     }
@@ -105,43 +95,43 @@ public class CompanysMemberService implements CompanysMemberRepository {
     }
 
     @Override
-    public CompanysMember getOne(Long id) {
+    public RequestForm getOne(Long id) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public CompanysMember getById(Long id) {
+    public RequestForm getById(Long id) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public CompanysMember getReferenceById(Long id) {
+    public RequestForm getReferenceById(Long id) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <S extends CompanysMember> List<S> findAll(Example<S> example) {
+    public <S extends RequestForm> List<S> findAll(Example<S> example) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <S extends CompanysMember> List<S> findAll(Example<S> example, Sort sort) {
+    public <S extends RequestForm> List<S> findAll(Example<S> example, Sort sort) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Page<CompanysMember> findAll(Pageable pageable) {
+    public Page<RequestForm> findAll(Pageable pageable) {
         // TODO Auto-generated method stub
         return null;
-    }    
+    }
 
     @Override
-    public Optional<CompanysMember> findById(Long id) {
+    public Optional<RequestForm> findById(Long id) {
         // TODO Auto-generated method stub
         return Optional.empty();
     }
@@ -154,7 +144,8 @@ public class CompanysMemberService implements CompanysMemberRepository {
 
     @Override
     public long count() {
-        return companysMemberRepository.count();
+        // TODO Auto-generated method stub
+        return 0;
     }
 
     @Override
@@ -164,7 +155,7 @@ public class CompanysMemberService implements CompanysMemberRepository {
     }
 
     @Override
-    public void delete(CompanysMember entity) {
+    public void delete(RequestForm entity) {
         // TODO Auto-generated method stub
         
     }
@@ -176,7 +167,7 @@ public class CompanysMemberService implements CompanysMemberRepository {
     }
 
     @Override
-    public void deleteAll(Iterable<? extends CompanysMember> entities) {
+    public void deleteAll(Iterable<? extends RequestForm> entities) {
         // TODO Auto-generated method stub
         
     }
@@ -188,32 +179,31 @@ public class CompanysMemberService implements CompanysMemberRepository {
     }
 
     @Override
-    public <S extends CompanysMember> Optional<S> findOne(Example<S> example) {
+    public <S extends RequestForm> Optional<S> findOne(Example<S> example) {
         // TODO Auto-generated method stub
         return Optional.empty();
     }
 
     @Override
-    public <S extends CompanysMember> Page<S> findAll(Example<S> example, Pageable pageable) {
+    public <S extends RequestForm> Page<S> findAll(Example<S> example, Pageable pageable) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <S extends CompanysMember> long count(Example<S> example) {
+    public <S extends RequestForm> long count(Example<S> example) {
         // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
-    public <S extends CompanysMember> boolean exists(Example<S> example) {
+    public <S extends RequestForm> boolean exists(Example<S> example) {
         // TODO Auto-generated method stub
         return false;
     }
 
     @Override
-    public <S extends CompanysMember, R> R findBy(Example<S> example,
-            Function<FetchableFluentQuery<S>, R> queryFunction) {
+    public <S extends RequestForm, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
         // TODO Auto-generated method stub
         return null;
     }

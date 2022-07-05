@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sherlockk.demo.util.CustomResponseData;
+import com.sherlockk.demo.util.NullCheck;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -75,44 +76,36 @@ public class UsersController {
         logger.info("{} has \"/signUp.do\" Request", requester);
         CustomResponseData result = new CustomResponseData();
         LocalDateTime currentTime = LocalDateTime.now();
-
-        if(usersService.userSave(param) == 1) {
-            result.setStatusCode(HttpStatus.ACCEPTED.value());
-            result.setResultItem(param.getUsersAccount() + " 가입 완료");
-            result.setResponseDateTime(currentTime);
+        
+        System.out.println("#: " + param.getUsersGender());
+        
+        String[] targets = {"usersAccount", "usersPass", "usersName", "usersNick", "usersPhone", "usersEmail", "usersRole", "usersAge", "usersRegion1", "usersRegion2", "usersGender"};
+        NullCheck nullCheck = new NullCheck();
+        Map<String, Object> checkItem = nullCheck.ObjectNullCheck(param, targets);
+        
+        if(checkItem.get("result") == "SUCCESS") {
+            int transaction = usersService.userSave(param);
+            if(transaction == 1) {
+                logger.info("Success " + param.getUsersAccount() + " 's Join");                
+                result.setStatusCode(HttpStatus.OK.value());
+                result.setResultItem(checkItem);
+                result.setResponseDateTime(currentTime);
+            }
+            else {
+                result.setStatusCode(HttpStatus.BAD_REQUEST.value());
+                result.setResultItem("SQL ERROR /signUp.do");
+                result.setResponseDateTime(currentTime);
+            }
         }
         else {
+            logger.error("Failure " + param.getUsersAccount() + " 's Join");
             result.setStatusCode(HttpStatus.BAD_REQUEST.value());
-            result.setResultItem(param.getUsersAccount() + " 가입에 실패했습니다.");
+            result.setResultItem(checkItem);
             result.setResponseDateTime(currentTime);
         }
 
         return result;
     }
-
-    // @PostMapping("/signIn.do")
-    // public CustomResponseData signInDo(
-    //     HttpServletRequest req, @Param("usersAccount") String usersAccount, @Param("usersPass") String usersPass
-    // ) {
-    //     String requester = req.getLocalAddr();
-    //     logger.info("{} has \"/signIn\" Request", requester);
-    //     CustomResponseData result = new CustomResponseData();
-    //     LocalDateTime currentTime = LocalDateTime.now();
-    //     String[] data = {usersAccount, usersPass};
-        
-    //     if(!data[0].isEmpty()) {
-    //         result.setStatusCode(HttpStatus.OK.value());
-    //         result.setResultItem(data);
-    //         result.setResponseDateTime(currentTime);
-    //     }
-    //     else {
-    //         result.setStatusCode(HttpStatus.BAD_REQUEST.value());
-    //         result.setResultItem(data);
-    //         result.setResponseDateTime(currentTime);
-    //     }   
-
-    //     return result;
-    // }
 
     /**
      * 로그인에 성공했을 때 작동하는 메서드입니다.

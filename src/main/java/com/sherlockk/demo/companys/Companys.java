@@ -17,6 +17,7 @@ import lombok.Data;
 @Entity
 @Table(name="Companys")
 public class Companys {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long companysIdx;
