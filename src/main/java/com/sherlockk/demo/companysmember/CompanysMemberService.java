@@ -1,5 +1,6 @@
 package com.sherlockk.demo.companysmember;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +37,7 @@ public class CompanysMemberService implements CompanysMemberRepository {
         try {
             result = companysMemberRepository.customValdSave(entity);
         }
-        catch(Exception e) {
+        catch(SQLException e) {
             result = 0;
             logger.error("{}", e);
         }

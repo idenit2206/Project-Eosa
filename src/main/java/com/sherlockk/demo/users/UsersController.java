@@ -1,9 +1,7 @@
 package com.sherlockk.demo.users;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +14,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,14 +23,13 @@ import com.sherlockk.demo.util.CustomResponseData;
 import com.sherlockk.demo.util.NullCheck;
 
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.web.bind.annotation.RequestBody;
-
 
 @RestController
 @RequestMapping(value="/api/user")
 public class UsersController {
 
     private final Logger logger = LoggerFactory.getLogger(UsersController.class);
+    private NullCheck nullCheck = new NullCheck();
 
     @Autowired
     private UsersService usersService;
@@ -79,8 +77,7 @@ public class UsersController {
         
         System.out.println("#: " + param.getUsersGender());
         
-        String[] targets = {"usersAccount", "usersPass", "usersName", "usersNick", "usersPhone", "usersEmail", "usersRole", "usersAge", "usersRegion1", "usersRegion2", "usersGender"};
-        NullCheck nullCheck = new NullCheck();
+        String[] targets = {"usersAccount", "usersPass", "usersName", "usersNick", "usersPhone", "usersEmail", "usersRole", "usersAge", "usersRegion1", "usersRegion2", "usersGender"};        
         Map<String, Object> checkItem = nullCheck.ObjectNullCheck(param, targets);
         
         if(checkItem.get("result") == "SUCCESS") {
@@ -160,6 +157,110 @@ public class UsersController {
 
         return result;
     }
-    
+
+    @GetMapping(value="/getUsersInfo")
+    public CustomResponseData getUsersInfoByUsersAccount(
+        @RequestParam(value="usersAccount") String usersAccount
+    ) {
+        CustomResponseData result = new CustomResponseData();
+
+        Map<String, Object> item = new HashMap<>();
+        LocalDateTime currentTime = LocalDateTime.now();
+        
+        boolean nc = nullCheck.StringNullCheck(usersAccount);       
+
+        if(nc == false) {
+            findByUsersAccount transaction = usersService.selectByUsersAccount(usersAccount);
+            if(transaction == null) {
+                result.setStatusCode(HttpStatus.BAD_REQUEST.value());
+                item.put("item", transaction);
+                result.setResultItem(item);
+                result.setResponseDateTime(currentTime);
+            }
+            else {
+                result.setStatusCode(HttpStatus.OK.value());
+                item.put("item", transaction);
+                result.setResultItem(item);
+                result.setResponseDateTime(currentTime);
+            }
+        }        
+        else {
+            result.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            item.put("result", "FAILURE cause parameter(usersAccount) Null");
+            result.setResultItem(item);
+            result.setResponseDateTime(currentTime);
+        }
+        return result;
+    }
+
+    /**
+     * 회원정보를 수정하는 url입니다.
+     * @param Users param
+     * @return
+     */
+    @Operation(summary = "회원정보 수정", description = "회원이 스스로 회원정보를 수정할때 사용합니다.")
+    @PutMapping("/updateUserInfo")
+    public CustomResponseData updateUserInfo(Users param) {
+        CustomResponseData result = new CustomResponseData();
+        LocalDateTime currentTime = LocalDateTime.now();
+        
+        String[] targets = {
+            "usersIdx", "usersPass", "usersNick", "usersEmail", 
+            "usersRegion1", "usersRegion2", "usersGender"
+        };
+        Map<String, Object> checkItem = nullCheck.ObjectNullCheck(param, targets);        
+
+        if(checkItem.get("result") == "SUCCESS") {
+            int transaction = usersService.updateUserInfo(param);
+            if(transaction == 1) {
+                logger.info("Success " + param.getUsersAccount() + " information Update!!");                
+                result.setStatusCode(HttpStatus.OK.value());
+                result.setResultItem(checkItem);
+                result.setResponseDateTime(currentTime);
+            }
+            else {
+                result.setStatusCode(HttpStatus.BAD_REQUEST.value());
+                result.setResultItem("SQL ERROR /updateUserInfo");
+                result.setResponseDateTime(currentTime);
+            }
+        }
+        else {
+            logger.error("Failure " + param.getUsersAccount() + " information Update...");
+            result.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            result.setResultItem(checkItem);
+            result.setResponseDateTime(currentTime);
+        }       
+
+        return result;
+    }
+
+    /**
+     * 회원 탈퇴를 요청하는 url입니다.
+     * @param usersIdx
+     * @return
+     */
+    @Operation(summary="회원탈퇴", description="회원이 직접 서비스로부터 회원탈퇴를 신청합니다.")
+    @PutMapping("/deleteUserInfo")
+    public CustomResponseData deleteUserInfo(@Param("usersIdx") Long usersIdx) {
+        CustomResponseData result = new CustomResponseData();
+        Map<String, Object> item = new HashMap<>();
+        LocalDateTime currentTime = LocalDateTime.now();        
+       
+        int transaction = usersService.deleteUserInfo(usersIdx);
+
+        if(transaction == 1) {
+            result.setStatusCode(HttpStatus.OK.value());
+            item.put("message", "Success Delete Users idx=" + Long.valueOf(usersIdx));
+            result.setResultItem(item);
+            result.setResponseDateTime(currentTime);
+        }
+        else {
+            result.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            item.put("message", "Failure Delete Users idx=" + Long.valueOf(usersIdx) );
+            result.setResultItem(item);
+            result.setResponseDateTime(currentTime);
+        }
+        return result;
+    }
 
 }

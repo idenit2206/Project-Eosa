@@ -58,10 +58,7 @@ public class CompanysController {
           result.setStatusCode(HttpStatus.BAD_REQUEST.value());
           result.setResultItem(items);
           result.setResponseDateTime(currentTime);
-        }
-        
-        result.setResultItem(items);
-        result.setResponseDateTime(currentTime);
+        }        
 
         return result;
     }

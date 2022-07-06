@@ -1,5 +1,7 @@
 package com.sherlockk.demo.companysmember;
 
+import java.sql.SQLException;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,6 +22,6 @@ public interface CompanysMemberRepository extends JpaRepository<CompanysMember, 
         "NOW())",     
     nativeQuery=true)
     // @Query(value="SELECT COUNT('*') FROM CompanysMember", nativeQuery=true)
-    int customValdSave(@Param("CompanysMember") CompanysMember entity);
+    int customValdSave(@Param("CompanysMember") CompanysMember entity) throws SQLException;
 
 }

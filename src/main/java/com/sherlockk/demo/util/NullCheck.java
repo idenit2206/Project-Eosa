@@ -28,9 +28,9 @@ public class NullCheck {
     //     this.input01 = input01;
     // }
 
-    public boolean StringNullCheck(String input01) {
+    public boolean StringNullCheck(String inputString) {
         boolean result = false;
-        if(input01.isBlank()) {
+        if(inputString.isBlank()) {
             result = true;
         }
         else {

@@ -47,16 +47,16 @@ public class UsersService implements UsersRepository {
      * 사용자 정보 DB저장 (회원가입) - JPA INSERT test용
      * @param <Users>entity Users 형태의 데이터를 매개변수로 받는다.
      */
-    public int userSave(Users entity) {
+    public int userSave(Users param) {
         int result = 0;
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         LocalDateTime currentTime = LocalDateTime.now();
-        entity.setUsersPass(passwordEncoder.encode(entity.getUsersPass()));
-        entity.setUsersEnabled(1);
-        entity.setUsersJoinDate(currentTime);
+        param.setUsersPass(passwordEncoder.encode(param.getUsersPass()));
+        param.setUsersEnabled(1);
+        param.setUsersJoinDate(currentTime);
 
         try {
-            result = usersRepository.userSave(entity);
+            result = usersRepository.userSave(param);
         }
         catch(Exception e) {
             result = 0;
@@ -66,10 +66,24 @@ public class UsersService implements UsersRepository {
                
         return result;
     }
-
+    
+    /**
+     * 로그인 할 때 활용
+     */
     public Users findByUsersAccount(String usersAccount) {
         return usersRepository.findByUsersAccount(usersAccount);
     }
+
+    /**
+     * 사용자 계정을 기반으로 해당 사용자의 정보 조회 (사용자 정보 조회시 사용)
+    */
+    public findByUsersAccount selectByUsersAccount(String usersAccount) {
+        findByUsersAccount result = usersRepository.selectByUsersAccount(usersAccount);
+        if(result == null) {
+            logger.error("[ERROR] SQL RESULT NULL findByUsersAccount()");
+        }
+        return result;
+    } 
 
     /**
      * 사용자 색인번호 기반 사용자(DETECTIVE) 존재 여부 조회
@@ -94,6 +108,26 @@ public class UsersService implements UsersRepository {
     public List<Users> findAll(Sort sort) {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    /**
+     * 사용자의 정보를 수정하는 메서드
+     * @param Users param
+     * @return int
+    */
+    public int updateUserInfo(Users param) {       
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String newPass = passwordEncoder.encode(param.getUsersPass());
+        param.setUsersPass(newPass);
+        int tran = usersRepository.updateUserInfo(param);
+        return tran;
+    }
+
+    /**
+     * 사용자 서비스 탈퇴를 수행하는 메서드 
+    */
+    public int deleteUserInfo(Long usersIdx) {
+        return usersRepository.deleteUserInfo(usersIdx);
     }
 
     @Override

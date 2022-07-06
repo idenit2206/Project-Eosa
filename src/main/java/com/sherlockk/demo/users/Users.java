@@ -15,12 +15,17 @@ import org.hibernate.annotations.ColumnDefault;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * 
  */
+
 @Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @Table(name="Users")
@@ -33,7 +38,7 @@ public class Users {
     @Column(nullable=false, length=30)
     private String usersAccount;
 
-    @Column(nullable=false, length=30)
+    @Column(nullable=false)
     private String usersPass;
 
     @Column(nullable=false, length=30)
@@ -81,17 +86,55 @@ public class Users {
 
     // OAuth2를 이용할 경우 플랫폼에서의 사용자 아이디
     @Column
-    private String providerId;
+    private String providerId;    
 
+    public Users(String usersAccount, String usersName, String usersNick, String usersPhone, String usersEmail,
+            String usersRole, int usersAge, String usersRegion1, String usersRegion2, int usersGender) {
+        this.usersAccount = usersAccount;
+        this.usersName = usersName;
+        this.usersNick = usersNick;
+        this.usersPhone = usersPhone;
+        this.usersEmail = usersEmail;
+        this.usersRole = usersRole;
+        this.usersAge = usersAge;
+        this.usersRegion1 = usersRegion1;
+        this.usersRegion2 = usersRegion2;
+        this.usersGender = usersGender;
+    }
+
+    public Users(Long usersIdx, String usersAccount, String usersName, String usersNick, String usersPhone,
+            String usersEmail, String usersRole, int usersAge, String usersRegion1, String usersRegion2,
+            int usersGender) {
+        this.usersIdx = usersIdx;
+        this.usersAccount = usersAccount;
+        this.usersName = usersName;
+        this.usersNick = usersNick;
+        this.usersPhone = usersPhone;
+        this.usersEmail = usersEmail;
+        this.usersRole = usersRole;
+        this.usersAge = usersAge;
+        this.usersRegion1 = usersRegion1;
+        this.usersRegion2 = usersRegion2;
+        this.usersGender = usersGender;
+    }    
 
     @Builder(builderClassName = "OAuth2Register", builderMethodName = "oauth2Register")
-    public Users(String usersAccount, String usersPass, String usersEmail, UsersRole usersRole, String provider, String providerId) {
+    public Users(String usersAccount, String usersPass, String usersEmail, String usersRole, String provider, String providerId) {
         this.usersAccount = usersAccount;
         this.usersPass = usersPass;
         this.usersEmail = usersEmail;
         this.usersRole = usersRole;
         this.provider = provider;
         this.providerId = providerId;
+    }
+
+    @Override
+    public String toString() {
+        return "Users [provider=" + provider + ", providerId=" + providerId + ", usersAccount=" + usersAccount
+                + ", usersAge=" + usersAge + ", usersEmail=" + usersEmail + ", usersGender=" + usersGender
+                + ", usersIdx=" + usersIdx + ", usersName=" + usersName + ", usersNick=" + usersNick + ", usersPass="
+                + usersPass + ", usersPhone=" + usersPhone + ", usersRegion1=" + usersRegion1 + ", usersRegion2="
+                + usersRegion2 + ", usersRole=" + usersRole + "]";
     }
 
 }
