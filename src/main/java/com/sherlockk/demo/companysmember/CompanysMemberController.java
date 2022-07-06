@@ -44,6 +44,9 @@ public class CompanysMemberController {
 
         Map<String, Object> items = nullCheck.ObjectNullCheck(param, targets);
        
+
+        
+       
         if(items.get("result") == "SUCCESS") {
             int transaction = companysMemberService.customValdSave(param);
             if(transaction == 1) {
@@ -73,6 +76,22 @@ public class CompanysMemberController {
         @RequestParam("companysIdx") Long companysIdx
     ) {
         CustomResponseData result = new CustomResponseData();
+        Map<String, Object> items = new HashMap<>();
+
+        int transaction = companysMemberService.deleteDetective(usersIdx, companysIdx);
+        if(transaction == 1) {
+            result.setStatusCode(HttpStatus.OK.value());
+            items.put("message", "[SUCCESS] usersIdx: " + usersIdx + " 제적처리 FROM " + companysIdx);
+            result.setResultItem(items);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            items.put("message", "[FAILURE] usersIdx: " + usersIdx + " 제적처리 FROM " + companysIdx);
+            result.setResultItem(items);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
         return result;
     }
     

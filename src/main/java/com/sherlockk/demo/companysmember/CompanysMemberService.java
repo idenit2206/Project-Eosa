@@ -45,6 +45,10 @@ public class CompanysMemberService implements CompanysMemberRepository {
         return result;
     }
 
+    public int deleteDetective(Long usersIdx, Long companysIdx) {
+        return companysMemberRepository.deleteDetective(usersIdx, companysIdx);
+    }
+
     @Override
     public List<CompanysMember> findAll() {
         // TODO Auto-generated method stub

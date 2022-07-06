@@ -44,4 +44,6 @@ public class CompanysMember {
     @Column(nullable=false)
     private LocalDateTime registDate;
 
+    @Column(nullable=false)
+    private int statusValue;
 }

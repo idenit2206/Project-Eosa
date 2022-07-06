@@ -24,4 +24,13 @@ public interface CompanysMemberRepository extends JpaRepository<CompanysMember, 
     // @Query(value="SELECT COUNT('*') FROM CompanysMember", nativeQuery=true)
     int customValdSave(@Param("CompanysMember") CompanysMember entity) throws SQLException;
 
+    @Modifying
+    @Transactional
+    @Query(
+        value="UPDATE CompanysMember " +
+        "SET statusValue=0 " +
+        "WHERE usersIdx=:usersIdx AND companysIdx=:companysIdx"
+    )
+    int deleteDetective(@Param("usersIdx") Long usersIdx, @Param("companysIdx") Long companysIdx);
+
 }
