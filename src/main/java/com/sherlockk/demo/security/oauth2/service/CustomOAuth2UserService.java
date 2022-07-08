@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.hibernate.event.spi.SaveOrUpdateEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -26,10 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
-    @Autowired
-    private final UsersRepository usersRepository;
     
-    @Autowired
+    private final UsersRepository usersRepository;
     private final HttpSession session;
 
     @Override
@@ -45,36 +44,10 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails()
             .getUserInfoEndpoint().getUserNameAttributeName();
 
-        String email = "";
-        Map<String, Object> response = oAuth2User.getAttributes();
+        OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
-        if(registrationId.equals("kakao")) {
-            Map<String, Object> hash = (Map<String, Object>) response.get("response");
-            email = (String) hash.get("email");
-        }
-        
-        if(registrationId.equals("naver")) {
-            email = (String) response.get("email");
-        }
-    
-        Users users;
-        Users optionalUser = usersRepository.findByUsersEmail(email);
-
-        if(optionalUser != null) {
-            users = optionalUser;
-        }
-        else {
-            users = new Users();
-            users.setUsersEmail(email);
-            // usersRepository.save(users) 참고자료에서는 바로 엔티티를 세이브하지만 세이브하지 않는 방법으로 알아볼것
-        }
-        session.setAttribute("user", email);
-
-        return new DefaultOAuth2User(
-            Collections.singleton(new SimpleGrantedAuthority(users.getUsersRole().toString())),
-            oAuth2User.getAttributes(),
-            userNameAttributeName 
-        );
+        Users users = SaveOrUpdateEvent(attributes);
+       
     }
 
 

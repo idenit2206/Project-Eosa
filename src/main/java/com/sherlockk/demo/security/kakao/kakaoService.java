@@ -23,6 +23,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class kakaoService {
+    private final String CLIENT_ID = "7d140d1af07d8ac3e6fa79db75e8ebf5";
+    private final String CLIENT_SECRET = "zejFswQLxSt8rzWT41rx5NTgBulWTPqc";
 
     public String getToken(String code) throws IOException {
         String reqURL = "https://kauth.kakao.com/oauth/token";        
@@ -39,8 +41,8 @@ public class kakaoService {
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
-            sb.append("&client_id=7d140d1af07d8ac3e6fa79db75e8ebf5");
-            sb.append("&client_secret=zejFswQLxSt8rzWT41rx5NTgBulWTPqc");
+            sb.append("&client_id="+CLIENT_ID);
+            sb.append("&client_secret="+CLIENT_SECRET);
             sb.append("&redirect_uri=http://localhost:8081/api/user/kakao");
             sb.append("&code="+code);
 

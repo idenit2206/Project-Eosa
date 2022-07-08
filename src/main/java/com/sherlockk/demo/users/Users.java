@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 public class Users {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long usersIdx;
 
     @Column(nullable=false, length=30)
@@ -46,9 +46,9 @@ public class Users {
     @Column(nullable=false, length=30)
     private String usersEmail;
 
-    // @Enumerated(EnumType.STRING)
-    @Column(nullable=false, length=30)
-    private String usersRole;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable=false)
+    private UsersRole usersRole;
 
     @Column(nullable=false)
     private int usersAge;
@@ -79,41 +79,15 @@ public class Users {
 
     // OAuth2를 이용할 경우 플랫폼에서의 사용자 아이디
     @Column
-    private String providerId;    
-
-    public Users(String usersAccount, String usersName, String usersNick, String usersPhone, String usersEmail,
-            String usersRole, int usersAge, String usersRegion1, String usersRegion2, int usersGender) {
-        this.usersAccount = usersAccount;
-        this.usersName = usersName;
-        this.usersNick = usersNick;
-        this.usersPhone = usersPhone;
-        this.usersEmail = usersEmail;
-        this.usersRole = usersRole;
-        this.usersAge = usersAge;
-        this.usersRegion1 = usersRegion1;
-        this.usersRegion2 = usersRegion2;
-        this.usersGender = usersGender;
-    }
-
-    public Users(Long usersIdx, String usersAccount, String usersName, String usersNick, String usersPhone,
-            String usersEmail, String usersRole, int usersAge, String usersRegion1, String usersRegion2,
-            int usersGender) {
-        this.usersIdx = usersIdx;
-        this.usersAccount = usersAccount;
-        this.usersName = usersName;
-        this.usersNick = usersNick;
-        this.usersPhone = usersPhone;
-        this.usersEmail = usersEmail;
-        this.usersRole = usersRole;
-        this.usersAge = usersAge;
-        this.usersRegion1 = usersRegion1;
-        this.usersRegion2 = usersRegion2;
-        this.usersGender = usersGender;
-    }    
+    private String providerId;
 
     @Builder
     public Users(String usersEmail) {
         this.usersEmail = usersEmail;
+    }
+
+    public String getUsersRole() {
+        return this.usersRole.getKey();
     }
 
     @Override

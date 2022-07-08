@@ -60,14 +60,16 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     )
     int findDetectiveByUsersIdx(Long usersIdx);
 
-    /**
-     * OAuth2에서 활용하는 이메일 조회 메서드(기존회원인지 신규회원인지 구분)
-     */
-    @Query(
-        value="SELECT * FROM Users WHERE usersEmail = ?1 AND usersEnabled = 1",
-        nativeQuery=true
-    )
-    Users findByUsersEmail(String usersEmail);
+    // /**
+    //  * OAuth2에서 활용하는 이메일 조회 메서드(기존회원인지 신규회원인지 구분)
+    //  */
+    // @Query(
+    //     value="SELECT * FROM Users WHERE usersEmail = ?1 AND usersEnabled = 1",
+    //     nativeQuery=true
+    // )
+    // Users findByUsersEmail(String usersEmail);
+
+    Optional<Users> findByUsersEmail(String usersEmail);
 
     @Modifying
     @Transactional
