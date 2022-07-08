@@ -30,32 +30,26 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
 	implementation 'com.google.code.gson:gson:2.9.0'
 	implementation 'io.springfox:springfox-boot-starter:3.0.0'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
-	// implementation 'org.springframework.boot:spring-boot-starter-oauth2-client:2.7.0'
 
-	// QueryDSL
-	// implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
-	// annotationProcessor(
-	// 	"javax.persistence:javax.persistence-api",
-	// 	"javax.annotation:javax.annotation-api",
-	// 	"com.querydsl:querydsl-apt:${queryDslVersion}:jpa"
-	// )
+	implementation 'org.springframework.boot:spring-boot-starter-security'	
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client:2.7.0'
 
-	// QueryDSL
-	// sourceSets {
-	// 	main {
-	// 		java {
-	// 			srcDirs = ["$projectDir/src/main/java", "$projectDir/build/generated"]
-	// 		}
-	// 	}
-	// }
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    // implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0'
+	
 
 	compileOnly 'org.projectlombok:lombok'
+
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
 	runtimeOnly 'mysql:mysql-connector-java'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

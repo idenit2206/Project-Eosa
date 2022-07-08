@@ -23,12 +23,13 @@ import com.sherlockk.demo.util.CustomResponseData;
 import com.sherlockk.demo.util.NullCheck;
 
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequestMapping(value="/api/user")
 public class UsersController {
-
-    private final Logger logger = LoggerFactory.getLogger(UsersController.class);
+   
     private NullCheck nullCheck = new NullCheck();
 
     @Autowired
@@ -71,11 +72,9 @@ public class UsersController {
     @PostMapping("/signUp.do")
     public CustomResponseData doSignUp(HttpServletRequest req, Users param) {
         String requester = req.getLocalAddr();
-        logger.info("{} has \"/signUp.do\" Request", requester);
+        log.info("{} has \"/signUp.do\" Request", requester);
         CustomResponseData result = new CustomResponseData();
         LocalDateTime currentTime = LocalDateTime.now();
-        
-        System.out.println("#: " + param.getUsersGender());
         
         String[] targets = {"usersAccount", "usersPass", "usersName", "usersNick", "usersPhone", "usersEmail", "usersRole", "usersAge", "usersRegion1", "usersRegion2", "usersGender"};        
         Map<String, Object> checkItem = nullCheck.ObjectNullCheck(param, targets);
@@ -83,7 +82,7 @@ public class UsersController {
         if(checkItem.get("result") == "SUCCESS") {
             int transaction = usersService.userSave(param);
             if(transaction == 1) {
-                logger.info("Success " + param.getUsersAccount() + " 's Join");                
+                log.info("Success " + param.getUsersAccount() + " 's Join");                
                 result.setStatusCode(HttpStatus.OK.value());
                 result.setResultItem(checkItem);
                 result.setResponseDateTime(currentTime);
@@ -95,7 +94,7 @@ public class UsersController {
             }
         }
         else {
-            logger.error("Failure " + param.getUsersAccount() + " 's Join");
+            log.error("Failure " + param.getUsersAccount() + " 's Join");
             result.setStatusCode(HttpStatus.BAD_REQUEST.value());
             result.setResultItem(checkItem);
             result.setResponseDateTime(currentTime);
@@ -116,7 +115,7 @@ public class UsersController {
         @RequestParam(value="usersAccount") String usersAccount
     ) {
         String requester = req.getLocalAddr();
-        logger.info("{} has \"/signIn.success\" Request", requester);
+        log.info("{} has \"/signIn.success\" Request", requester);
         CustomResponseData result = new CustomResponseData();
         LocalDateTime currentTime = LocalDateTime.now();
         
@@ -143,7 +142,7 @@ public class UsersController {
         @RequestParam(value="usersAccount") String usersAccount
     ) {
         String requester = req.getLocalAddr();
-        logger.info("{} has \"/signIn.failure\" Request", requester);
+        log.info("{} has \"/signIn.failure\" Request", requester);
         CustomResponseData result = new CustomResponseData();
         LocalDateTime currentTime = LocalDateTime.now();
 
@@ -213,7 +212,7 @@ public class UsersController {
         if(checkItem.get("result") == "SUCCESS") {
             int transaction = usersService.updateUserInfo(param);
             if(transaction == 1) {
-                logger.info("Success " + param.getUsersAccount() + " information Update!!");                
+                log.info("Success " + param.getUsersAccount() + " information Update!!");                
                 result.setStatusCode(HttpStatus.OK.value());
                 result.setResultItem(checkItem);
                 result.setResponseDateTime(currentTime);
@@ -225,7 +224,7 @@ public class UsersController {
             }
         }
         else {
-            logger.error("Failure " + param.getUsersAccount() + " information Update...");
+            log.error("Failure " + param.getUsersAccount() + " information Update...");
             result.setStatusCode(HttpStatus.BAD_REQUEST.value());
             result.setResultItem(checkItem);
             result.setResponseDateTime(currentTime);

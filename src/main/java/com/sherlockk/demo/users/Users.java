@@ -15,24 +15,17 @@ import org.hibernate.annotations.ColumnDefault;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-/**
- * 
- */
 
 @Data
-@Getter
-@Setter
 @NoArgsConstructor
 @Entity
 @Table(name="Users")
-public class Users { 
+public class Users {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long usersIdx;
 
     @Column(nullable=false, length=30)
@@ -118,14 +111,9 @@ public class Users {
         this.usersGender = usersGender;
     }    
 
-    @Builder(builderClassName = "OAuth2Register", builderMethodName = "oauth2Register")
-    public Users(String usersAccount, String usersPass, String usersEmail, String usersRole, String provider, String providerId) {
-        this.usersAccount = usersAccount;
-        this.usersPass = usersPass;
+    @Builder
+    public Users(String usersEmail) {
         this.usersEmail = usersEmail;
-        this.usersRole = usersRole;
-        this.provider = provider;
-        this.providerId = providerId;
     }
 
     @Override
