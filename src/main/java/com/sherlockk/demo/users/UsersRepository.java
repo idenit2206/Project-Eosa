@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -63,13 +64,13 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     // /**
     //  * OAuth2에서 활용하는 이메일 조회 메서드(기존회원인지 신규회원인지 구분)
     //  */
-    // @Query(
-    //     value="SELECT * FROM Users WHERE usersEmail = ?1 AND usersEnabled = 1",
-    //     nativeQuery=true
-    // )
+    @Query(
+        value="SELECT * FROM Users WHERE usersEmail = ?1 AND usersEnabled = 1",
+        nativeQuery=true
+    )
+    Users findByUsersEmail(String usersEmail);
     // Users findByUsersEmail(String usersEmail);
-
-    Optional<Users> findByUsersEmail(String usersEmail);
+    // Optional<Users> findByUsersEmail(String usersEmail);
 
     @Modifying
     @Transactional

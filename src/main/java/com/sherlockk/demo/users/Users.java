@@ -81,9 +81,15 @@ public class Users {
     @Column
     private String providerId;
 
+    // OAuth2를 이용할 경우 프로필 이미지 파일 링크(사용하지 않음)
+    @Column
+    private String picture;
+
     @Builder
-    public Users(String usersEmail) {
+    public Users(String usersEmail, String usersName, String picture) {
         this.usersEmail = usersEmail;
+        this.usersName = usersName;
+        this.picture = picture;
     }
 
     public String getUsersRole() {

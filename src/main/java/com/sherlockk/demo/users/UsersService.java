@@ -16,7 +16,7 @@ import org.springframework.data.domain.Sort;
 
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 
@@ -65,15 +65,15 @@ public class UsersService implements UsersRepository {
         }
                
         return result;
-    }
-    
+    }    
+
     /**
      * 로그인 할 때 활용
      */
     public Users findByUsersAccount(String usersAccount) {
         return usersRepository.findByUsersAccount(usersAccount);
     }
-
+   
     /**
      * 사용자 계정을 기반으로 해당 사용자의 정보 조회 (사용자 정보 조회시 사용)
     */
@@ -290,7 +290,12 @@ public class UsersService implements UsersRepository {
     public <S extends Users, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
         // TODO Auto-generated method stub
         return null;
-    }
-    
+    }    
+
+    @Override
+    public Optional<Users> findByUsersEmail(String usersEmail) {
+        // TODO Auto-generated method stub
+        return Optional.empty();
+    }   
     
 }

@@ -16,7 +16,7 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import com.sherlockk.demo.users.Users;
+import com.sherlockk.demo.security.oauth2.entity.OAuth2Attribute;
 import com.sherlockk.demo.users.UsersRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -41,15 +41,17 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         // 어떤 SNS 플랫폼을 이용하는지 (Google, naver, ...) 값을 받아옵니다.
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         // OAuth2 로그인 진행시 키가 되는 필드값 프라이머리키와 같은 값 네이버와 카카오에서는 지원하지 않습니다.
-        String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails()
-            .getUserInfoEndpoint().getUserNameAttributeName();
+        String userNameAttributeName = userRequest.getClientRegistration()
+            .getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
 
-        OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
+        OAuth2Attribute oAuth2Attribute = OAuth2Attribute.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
+        var memberAttribute = oAuth2Attribute.convertToMap();
 
-        //  https://mieumje.tistory.com/79
-        Users users = SaveOrUpdateEvent(attributes);
-       
+        return new DefaultOAuth2User(
+            Collections.singleton(
+                new SimpleGrantedAuthority("CLIENT")),
+                memberAttribute,
+                "email"
+        );
     }
-
-
 }
