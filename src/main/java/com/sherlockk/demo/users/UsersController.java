@@ -70,7 +70,10 @@ public class UsersController {
      */
     @Operation(summary="회원가입 Api", description="회원가입시 DB트랜잭션을 수행합니다")
     @PostMapping("/signUp.do")
-    public CustomResponseData doSignUp(HttpServletRequest req, Users param) {
+    public CustomResponseData doSignUp(
+        HttpServletRequest req, 
+        Users param
+    ) {
         String requester = req.getLocalAddr();
         log.info("{} has \"/signUp.do\" Request", requester);
         CustomResponseData result = new CustomResponseData();

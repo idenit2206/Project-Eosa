@@ -11,8 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.sherlockk.demo.security.jwt.JwtAuthFilter;
@@ -25,9 +23,7 @@ import com.sherlockk.demo.security.oauth2.service.OAuth2SuccessHandler;
 public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired private CustomOAuth2UserService customOAuth2UserService;
-
     @Autowired private OAuth2SuccessHandler oAuth2SuccessHandler;
-
     @Autowired private TokenService tokenService;
  
     @Bean

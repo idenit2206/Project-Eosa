@@ -66,6 +66,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         else {
             /**
              * SNS로그인을 시도했지만 회원정보가 존재하지 않는경우(신규 회원)
+             * sendRedirect(요청, 응답, 리다이렉트할 페이지 경로)
              */
             getRedirectStrategy().sendRedirect(req, res, "http://localhost:3000/");
         }

@@ -19,11 +19,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
-public class UsersService implements UsersRepository {
-
-    private Logger logger = LoggerFactory.getLogger(UsersService.class);
+public class UsersService implements UsersRepository {    
 
     @Autowired
     private UsersRepository usersRepository;
@@ -60,7 +60,7 @@ public class UsersService implements UsersRepository {
         }
         catch(Exception e) {
             result = 0;
-            logger.error("[ERROR] {}\n[ERROR TIME] {}", e, currentTime);
+            log.error("[ERROR] {}\n[ERROR TIME] {}", e, currentTime);
             // System.out.println("[Error] userSave(): " + e);
         }
                
@@ -80,7 +80,7 @@ public class UsersService implements UsersRepository {
     public findByUsersAccount selectByUsersAccount(String usersAccount) {
         findByUsersAccount result = usersRepository.selectByUsersAccount(usersAccount);
         if(result == null) {
-            logger.error("[ERROR] SQL RESULT NULL findByUsersAccount()");
+            log.error("[ERROR] SQL RESULT NULL findByUsersAccount()");
         }
         return result;
     } 
