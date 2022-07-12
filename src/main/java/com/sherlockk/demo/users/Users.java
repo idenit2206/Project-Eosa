@@ -66,12 +66,7 @@ public class Users {
     private LocalDateTime usersJoinDate;
 
     @Column(nullable=false)
-    @ColumnDefault("1") // Table을 ddl을 통해 새로 생성할때만 작동
-    private int usersEnabled;
-
-    @Column(nullable=false)
-    @ColumnDefault("0")
-    private int usersDelete;
+    private int usersNotice;
 
     // OAuth2를 이용하는 경우 활용하는 플랫폼 이름(google, kakao, naver, ...)
     @Column
@@ -84,6 +79,14 @@ public class Users {
     // OAuth2를 이용할 경우 프로필 이미지 파일 링크(사용하지 않음)
     @Column
     private String picture;
+
+    @Column(nullable=false)
+    @ColumnDefault("1") // Table을 ddl을 통해 새로 생성할때만 작동
+    private int usersEnabled;
+
+    @Column(nullable=false)
+    @ColumnDefault("0")
+    private int usersDelete;
 
     @Builder
     public Users(String usersEmail, String usersName, String picture) {

@@ -290,12 +290,12 @@ public class UsersService implements UsersRepository {
     public <S extends Users, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
         // TODO Auto-generated method stub
         return null;
-    }    
+    }
 
     @Override
-    public Optional<Users> findByUsersEmail(String usersEmail) {
+    public Users findByUsersEmail(String usersEmail) {
         // TODO Auto-generated method stub
-        return Optional.empty();
-    }   
+        return null;
+    }
     
 }

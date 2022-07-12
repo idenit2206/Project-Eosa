@@ -79,7 +79,7 @@ public class UsersController {
         CustomResponseData result = new CustomResponseData();
         LocalDateTime currentTime = LocalDateTime.now();
         
-        String[] targets = {"usersAccount", "usersPass", "usersName", "usersNick", "usersPhone", "usersEmail", "usersRole", "usersAge", "usersRegion1", "usersRegion2", "usersGender"};        
+        String[] targets = {"usersAccount", "usersPass", "usersName", "usersNick", "usersPhone", "usersEmail", "usersRole", "usersAge", "usersRegion1", "usersRegion2", "usersGender", "usersNotice"};        
         Map<String, Object> checkItem = nullCheck.ObjectNullCheck(param, targets);
         
         if(checkItem.get("result") == "SUCCESS") {
@@ -111,7 +111,11 @@ public class UsersController {
      * @param usersAccount
      * @return userInformation
      */    
-    @Operation(summary="/signIn 성공", description="signIn에 성공했을 때 작동하는 메서드 입니다.")
+    @Operation(summary="/signIn 성공", 
+    description=
+        "signIn에 성공했을 때 작동하는 메서드 입니다.\n" + 
+        "성공하면 userInfo라는 이름으로 해당 사용자의 정보를 전송합니다."
+    )
     @PostMapping(value="/signIn.success")
     public CustomResponseData signInSuccess(
         HttpServletRequest req,
@@ -122,9 +126,11 @@ public class UsersController {
         CustomResponseData result = new CustomResponseData();
         LocalDateTime currentTime = LocalDateTime.now();
         
-        Map<String, String> items = new HashMap<>();
+        Users userInfo = usersService.findByUsersAccount(usersAccount);
+
+        Map<String, Object> items = new HashMap<>();
         items.put("message", "Welcome");
-        items.put("usersName", usersAccount);
+        items.put("userInfo", userInfo);
 
         result.setStatusCode(HttpStatus.OK.value());
         result.setResultItem(items);
