@@ -1,4 +1,4 @@
-package com.sherlockk.demo;
+package com.eosa.web;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
