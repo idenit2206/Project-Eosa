@@ -7,8 +7,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
@@ -34,7 +32,6 @@ public class UsersController {
 
     @Autowired
     private UsersService usersService;
-
     /**
      * 테스트를 위한 메서드입니다.
      * @param status HttpStatusCode 관련 테스트를 위한 매개변수
@@ -122,11 +119,11 @@ public class UsersController {
         @RequestParam(value="usersAccount") String usersAccount
     ) {
         String requester = req.getLocalAddr();
-        log.info("{} has \"/signIn.success\" Request", requester);
+        log.info("[OK] {} signIn Success FROM {}",usersAccount, requester);
         CustomResponseData result = new CustomResponseData();
         LocalDateTime currentTime = LocalDateTime.now();
         
-        Users userInfo = usersService.findByUsersAccount(usersAccount);
+        FindByUsersAccount userInfo = usersService.selectByUsersAccount(usersAccount);
 
         Map<String, Object> items = new HashMap<>();
         items.put("message", "Welcome");
@@ -151,7 +148,7 @@ public class UsersController {
         @RequestParam(value="usersAccount") String usersAccount
     ) {
         String requester = req.getLocalAddr();
-        log.info("{} has \"/signIn.failure\" Request", requester);
+        log.info("[ERROR] {} signIn Failure FROM {}",usersAccount, requester);
         CustomResponseData result = new CustomResponseData();
         LocalDateTime currentTime = LocalDateTime.now();
 
@@ -166,10 +163,12 @@ public class UsersController {
         return result;
     }
 
+    @Operation(summary="회원정보 조회")
     @GetMapping(value="/getUsersInfo")
     public CustomResponseData getUsersInfoByUsersAccount(
         @RequestParam(value="usersAccount") String usersAccount
     ) {
+        log.info("## Someone request {} 's information", usersAccount);
         CustomResponseData result = new CustomResponseData();
 
         Map<String, Object> item = new HashMap<>();
@@ -178,7 +177,7 @@ public class UsersController {
         boolean nc = nullCheck.StringNullCheck(usersAccount);       
 
         if(nc == false) {
-            findByUsersAccount transaction = usersService.selectByUsersAccount(usersAccount);
+            FindByUsersAccount transaction = usersService.selectByUsersAccount(usersAccount);
             if(transaction == null) {
                 result.setStatusCode(HttpStatus.BAD_REQUEST.value());
                 item.put("item", transaction);

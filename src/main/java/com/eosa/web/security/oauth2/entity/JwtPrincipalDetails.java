@@ -1,39 +1,33 @@
-package com.eosa.web.security;
+package com.eosa.web.security.oauth2.entity;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.eosa.web.users.Users;
 
-public class CustomUserDetails implements UserDetails {
+public class JwtPrincipalDetails implements UserDetails {
 
-    private Users user;
+    private Users users;
 
-    public CustomUserDetails(Users user) {
-        this.user = user;
+    public JwtPrincipalDetails(Users users) {
+        this.users = users;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<SimpleGrantedAuthority> auth = new ArrayList<>();
-        String userRole = user.getUsersRole().toString();
-        auth.add(new SimpleGrantedAuthority(userRole));
-        return auth;
+    public Users getUsers() {
+        return users;
     }
 
     @Override
     public String getPassword() {
-       return user.getUsersPass();
+        return users.getUsersPass();
     }
 
     @Override
     public String getUsername() {
-       return user.getUsersAccount();
+        return users.getUsersAccount();
     }
 
     @Override
@@ -54,6 +48,15 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        users.getUsersRoleList().forEach(r -> {
+            authorities.add(() -> { return r; });
+        });
+        return null;
     }
     
 }

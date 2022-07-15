@@ -13,7 +13,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 @Configuration
 public class SwaggerConfig {
     
-    private final String CONTROLLERS = "com.sherlockk.demo.users";
+    private final String CONTROLLERS = "com.eosa.web";
 
     @Bean
     public Docket api() {
@@ -21,7 +21,7 @@ public class SwaggerConfig {
             .useDefaultResponseMessages(false)
             .select()
             // swagger를 적용할 클래스 패키지 지정
-            .apis(RequestHandlerSelectors.basePackage("com.sherlockk.demo"))
+            .apis(RequestHandlerSelectors.basePackage(CONTROLLERS))
             // 해당 package 하위에 있는 모든 url을 지정
             .paths(PathSelectors.any())
             .build()

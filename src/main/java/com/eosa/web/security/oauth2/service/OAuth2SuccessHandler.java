@@ -14,8 +14,6 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.eosa.web.security.jwt.Token;
-import com.eosa.web.security.jwt.TokenService;
 import com.eosa.web.users.Users;
 import com.eosa.web.users.UsersRepository;
 import com.eosa.web.users.UsersService;
@@ -29,8 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     
-    @Autowired
-    private TokenService tokenSerivce;
+    // @Autowired private TokenService tokenSerivce;
 
     @Autowired
     private UsersRepository usersRepository;
@@ -58,8 +55,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             req.setAttribute("usersInfo", users);
             
             log.info("## Token issue {}, {}", usersEmail, usersRole);
-            Token token = tokenSerivce.generateToken(usersEmail, usersRole);            
-            log.info("## Token: {}", token);
+            // Token token = tokenSerivce.generateToken(usersEmail, usersRole);            
+            // log.info("## Token: {}", token);
 
             targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/")
                 // .queryParam("token", token)

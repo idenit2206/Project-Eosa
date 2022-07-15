@@ -1,6 +1,6 @@
 package com.eosa.web.users;
 
-public interface findByUsersAccount {
+public interface FindByUsersAccount {
     Long getUsersIdx();
     String getUsersAccount();
     String getUsersPass();

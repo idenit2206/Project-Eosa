@@ -77,8 +77,8 @@ public class UsersService implements UsersRepository {
     /**
      * 사용자 계정을 기반으로 해당 사용자의 정보 조회 (사용자 정보 조회시 사용)
     */
-    public findByUsersAccount selectByUsersAccount(String usersAccount) {
-        findByUsersAccount result = usersRepository.selectByUsersAccount(usersAccount);
+    public FindByUsersAccount selectByUsersAccount(String usersAccount) {
+        FindByUsersAccount result = usersRepository.selectByUsersAccount(usersAccount);
         if(result == null) {
             log.error("[ERROR] SQL RESULT NULL findByUsersAccount()");
         }

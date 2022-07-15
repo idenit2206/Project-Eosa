@@ -1,6 +1,9 @@
 package com.eosa.web.users;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.security.core.GrantedAuthority;
 
 import lombok.Builder;
 import lombok.Data;
@@ -46,9 +50,11 @@ public class Users {
     @Column(nullable=false, length=30)
     private String usersEmail;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable=false)
-    private UsersRole usersRole;
+    // @Enumerated(EnumType.STRING)
+    // @Column(nullable=false)
+    // private UsersRole usersRole;
+    @Column
+    private String usersRole;
 
     @Column(nullable=false)
     private int usersAge;
@@ -95,8 +101,11 @@ public class Users {
         this.picture = picture;
     }
 
-    public String getUsersRole() {
-        return this.usersRole.getKey();
+    public List<String> getUsersRoleList() {
+        if(this.usersRole.length() > 0) {
+            return Arrays.asList(this.usersRole.split(","));
+        }
+        return new ArrayList<>();
     }
 
     @Override

@@ -39,7 +39,7 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
         "FROM Users WHERE usersAccount = ?1",
         nativeQuery=true
     )
-    findByUsersAccount selectByUsersAccount(String usersAccount);
+    FindByUsersAccount selectByUsersAccount(String usersAccount);
 
     /**
      * 로그인을 할때 활용하는 회원정보 조회 메서드
