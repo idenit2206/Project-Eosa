@@ -36,6 +36,7 @@ public class CustomJwtAuthenticationFilter extends UsernamePasswordAuthenticatio
         Users users = null;
 
         try {
+			log.info("## [INFO] Recive Request {}");
             users = om.readValue(request.getInputStream(), Users.class);
         }
         catch(Exception e) {

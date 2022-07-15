@@ -1,9 +1,11 @@
 package com.eosa.web.users;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -107,6 +109,8 @@ public class UsersController {
      * 로그인에 성공했을 때 작동하는 메서드입니다.
      * @param usersAccount
      * @return userInformation
+     * @throws IOException
+     * @throws ServletException
      */    
     @Operation(summary="/signIn 성공", 
     description=
@@ -116,14 +120,18 @@ public class UsersController {
     @PostMapping(value="/signIn.success")
     public CustomResponseData signInSuccess(
         HttpServletRequest req,
+        HttpServletResponse res,
         @RequestParam(value="usersAccount") String usersAccount
-    ) {
+    ) throws IOException, ServletException {
         String requester = req.getLocalAddr();
         log.info("[OK] {} signIn Success FROM {}",usersAccount, requester);
         CustomResponseData result = new CustomResponseData();
         LocalDateTime currentTime = LocalDateTime.now();
         
         FindByUsersAccount userInfo = usersService.selectByUsersAccount(usersAccount);
+
+        log.info("## [REQUEST] {}", req.toString());
+        log.info("## [RESPONSE] {}", res.getOutputStream());
 
         Map<String, Object> items = new HashMap<>();
         items.put("message", "Welcome");
