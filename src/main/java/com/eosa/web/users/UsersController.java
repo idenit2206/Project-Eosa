@@ -11,7 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -19,6 +24,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.eosa.web.security.jwt.JwtFilter;
+import com.eosa.web.security.jwt.TokenProvider;
+import com.eosa.web.userstoken.UsersToken;
+import com.eosa.web.userstoken.UsersTokenService;
 import com.eosa.web.util.CustomResponseData;
 import com.eosa.web.util.NullCheck;
 
@@ -29,11 +38,20 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping(value="/api/user")
 public class UsersController {
+
+    private final TokenProvider tokenProvider;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+
+    public UsersController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder) {
+        this.tokenProvider = tokenProvider;
+        this.authenticationManagerBuilder = authenticationManagerBuilder;
+    }
    
     private NullCheck nullCheck = new NullCheck();
 
-    @Autowired
-    private UsersService usersService;
+    @Autowired private UsersService usersService;
+    @Autowired private UsersTokenService usersTokenService;
+
     /**
      * 테스트를 위한 메서드입니다.
      * @param status HttpStatusCode 관련 테스트를 위한 매개변수
@@ -106,7 +124,41 @@ public class UsersController {
     }
 
     /**
-     * 로그인에 성공했을 때 작동하는 메서드입니다.
+     * Token기반의 로그인을 수행하는 메서드입니다.
+     * @param usersAccount
+     * @param usersPass
+     * @return Token
+     */
+    @PostMapping("/signIn.do")
+    public CustomResponseData requestSignIn(
+        @RequestParam("usersAccount") String usersAccount,
+        @RequestParam("usersPass") String usersPass
+    ) {
+        CustomResponseData result = new CustomResponseData();
+        
+        UsernamePasswordAuthenticationToken authenticationToken =
+            new UsernamePasswordAuthenticationToken(usersAccount, usersPass);
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String jwt = tokenProvider.createToken(authentication);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+        log.debug(httpHeaders.toString());
+                
+        Long tokenUsersIdx = usersService.findUsersIdxByUsersAccount(usersAccount);
+        LocalDateTime tokenCreateDate = LocalDateTime.now();
+
+        int saveToken = usersTokenService.saveAccessToken(tokenUsersIdx, jwt, tokenCreateDate);
+
+        result.setResultItem(new UsersToken(tokenUsersIdx, jwt, tokenCreateDate));
+        
+        return result;
+    }
+
+    /**
+     * 로그인에 성공했을 때 작동하는 메서드입니다. (Spring Security formLogin()을 통해 로그인을 할때 사용하는 메서드)
      * @param usersAccount
      * @return userInformation
      * @throws IOException
@@ -145,7 +197,7 @@ public class UsersController {
     }
 
     /**
-     * 로그인에 실패했을 때 작동하는 메서드입니다.
+     * 로그인에 실패했을 때 작동하는 메서드입니다. (Spring Security formLogin()을 통해 로그인을 할때 사용하는 메서드)
      * @param usersAccount
      * @return userInformation
      */    

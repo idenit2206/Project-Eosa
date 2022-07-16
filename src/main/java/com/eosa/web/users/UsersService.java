@@ -65,7 +65,9 @@ public class UsersService implements UsersRepository {
     }    
 
     /**
-     * 로그인 할 때 활용
+     * 로그인 할 때 활용하는 메서드(Spring Security formLogin()을 통해 로그인을 할때 사용하는 메서드)
+     * @param usersAccount
+     * @return Users
      */
     public Users findByUsersAccount(String usersAccount) {
         return usersRepository.findByUsersAccount(usersAccount);
@@ -80,7 +82,16 @@ public class UsersService implements UsersRepository {
             log.error("[ERROR] SQL RESULT NULL findByUsersAccount()");
         }
         return result;
-    } 
+    }
+    
+    /**
+     * Token 기반의 로그인을 수행할 때 활용
+     * @param usersAccount
+     * @return
+     */
+    public Long findUsersIdxByUsersAccount(String usersAccount) {
+        return usersRepository.findUsersIdxByUsersAccount(usersAccount);
+    }
 
     /**
      * 사용자 색인번호 기반 사용자(DETECTIVE) 존재 여부 조회
@@ -294,5 +305,7 @@ public class UsersService implements UsersRepository {
         // TODO Auto-generated method stub
         return null;
     }
+
+    
     
 }

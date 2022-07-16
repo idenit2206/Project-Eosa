@@ -42,15 +42,26 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     FindByUsersAccount selectByUsersAccount(String usersAccount);
 
     /**
-     * 로그인을 할때 활용하는 회원정보 조회 메서드
+     * 로그인 할 때 활용하는 메서드(Spring Security formLogin()을 통해 로그인을 할때 사용하는 메서드)
      * @param usersAccount
-     * @return
+     * @return Users
      */
     @Query(
         value="SELECT * FROM Users WHERE usersAccount = ?1 AND usersEnabled = 1"
         ,nativeQuery=true
     )
     Users findByUsersAccount(String usersAccount);
+
+    /**
+     * Token 기반의 로그인을 수행할 때 활용
+     * @param usersAccount
+     * @return usersIdx
+     */
+    @Query(
+        value="SELECT usersIdx FROM Users WHERE usersAccount = ?1",
+        nativeQuery=true
+    )
+    Long findUsersIdxByUsersAccount(String usersAccount);
 
     @Query(
         value="SELECT 1 FROM Users WHERE usersIdx = ?1 AND usersRole = 'DETECTIVE' ",
