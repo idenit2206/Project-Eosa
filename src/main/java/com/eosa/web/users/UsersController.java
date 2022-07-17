@@ -150,7 +150,7 @@ public class UsersController {
         Long tokenUsersIdx = usersService.findUsersIdxByUsersAccount(usersAccount);
         LocalDateTime tokenCreateDate = LocalDateTime.now();
 
-        int saveToken = usersTokenService.saveAccessToken(tokenUsersIdx, jwt, tokenCreateDate);
+        // int saveToken = usersTokenService.saveAccessToken(tokenUsersIdx, jwt, tokenCreateDate);
 
         result.setResultItem(new UsersToken(tokenUsersIdx, jwt, tokenCreateDate));
         

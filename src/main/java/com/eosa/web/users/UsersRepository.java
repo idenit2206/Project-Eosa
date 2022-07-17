@@ -1,7 +1,10 @@
 package com.eosa.web.users;
 
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -53,7 +56,7 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     Users findByUsersAccount(String usersAccount);
 
     /**
-     * Token 기반의 로그인을 수행할 때 활용
+     * Token 기반의 로그인을 수행할 때 활용 usersIdx를 반환
      * @param usersAccount
      * @return usersIdx
      */
@@ -63,6 +66,19 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     )
     Long findUsersIdxByUsersAccount(String usersAccount);
 
+    /**
+     * usersAccount를 기준으로 Users정보를 가져올때 권한 정보도 같이 가져온다.
+     * @param usersAccount
+     * @return
+     */
+    @EntityGraph(attributePaths = "authorities")
+    Optional<Users> findOneWithAuthoritiesByUsersAccount(String usersAccount);
+
+    /**
+     * usersIdx가 일치하면서 usersRole이 DETECTIVE 라면 1을 반환
+     * @param usersIdx
+     * @return 1
+     */
     @Query(
         value="SELECT 1 FROM Users WHERE usersIdx = ?1 AND usersRole = 'DETECTIVE' ",
         nativeQuery=true
