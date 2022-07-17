@@ -26,9 +26,11 @@ import com.eosa.web.users.UsersRepository;
 public class CustomSecurityConfig {
 
     private UsersRepository usersRepository;
+
     private final TokenProvider tokenProvider;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;    
+    private final CorsFilter corsFilter;
     // private final CorsFilter corsFilter;
 
     // OAuth2를 통한 SNS로그인에서 활용
@@ -53,11 +55,13 @@ public class CustomSecurityConfig {
     public CustomSecurityConfig(       
         TokenProvider tokenProvider,
         JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
-        JwtAccessDeniedHandler jwtAccessDeniedHandler
+        JwtAccessDeniedHandler jwtAccessDeniedHandler,
+        CorsFilter corsFilter
     ) {       
         this.tokenProvider = tokenProvider;
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
+        this.corsFilter = corsFilter;
     }
 
     @Bean
@@ -65,35 +69,36 @@ public class CustomSecurityConfig {
         return new BCryptPasswordEncoder();
     }   
 
-    private static final String[] PERMIT_ADMIN_URL = {
+    private final String[] PERMIT_ADMIN_URL = {
         "/swagger-ui/index.html"
+    };
+
+    private final String[] NO_AUTHENTICATION_URL = {
+        "/", "/api/user/signIn.do"
     };
 
     // After WebSecurityConfigureAdapter Depreacted
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            // Http Basic Auth 기반의 로그인 화면을 출력하지 않는다.
-            // .httpBasic().disable()
+        http            
             .csrf().disable()
-            // .apply(MyCustomDsl.customDsl()); 
+            .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
             .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .accessDeniedHandler(jwtAccessDeniedHandler)
-            .and()
-            // JWT Token인증을 활용하기 때문에 세션을 stateless 하도록 설정
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+             // JWT Token인증을 활용하기 때문에 세션을 stateless 하도록 설정
+             .sessionManagement()
+             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            // .apply(MyCustomDsl.customDsl());
+        .and()
+            .authorizeRequests()
+                .antMatchers(NO_AUTHENTICATION_URL).permitAll()
             .and()
             .authorizeRequests()
-                .antMatchers("/api/user/signIn.do").permitAll()
+                .antMatchers("/api/user/test01").authenticated()
             //     .antMatchers("/swagger-ui/**")
-            //     .permitAll()
-            // 모든 접속을 아무나 허용
-            // .authorizeRequests().anyRequest().permitAll();
-            // .authorizeRequests().antMatchers("/token/**").permitAll()
-            // .formLogin().disable()
-            // .httpBasic().disable()               
+            //     .permitAll()                             
             // .authorizeRequests()
             //     .antMatchers("/api/**")
             //     // .access("hasRole('CLIENT') or hasRole('DETECTIVE')")
