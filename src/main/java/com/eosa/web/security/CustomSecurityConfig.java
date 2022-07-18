@@ -1,13 +1,8 @@
 package com.eosa.web.security;
 
-import javax.servlet.Filter;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -20,19 +15,16 @@ import com.eosa.web.security.jwt.JwtAccessDeniedHandler;
 import com.eosa.web.security.jwt.JwtAuthenticationEntryPoint;
 import com.eosa.web.security.jwt.JwtSecurityConfig;
 import com.eosa.web.security.jwt.TokenProvider;
-import com.eosa.web.users.UsersRepository;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled=true)
 public class CustomSecurityConfig {
 
-    @Autowired private UsersRepository usersRepository;
-
-    @Autowired private TokenProvider tokenProvider;
-    @Autowired private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    @Autowired private JwtAccessDeniedHandler jwtAccessDeniedHandler;    
-    @Autowired private CorsFilter corsFilter;
-    // private final CorsFilter corsFilter;
+    private final TokenProvider tokenProvider;
+    private final CorsFilter corsFilter;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+   
 
     // OAuth2를 통한 SNS로그인에서 활용
     // @Autowired private CustomOAuth2UserService customOAuth2UserService;
@@ -53,57 +45,51 @@ public class CustomSecurityConfig {
     //     return authProvider;
     // }
 
-    // public CustomSecurityConfig(       
-    //     TokenProvider tokenProvider,
-    //     JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
-    //     JwtAccessDeniedHandler jwtAccessDeniedHandler,
-    //     CorsFilter corsFilter
-    // ) {       
-    //     this.tokenProvider = tokenProvider;
-    //     this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
-    //     this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
-    //     this.corsFilter = corsFilter;
-    // }
+    public CustomSecurityConfig(       
+        TokenProvider tokenProvider,
+        CorsFilter corsFilter,
+        JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
+        JwtAccessDeniedHandler jwtAccessDeniedHandler       
+    ) {       
+        this.tokenProvider = tokenProvider;
+        this.corsFilter = corsFilter;
+        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+        this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
+        
+    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }   
 
-    private final String[] PERMIT_ADMIN_URL = {
+    private static final String[] PERMIT_ADMIN_URL = {
         "/swagger-ui/index.html"
     };
-
-    private final String[] NO_AUTHENTICATION_URL = {
-        "/", "/api/user/signIn.do", "/login/oauth2/code/kakao"
-    };
-   
-    public void configure(WebSecurity web) {
-        web.ignoring()
-            .antMatchers(
-                "/error"
-            );
-    }
 
     // After WebSecurityConfigureAdapter Depreacted
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http            
+        http          
             .csrf().disable()
             .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
             .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .accessDeniedHandler(jwtAccessDeniedHandler)
-        .and()
-             // JWT Token인증을 활용하기 때문에 세션을 stateless 하도록 설정
-             .sessionManagement()
-             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
+            .and()
+            // JWT Token인증을 활용하기 때문에 세션을 stateless 하도록 설정
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
             .authorizeRequests()
-                .antMatchers(NO_AUTHENTICATION_URL).permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/api/user/signIn.do").permitAll()
             //     .antMatchers("/swagger-ui/**")
-            //     .permitAll()                             
+            //     .permitAll()
+            // 모든 접속을 아무나 허용
+            // .authorizeRequests().anyRequest().permitAll();
+            // .authorizeRequests().antMatchers("/token/**").permitAll()
+            // .formLogin().disable()
+            // .httpBasic().disable()               
             // .authorizeRequests()
             //     .antMatchers("/api/**")
             //     // .access("hasRole('CLIENT') or hasRole('DETECTIVE')")
