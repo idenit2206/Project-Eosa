@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,22 +17,28 @@ import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuer
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.eosa.web.security.CustomDuplicateException;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
 public class UsersService implements UsersRepository {    
 
-    @Autowired
-    private UsersRepository usersRepository;
+    @Autowired private UsersRepository usersRepository;
+    
+    @Autowired private BCryptPasswordEncoder passwordEncoder;
 
     /**
      * 사용자 정보 DB저장 (회원가입) - JPA Repository 기본형
      * @param <Users>entity Users 형태의 데이터를 매개변수로 받는다.
-     */
+    */
     @Override
     public <S extends Users> S save(S entity) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        if(usersRepository.findOneWithAuthoritiesByUsersAccount(entity.getUsersAccount()).orElse(null) != null) {
+            throw new CustomDuplicateException("이미 존재하는 회원입니다.");
+        }
+
         LocalDateTime currentTime = LocalDateTime.now();
         entity.setUsersPass(passwordEncoder.encode(entity.getUsersPass()));
         entity.setUsersEnabled(1);
@@ -40,29 +47,29 @@ public class UsersService implements UsersRepository {
         return usersRepository.save(entity);
     }
 
-     /**
+    /**
      * 사용자 정보 DB저장 (회원가입) - JPA INSERT test용
-     * @param <Users>entity Users 형태의 데이터를 매개변수로 받는다.
-     */
-    public int userSave(Users param) {
-        int result = 0;
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        LocalDateTime currentTime = LocalDateTime.now();
-        param.setUsersPass(passwordEncoder.encode(param.getUsersPass()));
-        param.setUsersEnabled(1);
-        param.setUsersJoinDate(currentTime);
+     * @param <Users>entity
+     * @return 1 | 0
+    */
+    // public int userSave(Users param) {
+    //     int result = 0;
+    //     LocalDateTime currentTime = LocalDateTime.now();
+    //     param.setUsersPass(passwordEncoder.encode(param.getUsersPass()));
+    //     param.setUsersEnabled(1);
+    //     param.setUsersJoinDate(currentTime);
 
-        try {
-            result = usersRepository.userSave(param);
-        }
-        catch(Exception e) {
-            result = 0;
-            log.error("[ERROR] {}\n[ERROR TIME] {}", e, currentTime);
-            // System.out.println("[Error] userSave(): " + e);
-        }
+    //     try {
+    //         result = usersRepository.userSave(param);
+    //     }
+    //     catch(Exception e) {
+    //         result = 0;
+    //         log.error("[ERROR] {}\n[ERROR TIME] {}", e, currentTime);
+    //         // System.out.println("[Error] userSave(): " + e);
+    //     }
                
-        return result;
-    }    
+    //     return result;
+    // }    
 
     /**
      * 로그인 할 때 활용하는 메서드(Spring Security formLogin()을 통해 로그인을 할때 사용하는 메서드)
@@ -123,8 +130,7 @@ public class UsersService implements UsersRepository {
      * @param Users param
      * @return int
     */
-    public int updateUserInfo(Users param) {       
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    public int updateUserInfo(Users param) {
         String newPass = passwordEncoder.encode(param.getUsersPass());
         param.setUsersPass(newPass);
         int tran = usersRepository.updateUserInfo(param);

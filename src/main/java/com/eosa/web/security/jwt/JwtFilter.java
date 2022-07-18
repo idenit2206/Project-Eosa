@@ -37,10 +37,10 @@ public class JwtFilter extends GenericFilterBean {
         if(StringUtils.hasText(jwt) && tokenProvider.valdiateToken(jwt)) {
             Authentication authentication = tokenProvider.getAuthentication(jwt);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            log.debug("## Security Context에 {} 인증 정보를 저장합니다.\n## uri: {}",  authentication.getName(), requestURI);
+            log.debug("## Security Context에 {} 인증 정보를 저장합니다. 요청받은 uri: {}",  authentication.getName(), requestURI);
         }
         else {
-            log.debug("## 유효한 Token이 존재하지 않습니다.\n## uri: {}", requestURI);
+            log.debug("## 유효한 Token이 존재하지 않습니다. 요청받은 uri: {}", requestURI);
         }        
         chain.doFilter(request, response);
     }

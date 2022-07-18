@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -25,12 +26,12 @@ import com.eosa.web.users.UsersRepository;
 @EnableGlobalMethodSecurity(prePostEnabled=true)
 public class CustomSecurityConfig {
 
-    private UsersRepository usersRepository;
+    @Autowired private UsersRepository usersRepository;
 
-    private final TokenProvider tokenProvider;
-    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;    
-    private final CorsFilter corsFilter;
+    @Autowired private TokenProvider tokenProvider;
+    @Autowired private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    @Autowired private JwtAccessDeniedHandler jwtAccessDeniedHandler;    
+    @Autowired private CorsFilter corsFilter;
     // private final CorsFilter corsFilter;
 
     // OAuth2를 통한 SNS로그인에서 활용
@@ -52,17 +53,17 @@ public class CustomSecurityConfig {
     //     return authProvider;
     // }
 
-    public CustomSecurityConfig(       
-        TokenProvider tokenProvider,
-        JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
-        JwtAccessDeniedHandler jwtAccessDeniedHandler,
-        CorsFilter corsFilter
-    ) {       
-        this.tokenProvider = tokenProvider;
-        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
-        this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
-        this.corsFilter = corsFilter;
-    }
+    // public CustomSecurityConfig(       
+    //     TokenProvider tokenProvider,
+    //     JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
+    //     JwtAccessDeniedHandler jwtAccessDeniedHandler,
+    //     CorsFilter corsFilter
+    // ) {       
+    //     this.tokenProvider = tokenProvider;
+    //     this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+    //     this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
+    //     this.corsFilter = corsFilter;
+    // }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -74,8 +75,15 @@ public class CustomSecurityConfig {
     };
 
     private final String[] NO_AUTHENTICATION_URL = {
-        "/", "/api/user/signIn.do"
+        "/", "/api/user/signIn.do", "/login/oauth2/code/kakao"
     };
+   
+    public void configure(WebSecurity web) {
+        web.ignoring()
+            .antMatchers(
+                "/error"
+            );
+    }
 
     // After WebSecurityConfigureAdapter Depreacted
     @Bean
@@ -90,13 +98,10 @@ public class CustomSecurityConfig {
              // JWT Token인증을 활용하기 때문에 세션을 stateless 하도록 설정
              .sessionManagement()
              .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            // .apply(MyCustomDsl.customDsl());
         .and()
             .authorizeRequests()
                 .antMatchers(NO_AUTHENTICATION_URL).permitAll()
-            .and()
-            .authorizeRequests()
-                .antMatchers("/api/user/test01").authenticated()
+                .anyRequest().authenticated()
             //     .antMatchers("/swagger-ui/**")
             //     .permitAll()                             
             // .authorizeRequests()
@@ -117,7 +122,7 @@ public class CustomSecurityConfig {
             //     .logout()
             //         .logoutUrl("/api/user/signOut.do")
             //         .permitAll();
-            .and()
+        .and()
             .apply(new JwtSecurityConfig(tokenProvider));
         return http.build();
     }

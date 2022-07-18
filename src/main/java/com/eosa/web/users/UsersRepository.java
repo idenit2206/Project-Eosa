@@ -11,6 +11,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.eosa.web.security.CustomUserDetails;
+
 @Repository
 public interface UsersRepository extends JpaRepository<Users, Long> {
    
@@ -72,7 +74,7 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
      * @return
      */
     @EntityGraph(attributePaths = "authorities")
-    Optional<Users> findOneWithAuthoritiesByUsersAccount(String usersAccount);
+    Optional<CustomUserDetails> findOneWithAuthoritiesByUsersAccount(String usersAccount);
 
     /**
      * usersIdx가 일치하면서 usersRole이 DETECTIVE 라면 1을 반환

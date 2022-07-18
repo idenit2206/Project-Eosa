@@ -18,6 +18,9 @@ public class CustomUserDetails implements UserDetails {
         this.user = user;
     }
 
+    public CustomUserDetails(String username, String password, List<GrantedAuthority> grantedAuthorities) {
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> auth = new ArrayList<>();

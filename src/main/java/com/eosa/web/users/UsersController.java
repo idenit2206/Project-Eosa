@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -30,6 +31,7 @@ import com.eosa.web.userstoken.UsersToken;
 import com.eosa.web.userstoken.UsersTokenService;
 import com.eosa.web.util.CustomResponseData;
 import com.eosa.web.util.NullCheck;
+import com.mysql.cj.x.protobuf.MysqlxCrud.Find;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
@@ -39,13 +41,15 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(value="/api/user")
 public class UsersController {
 
-    private final TokenProvider tokenProvider;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    // private final TokenProvider tokenProvider;
+    // private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    public UsersController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder) {
-        this.tokenProvider = tokenProvider;
-        this.authenticationManagerBuilder = authenticationManagerBuilder;
-    }
+    // public UsersController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder) {
+    //     this.tokenProvider = tokenProvider;
+    //     this.authenticationManagerBuilder = authenticationManagerBuilder;
+    // }
+    @Autowired private TokenProvider tokenProvider;
+    @Autowired private AuthenticationManagerBuilder authenticationManagerBuilder;
    
     private NullCheck nullCheck = new NullCheck();
 
@@ -145,15 +149,21 @@ public class UsersController {
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
-        log.debug(httpHeaders.toString());
+
+        // log.debug(httpHeaders.toString());
                 
         Long tokenUsersIdx = usersService.findUsersIdxByUsersAccount(usersAccount);
         LocalDateTime tokenCreateDate = LocalDateTime.now();
 
+        FindByUsersAccount transaction = usersService.selectByUsersAccount(usersAccount);
+
         // int saveToken = usersTokenService.saveAccessToken(tokenUsersIdx, jwt, tokenCreateDate);
 
-        result.setResultItem(new UsersToken(tokenUsersIdx, jwt, tokenCreateDate));
-        
+        // result.setResultItem(new UsersToken(tokenUsersIdx, jwt, tokenCreateDate));
+        result.setResultItem(transaction);
+
+        // log.debug("## {} {}", transaction.getUsersEmail(), transaction.getUsersNick());
+                
         return result;
     }
 

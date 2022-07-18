@@ -42,11 +42,11 @@ public class TokenProvider implements InitializingBean {
         @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds
     ) {
         this.secret = secret;
-        this.tokenValidityInSeconds = tokenValidityInSeconds;
+        this.tokenValidityInSeconds = tokenValidityInSeconds * 1000;
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         byte[] keyBytes = Decoders.BASE64.decode(secret);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
