@@ -1,17 +1,12 @@
 package com.eosa.web.users;
 
-import java.util.Optional;
-
 import javax.transaction.Transactional;
 
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import com.eosa.web.security.CustomUserDetails;
 
 @Repository
 public interface UsersRepository extends JpaRepository<Users, Long> {
@@ -47,6 +42,19 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     FindByUsersAccount selectByUsersAccount(String usersAccount);
 
     /**
+     * OAuth2Login() 작동시  SNS계정으로 로그인을 시도한 유저가 기존에 존재하던 사용자인지를
+     * 검사하기 위해 이메일 기반으로 사용자 검색을 수행하는 메서드
+     * @param usersEmail
+     * @return
+     */
+    @Query(
+        value= "SELECT * " +
+        "FROM Users WHERE usersEmail = ?1",
+        nativeQuery=true
+    )
+    Users selectByUsersEmail(String usersEmail);
+
+    /**
      * 로그인 할 때 활용하는 메서드
      * (Spring Security에서 JWT를 발급하는 로그인을 할때 사용하는 메서드)
      * @param usersAccount
@@ -68,15 +76,7 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
         nativeQuery=true
     )
     Long findUsersIdxByUsersAccount(String usersAccount);
-
-    /**
-     * usersAccount를 기준으로 Users정보를 가져올때 권한 정보도 같이 가져온다.
-     * @param usersAccount
-     * @return
-     */
-    @EntityGraph(attributePaths = "authorities")
-    Optional<CustomUserDetails> findOneWithAuthoritiesByUsersAccount(String usersAccount);
-
+   
     /**
      * usersIdx가 일치하면서 usersRole이 DETECTIVE 라면 1을 반환
      * @param usersIdx

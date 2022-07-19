@@ -17,37 +17,15 @@ import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuer
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.eosa.web.security.CustomDuplicateException;
-import com.eosa.web.security.CustomUserDetails;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
 public class UsersService implements UsersRepository {    
 
-    @Autowired private UsersRepository usersRepository;
-    
+    @Autowired private UsersRepository usersRepository;    
     @Autowired private BCryptPasswordEncoder passwordEncoder;
-
-    /**
-     * 사용자 정보 DB저장 (회원가입) - JPA Repository 기본형
-     * @param <Users>entity Users 형태의 데이터를 매개변수로 받는다.
-    */
-    @Override
-    public <S extends Users> S save(S entity) {
-        if(usersRepository.findOneWithAuthoritiesByUsersAccount(entity.getUsersAccount()).orElse(null) != null) {
-            throw new CustomDuplicateException("이미 존재하는 회원입니다.");
-        }
-
-        LocalDateTime currentTime = LocalDateTime.now();
-        entity.setUsersPass(passwordEncoder.encode(entity.getUsersPass()));
-        entity.setUsersEnabled(1);
-        entity.setUsersJoinDate(currentTime);
-        
-        return usersRepository.save(entity);
-    }
-
+    
     /**
      * 사용자 정보 DB저장 (회원가입) - JPA INSERT test용
      * @param <Users>entity
@@ -65,7 +43,7 @@ public class UsersService implements UsersRepository {
         }
         catch(Exception e) {
             result = 0;
-            log.error("[ERROR] {}\n[ERROR TIME] {}", e, currentTime);
+            log.error("[UsersService] {}\n[ERROR] {}", e, currentTime);
             // System.out.println("[Error] userSave(): " + e);
         }
                
@@ -115,16 +93,7 @@ public class UsersService implements UsersRepository {
     @Override
     public List<Users> findAll() {
         return usersRepository.findAll();
-    }
-
-    /**
-     * 모든 사용자 계정정보 조회 정렬하여 출력(개발 테스트용)
-     */
-    @Override
-    public List<Users> findAll(Sort sort) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    }   
 
     /**
      * 사용자의 정보를 수정하는 메서드

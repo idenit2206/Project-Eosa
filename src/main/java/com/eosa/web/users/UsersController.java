@@ -11,12 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -24,9 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.eosa.web.security.jwt.JwtFilter;
-import com.eosa.web.security.jwt.TokenProvider;
-import com.eosa.web.userstoken.UsersToken;
 import com.eosa.web.userstoken.UsersTokenService;
 import com.eosa.web.util.CustomResponseData;
 import com.eosa.web.util.NullCheck;
@@ -39,20 +31,9 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(value="/api/user")
 public class UsersController {
 
-    // private final TokenProvider tokenProvider;
-    // private final AuthenticationManagerBuilder authenticationManagerBuilder;
-
-    // public UsersController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder) {
-    //     this.tokenProvider = tokenProvider;
-    //     this.authenticationManagerBuilder = authenticationManagerBuilder;
-    // }
-    @Autowired private TokenProvider tokenProvider;
-    @Autowired private AuthenticationManagerBuilder authenticationManagerBuilder;
-   
     private NullCheck nullCheck = new NullCheck();
 
     @Autowired private UsersService usersService;
-    @Autowired private UsersTokenService usersTokenService;
 
     /**
      * 테스트를 위한 메서드입니다.
@@ -122,57 +103,6 @@ public class UsersController {
             result.setResponseDateTime(currentTime);
         }
 
-        return result;
-    }
-
-    /**
-     * Token기반의 로그인을 수행하는 메서드입니다.
-     * @param usersAccount
-     * @param usersPass
-     * @return Token
-     */
-    @PostMapping("/signIn.do")
-    public CustomResponseData requestSignIn(
-        @RequestParam("usersAccount") String usersAccount,
-        @RequestParam("usersPass") String usersPass
-    ) {
-        CustomResponseData result = new CustomResponseData();
-        Map<String, Object> items = new HashMap<>();
-        
-        UsernamePasswordAuthenticationToken authenticationToken =
-            new UsernamePasswordAuthenticationToken(usersAccount, usersPass);
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        String jwt = tokenProvider.createToken(authentication);
-
-        if(!jwt.isEmpty()) {
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
-
-            Long tokenUsersIdx = usersService.findUsersIdxByUsersAccount(usersAccount);
-            LocalDateTime tokenCreateDate = LocalDateTime.now();
-            // int saveToken = usersTokenService.saveAccessToken(tokenUsersIdx, jwt, tokenCreateDate);
-
-            FindByUsersAccount transaction = usersService.selectByUsersAccount(usersAccount);
-
-            items.put("usersAccount", transaction.getUsersAccount());
-            items.put("usersNick", transaction.getUsersNick());
-            items.put("usersRole", transaction.getUsersRole());
-            items.put("accessToken", jwt);
-
-            log.debug("## Current Token {}", jwt);
-
-            result.setStatusCode(HttpStatus.OK.value());
-            result.setResultItem(items);
-            result.setResponseDateTime(LocalDateTime.now());
-        }
-        else {
-            items.put("message", "계정 또는 비밀번호가 틀렸습니다.");
-            result.setStatusCode(HttpStatus.UNAUTHORIZED.value());
-            result.setResultItem(items);
-            result.setResponseDateTime(LocalDateTime.now());
-        } 
         return result;
     }
 
@@ -348,5 +278,4 @@ public class UsersController {
         }
         return result;
     }
-
 }

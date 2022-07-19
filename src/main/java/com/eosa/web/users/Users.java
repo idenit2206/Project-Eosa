@@ -94,18 +94,18 @@ public class Users {
     @ColumnDefault("0")
     private int usersDelete;
 
-    @Builder
-    public Users(String usersEmail, String usersName, String picture) {
+    @Builder(builderClassName = "UserDetailRegister", buildMethodName = "userDetailRegister")
+    public Users(String usersAccount, String usersEmail) {
+        this.usersAccount = usersAccount;
         this.usersEmail = usersEmail;
-        this.usersName = usersName;
-        this.picture = picture;
     }
 
-    public List<String> getUsersRoleList() {
-        if(this.usersRole.length() > 0) {
-            return Arrays.asList(this.usersRole.split(","));
-        }
-        return new ArrayList<>();
+    @Builder(builderClassName = "OAuth2Register", buildMethodName = "oauth2Register")
+    public Users(String usersAccount, String usersEmail, String provider, String providerId) {
+        this.usersAccount = usersAccount;
+        this.usersEmail = usersEmail;
+        this.provider = provider;
+        this.providerId = providerId;
     }
 
     @Override
