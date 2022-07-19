@@ -27,10 +27,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
-    
-    private final UsersRepository usersRepository;
-    private final HttpSession session;
-
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         // DefaultOAuth를 통해 RestOperations로 Userinfo 엔드포인트에서 사용자 속성을 요청해
@@ -40,6 +36,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         // 어떤 SNS 플랫폼을 이용하는지 (Google, naver, ...) 값을 받아옵니다.
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
+        log.debug("## [CustomOAuth2UserService] registrationId: {}", registrationId);
         // OAuth2 로그인 진행시 키가 되는 필드값 프라이머리키와 같은 값 네이버와 카카오에서는 지원하지 않습니다.
         String userNameAttributeName = userRequest.getClientRegistration()
             .getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();

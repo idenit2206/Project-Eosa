@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -31,7 +30,6 @@ import com.eosa.web.userstoken.UsersToken;
 import com.eosa.web.userstoken.UsersTokenService;
 import com.eosa.web.util.CustomResponseData;
 import com.eosa.web.util.NullCheck;
-import com.mysql.cj.x.protobuf.MysqlxCrud.Find;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
@@ -139,6 +137,7 @@ public class UsersController {
         @RequestParam("usersPass") String usersPass
     ) {
         CustomResponseData result = new CustomResponseData();
+        Map<String, Object> items = new HashMap<>();
         
         UsernamePasswordAuthenticationToken authenticationToken =
             new UsernamePasswordAuthenticationToken(usersAccount, usersPass);
@@ -147,23 +146,33 @@ public class UsersController {
 
         String jwt = tokenProvider.createToken(authentication);
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+        if(!jwt.isEmpty()) {
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-        // log.debug(httpHeaders.toString());
-                
-        Long tokenUsersIdx = usersService.findUsersIdxByUsersAccount(usersAccount);
-        LocalDateTime tokenCreateDate = LocalDateTime.now();
+            Long tokenUsersIdx = usersService.findUsersIdxByUsersAccount(usersAccount);
+            LocalDateTime tokenCreateDate = LocalDateTime.now();
+            // int saveToken = usersTokenService.saveAccessToken(tokenUsersIdx, jwt, tokenCreateDate);
 
-        FindByUsersAccount transaction = usersService.selectByUsersAccount(usersAccount);
+            FindByUsersAccount transaction = usersService.selectByUsersAccount(usersAccount);
 
-        // int saveToken = usersTokenService.saveAccessToken(tokenUsersIdx, jwt, tokenCreateDate);
+            items.put("usersAccount", transaction.getUsersAccount());
+            items.put("usersNick", transaction.getUsersNick());
+            items.put("usersRole", transaction.getUsersRole());
+            items.put("accessToken", jwt);
 
-        // result.setResultItem(new UsersToken(tokenUsersIdx, jwt, tokenCreateDate));
-        result.setResultItem(transaction);
+            log.debug("## Current Token {}", jwt);
 
-        // log.debug("## {} {}", transaction.getUsersEmail(), transaction.getUsersNick());
-                
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(items);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            items.put("message", "계정 또는 비밀번호가 틀렸습니다.");
+            result.setStatusCode(HttpStatus.UNAUTHORIZED.value());
+            result.setResultItem(items);
+            result.setResponseDateTime(LocalDateTime.now());
+        } 
         return result;
     }
 

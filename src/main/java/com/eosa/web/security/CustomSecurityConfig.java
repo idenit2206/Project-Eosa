@@ -7,14 +7,19 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.CorsFilter;
 
 import com.eosa.web.security.jwt.JwtAccessDeniedHandler;
 import com.eosa.web.security.jwt.JwtAuthenticationEntryPoint;
+import com.eosa.web.security.jwt.JwtFilter;
 import com.eosa.web.security.jwt.JwtSecurityConfig;
 import com.eosa.web.security.jwt.TokenProvider;
+import com.eosa.web.security.oauth2.service.CustomOAuth2SuccessHandler;
+import com.eosa.web.security.oauth2.service.CustomOAuth2UserService;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled=true)
@@ -24,6 +29,9 @@ public class CustomSecurityConfig {
     private final CorsFilter corsFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+
+    private final CustomOAuth2SuccessHandler successHandler;
+    private final OAuth2UserService oAuth2UserService;
    
 
     // OAuth2를 통한 SNS로그인에서 활용
@@ -49,13 +57,16 @@ public class CustomSecurityConfig {
         TokenProvider tokenProvider,
         CorsFilter corsFilter,
         JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
-        JwtAccessDeniedHandler jwtAccessDeniedHandler       
+        JwtAccessDeniedHandler jwtAccessDeniedHandler,
+        CustomOAuth2SuccessHandler successHandler,
+        CustomOAuth2UserService oAuth2UserService  
     ) {       
         this.tokenProvider = tokenProvider;
         this.corsFilter = corsFilter;
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
-        
+        this.successHandler = successHandler;
+        this.oAuth2UserService = oAuth2UserService;
     }
 
     @Bean
@@ -64,7 +75,11 @@ public class CustomSecurityConfig {
     }   
 
     private static final String[] PERMIT_ADMIN_URL = {
-        "/swagger-ui/index.html"
+        
+    };
+    private final String[] PERMIT_ALL_URL = {
+        "/", "/api/user/signIn.do", 
+        "/swagger-ui/**", "/login/oauth2/code/**"
     };
 
     // After WebSecurityConfigureAdapter Depreacted
@@ -76,38 +91,18 @@ public class CustomSecurityConfig {
             .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .accessDeniedHandler(jwtAccessDeniedHandler)
-            .and()
+        .and()
             // JWT Token인증을 활용하기 때문에 세션을 stateless 하도록 설정
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
+        .and()
             .authorizeRequests()
-                .antMatchers("/api/user/signIn.do").permitAll()
-            //     .antMatchers("/swagger-ui/**")
-            //     .permitAll()
-            // 모든 접속을 아무나 허용
-            // .authorizeRequests().anyRequest().permitAll();
-            // .authorizeRequests().antMatchers("/token/**").permitAll()
-            // .formLogin().disable()
-            // .httpBasic().disable()               
-            // .authorizeRequests()
-            //     .antMatchers("/api/**")
-            //     // .access("hasRole('CLIENT') or hasRole('DETECTIVE')")
-            //     .hasAnyAuthority("CLIENT", "DETECTIVE", "ADMIN", "SUPER_ADMIN")
-            // .antMatchers(PERMIT_ADMIN_URL)
-            //     .hasAnyAuthority("ADMIN", "SUPER_ADMIN")            
-            // .and()
-            //     .formLogin()
-            //         .loginPage("http://localhost:3000/user/signin")
-            //             .usernameParameter("usersAccount").passwordParameter("usersPass")
-            //             .loginProcessingUrl("/api/user/signIn.do")
-            //                 .successForwardUrl("/api/user/signIn.success")
-            //                 .failureForwardUrl("/api/user/signIn.failure")
-            //                 .permitAll()
-            // .and()
-            //     .logout()
-            //         .logoutUrl("/api/user/signOut.do")
-            //         .permitAll();
+                .antMatchers(PERMIT_ALL_URL).permitAll()
+                // .anyRequest().authenticated()
+        .and()
+            .oauth2Login()
+                .loginPage("http://localhost:3000/user/signin")
+                .successHandler(successHandler)
         .and()
             .apply(new JwtSecurityConfig(tokenProvider));
         return http.build();

@@ -18,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.eosa.web.security.CustomDuplicateException;
+import com.eosa.web.security.CustomUserDetails;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -52,24 +53,24 @@ public class UsersService implements UsersRepository {
      * @param <Users>entity
      * @return 1 | 0
     */
-    // public int userSave(Users param) {
-    //     int result = 0;
-    //     LocalDateTime currentTime = LocalDateTime.now();
-    //     param.setUsersPass(passwordEncoder.encode(param.getUsersPass()));
-    //     param.setUsersEnabled(1);
-    //     param.setUsersJoinDate(currentTime);
+    public int userSave(Users param) {
+        int result = 0;
+        LocalDateTime currentTime = LocalDateTime.now();
+        param.setUsersPass(passwordEncoder.encode(param.getUsersPass()));
+        param.setUsersEnabled(1);
+        param.setUsersJoinDate(currentTime);
 
-    //     try {
-    //         result = usersRepository.userSave(param);
-    //     }
-    //     catch(Exception e) {
-    //         result = 0;
-    //         log.error("[ERROR] {}\n[ERROR TIME] {}", e, currentTime);
-    //         // System.out.println("[Error] userSave(): " + e);
-    //     }
+        try {
+            result = usersRepository.userSave(param);
+        }
+        catch(Exception e) {
+            result = 0;
+            log.error("[ERROR] {}\n[ERROR TIME] {}", e, currentTime);
+            // System.out.println("[Error] userSave(): " + e);
+        }
                
-    //     return result;
-    // }    
+        return result;
+    }    
 
     /**
      * 로그인 할 때 활용하는 메서드(Spring Security formLogin()을 통해 로그인을 할때 사용하는 메서드)
@@ -143,175 +144,5 @@ public class UsersService implements UsersRepository {
     public int deleteUserInfo(Long usersIdx) {
         return usersRepository.deleteUserInfo(usersIdx);
     }
-
-    @Override
-    public List<Users> findAllById(Iterable<Long> ids) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public <S extends Users> List<S> saveAll(Iterable<S> entities) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public void flush() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public <S extends Users> S saveAndFlush(S entity) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public <S extends Users> List<S> saveAllAndFlush(Iterable<S> entities) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public void deleteAllInBatch(Iterable<Users> entities) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void deleteAllByIdInBatch(Iterable<Long> ids) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void deleteAllInBatch() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public Users getOne(Long id) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Users getById(Long id) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Users getReferenceById(Long id) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public <S extends Users> List<S> findAll(Example<S> example) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public <S extends Users> List<S> findAll(Example<S> example, Sort sort) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Page<Users> findAll(Pageable pageable) {
-        // TODO Auto-generated method stub
-        return null;
-    }    
-
-    @Override
-    public Optional<Users> findById(Long id) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public boolean existsById(Long id) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public long count() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void delete(Users entity) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void deleteAllById(Iterable<? extends Long> ids) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void deleteAll(Iterable<? extends Users> entities) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void deleteAll() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public <S extends Users> Optional<S> findOne(Example<S> example) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public <S extends Users> Page<S> findAll(Example<S> example, Pageable pageable) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public <S extends Users> long count(Example<S> example) {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public <S extends Users> boolean exists(Example<S> example) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public <S extends Users, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Users findByUsersEmail(String usersEmail) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    
     
 }

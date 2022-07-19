@@ -52,7 +52,13 @@ public class NullCheck {
                         if(value == null) {
                             logger.info("{} value is NULL", field.getName());
                             temp.add(field.getName());                            
-                        }                        
+                        }
+                        else {
+                            if(field.getName().equals("usersAge") && value.equals(0)) {
+                                temp.add("usersAge");
+                            }
+                            // logger.debug("{}, {}", field.getName(), value);
+                        }                      
                     }
                 }                
             }

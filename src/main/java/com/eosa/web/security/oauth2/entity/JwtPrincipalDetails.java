@@ -21,14 +21,14 @@ public class JwtPrincipalDetails implements UserDetails {
     }
 
     @Override
-    public String getPassword() {
-        return users.getUsersPass();
-    }
-
-    @Override
     public String getUsername() {
         return users.getUsersAccount();
     }
+
+    @Override
+    public String getPassword() {
+        return users.getUsersPass();
+    }    
 
     @Override
     public boolean isAccountNonExpired() {

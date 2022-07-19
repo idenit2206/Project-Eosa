@@ -47,7 +47,8 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     FindByUsersAccount selectByUsersAccount(String usersAccount);
 
     /**
-     * 로그인 할 때 활용하는 메서드(Spring Security formLogin()을 통해 로그인을 할때 사용하는 메서드)
+     * 로그인 할 때 활용하는 메서드
+     * (Spring Security에서 JWT를 발급하는 로그인을 할때 사용하는 메서드)
      * @param usersAccount
      * @return Users
      */
@@ -58,7 +59,7 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     Users findByUsersAccount(String usersAccount);
 
     /**
-     * Token 기반의 로그인을 수행할 때 활용 usersIdx를 반환
+     * Token 기반의 로그인을 수행할 때 활용
      * @param usersAccount
      * @return usersIdx
      */

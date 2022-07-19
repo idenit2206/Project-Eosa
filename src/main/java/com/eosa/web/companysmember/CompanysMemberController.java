@@ -2,18 +2,21 @@ package com.eosa.web.companysmember;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.eosa.web.users.FindByUsersAccount;
 import com.eosa.web.util.CustomResponseData;
 import com.eosa.web.util.NullCheck;
 
@@ -44,9 +47,6 @@ public class CompanysMemberController {
 
         Map<String, Object> items = nullCheck.ObjectNullCheck(param, targets);
        
-
-        
-       
         if(items.get("result") == "SUCCESS") {
             int transaction = companysMemberService.customValdSave(param);
             if(transaction == 1) {
@@ -70,6 +70,33 @@ public class CompanysMemberController {
         return result;
     }
     
+    @GetMapping("/selectDetectiveInCompany")
+    public CustomResponseData selectDetectiveInCompany(@RequestParam("companysIdx") Long companysIdx) {
+        CustomResponseData result = new CustomResponseData();
+
+        FindByUsersAccount detectiveList = companysMemberService.selectDetectiveInCompany(companysIdx);
+
+        if(detectiveList != null) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(detectiveList);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem("일치하는 검색 결과가 존재하지 않습니다.");
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
+
+    /**
+     * 탐정회원이 해당 업체에서 탈퇴합니다.
+     * @param usersIdx
+     * @param companysIdx
+     * @return
+     */
+    @Operation(summary = "탐정회원 업체 탈퇴", description = "탐정회원이 해당 업체에서 탈퇴합니다.")
     @PutMapping("/deleteDetective")
     public CustomResponseData deleteDetective(
         @RequestParam("usersIdx") Long usersIdx,
