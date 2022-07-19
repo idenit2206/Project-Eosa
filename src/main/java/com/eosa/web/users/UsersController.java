@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -19,12 +22,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.eosa.web.userstoken.UsersTokenService;
+import com.eosa.web.security.CustomPrincipalDetails;
+import com.eosa.web.security.oauth2.CustomOAuth2UserInfo;
 import com.eosa.web.util.CustomResponseData;
 import com.eosa.web.util.NullCheck;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
+import springfox.documentation.service.OAuth;
 
 @Slf4j
 @RestController
@@ -168,6 +173,27 @@ public class UsersController {
         result.setStatusCode(HttpStatus.BAD_REQUEST.value());
         result.setResultItem(items);
         result.setResponseDateTime(currentTime);
+
+        return result;
+    }
+
+    @GetMapping("/oauth2SignIn.success")
+    public CustomResponseData oauth2SignInSuccess(
+        Authentication authentication,
+        @AuthenticationPrincipal CustomPrincipalDetails principalUserDetails
+    ) {
+        CustomResponseData result = new CustomResponseData();
+            // OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+            // log.debug("#authentication: {}", authentication.getDetails());
+            // log.debug("#principalUserDetails: {}", principalUserDetails.getAttributes());
+            // log.debug("#email: {}", principalUserDetails.getUsers().getUsersEmail());
+
+            String usersEmail = principalUserDetails.getUsers().getUsersEmail();
+            String usersRole = principalUserDetails.getUsers().getUsersRole();
+
+            // Users user = (Users) usersService.selectByUsersEmail(usersEmail);
+
+        result.setResponseDateTime(LocalDateTime.now());
 
         return result;
     }
