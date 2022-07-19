@@ -21,7 +21,9 @@ import com.eosa.web.util.CustomResponseData;
 import com.eosa.web.util.NullCheck;
 
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/companysmember")
 public class CompanysMemberController {
@@ -104,6 +106,7 @@ public class CompanysMemberController {
     ) {
         CustomResponseData result = new CustomResponseData();
         Map<String, Object> items = new HashMap<>();
+        log.info("{} : {}", usersIdx, companysIdx);
 
         int transaction = companysMemberService.deleteDetective(usersIdx, companysIdx);
         if(transaction == 1) {

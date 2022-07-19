@@ -7,11 +7,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import lombok.Data;
 
 @Data
-@Entity(name="UsersReview")
+@Entity
+@Table(name="UsersReview")
 public class UsersReview {
     
     @Id
@@ -19,13 +21,13 @@ public class UsersReview {
     private Long idx;
 
     @Column(nullable=false)
-    private Long usersIdsx;
+    private Long usersIdx;
 
     @Column(nullable=false)
     private Long companysIdx;
 
     @Column(nullable=false)
-    private Long reqeustFormIdx;
+    private Long requestFormIdx;
 
     @Column(nullable=false)
     private int resultScore;
