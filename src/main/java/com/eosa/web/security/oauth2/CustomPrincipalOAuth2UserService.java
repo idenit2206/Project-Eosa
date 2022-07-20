@@ -40,6 +40,11 @@ public class CustomPrincipalOAuth2UserService extends DefaultOAuth2UserService {
         OAuth2User oAuth2User = super.loadUser(userRequest);
         CustomOAuth2UserInfo customOAuth2UserInfo = null;
 
+        CustomPrincipalDetails result = null;
+        Users user = null;
+
+        log.debug("[oAuth2User] -> {}", oAuth2User.toString());
+
         // 플랫폼 명칭 ex) google, kakao, ...
         String provider = userRequest.getClientRegistration().getRegistrationId();
         String providerId = null;
@@ -50,16 +55,16 @@ public class CustomPrincipalOAuth2UserService extends DefaultOAuth2UserService {
             customOAuth2UserInfo = new KakaoUserInfo(oAuth2User.getAttributes());
             platform = customOAuth2UserInfo.getProvider();
             usersEmail = customOAuth2UserInfo.getEmail();
-            log.debug("# customOAuth2UserInfo[kakao]: {}", customOAuth2UserInfo.getProviderId());
+            // log.debug("# customOAuth2UserInfo[kakao]: {}", customOAuth2UserInfo.getProviderId());
         }
         else if(provider.equals("google")) {
             platform = provider;
             providerId = oAuth2User.getAttribute("sub");
             usersEmail = oAuth2User.getAttribute("email").toString();
-            log.debug("#[Google] providerId: {}", providerId);
-            log.debug("#[Google] oAuth2Email: {}", usersEmail);
+            // log.debug("#[Google] providerId: {}", providerId);
+            // log.debug("#[Google] oAuth2Email: {}", usersEmail);
             customOAuth2UserInfo = new GoogleUserInfo(oAuth2User.getAttributes());
-            log.debug("# customOAuth2UserInfo[google]: {}", customOAuth2UserInfo);
+            // log.debug("# customOAuth2UserInfo[google]: {}", customOAuth2UserInfo);
         }
         else if(provider.equals("naver")) {
             platform = provider;
@@ -69,14 +74,21 @@ public class CustomPrincipalOAuth2UserService extends DefaultOAuth2UserService {
         log.debug("# platform: {}, email: {}", platform, usersEmail);
 
         // DB에 기존유저로써 존재하는지 검사
-        Users user = (Users) usersRepository.selectByUsersEmail(usersEmail);
-        // log.debug("[PrincipalOAuth2UserService] 사용자 DB체크 결과: {}", user.toString());
+        user = (Users) usersRepository.selectByUsersEmail(usersEmail);
+        // log.debug("# after DB check .selectByUsersEmail() -> oAuth2User: {}", oAuth2User.getAttributes());
+
 
         // DB에 데이터가 없는 신규회원의 경우
-        // if(user == null) {
-            
-        // }
-
-        return new CustomPrincipalDetails(user, oAuth2User.getAttributes());
+        if(user != null) {
+            result = new CustomPrincipalDetails(user, oAuth2User.getAttributes(), provider);            
+            // log.debug("[PrincipalOAuth2UserService] 사용자 DB체크 결과: {}", user.toString());
+        }
+        else {
+            int tempIndex = usersEmail.indexOf("@");
+            String tempAccount = usersEmail.substring(0, tempIndex);
+            user = new Users(tempAccount, usersEmail);
+            result = new CustomPrincipalDetails(user, oAuth2User.getAttributes(), provider);
+        }
+        return result;
     }
 }

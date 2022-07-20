@@ -69,6 +69,10 @@ public class UsersService implements UsersRepository {
         }
         return result;
     }
+
+    public Users selectByUsersEmail(String usersEmail) {
+        return usersRepository.selectByUsersEmail(usersEmail);
+    }
     
     /**
      * Token 기반의 로그인을 수행할 때 활용

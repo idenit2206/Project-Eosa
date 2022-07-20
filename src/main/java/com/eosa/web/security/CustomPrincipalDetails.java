@@ -21,6 +21,7 @@ public class CustomPrincipalDetails implements UserDetails, OAuth2User {
 
     private Users users;
     private Map<String, Object> attributes;
+    private String provider;
 
     // UserDetails와 연동 FormLogin() 작동시 사용
     public CustomPrincipalDetails(Users users) {
@@ -31,6 +32,18 @@ public class CustomPrincipalDetails implements UserDetails, OAuth2User {
     public CustomPrincipalDetails(Users users, Map<String, Object> attributes) {
         this.users = users;
         this.attributes = attributes;
+    }
+    /**
+     * OAuth2User와 연동 OAuth2Login() 작동시 사용(2)
+     * provider(SNS 서비스의 이름)을 추가 매개변수로 받는 생성자
+     * @param users
+     * @param attributes
+     * @param provider
+     */
+    public CustomPrincipalDetails(Users users, Map<String, Object> attributes, String provider) {
+        this.users = users;
+        this.attributes = attributes;
+        this.provider = provider;
     }
 
     /**

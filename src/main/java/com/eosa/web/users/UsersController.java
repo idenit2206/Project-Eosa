@@ -183,16 +183,29 @@ public class UsersController {
         @AuthenticationPrincipal CustomPrincipalDetails principalUserDetails
     ) {
         CustomResponseData result = new CustomResponseData();
-            // OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
-            // log.debug("#authentication: {}", authentication.getDetails());
-            // log.debug("#principalUserDetails: {}", principalUserDetails.getAttributes());
-            // log.debug("#email: {}", principalUserDetails.getUsers().getUsersEmail());
+        Map<String, Object> items = new HashMap<>();
+            
+        String sns = principalUserDetails.getProvider();
+        String usersEmail = principalUserDetails.getUsers().getUsersEmail();
+        String usersRole = principalUserDetails.getUsers().getUsersRole();
+        // log.debug("# sns:{}, usersEmail: {}, usersRole: {}",sns, usersEmail, usersRole);
+        Users user = usersService.selectByUsersEmail(usersEmail);
+        String existUsersEmail = "";
+        if(user != null) {
+            existUsersEmail = user.getUsersEmail();            
+            items.put("sns", sns);
+            items.put("usersEmail", existUsersEmail);
+            items.put("usersRole", usersRole);   
+        }
+        else {
+            items.put("sns", sns);
+            items.put("usersEmail", usersEmail);
+            items.put("usersRole", null);
+            items.put("message", "해당 회원은 신규회원입니다.");
+        }
 
-            String usersEmail = principalUserDetails.getUsers().getUsersEmail();
-            String usersRole = principalUserDetails.getUsers().getUsersRole();
-
-            // Users user = (Users) usersService.selectByUsersEmail(usersEmail);
-
+        result.setStatusCode(HttpStatus.OK.value());
+        result.setResultItem(items);
         result.setResponseDateTime(LocalDateTime.now());
 
         return result;
