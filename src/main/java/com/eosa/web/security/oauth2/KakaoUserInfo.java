@@ -10,8 +10,8 @@ public class KakaoUserInfo implements CustomOAuth2UserInfo {
 
     public KakaoUserInfo(Map<String, Object> attributes) {
         this.attributes = attributes;
-        this.attributesAccount =  (Map<String, Object>) attributes.get("kakao_account");
-        this.attributesProfile =  (Map<String, Object>) attributesAccount.get("profile");
+        this.attributesAccount = (Map<String, Object>) attributes.get("kakao_account");
+        this.attributesProfile = (Map<String, Object>) attributesAccount.get("profile");
     }
 
     @Override
