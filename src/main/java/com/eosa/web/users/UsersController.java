@@ -136,8 +136,8 @@ public class UsersController {
         
         FindByUsersAccount userInfo = usersService.selectByUsersAccount(usersAccount);
 
-        log.info("## [REQUEST] {}", req.toString());
-        log.info("## [RESPONSE] {}", res.getOutputStream());
+        // log.info("## [REQUEST] {}", req.toString());
+        // log.info("## [RESPONSE] {}", res.getOutputStream());
 
         Map<String, Object> items = new HashMap<>();
         items.put("message", "Welcome");
