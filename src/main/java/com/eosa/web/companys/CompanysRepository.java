@@ -1,5 +1,7 @@
 package com.eosa.web.companys;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -12,5 +14,11 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         nativeQuery=true
     )
     int findByCompanysIdx(Long companysIdx);
+
+    @Query(
+        value="SELECT DISTINCT companysCategoryValue FROM CompanysCategory",
+        nativeQuery=true
+    )
+    List<String> selectAllCategory();
 
 }

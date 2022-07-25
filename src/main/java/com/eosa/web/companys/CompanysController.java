@@ -2,12 +2,14 @@ package com.eosa.web.companys;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +26,11 @@ public class CompanysController {
     @Autowired
     private CompanysService companysService; 
     
+    /**
+     * "업체를 등록"하는 메서드입니다.
+     * @param param
+     * @return
+     */
     @PostMapping("/registcompanys")
     public CustomResponseData RegistCompanys(
       Companys param  
@@ -61,6 +68,16 @@ public class CompanysController {
         }        
 
         return result;
+    }
+
+    
+    @GetMapping("/selectAllCategory")
+    public CustomResponseData selectAllCategory() {
+      CustomResponseData result = new CustomResponseData();
+
+      List<String> items = companysService.selectAllCategory();
+
+      return result;
     }
 
 }

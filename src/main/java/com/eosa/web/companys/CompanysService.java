@@ -26,6 +26,10 @@ public class CompanysService implements CompanysRepository {
         return companysRepository.save(entity);
     }
 
+    public List<String> selectAllCategory() {
+        return companysRepository.selectAllCategory();
+    }
+
     @Override
     public List<Companys> findAll() {
         // TODO Auto-generated method stub
@@ -202,6 +206,6 @@ public class CompanysService implements CompanysRepository {
     public <S extends Companys, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
         // TODO Auto-generated method stub
         return null;
-    }
+    }   
 
 }
