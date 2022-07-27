@@ -23,7 +23,7 @@ public class CustomSecurityConfig {
     // @Autowired private CustomPrincipalOAuth2UserService customPrincipalOAuth2UserService;
     
     private String[] ANYONE_PERMIT = {
-       "/", "/api/user/**"
+       "/", "/api/user/**", "/api/mail/**"
     };
 
     @Bean
