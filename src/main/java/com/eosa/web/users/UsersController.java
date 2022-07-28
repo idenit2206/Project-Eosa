@@ -67,6 +67,27 @@ public class UsersController {
         return result;
     }
 
+    @GetMapping("/test02")
+    public CustomResponseData Test02Method(
+        @RequestParam("nameLen") String nameLen
+    ) {
+        CustomResponseData result = new CustomResponseData();
+        Map<String, Object> item = new HashMap<>();
+
+        int nameLength = Integer.parseInt(nameLen);
+
+        UserTempData userTempData = new UserTempData();
+
+        String tempName = userTempData.korNameGen(nameLength);
+
+        item.put("usersName", tempName);
+
+        result.setResultItem(item);
+        result.setResponseDateTime(LocalDateTime.now());
+
+        return result;
+    }
+
     /**
      * 회원가입이시 데이터가 저장되는 메서드 입니다.
      * @param req
