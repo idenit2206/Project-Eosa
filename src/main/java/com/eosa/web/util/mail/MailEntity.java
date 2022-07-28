@@ -10,6 +10,7 @@ public class MailEntity {
     private String address;
     private String title;
     private String message;
+    private String certiCode;
     private MultipartFile file;
 
 }

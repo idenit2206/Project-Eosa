@@ -20,4 +20,12 @@ public class MailService {
         javaMailSender.send(message);
     }
 
+    public void codeMailSend(MailEntity mailEntity) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(mailEntity.getAddress());
+        message.setSubject(mailEntity.getTitle());
+        message.setText(mailEntity.getMessage());       
+        javaMailSender.send(message);
+    }
+
 }
