@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.eosa.web.security.CustomPrincipalDetails;
 import com.eosa.web.security.oauth2.CustomOAuth2UserInfo;
+import com.eosa.web.users.temprandom.KorNameTempData;
 import com.eosa.web.util.CustomResponseData;
 import com.eosa.web.util.NullCheck;
 
@@ -76,7 +77,7 @@ public class UsersController {
 
         int nameLength = Integer.parseInt(nameLen);
 
-        UserTempData userTempData = new UserTempData();
+        KorNameTempData userTempData = new KorNameTempData();
 
         String tempName = userTempData.korNameGen(nameLength);
 
