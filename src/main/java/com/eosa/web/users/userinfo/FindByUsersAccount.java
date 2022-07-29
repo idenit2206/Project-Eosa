@@ -1,4 +1,4 @@
-package com.eosa.web.users;
+package com.eosa.web.users.userinfo;
 
 public interface FindByUsersAccount {
     Long getUsersIdx();

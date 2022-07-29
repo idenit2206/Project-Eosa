@@ -1,36 +1,51 @@
 package com.eosa.web.users;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.ui.Model;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eosa.web.security.CustomPrincipalDetails;
-import com.eosa.web.security.oauth2.CustomOAuth2UserInfo;
+
 import com.eosa.web.users.temprandom.KorNameTempData;
+import com.eosa.web.users.userinfo.FindByUsersAccount;
+import com.eosa.web.users.userinfo.SelectByUsersAccount;
 import com.eosa.web.util.CustomResponseData;
 import com.eosa.web.util.NullCheck;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
-import springfox.documentation.service.OAuth;
+
 
 @Slf4j
 @RestController
@@ -156,7 +171,7 @@ public class UsersController {
         CustomResponseData result = new CustomResponseData();
         LocalDateTime currentTime = LocalDateTime.now();
         
-        FindByUsersAccount userInfo = usersService.selectByUsersAccount(usersAccount);
+        SelectByUsersAccount userInfo = usersService.selectByUsersAccount(usersAccount);
 
         // log.info("## [REQUEST] {}", req.toString());
         // log.info("## [RESPONSE] {}", res.getOutputStream());
@@ -199,11 +214,54 @@ public class UsersController {
         return result;
     }
 
+    @GetMapping(value="/signOut.success")
+    public CustomResponseData signOutSuccess(
+        @RequestParam(value="usersAccount") String usersAccount
+    ) {
+        log.info("# SignOut {}", usersAccount);
+        CustomResponseData result = new CustomResponseData();
+
+        Map<String, Object> item = new HashMap<>();
+        item.put("message", usersAccount + "signOut Complete See ya");
+
+        result.setResultItem(item);
+
+        return result;
+    }
+
+    // @GetMapping("/customOAuth2/kakao")
+    // public void cusotimOAuth2Kakao() {
+    //     log.debug("kakao login custom oauth2");
+        
+    //     String REQUEST_URL = "https://www.kauth.kakao.com/oauth/authorize";
+    //     String ACCESS_TOKEN = "";
+    //     String REFRESH_TOKEN = "";
+
+    //     try {
+    //         URL url = new URL(REQUEST_URL);
+    //         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+    //         conn.setRequestMethod("POST");
+    //         conn.setDoOutput(true);
+
+    //         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+    //         StringBuilder sb = 
+    //          참고 https://suyeoniii.tistory.com/79
+    //     }
+
+    // }
+
+    /**
+     * OAuth2를 활용한 SNS로그인 성공시 메서드 
+     * @param principalUserDetails
+     * @return
+     * @throws IOException
+     * @throws ServletException
+     */
     @GetMapping("/oauth2SignIn.success")
     public CustomResponseData oauth2SignInSuccess(
-        Authentication authentication,
         @AuthenticationPrincipal CustomPrincipalDetails principalUserDetails
-    ) {
+    ) throws IOException, ServletException {
         CustomResponseData result = new CustomResponseData();
         Map<String, Object> items = new HashMap<>();
             
@@ -233,42 +291,42 @@ public class UsersController {
         return result;
     }
 
-    @Operation(summary="회원정보 조회")
-    @GetMapping(value="/getUsersInfo")
-    public CustomResponseData getUsersInfoByUsersAccount(
-        @RequestParam(value="usersAccount") String usersAccount
-    ) {
-        log.info("## Someone request {} 's information", usersAccount);
-        CustomResponseData result = new CustomResponseData();
+    // @Operation(summary="회원정보 조회")
+    // @GetMapping(value="/getUsersInfo")
+    // public CustomResponseData getUsersInfoByUsersAccount(
+    //     @RequestParam(value="usersAccount") String usersAccount
+    // ) {
+    //     log.info("## Someone request {} 's information", usersAccount);
+    //     CustomResponseData result = new CustomResponseData();
 
-        Map<String, Object> item = new HashMap<>();
-        LocalDateTime currentTime = LocalDateTime.now();
+    //     Map<String, Object> item = new HashMap<>();
+    //     LocalDateTime currentTime = LocalDateTime.now();
         
-        boolean nc = nullCheck.StringNullCheck(usersAccount);       
+    //     boolean nc = nullCheck.StringNullCheck(usersAccount);       
 
-        if(nc == false) {
-            FindByUsersAccount transaction = usersService.selectByUsersAccount(usersAccount);
-            if(transaction == null) {
-                result.setStatusCode(HttpStatus.BAD_REQUEST.value());
-                item.put("item", transaction);
-                result.setResultItem(item);
-                result.setResponseDateTime(currentTime);
-            }
-            else {
-                result.setStatusCode(HttpStatus.OK.value());
-                item.put("item", transaction);
-                result.setResultItem(item);
-                result.setResponseDateTime(currentTime);
-            }
-        }        
-        else {
-            result.setStatusCode(HttpStatus.BAD_REQUEST.value());
-            item.put("result", "FAILURE cause parameter(usersAccount) Null");
-            result.setResultItem(item);
-            result.setResponseDateTime(currentTime);
-        }
-        return result;
-    }
+    //     if(nc == false) {
+    //         FindByUsersAccount transaction = usersService.selectByUsersAccount(usersAccount);
+    //         if(transaction == null) {
+    //             result.setStatusCode(HttpStatus.BAD_REQUEST.value());
+    //             item.put("item", transaction);
+    //             result.setResultItem(item);
+    //             result.setResponseDateTime(currentTime);
+    //         }
+    //         else {
+    //             result.setStatusCode(HttpStatus.OK.value());
+    //             item.put("item", transaction);
+    //             result.setResultItem(item);
+    //             result.setResponseDateTime(currentTime);
+    //         }
+    //     }        
+    //     else {
+    //         result.setStatusCode(HttpStatus.BAD_REQUEST.value());
+    //         item.put("result", "FAILURE cause parameter(usersAccount) Null");
+    //         result.setResultItem(item);
+    //         result.setResponseDateTime(currentTime);
+    //     }
+    //     return result;
+    // }
 
     /**
      * 회원정보를 수정하는 url입니다.

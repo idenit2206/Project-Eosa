@@ -8,6 +8,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.eosa.web.users.userinfo.FindByUsersAccount;
+import com.eosa.web.users.userinfo.SelectByUsersAccount;
+
 @Repository
 public interface UsersRepository extends JpaRepository<Users, Long> {
    
@@ -28,18 +31,18 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     int userSave(@Param("Users") Users user);
 
     /**
-     * 회원정보 수정을 위해 활용되는 회원정보 조회 메서드
+     * Spring Security를 활용한 로근인에 사용하는 메서드
      * @param usersAccount
      * @return
      */
     @Query(
-        value= "SELECT usersAccount, usersName, usersNick, usersPhone, " +
+        value= "SELECT usersIdx, usersAccount, usersName, usersNick, usersPhone, " +
         "usersEmail, usersRole, usersAge, " +
         "usersRegion1, usersRegion2, usersGender " +
         "FROM Users WHERE usersAccount = ?1",
         nativeQuery=true
     )
-    FindByUsersAccount selectByUsersAccount(String usersAccount);
+    SelectByUsersAccount selectByUsersAccount(String usersAccount);
 
     /**
      * OAuth2Login() 작동시  SNS계정으로 로그인을 시도한 유저가 기존에 존재하던 사용자인지를

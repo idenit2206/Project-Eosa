@@ -16,6 +16,9 @@ import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuer
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.eosa.web.users.userinfo.FindByUsersAccount;
+import com.eosa.web.users.userinfo.SelectByUsersAccount;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -61,8 +64,8 @@ public class UsersService implements UsersRepository {
     /**
      * 사용자 계정을 기반으로 해당 사용자의 정보 조회 (사용자 정보 조회시 사용)
     */
-    public FindByUsersAccount selectByUsersAccount(String usersAccount) {
-        FindByUsersAccount result = usersRepository.selectByUsersAccount(usersAccount);
+    public SelectByUsersAccount selectByUsersAccount(String usersAccount) {
+        SelectByUsersAccount result = usersRepository.selectByUsersAccount(usersAccount);
         if(result == null) {
             log.error("[ERROR] SQL RESULT NULL findByUsersAccount()");
         }

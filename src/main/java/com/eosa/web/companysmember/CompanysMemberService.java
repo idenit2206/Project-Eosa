@@ -16,7 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.stereotype.Service;
 
-import com.eosa.web.users.FindByUsersAccount;
+import com.eosa.web.users.userinfo.FindByUsersAccount;
 
 @Service
 public class CompanysMemberService implements CompanysMemberRepository {
