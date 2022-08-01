@@ -62,20 +62,20 @@ public class CustomSecurityConfig {
                     .usernameParameter("usersAccount").passwordParameter("usersPass")                       
                     .successForwardUrl("/api/user/signIn.success")
                     .failureForwardUrl("/api/user/signIn.failure")
-                    // .permitAll()
-            .and()
-            .logout()
-                .logoutUrl("/api/user/signOut.do")
-                    .logoutSuccessHandler(customLogoutSuccessHandler)
-                    // .permitAll()
+                    // .permitAll()           
         .and()
             .oauth2Login()
                 .loginPage("http://localhost:3000/user/signin")
                     .defaultSuccessUrl("/api/user/oauth2SignIn.success")
                     // .defaultSuccessUrl("/api/user2/oauth2SignIn.success")
-                    .failureUrl("/api/user/oauth2SignIn.failure");
+                    .failureUrl("/api/user/oauth2SignIn.failure")
                     // .userInfoEndpoint()
                     // .userService(customPrincipalOAuth2UserService);
+        .and()
+            .logout()
+                    .logoutUrl("/api/user/signOut.do")
+                        .logoutSuccessHandler(customLogoutSuccessHandler);
+                        // .permitAll()
         return http.build();
     }
 

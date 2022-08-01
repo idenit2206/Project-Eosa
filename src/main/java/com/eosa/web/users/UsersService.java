@@ -16,7 +16,6 @@ import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuer
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.eosa.web.users.userinfo.FindByUsersAccount;
 import com.eosa.web.users.userinfo.SelectByUsersAccount;
 
 import lombok.extern.slf4j.Slf4j;
@@ -63,7 +62,7 @@ public class UsersService implements UsersRepository {
    
     /**
      * 사용자 계정을 기반으로 해당 사용자의 정보 조회 (사용자 정보 조회시 사용)
-    */
+     */
     public SelectByUsersAccount selectByUsersAccount(String usersAccount) {
         SelectByUsersAccount result = usersRepository.selectByUsersAccount(usersAccount);
         if(result == null) {
@@ -74,6 +73,18 @@ public class UsersService implements UsersRepository {
 
     public Users selectByUsersEmail(String usersEmail) {
         return usersRepository.selectByUsersEmail(usersEmail);
+    }
+
+    /**
+     * 회원정보(계정)를 분실한 사용자가 이메일을 활용해 계정의 유무를 확인합니다.
+     * 계정이 있으면 1 을 출력합니다.
+     */
+    public int checkAccountByUsersEmail(String usersEmail) {
+        return usersRepository.checkAccountByUsersEmail(usersEmail);
+    }
+    
+    public String accountMailSend(String usersEmail) {
+        return usersRepository.accountMailSend(usersEmail);
     }
     
     /**

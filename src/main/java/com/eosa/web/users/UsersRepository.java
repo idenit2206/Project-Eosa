@@ -128,5 +128,18 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
         ,nativeQuery=true
     )
     int deleteUserInfo(Long usersIdx);
+
+    @Transactional
+    @Query(
+        value="SELECT 1 FROM Users WHERE usersEmail=?1",
+        nativeQuery = true
+    )
+    int checkAccountByUsersEmail(String usersEmail);
+
+    @Query(
+        value="SELECT usersAccount FROM Users WHERE usersEmail=?1",
+        nativeQuery = true
+    )
+    String accountMailSend(String usersEmail);
      
 }

@@ -62,6 +62,8 @@ public class UsersController {
         log.info("{} has \"/signUp.do\" Request", requester);
         CustomResponseData result = new CustomResponseData();
         LocalDateTime currentTime = LocalDateTime.now();
+
+        log.debug("# param: {}", param);
         
         String[] targets = {"usersAccount", "usersPass", "usersName", "usersNick", "usersPhone", "usersEmail", "usersRole", "usersAge", "usersRegion1", "usersRegion2", "usersGender", "usersNotice"};        
         Map<String, Object> checkItem = nullCheck.ObjectNullCheck(param, targets);
@@ -156,32 +158,6 @@ public class UsersController {
         return result;
     }
 
-    @GetMapping(value="/signOut.success")
-    public CustomResponseData signOutSuccess(
-        @RequestParam(value="usersAccount") String usersAccount
-    ) {
-        log.info("# SignOut {}", usersAccount);
-        CustomResponseData result = new CustomResponseData();
-
-        Map<String, Object> item = new HashMap<>();
-        item.put("message", usersAccount + "signOut Complete See ya");
-
-        result.setResultItem(item);
-
-        return result;
-    }
-
-    @GetMapping("/OAuth2/Signin")
-    public void OAuth2Signin(
-        HttpServletRequest request, HttpServletResponse response,
-        @RequestParam("provider") String provider
-    ) {
-        log.debug("# {} Request {} platform login",request.getLocalAddr(), provider);
-        CustomSnsService cSS = new CustomSnsService(provider);
-        log.debug(cSS.getProvider());
-        //  //  참고 https://suyeoniii.tistory.com/79
-    }    
-
     /**
      * OAuth2를 활용한 SNS로그인 성공시 메서드 
      * @param principalUserDetails
@@ -251,6 +227,31 @@ public class UsersController {
         platform + " '계정을 활용한 로그인에 실패했습니다.'); location.href='http://localhost:3000/user/signin' " + 
         "</script>");
         // response.sendRedirect("http://localhost:3000/user/signin");
+    }
+
+    @GetMapping("/checkAccountByUsersEmail")
+    public CustomResponseData checkAccountByUsersEmail(
+        @RequestParam("usersEmail") String usersEmail
+    ) {
+        log.debug("# Requestsed Email: {}", usersEmail);
+        CustomResponseData result = new CustomResponseData();
+
+        int transaction = usersService.checkAccountByUsersEmail(usersEmail);
+
+        if(transaction == 1) {
+            log.info("# {} 은 존재하는 회원입니다.", usersEmail);
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem("회원정보가 존재합니다.");
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            log.error("# {} 과 일치하는 회원 정보가 없습니다.", usersEmail);
+            result.setStatusCode(HttpStatus.NO_CONTENT.value());
+            result.setResultItem("일치하는 회원정보가 없습니다.");
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
     }
 
     // @Operation(summary="회원정보 조회")
