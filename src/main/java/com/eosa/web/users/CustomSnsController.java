@@ -1,11 +1,15 @@
 package com.eosa.web.users;
 
 import java.io.IOException;
+import java.net.http.HttpRequest;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +37,7 @@ public class CustomSnsController {
      */
     @GetMapping("/oauth2SignIn.success")
     public String oauth2SignInSuccess(
+        HttpServletRequest request, HttpServletResponse response, HttpSession session,
         @AuthenticationPrincipal CustomPrincipalDetails principalUserDetails
     ) throws IOException, ServletException {
         CustomResponseData result = new CustomResponseData();
@@ -60,6 +65,9 @@ public class CustomSnsController {
         result.setStatusCode(HttpStatus.OK.value());
         result.setResultItem(items);
         result.setResponseDateTime(LocalDateTime.now());
+
+        session.setAttribute("items", items);
+        log.info("session {}", session.getId());
 
         return "http://localhost:3000";
     }

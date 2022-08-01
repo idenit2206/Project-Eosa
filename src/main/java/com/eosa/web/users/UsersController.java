@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -260,6 +261,7 @@ public class UsersController {
      */
     @GetMapping("/oauth2SignIn.success")
     public CustomResponseData oauth2SignInSuccess(
+        HttpServletRequest request, HttpServletResponse response, HttpSession session,
         @AuthenticationPrincipal CustomPrincipalDetails principalUserDetails
     ) throws IOException, ServletException {
         CustomResponseData result = new CustomResponseData();
@@ -287,6 +289,13 @@ public class UsersController {
         result.setStatusCode(HttpStatus.OK.value());
         result.setResultItem(items);
         result.setResponseDateTime(LocalDateTime.now());
+
+        log.info("session {}",session.getId());
+        Cookie c2 = new Cookie("email", usersEmail);
+        
+        response.addCookie(c2);
+        request.setAttribute("items", items);
+        session.setAttribute("items", items);
 
         return result;
     }
