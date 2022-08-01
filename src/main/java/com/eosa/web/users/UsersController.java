@@ -1,44 +1,34 @@
 package com.eosa.web.users;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
-import javax.servlet.RequestDispatcher;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.ui.Model;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eosa.web.security.CustomPrincipalDetails;
 
-import com.eosa.web.users.temprandom.KorNameTempData;
-import com.eosa.web.users.userinfo.FindByUsersAccount;
 import com.eosa.web.users.userinfo.SelectByUsersAccount;
 import com.eosa.web.util.CustomResponseData;
 import com.eosa.web.util.NullCheck;
@@ -54,55 +44,7 @@ public class UsersController {
 
     private NullCheck nullCheck = new NullCheck();
 
-    @Autowired private UsersService usersService;
-
-    /**
-     * 테스트를 위한 메서드입니다.
-     * @param status HttpStatusCode 관련 테스트를 위한 매개변수
-     * @param req HttpServletRequest 관련 테스트를 위한 매개변수
-     * @param res HttpServletResponse 관련 테스트를 위한 매개변수
-     * @return {statusCode, resultItem, currentTime}
-     */
-    @Operation(summary = "/test01", description = "테스트용 입니다.")
-    @GetMapping("/test01")
-    public CustomResponseData test01(
-        HttpStatus status, HttpServletRequest req, HttpServletResponse res
-    ) {      
-        CustomResponseData result = new CustomResponseData();
-        LocalDateTime currentTime = LocalDateTime.now();
-
-        int code = status.FAILED_DEPENDENCY.value();
-        Map<Integer, String> item = new HashMap<>();        
-        item.put(1, "넌 못지나간다.");
-        item.put(2, "가고 싶은데로 간다!");
-
-        result.setStatusCode(code);
-        result.setResultItem(item);
-        result.setResponseDateTime(currentTime);
-
-        return result;
-    }
-
-    @GetMapping("/test02")
-    public CustomResponseData Test02Method(
-        @RequestParam("nameLen") String nameLen
-    ) {
-        CustomResponseData result = new CustomResponseData();
-        Map<String, Object> item = new HashMap<>();
-
-        int nameLength = Integer.parseInt(nameLen);
-
-        KorNameTempData userTempData = new KorNameTempData();
-
-        String tempName = userTempData.korNameGen(nameLength);
-
-        item.put("usersName", tempName);
-
-        result.setResultItem(item);
-        result.setResponseDateTime(LocalDateTime.now());
-
-        return result;
-    }
+    @Autowired private UsersService usersService;    
 
     /**
      * 회원가입이시 데이터가 저장되는 메서드 입니다.
@@ -229,27 +171,16 @@ public class UsersController {
         return result;
     }
 
-    // @GetMapping("/customOAuth2/kakao")
-    // public void cusotimOAuth2Kakao() {
-    //     log.debug("kakao login custom oauth2");
-        
-    //     String REQUEST_URL = "https://www.kauth.kakao.com/oauth/authorize";
-    //     String ACCESS_TOKEN = "";
-    //     String REFRESH_TOKEN = "";
-
-    //     try {
-    //         URL url = new URL(REQUEST_URL);
-    //         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-    //         conn.setRequestMethod("POST");
-    //         conn.setDoOutput(true);
-
-    //         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
-    //         StringBuilder sb = 
-    //          참고 https://suyeoniii.tistory.com/79
-    //     }
-
-    // }
+    @GetMapping("/OAuth2/Signin")
+    public void OAuth2Signin(
+        HttpServletRequest request, HttpServletResponse response,
+        @RequestParam("provider") String provider
+    ) {
+        log.debug("# {} Request {} platform login",request.getLocalAddr(), provider);
+        CustomSnsService cSS = new CustomSnsService(provider);
+        log.debug(cSS.getProvider());
+        //  //  참고 https://suyeoniii.tistory.com/79
+    }    
 
     /**
      * OAuth2를 활용한 SNS로그인 성공시 메서드 
@@ -259,7 +190,8 @@ public class UsersController {
      * @throws ServletException
      */
     @GetMapping("/oauth2SignIn.success")
-    public CustomResponseData oauth2SignInSuccess(
+    public void oauth2SignInSuccess(
+        HttpServletRequest request, HttpServletResponse response, HttpSession session,
         @AuthenticationPrincipal CustomPrincipalDetails principalUserDetails
     ) throws IOException, ServletException {
         CustomResponseData result = new CustomResponseData();
@@ -286,9 +218,39 @@ public class UsersController {
 
         result.setStatusCode(HttpStatus.OK.value());
         result.setResultItem(items);
-        result.setResponseDateTime(LocalDateTime.now());
+        result.setResponseDateTime(LocalDateTime.now()); 
 
-        return result;
+        Cookie cookie_sns = new Cookie("sns", sns);
+        Cookie cookie_email = new Cookie("email", usersEmail);
+        Cookie cookie_role = new Cookie("role", usersRole);
+
+        cookie_sns.setPath("/");
+        cookie_email.setPath("/");
+        cookie_role.setPath("/");
+       
+        response.addCookie(cookie_sns);
+        response.addCookie(cookie_email);
+        response.addCookie(cookie_role);
+
+        response.sendRedirect("http://localhost:3000/");
+
+        // return result;    
+    }
+
+    @GetMapping("/oauth2SignIn.failure")
+    public void oauth2SignInFailure(
+        @AuthenticationPrincipal CustomPrincipalDetails principalUserDetails,
+        HttpServletRequest request, HttpServletResponse response
+    ) throws IOException {
+        String platform = principalUserDetails.getProvider();
+        String usersEmail = principalUserDetails.getUsername();
+        log.info("# {}의 {} 계정을 활용한 로그인에 실패했습니다,", usersEmail, platform);
+        response.setContentType("text/html; charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        out.println("<script>alert(" + 
+        platform + " '계정을 활용한 로그인에 실패했습니다.'); location.href='http://localhost:3000/user/signin' " + 
+        "</script>");
+        // response.sendRedirect("http://localhost:3000/user/signin");
     }
 
     // @Operation(summary="회원정보 조회")

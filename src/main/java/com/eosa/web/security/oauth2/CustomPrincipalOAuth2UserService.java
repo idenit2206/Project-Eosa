@@ -1,8 +1,10 @@
 package com.eosa.web.security.oauth2;
 
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -58,8 +60,10 @@ public class CustomPrincipalOAuth2UserService extends DefaultOAuth2UserService {
             // log.debug("# customOAuth2UserInfo[google]: {}", customOAuth2UserInfo);
         }
         else if(provider.equals("naver")) {
+            Map<String, Object> response = oAuth2User.getAttribute("response");
             platform = provider;
             providerId = oAuth2User.getAttribute("sub");
+            usersEmail = response.get("email").toString();
         }
        
         log.debug("# platform: {}, email: {}", platform, usersEmail);
