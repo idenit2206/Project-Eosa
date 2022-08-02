@@ -13,9 +13,6 @@ import com.eosa.web.users.userinfo.SelectByUsersAccount;
 
 @Repository
 public interface UsersRepository extends JpaRepository<Users, Long> {
-   
-    // @Query(value="SELECT * FROM Users WHERE usersAccount=?1", nativeQuery=true)
-    // public Users findByUserAccount(String userAccount);
 
     @Modifying
     @Transactional
@@ -59,7 +56,7 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
 
     /**
      * 로그인 할 때 활용하는 메서드
-     * (Spring Security에서 JWT를 발급하는 로그인을 할때 사용하는 메서드)
+     * (Spring Security에서 로그인을 할때 사용하는 메서드)
      * @param usersAccount
      * @return Users
      */
@@ -141,5 +138,14 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
         nativeQuery = true
     )
     String accountMailSend(String usersEmail);
+
+    @Query(
+        value="SELECT usersAccount, usersName, usersNick, " + 
+        "usersPhone, usersEmail, usersRole, usersAge, " + 
+        "usersRegion1, usersRegion2, usersGender, usersNotice " +
+        "FROM Users WHERE usersAccount=:usersAccount AND usersPass=:usersPass"
+        ,nativeQuery = true 
+    )
+    FindByUsersAccount checkMyPageByPass(@Param("usersAccount") String usersAccount, @Param("usersPass") String usersPass);
      
 }

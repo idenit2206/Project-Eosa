@@ -2,9 +2,6 @@ package com.eosa.web.users;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,16 +16,23 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.eosa.web.security.CustomPrincipalDetails;
-
+import com.eosa.web.users.userinfo.FindByUsersAccount;
 import com.eosa.web.users.userinfo.SelectByUsersAccount;
 import com.eosa.web.util.CustomResponseData;
 import com.eosa.web.util.NullCheck;
@@ -41,7 +45,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping(value="/api/user")
 public class UsersController {
-
+ 
     private NullCheck nullCheck = new NullCheck();
 
     @Autowired private UsersService usersService;    
@@ -167,13 +171,15 @@ public class UsersController {
      */
     @GetMapping("/oauth2SignIn.success")
     public void oauth2SignInSuccess(
-        HttpServletRequest request, HttpServletResponse response, HttpSession session,
+        HttpServletRequest request, HttpServletResponse response,
+        RedirectAttributes redirectAttributes,
         @AuthenticationPrincipal CustomPrincipalDetails principalUserDetails
     ) throws IOException, ServletException {
         CustomResponseData result = new CustomResponseData();
         Map<String, Object> items = new HashMap<>();
             
         String sns = principalUserDetails.getProvider();
+        String usersAccount = principalUserDetails.getUsername();
         String usersEmail = principalUserDetails.getUsers().getUsersEmail();
         String usersRole = principalUserDetails.getUsers().getUsersRole();
         // log.debug("# sns:{}, usersEmail: {}, usersRole: {}",sns, usersEmail, usersRole);
@@ -182,7 +188,7 @@ public class UsersController {
         if(user != null) {
             existUsersEmail = user.getUsersEmail();            
             items.put("sns", sns);
-            items.put("usersEmail", existUsersEmail);
+            items.put("usersAccount", usersAccount);
             items.put("usersRole", usersRole);   
         }
         else {
@@ -194,23 +200,25 @@ public class UsersController {
 
         result.setStatusCode(HttpStatus.OK.value());
         result.setResultItem(items);
-        result.setResponseDateTime(LocalDateTime.now()); 
+        result.setResponseDateTime(LocalDateTime.now());
+
+        redirectAttributes.addAttribute("email", usersEmail);
 
         Cookie cookie_sns = new Cookie("sns", sns);
-        Cookie cookie_email = new Cookie("email", usersEmail);
+        Cookie cookie_account = new Cookie("account", usersAccount);
         Cookie cookie_role = new Cookie("role", usersRole);
 
         cookie_sns.setPath("/");
-        cookie_email.setPath("/");
+        cookie_account.setPath("/");
         cookie_role.setPath("/");
        
         response.addCookie(cookie_sns);
-        response.addCookie(cookie_email);
+        response.addCookie(cookie_account);
         response.addCookie(cookie_role);
 
         response.sendRedirect("http://localhost:3000/");
 
-        // return result;    
+        // return result;
     }
 
     @GetMapping("/oauth2SignIn.failure")
@@ -229,6 +237,13 @@ public class UsersController {
         // response.sendRedirect("http://localhost:3000/user/signin");
     }
 
+    /**
+     * 사용자가 계정을 분실했을 때 활용되는 메서드 입니다.
+     * 사용자의 회원가입 당시 등록한 이메일을 활용해 계정정보를 찾습니다.
+     * @param usersEmail
+     * @return
+     */
+    @Operation(summary="사용자가 계정을 분실했을 때 활용되는 메서드")
     @GetMapping("/checkAccountByUsersEmail")
     public CustomResponseData checkAccountByUsersEmail(
         @RequestParam("usersEmail") String usersEmail
@@ -248,6 +263,30 @@ public class UsersController {
             log.error("# {} 과 일치하는 회원 정보가 없습니다.", usersEmail);
             result.setStatusCode(HttpStatus.NO_CONTENT.value());
             result.setResultItem("일치하는 회원정보가 없습니다.");
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
+
+    @PostMapping("/checkMyPagePass")
+    public CustomResponseData checkMyPagePass(
+        @RequestParam("usersAccount") String usersAccount,
+        @RequestParam("usersPass") String usersPass
+    ) {
+        CustomResponseData result = new CustomResponseData();
+        log.debug("# usersAccount : usersPass -> {} : {}", usersAccount, usersPass);
+        FindByUsersAccount transaction = usersService.checkMyPageByPass(usersAccount, usersPass);
+        // log.debug("# UserInfoByUsersAccount {}", transaction.getUsersAccount());
+        
+        if(transaction.getUsersAccount().equals(usersAccount)) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(transaction);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            result.setResultItem(null);
             result.setResponseDateTime(LocalDateTime.now());
         }
 
@@ -360,4 +399,6 @@ public class UsersController {
         }
         return result;
     }
+
+    
 }

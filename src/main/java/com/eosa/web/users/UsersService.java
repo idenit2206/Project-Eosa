@@ -13,9 +13,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.eosa.web.security.CustomPrincipalDetails;
+import com.eosa.web.users.userinfo.FindByUsersAccount;
 import com.eosa.web.users.userinfo.SelectByUsersAccount;
 
 import lombok.extern.slf4j.Slf4j;
@@ -82,9 +85,32 @@ public class UsersService implements UsersRepository {
     public int checkAccountByUsersEmail(String usersEmail) {
         return usersRepository.checkAccountByUsersEmail(usersEmail);
     }
-    
+    /**
+     * 회원의 이메일주소를 활용해 회원의 계정을 찾습니다.
+     */
     public String accountMailSend(String usersEmail) {
         return usersRepository.accountMailSend(usersEmail);
+    }
+
+    /**
+     * 회원정보를 조회하기전에 비밀번호를 입력해 검증합니다.
+     */
+    public FindByUsersAccount checkMyPageByPass(String usersAccount, String usersPass) {
+        FindByUsersAccount result = null;
+        Users user = usersRepository.findByUsersAccount(usersAccount);
+        UserDetails ud = new CustomPrincipalDetails(user);
+
+        if(passwordEncoder.matches(usersPass, ud.getPassword())) {
+            log.debug("## MyPage접근 Pass 일치");
+            result = usersRepository.checkMyPageByPass(usersAccount, ud.getPassword());
+            // checkMyPageByPass(usersAccount, usersPass);
+        }
+        else {
+            log.error("# MyPage접근 Pass 불일치");
+            result = null;
+        }
+
+        return result;
     }
     
     /**
