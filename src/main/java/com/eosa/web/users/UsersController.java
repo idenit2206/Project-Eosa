@@ -48,7 +48,12 @@ public class UsersController {
  
     private NullCheck nullCheck = new NullCheck();
 
-    @Autowired private UsersService usersService;    
+    @Autowired private UsersService usersService;
+
+    @GetMapping("/test01")
+    public String test01() {
+        return "/api/user/test01";
+    }
 
     /**
      * 회원가입이시 데이터가 저장되는 메서드 입니다.

@@ -27,7 +27,11 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name="Users")
 public class Users {
-    
+
+    public enum usersRole {
+        CLIENT, DETECTIVE, CEO, ADMIN, SUPER_ADMIN
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long usersIdx;
@@ -106,15 +110,6 @@ public class Users {
         this.usersEmail = usersEmail;
         this.provider = provider;
         this.providerId = providerId;
-    }
-
-    @Override
-    public String toString() {
-        return "Users [provider=" + provider + ", providerId=" + providerId + ", usersAccount=" + usersAccount
-                + ", usersAge=" + usersAge + ", usersEmail=" + usersEmail + ", usersGender=" + usersGender
-                + ", usersIdx=" + usersIdx + ", usersName=" + usersName + ", usersNick=" + usersNick + ", usersPass="
-                + usersPass + ", usersPhone=" + usersPhone + ", usersRegion1=" + usersRegion1 + ", usersRegion2="
-                + usersRegion2 + ", usersRole=" + usersRole + "]";
     }
 
 }

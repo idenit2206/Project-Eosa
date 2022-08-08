@@ -22,7 +22,8 @@ public class CustomSecurityConfig {
     @Autowired private CustomLogoutSuccessHandler customLogoutSuccessHandler;
     
     private String[] ANYONE_PERMIT = {
-       "/", "/api/user/**", "/api/mail/**"
+        "/", "/assets/**", "/webjars/**", "/admin/signIn",
+        "/api/user/**", "/api/mail/**"
     };
 
     @Bean
@@ -38,7 +39,6 @@ public class CustomSecurityConfig {
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);
-        configuration.addAllowedOrigin("http://localhost:3000");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
@@ -54,7 +54,8 @@ public class CustomSecurityConfig {
             .csrf().disable()
             .authorizeRequests()
                 .antMatchers(ANYONE_PERMIT).permitAll()
-                .anyRequest().authenticated()
+                // .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 // .anyRequest().hasAnyAuthority("ADMIN, SUPER_ADMIN")
         .and()
             .formLogin()
@@ -63,7 +64,14 @@ public class CustomSecurityConfig {
                     .usernameParameter("usersAccount").passwordParameter("usersPass")                       
                     .successForwardUrl("/api/user/signIn.success")
                     .failureForwardUrl("/api/user/signIn.failure")
-                    // .permitAll()           
+                    // .permitAll()
+        .and()
+            .formLogin()
+                .loginPage("/admin/signIn")
+                    .loginProcessingUrl("/admin/signIn.do")
+                    .usernameParameter("usersAccount").passwordParameter("usersPass")                       
+                    .successForwardUrl("/admin/signIn.success")
+                    .failureForwardUrl("/admin/signIn.failure")     
         .and()
             .oauth2Login()
                 .loginPage("http://localhost:3000/user/signin")

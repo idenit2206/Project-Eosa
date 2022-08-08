@@ -150,6 +150,13 @@ public class UsersService implements UsersRepository {
         return tran;
     }
 
+    public int updateAdminUserInfo(Users param) {
+        String newPass = passwordEncoder.encode(param.getUsersPass());
+        param.setUsersPass(newPass);
+        int tran = usersRepository.updateAdminUserInfo(param);
+        return tran;
+    }
+
     /**
      * 사용자 서비스 탈퇴를 수행하는 메서드 
     */

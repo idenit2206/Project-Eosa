@@ -119,6 +119,20 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     @Transactional
     @Query(
         value="UPDATE Users " +
+        "SET " + 
+        "usersAccount=:#{#Users.usersAccount}, " +
+        "usersPass=:#{#Users.usersPass}, " +
+        "usersName=:#{#Users.usersName}, " +
+        "usersEmail=:#{#Users.usersEmail} " +    
+        "WHERE usersIdx = :#{#Users.usersIdx}"
+        ,nativeQuery=true
+    )
+    int updateAdminUserInfo(@Param("Users") Users param);
+
+    @Modifying
+    @Transactional
+    @Query(
+        value="UPDATE Users " +
         "SET usersEnabled=0, " +
         "usersDelete=1 " +
         "WHERE usersIdx=?1"
