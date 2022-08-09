@@ -4,13 +4,13 @@
     <link rel="stylesheet" href="/assets/css/index.css" />
     <link rel="stylesheet" href="/assets/css/usersmanage/UsersManage.css" />
 </head>
-<head th:replace="fragments/html-head.html :: html-head" />
+<head th:replace="admin/fragments/html-head.html :: html-head" />
 <body>
-<header th:replace="fragments/html-header.html :: html-header" />
+<header th:replace="admin/fragments/html-header.html :: html-header" />
 <div class="container-fluid">	
     <div class="row">
         <div class="col-2">
-            <nav th:replace="fragments/html-sidebar.html :: html-sidebar" />
+            <nav th:replace="admin/fragments/html-sidebar.html :: html-sidebar" />
         </div>
         <div class="col-10">
             <h3>회원 관리</h3>
@@ -32,7 +32,7 @@
                     <tbody>
                         <tr th:each="usersList : ${usersList}">
                             <td>[[${usersList.usersIdx}]]</td>
-                            <td><a th:href="@{/usersManage/usersInfo(usersAccount=${usersList.usersAccount})}">[[${usersList.usersAccount}]]</a></td>
+                            <td><a th:href="@{/admin/usersManage/usersInfo(usersAccount=${usersList.usersAccount})}">[[${usersList.usersAccount}]]</a></td>
                             <td>[[${usersList.usersRole}]]</td>
                             <td>[[${usersList.usersJoinDate}]]</td>
                         </tr>
@@ -43,17 +43,17 @@
                 <nav>
                     <ul class="pagination">
                         <li th:if="${currentPage > pagination.blockCount}">
-                            <a class="page-link" th:href="@{/usersManage/usersList(currentPage=${pagination.previousBlock})}">
+                            <a class="page-link" th:href="@{/admin/usersManage/usersList(currentPage=${pagination.previousBlock})}">
                                 PREV
                             </a>
                         </li>
                         <li class="page-item" th:each="page : ${#numbers.sequence(pagination.blockFirst, pagination.blockLast)}">
-                            <a class="page-link" th:href="@{/UsersManage/UsersList(currentPage=${page})}">
+                            <a class="page-link" th:href="@{/admin/usersManage/usersList(currentPage=${page})}">
                                 [[${page}]]
                             </a>
                         </li>
                         <li th:if="${pagination.blockCount > 10}">
-                            <a class="page-link" th:href="@{/UsersManage/UsersList(currentPage=${pagination.nextBlock})}">
+                            <a class="page-link" th:href="@{/admin/usersManage/usersList(currentPage=${pagination.nextBlock})}">
                                 NEXT
                             </a>
                         </li>

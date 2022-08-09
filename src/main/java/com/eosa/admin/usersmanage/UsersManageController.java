@@ -94,7 +94,7 @@ public class UsersManageController {
         model.addAttribute("usersList", usersList);
         model.addAttribute("pagination", pagination);
 
-        return "/usersmanage/UsersList";
+        return "/admin/usersmanage/UsersList";
     }
 
     /**
@@ -111,7 +111,7 @@ public class UsersManageController {
         log.info("% {} 유저의 UsersInfo를 불러옵니다.", usersAccount);
         Users usersInfo = usersManageService.getByUsersAccount(usersAccount);
         model.addAttribute("Users", usersInfo);
-        return "/usersmanage/UsersInfo";
+        return "/admin/usersmanage/UsersInfo";
     }
 
     /**

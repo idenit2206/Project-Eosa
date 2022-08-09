@@ -26,7 +26,7 @@ public class IndexController {
         ModelAndView mv = new ModelAndView();
         Users user = usersService.findByUsersAccount("superadmin88");
 
-        mv.setViewName("/adminIndex");
+        mv.setViewName("/admin/index");
         mv.addObject("user", user);
         return mv;
     }

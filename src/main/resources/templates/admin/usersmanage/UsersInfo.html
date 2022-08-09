@@ -4,18 +4,18 @@
     <link rel="stylesheet" href="/assets/css/index.css" />
     <link rel="stylesheet" href="/assets/css/usersmanage/UsersInfo.css" />
 </head>
-<head th:replace="fragments/html-head.html :: html-head"></head>
+<head th:replace="admin/fragments/html-head.html :: html-head"></head>
 <body>
-<header th:replace="fragments/html-header.html :: html-header"></header>
+<header th:replace="admin/fragments/html-header.html :: html-header"></header>
 <div class="container-fluid">	
     <div class="row">
         <div class="col-2">
-            <nav th:replace="fragments/html-sidebar.html :: html-sidebar"></nav>
+            <nav th:replace="admin/fragments/html-sidebar.html :: html-sidebar"></nav>
         </div>
         <div class="col-10">
             <div class="userInfo-main w-100 m-auto">
                 <h3>회원 상세정보</h3>
-                <form method="POST" th:action="@{/usersManage/usersInfo.up}" class="form needs-valdiation">
+                <form method="POST" th:action="@{/admin/usersManage/usersInfo.up}" class="form needs-valdiation">
                     <div class="">
                         <label class="form-label" for="usersAccount">아이디</label>
                         <div class="input-group has-validation">

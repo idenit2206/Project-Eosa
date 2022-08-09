@@ -55,7 +55,7 @@ public class AdminUserController {
     @GetMapping("/signIn")
     public String adminSignInForm() {
         // log.info("## Someone Request /signInForm");
-        return "/signin/SignIn";
+        return "/admin/signin/SignIn";
     }
 
     @PostMapping(value="/signIn.success")
@@ -69,13 +69,14 @@ public class AdminUserController {
             log.info("## 환영합니다 {} 님.", usersAccount);
             Users user = usersService.findByUsersAccount(usersAccount);
 
-            mv.setViewName("/adminIndex");
+            mv.setViewName("/admin/index");
             mv.addObject("user", user);
             
             return mv;
         }
         else {
             log.info("## 권한이 없는 사용자 입니다. 사용자명: {}.", usersAccount);
+            mv.setViewName("/admin/signin/SignIn");
             return mv;
         }        
     }

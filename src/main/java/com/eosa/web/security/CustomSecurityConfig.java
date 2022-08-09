@@ -3,10 +3,13 @@ package com.eosa.web.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.session.ConcurrentSessionFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -14,17 +17,12 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
+@Order(1)
 @RequiredArgsConstructor
-@EnableWebSecurity
 public class CustomSecurityConfig {
 
     // @Autowired private CustomPrincipalOAuth2UserService customPrincipalOAuth2UserService;
-    @Autowired private CustomLogoutSuccessHandler customLogoutSuccessHandler;
-    
-    private String[] ANYONE_PERMIT = {
-        "/", "/assets/**", "/webjars/**", "/admin/signIn",
-        "/api/user/**", "/api/mail/**"
-    };
+    @Autowired private CustomLogoutSuccessHandler customLogoutSuccessHandler; 
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
@@ -45,33 +43,29 @@ public class CustomSecurityConfig {
         return source;
     }
 
+    private String[] ANYONE_PERMIT = {
+        // Admin Page
+        "/assets/**", "/js/**", "/css/**", "/webjars/**", "/admin/signIn", "/admin/**",       
+        "/api/user/**", "/api/mail/**"
+    };
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            // .cors().disable()
+            .cors().disable()
             .cors().configurationSource(customConfigurationSource())
         .and()
             .csrf().disable()
             .authorizeRequests()
                 .antMatchers(ANYONE_PERMIT).permitAll()
-                // .anyRequest().authenticated()
-                .anyRequest().permitAll()
-                // .anyRequest().hasAnyAuthority("ADMIN, SUPER_ADMIN")
+                .anyRequest().hasAnyAuthority("CLIENT, DETECTIVE")
         .and()
             .formLogin()
                 .loginPage("http://localhost:3000/user/signin")
                     .loginProcessingUrl("/api/user/signIn.do")
                     .usernameParameter("usersAccount").passwordParameter("usersPass")                       
                     .successForwardUrl("/api/user/signIn.success")
-                    .failureForwardUrl("/api/user/signIn.failure")
-                    // .permitAll()
-        .and()
-            .formLogin()
-                .loginPage("/admin/signIn")
-                    .loginProcessingUrl("/admin/signIn.do")
-                    .usernameParameter("usersAccount").passwordParameter("usersPass")                       
-                    .successForwardUrl("/admin/signIn.success")
-                    .failureForwardUrl("/admin/signIn.failure")     
+                    .failureForwardUrl("/api/user/signIn.failure")            
         .and()
             .oauth2Login()
                 .loginPage("http://localhost:3000/user/signin")
@@ -84,9 +78,7 @@ public class CustomSecurityConfig {
             .logout()
                     .logoutUrl("/api/user/signOut.do")
                         .logoutSuccessHandler(customLogoutSuccessHandler);
-                        // .permitAll()
+
         return http.build();
     }
-
-
 }
