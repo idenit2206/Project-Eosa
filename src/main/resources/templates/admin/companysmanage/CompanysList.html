@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/assets/css/index.css" />
+    <link rel="stylesheet" href="/assets/css/usersmanage/UsersManage.css" />
+</head>
+<head th:replace="admin/fragments/html-head.html :: html-head" />
+<body>
+<header th:replace="admin/fragments/html-header.html :: html-header" />
+<div class="container-fluid">	
+    <div class="row">
+        <div class="col-2">
+            <nav th:replace="admin/fragments/html-sidebar.html :: html-sidebar" />
+        </div>
+        <div class="col-10">
+            <h3>회원 관리</h3>
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="회원 아이디" aria-label="회원 아이디" aria-describedby="searchBtn">
+                <button class="btn btn-outline-secondary" type="button" id="searchBtn">검색</button>
+            </div>
+            <br/>            
+            <div class="tableDiv">
+                <table class="table">
+                    <thead>
+                        <tr class="table-success">
+                            <th>회원 번호</th>
+                            <th>아이디</th>
+                            <th>속성</th>
+                            <th>가입일</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- <tr th:each="companysList : ${companysList}">
+                            <td>[[${companysList.companysIdx}]]</td>
+                            <td><a th:href="@{/admin/usersManage/usersInfo(usersAccount=${companys.usersAccount})}">[[${usersList.usersAccount}]]</a></td>
+                        </tr> -->
+                    </tbody>
+                </table>
+            </div>
+            <!-- <div class="">
+                <nav>
+                    <ul class="pagination">
+                        <li th:if="${currentPage > pagination.blockCount}">
+                            <a class="page-link" th:href="@{/admin/usersManage/usersList(currentPage=${pagination.previousBlock})}">
+                                PREV
+                            </a>
+                        </li>
+                        <li class="page-item" th:each="page : ${#numbers.sequence(pagination.blockFirst, pagination.blockLast)}">
+                            <a class="page-link" th:href="@{/admin/usersManage/usersList(currentPage=${page})}">
+                                [[${page}]]
+                            </a>
+                        </li>
+                        <li th:if="${pagination.blockCount > 10}">
+                            <a class="page-link" th:href="@{/admin/usersManage/usersList(currentPage=${pagination.nextBlock})}">
+                                NEXT
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div> -->
+        </div>
+    </div>
+</div>
+</body>
+</html>

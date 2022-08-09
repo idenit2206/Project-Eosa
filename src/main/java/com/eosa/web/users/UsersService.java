@@ -13,9 +13,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.eosa.web.security.CustomPrincipalDetails;
 import com.eosa.web.users.userinfo.FindByUsersAccount;
 import com.eosa.web.users.userinfo.SelectByUsersAccount;
 
@@ -63,7 +65,7 @@ public class UsersService implements UsersRepository {
    
     /**
      * 사용자 계정을 기반으로 해당 사용자의 정보 조회 (사용자 정보 조회시 사용)
-    */
+     */
     public SelectByUsersAccount selectByUsersAccount(String usersAccount) {
         SelectByUsersAccount result = usersRepository.selectByUsersAccount(usersAccount);
         if(result == null) {
@@ -74,6 +76,41 @@ public class UsersService implements UsersRepository {
 
     public Users selectByUsersEmail(String usersEmail) {
         return usersRepository.selectByUsersEmail(usersEmail);
+    }
+
+    /**
+     * 회원정보(계정)를 분실한 사용자가 이메일을 활용해 계정의 유무를 확인합니다.
+     * 계정이 있으면 1 을 출력합니다.
+     */
+    public int checkAccountByUsersEmail(String usersEmail) {
+        return usersRepository.checkAccountByUsersEmail(usersEmail);
+    }
+    /**
+     * 회원의 이메일주소를 활용해 회원의 계정을 찾습니다.
+     */
+    public String accountMailSend(String usersEmail) {
+        return usersRepository.accountMailSend(usersEmail);
+    }
+
+    /**
+     * 회원정보를 조회하기전에 비밀번호를 입력해 검증합니다.
+     */
+    public FindByUsersAccount checkMyPageByPass(String usersAccount, String usersPass) {
+        FindByUsersAccount result = null;
+        Users user = usersRepository.findByUsersAccount(usersAccount);
+        UserDetails ud = new CustomPrincipalDetails(user);
+
+        if(passwordEncoder.matches(usersPass, ud.getPassword())) {
+            log.debug("## MyPage접근 Pass 일치");
+            result = usersRepository.checkMyPageByPass(usersAccount, ud.getPassword());
+            // checkMyPageByPass(usersAccount, usersPass);
+        }
+        else {
+            log.error("# MyPage접근 Pass 불일치");
+            result = null;
+        }
+
+        return result;
     }
     
     /**
@@ -110,6 +147,13 @@ public class UsersService implements UsersRepository {
         String newPass = passwordEncoder.encode(param.getUsersPass());
         param.setUsersPass(newPass);
         int tran = usersRepository.updateUserInfo(param);
+        return tran;
+    }
+
+    public int updateAdminUserInfo(Users param) {
+        String newPass = passwordEncoder.encode(param.getUsersPass());
+        param.setUsersPass(newPass);
+        int tran = usersRepository.updateAdminUserInfo(param);
         return tran;
     }
 

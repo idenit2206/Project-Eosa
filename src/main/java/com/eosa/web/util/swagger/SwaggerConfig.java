@@ -1,4 +1,4 @@
-package com.eosa.web.config;
+package com.eosa.web.util.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

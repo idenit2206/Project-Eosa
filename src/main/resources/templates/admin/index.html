@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<link rel="stylesheet" href="/assets/css/index.css" />
+</head>
+<head th:replace="admin/fragments/html-head.html :: html-head"/>
+<body>
+<header th:replace="admin/fragments/html-header.html :: html-header" />
+<div class="container-fluid">	
+	<div class="row">
+		<div class="col-2">
+			<nav th:replace="admin/fragments/html-sidebar.html :: html-sidebar" />
+		</div>
+		<div class="col-10">
+			<div class="index-main container text-center">
+				<div class="row">
+					<h3 class="h3">마이페이지</h3>
+				</div>
+				<form class="form" method="POST" th:action="@{/admin/adminUpdate}">
+				<div class="row invisible-row">
+					<div class="col-3 text-start">
+						<label for="usersIdx">회원번호</label>						
+					</div>
+					<div class="col-9 text-start">
+						<input type="text" size="30" id="usersIdx" name="usersIdx" th:value="${user.usersIdx}" readonly/>
+					</div>				
+				</div>
+				<div class="row">
+					<div class="col-3 text-start">
+						<label for="usersAccount">아이디</label>						
+					</div>
+					<div class="col-9 text-start">
+						<input type="text" size="30" id="usersAccount" name="usersAccount" th:value="${user.usersAccount}"/>
+					</div>				
+				</div>
+				<div class="row">
+					<div class="col-3 text-start">
+						<label for="usersPass">새 비밀번호</label>
+					</div>
+					<div class="col-9 text-start">
+						<input type="password" size="30" id="usersPass" name="usersPass" value="" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-3 text-start">
+						<label for="usersPassCheck">비밀번호 확인</label>
+					</div>
+					<div class="col-9 text-start">
+						<input type="password" size="30" id="usersPassCheck" name="usersPassCheck" value="" />
+					</div>					
+				</div>
+				<div class="row">
+					<div class="col-3 text-start">
+						<label for="usersName">이름</label>
+					</div>
+					<div class="col-9 text-start">
+						<input type="text" size="30" id="usersName" name="usersName" th:value="${user.usersName}" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-3 text-start">
+						<label for="usersPhone">연락처</label>
+					</div>
+					<div class="col-9 text-start">
+						<input type="text" size="30" id="usersPhone" name="usersPhone" th:value="${user.usersPhone}" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-3 text-start">
+						<label for="usersEmail">이메일</label>
+					</div>
+					<div class="col-9 text-start">
+						<input type="text" size="30" id="usersEmail" name="usersEmail" th:value="${user.usersEmail}" />
+					</div>
+				</div>
+				<br/>
+				<br/>
+				<div class="row">
+					<div class="col text-end">
+						<input type="submit" class="btn btn-primary" value="수정" />
+					</div>
+					<div class="col text-start">
+						<input type="reset" class="btn" value="취소" />
+					</div>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

@@ -61,6 +61,10 @@ public class CustomPrincipalDetails implements UserDetails, OAuth2User {
         return auths;
     }
 
+    public String customGetAuthorities() {
+        return users.getUsersRole();
+    }
+
     /**
      * OAuth2User와 연동 SNS플랫폼에 있는 사용자 정보 반환
     */    

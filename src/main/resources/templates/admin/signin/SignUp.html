@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+	
+</head>
+<body>
+<div class="wrapper">
+    <form method="POST" action="/admin/signUp.do">
+        <label for="adminUserAccount">아이디</label>
+        <input type="text" name="adminUserAccount" id="adminUserAccount" value=""/>
+        <br />
+        <label for="adminUserPass">비밀번호</label>
+        <input type="password" name="adminUserPass" id="adminUserPass" value=""/>
+        <br />
+        <label for="adminUserPassCheck">비밀번호 확인</label>
+        <input type="password" name="adminUserPassCheck" id="adminUserPassCheck" value=""/>
+        <br />
+        <label for="adminUserName">이름</label>
+        <input type="text" name="adminUserName" id="adminUserName" value=""/>
+        <br />
+        <label for="adminUserMobile">연락처</label>
+        <input type="text" name="adminUserMobile" id="adminUserMobile" value=""/>
+        <br />
+        <label for="adminUserEmail">이메일</label>
+        <input type="text" name="adminUserEmail" id="adminUserEmail" value=""/>
+        <br />
+        <input type="submit" value="회원가입" />
+        <input type="reset" value="취소" />
+    </form>
+</div>
+</body>
+</html>

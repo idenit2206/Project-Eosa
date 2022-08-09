@@ -1,16 +1,12 @@
 package com.eosa.web.users;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
-import javax.servlet.RequestDispatcher;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -19,26 +15,23 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.ui.Model;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.eosa.web.security.CustomPrincipalDetails;
-
-import com.eosa.web.users.temprandom.KorNameTempData;
 import com.eosa.web.users.userinfo.FindByUsersAccount;
 import com.eosa.web.users.userinfo.SelectByUsersAccount;
 import com.eosa.web.util.CustomResponseData;
@@ -52,57 +45,14 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping(value="/api/user")
 public class UsersController {
-
+ 
     private NullCheck nullCheck = new NullCheck();
 
     @Autowired private UsersService usersService;
 
-    /**
-     * 테스트를 위한 메서드입니다.
-     * @param status HttpStatusCode 관련 테스트를 위한 매개변수
-     * @param req HttpServletRequest 관련 테스트를 위한 매개변수
-     * @param res HttpServletResponse 관련 테스트를 위한 매개변수
-     * @return {statusCode, resultItem, currentTime}
-     */
-    @Operation(summary = "/test01", description = "테스트용 입니다.")
     @GetMapping("/test01")
-    public CustomResponseData test01(
-        HttpStatus status, HttpServletRequest req, HttpServletResponse res
-    ) {      
-        CustomResponseData result = new CustomResponseData();
-        LocalDateTime currentTime = LocalDateTime.now();
-
-        int code = status.FAILED_DEPENDENCY.value();
-        Map<Integer, String> item = new HashMap<>();        
-        item.put(1, "넌 못지나간다.");
-        item.put(2, "가고 싶은데로 간다!");
-
-        result.setStatusCode(code);
-        result.setResultItem(item);
-        result.setResponseDateTime(currentTime);
-
-        return result;
-    }
-
-    @GetMapping("/test02")
-    public CustomResponseData Test02Method(
-        @RequestParam("nameLen") String nameLen
-    ) {
-        CustomResponseData result = new CustomResponseData();
-        Map<String, Object> item = new HashMap<>();
-
-        int nameLength = Integer.parseInt(nameLen);
-
-        KorNameTempData userTempData = new KorNameTempData();
-
-        String tempName = userTempData.korNameGen(nameLength);
-
-        item.put("usersName", tempName);
-
-        result.setResultItem(item);
-        result.setResponseDateTime(LocalDateTime.now());
-
-        return result;
+    public String test01() {
+        return "/api/user/test01";
     }
 
     /**
@@ -121,6 +71,8 @@ public class UsersController {
         log.info("{} has \"/signUp.do\" Request", requester);
         CustomResponseData result = new CustomResponseData();
         LocalDateTime currentTime = LocalDateTime.now();
+        
+        log.debug("# param: {}", param);
         
         String[] targets = {"usersAccount", "usersPass", "usersName", "usersNick", "usersPhone", "usersEmail", "usersRole", "usersAge", "usersRegion1", "usersRegion2", "usersGender", "usersNotice"};        
         Map<String, Object> checkItem = nullCheck.ObjectNullCheck(param, targets);
@@ -174,9 +126,6 @@ public class UsersController {
         
         SelectByUsersAccount userInfo = usersService.selectByUsersAccount(usersAccount);
 
-        // log.info("## [REQUEST] {}", req.toString());
-        // log.info("## [RESPONSE] {}", res.getOutputStream());
-
         Map<String, Object> items = new HashMap<>();
         items.put("message", "Welcome");
         items.put("userInfo", userInfo);
@@ -215,43 +164,6 @@ public class UsersController {
         return result;
     }
 
-    @GetMapping(value="/signOut.success")
-    public CustomResponseData signOutSuccess(
-        @RequestParam(value="usersAccount") String usersAccount
-    ) {
-        log.info("# SignOut {}", usersAccount);
-        CustomResponseData result = new CustomResponseData();
-
-        Map<String, Object> item = new HashMap<>();
-        item.put("message", usersAccount + "signOut Complete See ya");
-
-        result.setResultItem(item);
-
-        return result;
-    }
-
-    // @GetMapping("/customOAuth2/kakao")
-    // public void cusotimOAuth2Kakao() {
-    //     log.debug("kakao login custom oauth2");
-        
-    //     String REQUEST_URL = "https://www.kauth.kakao.com/oauth/authorize";
-    //     String ACCESS_TOKEN = "";
-    //     String REFRESH_TOKEN = "";
-
-    //     try {
-    //         URL url = new URL(REQUEST_URL);
-    //         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-    //         conn.setRequestMethod("POST");
-    //         conn.setDoOutput(true);
-
-    //         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
-    //         StringBuilder sb = 
-    //          참고 https://suyeoniii.tistory.com/79
-    //     }
-
-    // }
-
     /**
      * OAuth2를 활용한 SNS로그인 성공시 메서드 
      * @param principalUserDetails
@@ -260,14 +172,16 @@ public class UsersController {
      * @throws ServletException
      */
     @GetMapping("/oauth2SignIn.success")
-    public CustomResponseData oauth2SignInSuccess(
-        HttpServletRequest request, HttpServletResponse response, HttpSession session,
+    public void oauth2SignInSuccess(
+        HttpServletRequest request, HttpServletResponse response,
+        RedirectAttributes redirectAttributes,
         @AuthenticationPrincipal CustomPrincipalDetails principalUserDetails
     ) throws IOException, ServletException {
         CustomResponseData result = new CustomResponseData();
         Map<String, Object> items = new HashMap<>();
             
         String sns = principalUserDetails.getProvider();
+        String usersAccount = principalUserDetails.getUsername();
         String usersEmail = principalUserDetails.getUsers().getUsersEmail();
         String usersRole = principalUserDetails.getUsers().getUsersRole();
         // log.debug("# sns:{}, usersEmail: {}, usersRole: {}",sns, usersEmail, usersRole);
@@ -276,7 +190,7 @@ public class UsersController {
         if(user != null) {
             existUsersEmail = user.getUsersEmail();            
             items.put("sns", sns);
-            items.put("usersEmail", existUsersEmail);
+            items.put("usersAccount", usersAccount);
             items.put("usersRole", usersRole);   
         }
         else {
@@ -290,12 +204,93 @@ public class UsersController {
         result.setResultItem(items);
         result.setResponseDateTime(LocalDateTime.now());
 
-        log.info("session {}",session.getId());
-        Cookie c2 = new Cookie("email", usersEmail);
+        redirectAttributes.addAttribute("email", usersEmail);
+
+        Cookie cookie_sns = new Cookie("sns", sns);
+        Cookie cookie_account = new Cookie("account", usersAccount);
+        Cookie cookie_role = new Cookie("role", usersRole);
+
+        cookie_sns.setPath("/");
+        cookie_account.setPath("/");
+        cookie_role.setPath("/");
+       
+        response.addCookie(cookie_sns);
+        response.addCookie(cookie_account);
+        response.addCookie(cookie_role);
+
+        response.sendRedirect("http://localhost:3000/");
+
+        // return result;
+    }
+
+    @GetMapping("/oauth2SignIn.failure")
+    public void oauth2SignInFailure(
+        @AuthenticationPrincipal CustomPrincipalDetails principalUserDetails,
+        HttpServletRequest request, HttpServletResponse response
+    ) throws IOException {
+        String platform = principalUserDetails.getProvider();
+        String usersEmail = principalUserDetails.getUsername();
+        log.info("# {}의 {} 계정을 활용한 로그인에 실패했습니다,", usersEmail, platform);
+        response.setContentType("text/html; charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        out.println("<script>alert(" + 
+        platform + " '계정을 활용한 로그인에 실패했습니다.'); location.href='http://localhost:3000/user/signin' " + 
+        "</script>");
+        // response.sendRedirect("http://localhost:3000/user/signin");
+    }
+
+    /**
+     * 사용자가 계정을 분실했을 때 활용되는 메서드 입니다.
+     * 사용자의 회원가입 당시 등록한 이메일을 활용해 계정정보를 찾습니다.
+     * @param usersEmail
+     * @return
+     */
+    @Operation(summary="사용자가 계정을 분실했을 때 활용되는 메서드")
+    @GetMapping("/checkAccountByUsersEmail")
+    public CustomResponseData checkAccountByUsersEmail(
+        @RequestParam("usersEmail") String usersEmail
+    ) {
+        log.debug("# Requestsed Email: {}", usersEmail);
+        CustomResponseData result = new CustomResponseData();
+
+        int transaction = usersService.checkAccountByUsersEmail(usersEmail);
+
+        if(transaction == 1) {
+            log.info("# {} 은 존재하는 회원입니다.", usersEmail);
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem("회원정보가 존재합니다.");
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            log.error("# {} 과 일치하는 회원 정보가 없습니다.", usersEmail);
+            result.setStatusCode(HttpStatus.NO_CONTENT.value());
+            result.setResultItem("일치하는 회원정보가 없습니다.");
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
+
+    @PostMapping("/checkMyPagePass")
+    public CustomResponseData checkMyPagePass(
+        @RequestParam("usersAccount") String usersAccount,
+        @RequestParam("usersPass") String usersPass
+    ) {
+        CustomResponseData result = new CustomResponseData();
+        log.debug("# usersAccount : usersPass -> {} : {}", usersAccount, usersPass);
+        FindByUsersAccount transaction = usersService.checkMyPageByPass(usersAccount, usersPass);
+        // log.debug("# UserInfoByUsersAccount {}", transaction.getUsersAccount());
         
-        response.addCookie(c2);
-        request.setAttribute("items", items);
-        session.setAttribute("items", items);
+        if(transaction.getUsersAccount().equals(usersAccount)) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(transaction);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
 
         return result;
     }
@@ -406,4 +401,6 @@ public class UsersController {
         }
         return result;
     }
+
+    
 }
