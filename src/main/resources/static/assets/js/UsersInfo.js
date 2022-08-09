@@ -219,11 +219,11 @@ window.onload = () => {
 
 _USERS_NOTICE.addEventListener("change", (e) => {
     if(e.target.checked == true) {
-        e.value = 1;
-        // console.log(e.value);
+        _USERS_NOTICE.value = parseInt(1);
+        // console.log(_USERS_NOTICE.value);
     }
     else {
-        e.value = 0;
-        // console.log(e.value);
+        _USERS_NOTICE.value = parseInt(0);
+        // console.log(_USERS_NOTICE.value);
     }
 })

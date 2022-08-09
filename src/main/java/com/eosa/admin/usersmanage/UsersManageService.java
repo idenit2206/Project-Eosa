@@ -60,7 +60,8 @@ public class UsersManageService implements UsersManageRepository {
         entity.setUsersNick(usersAccount.substring(0, 5));
         entity.setUsersPhone(usersPhone);
         entity.setUsersEmail(usersEmail);
-        entity.setUsersRole(usersRole[(int) Math.floor(Math.random() * 2)]);
+        // entity.setUsersRole(usersRole[(int) Math.floor(Math.random() * 2)]);
+        entity.setUsersRole(usersRole[0]);
         entity.setUsersAge((int) Math.floor(Math.random() * 9) * 10);
         entity.setUsersRegion1(usersRegion1);
         entity.setUsersRegion2(usersRegion2);
@@ -75,6 +76,13 @@ public class UsersManageService implements UsersManageRepository {
     public List<Users> findAll() {
         return usersManageRepository.findAll();
     }
+    
+    public List<Users> findAllClient(int currentPageStartPost, int postSize) {
+        return usersManageRepository.findAllClient(currentPageStartPost, postSize);
+    }
+    public int findAllClientCount() {
+        return usersManageRepository.findAllClientCount();
+    }
 
     @Override
     public Page<Users> findAll(Pageable pageable) {
@@ -85,10 +93,10 @@ public class UsersManageService implements UsersManageRepository {
         return usersManageRepository.getByUsersAccount(usersAccount);
     }
 
-    public int modifyUsersInfo(Users user) {
+    public int updateUsersInfo(Users user) {
         String encryptUsersPass = passwordEncoder.encode(user.getUsersPass());
         user.setUsersPass(encryptUsersPass);
-        return usersManageRepository.modifyUsersInfo(user);
+        return usersManageRepository.updateUsersInfo(user);
     }
 
     @Override

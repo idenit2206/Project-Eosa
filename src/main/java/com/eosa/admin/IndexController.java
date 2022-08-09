@@ -26,7 +26,15 @@ public class IndexController {
         ModelAndView mv = new ModelAndView();
         Users user = usersService.findByUsersAccount("superadmin88");
 
-        mv.setViewName("/admin/index");
+        if(user == null) {
+            user = new Users();
+            user.setUsersAccount("");
+            user.setUsersName("");
+            user.setUsersPhone("");
+            user.setUsersEmail("");
+        }
+
+        mv.setViewName("admin/index");
         mv.addObject("user", user);
         return mv;
     }

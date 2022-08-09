@@ -30,19 +30,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="usersList : ${usersList}">
-                            <td>[[${usersList.usersIdx}]]</td>
-                            <td><a th:href="@{/admin/usersManage/usersInfo(usersAccount=${usersList.usersAccount})}">[[${usersList.usersAccount}]]</a></td>
-                            <td>[[${usersList.usersRole}]]</td>
-                            <td>[[${usersList.usersJoinDate}]]</td>
-                        </tr>
+                        <!-- <tr th:each="companysList : ${companysList}">
+                            <td>[[${companysList.companysIdx}]]</td>
+                            <td><a th:href="@{/admin/usersManage/usersInfo(usersAccount=${companys.usersAccount})}">[[${usersList.usersAccount}]]</a></td>
+                        </tr> -->
                     </tbody>
                 </table>
             </div>
-            <div class="">
+            <!-- <div class="">
                 <nav>
                     <ul class="pagination">
-                        <li th:if="${pagination.blockCount < currentPage}">
+                        <li th:if="${currentPage > pagination.blockCount}">
                             <a class="page-link" th:href="@{/admin/usersManage/usersList(currentPage=${pagination.previousBlock})}">
                                 PREV
                             </a>
@@ -52,14 +50,14 @@
                                 [[${page}]]
                             </a>
                         </li>
-                        <li th:if="${currentPage <= pagination.blockCount}">
+                        <li th:if="${pagination.blockCount > 10}">
                             <a class="page-link" th:href="@{/admin/usersManage/usersList(currentPage=${pagination.nextBlock})}">
                                 NEXT
                             </a>
                         </li>
                     </ul>
                 </nav>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

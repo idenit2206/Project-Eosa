@@ -42,20 +42,20 @@ public class AdminUserController {
 
     @GetMapping("/signUp")
     public String adminSignUpForm() {
-        return "/signin/SignUp";
+        return "admin/signin/SignUp";
     }
 
     @PostMapping("/signUp.do")
     public String adminSignUpDo(Users adminUser) {
         adminUserService.adminRegist(adminUser);
-        return "/signin/SignIn";
+        return "admin/signin/SignIn";
     }
 
     @Operation(summary="관리자페이지 로그인 view", description="관리자 페이지의 로그인을 위한 Form 페이지")
     @GetMapping("/signIn")
     public String adminSignInForm() {
         // log.info("## Someone Request /signInForm");
-        return "/admin/signin/SignIn";
+        return "admin/signin/SignIn";
     }
 
     @PostMapping(value="/signIn.success")
@@ -69,14 +69,14 @@ public class AdminUserController {
             log.info("## 환영합니다 {} 님.", usersAccount);
             Users user = usersService.findByUsersAccount(usersAccount);
 
-            mv.setViewName("/admin/index");
+            mv.setViewName("admin/index");
             mv.addObject("user", user);
             
             return mv;
         }
         else {
             log.info("## 권한이 없는 사용자 입니다. 사용자명: {}.", usersAccount);
-            mv.setViewName("/admin/signin/SignIn");
+            mv.setViewName("admin/signin/SignIn");
             return mv;
         }        
     }
@@ -89,22 +89,28 @@ public class AdminUserController {
     ) throws IOException {
         log.error("## {} 님이 관리자 페이지 로그인에 실패했습니다.", usersAccount);
         model.addAttribute("msg", "Failed to SignIn");
-        response.sendRedirect("/admin/signInForm");
+        response.sendRedirect("/admin/signIn");
     }
     
     @PostMapping(value="/adminUpdate")
     @ResponseBody
-    public String adminUpdate(
+    public ModelAndView adminUpdate(
         Users param
     ) {
-        // ModelAndView mv = new ModelAndView();
+        ModelAndView mv = new ModelAndView();
         int transaction = usersService.updateAdminUserInfo(param);
-        log.info("# transaction {}", transaction);
-        Users user = usersService.findByUsersAccount(param.getUsersAccount());
+        // log.info("# transaction {}", transaction);
+        if(transaction != 0) {           
+            log.info("{} 의 회원정보를 변경합니다.", param.getUsersAccount()); 
+            Users user = usersService.findByUsersAccount(param.getUsersAccount());    
+            mv.setViewName("admin/index");
+            mv.addObject("user", user);
+        }
+        else {
+            log.info("{} 의 회원정보 변경을 실패했습니다.", param.getUsersAccount());
+            mv.setViewName("admin/index");
+        }       
 
-        // mv.setViewName("/adminIndex");
-        // mv.addObject("user", user);
-
-        return user.toString();
+        return mv;
     }
 }

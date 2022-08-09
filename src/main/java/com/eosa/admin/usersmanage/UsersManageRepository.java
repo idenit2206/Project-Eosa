@@ -1,5 +1,7 @@
 package com.eosa.admin.usersmanage;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,6 +21,20 @@ public interface UsersManageRepository extends JpaRepository<Users, Long> {
     )
     Users getByUsersAccount(String usersAccount);
 
+    @Query(
+        value="SELECT * FROM Users WHERE " + 
+        "usersRole='CLIENT'" + 
+        "AND usersEnabled=1 AND usersDelete=0 " +
+        "ORDER BY usersIdx DESC LIMIT ?1, ?2",
+        nativeQuery=true
+    )
+    List<Users> findAllClient(int currentPageStartPost, int postSize);
+
+    @Query(
+        value="SELECT COUNT(*) FROM Users WHERE usersRole='CLIENT'"
+    )
+    int findAllClientCount();
+
     @Modifying
     @Transactional
     @Query(
@@ -29,6 +45,6 @@ public interface UsersManageRepository extends JpaRepository<Users, Long> {
         "WHERE usersAccount = :#{#Users.usersAccount}",
         nativeQuery=true
     )
-    int modifyUsersInfo(@Param("Users") Users users);
+    int updateUsersInfo(@Param("Users") Users users);
 
 }

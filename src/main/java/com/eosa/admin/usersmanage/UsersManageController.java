@@ -8,11 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,17 +33,19 @@ public class UsersManageController {
     final int BLOCK_COUNT = 10;
 
     public List<Users> postList(int currentPage) {
-		PageRequest pageRequest = PageRequest.of(currentPage-1, POST_COUNT, Sort.by(Sort.Direction.DESC, "usersIdx"));
-		Page<Users> list =  usersManageService.findAll(pageRequest);
-		List<Users> answer = list.getContent();
+		// PageRequest pageRequest = PageRequest.of(currentPage-1, POST_COUNT, Sort.by(Sort.Direction.DESC, "usersIdx"));
+		// Page<Users> list =  usersManageService.findAll(pageRequest);
+		// List<Users> answer = list.getContent();
+        int currentPageStartPost = (currentPage - 1) * POST_COUNT; 
+
+        List<Users> answer = usersManageService.findAllClient(currentPageStartPost, POST_COUNT);
 		
 		return answer;
 	}
 	public Map<String, Integer> pageList(int currentPage) {
 		Map<String, Integer> result = new HashMap<>();
-		PageRequest pageRequest = PageRequest.of(currentPage - 1, POST_COUNT, Sort.by(Sort.Direction.DESC, "usersIdx"));
-		Page<Users> list = usersManageService.findAll(pageRequest);
-		int blockCount = list.getTotalPages();
+        
+		int blockCount = usersManageService.findAllClientCount();
 		
 		int blockFirst = ((currentPage - 1) / BLOCK_COUNT) * BLOCK_COUNT + 1;
 		int blockLast = blockFirst + BLOCK_COUNT - 1;
@@ -64,15 +64,30 @@ public class UsersManageController {
 		result.put("blockLast", blockLast); // 페이지네이션 목록에서 가장 마지막 페이지
 		result.put("previousBlock", previousBlock); // 이전 10개의 페이지네이션 블록에서 가장 첫번째 페이지
 		result.put("nextBlock", nextBlock); // 이후 10개의 페이지네이션 블록에서 가장 첫번째 페이지
+
+        /*
+         * 
+		int allPostCount = usersManageService.findAllClientCount(); // 모든 포스트의 수
+        int firstPage = 1; // 가장 첫 번째 페이지
+		int lastPage = allPostCount / BLOCK_COUNT; // 가장 마지막 페이지
+         */
 		
 		return result;
 	}
+    @GetMapping("/allClientCount")
+    @ResponseBody
+    public int allClientCount() {
+        return usersManageService.findAllClientCount();
+    } 
 
     @GetMapping("/tempUserRegist")
     @ResponseBody
     public void userRegist() {
-        Users user = new Users();
-        usersManageService.save(user);
+        log.debug("[임시] 100명의 유저데이터를 생성합니다.");
+        for(int i =0; i < 100; i++) {
+            Users user = new Users();
+            usersManageService.save(user);
+        }        
     }
 
     /**
@@ -94,11 +109,11 @@ public class UsersManageController {
         model.addAttribute("usersList", usersList);
         model.addAttribute("pagination", pagination);
 
-        return "/admin/usersmanage/UsersList";
+        return "admin/usersmanage/UsersList";
     }
 
     /**
-     * 회원정보 조회
+     * 단일 회원정보 조회
      * @param usersAccount
      * @param model
      * @return
@@ -108,10 +123,10 @@ public class UsersManageController {
         @RequestParam(value="usersAccount") String usersAccount,
         Model model
     ) {
-        log.info("% {} 유저의 UsersInfo를 불러옵니다.", usersAccount);
+        log.info("{} 님의 사용자 정보를 불러옵니다.", usersAccount);
         Users usersInfo = usersManageService.getByUsersAccount(usersAccount);
         model.addAttribute("Users", usersInfo);
-        return "/admin/usersmanage/UsersInfo";
+        return "admin/usersmanage/UsersInfo";
     }
 
     /**
@@ -119,16 +134,22 @@ public class UsersManageController {
      * @param response
      * @param param
      */
-    @PostMapping(value="/usersInfo.up{Users}")
+    @PostMapping(value="/usersInfo.up")
     public String modifyUsersInfo(
-        @ModelAttribute Users param
-        // @RequestParam(value="usersAccount") String usersAccount
+        Users param
     ) {
-        log.info("# modify Users Info: {}", param.toString());
-        // log.info("# {}", usersAccount);
-        // return "/usersmanage/UsersList";
-        // usersManageService.modifyUsersInfo(param);
-        return "redirect:/usersManage/usersList?currentPage=1";
+        log.debug("변경된 사용자 정보: {}", param.toString());
+        log.debug("{}", param.getUsersNotice());
+        int transaction = usersManageService.updateUsersInfo(param);
+
+        if(transaction != 0) {
+            log.info("{} 님의 사용자 정보 갱신이 완료되었습니다.", param.getUsersAccount());
+        }
+        else {
+            log.error("{} 님의 사용자 정보 갱신에 실패했습니다.", param.getUsersAccount());
+        }
+
+        return "redirect:/admin/usersManage/usersList?currentPage=1";
     }
     
 }
