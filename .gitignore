@@ -2,7 +2,7 @@
 **/web-ui/**
 **/ui/**
 !/resources/static/assets/**
-/resources/static/**
+/resources/static/
 # Back-end
 
 # HELP.md
