@@ -52,7 +52,7 @@
                                 [[${page}]]
                             </a>
                         </li>
-                        <li th:if="${currentPage <= pagination.blockCount}">
+                        <li th:if="${currentPage <= pagination.lastBlock}">
                             <a class="page-link" th:href="@{/admin/usersManage/usersList(currentPage=${pagination.nextBlock})}">
                                 NEXT
                             </a>

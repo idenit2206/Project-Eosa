@@ -45,13 +45,13 @@ public class UsersManageController {
 	public Map<String, Integer> pageList(int currentPage) {
 		Map<String, Integer> result = new HashMap<>();
         
-		int blockCount = usersManageService.findAllClientCount();
+		int allPostCount = usersManageService.findAllClientCount(); // 모든 포스트의 수
 		
 		int blockFirst = ((currentPage - 1) / BLOCK_COUNT) * BLOCK_COUNT + 1;
 		int blockLast = blockFirst + BLOCK_COUNT - 1;
 		
-		if(blockCount < blockLast) {
-			blockLast = blockCount;
+		if(allPostCount < blockLast) {
+			blockLast = allPostCount;
 		}
 		
 		int previousBlock = blockFirst - BLOCK_COUNT ;
@@ -59,18 +59,17 @@ public class UsersManageController {
 		
 		result.put("blockCount", BLOCK_COUNT);
 		result.put("fistBlock", 1); // 모든 페이지 중 가장 첫번째 페이지
-		result.put("lastBlock", blockCount); // 모든 페이지 중 가장 마지막 페이지
+		result.put("lastBlock", (int) Math.ceil(allPostCount / POST_COUNT)); // 모든 페이지 중 가장 마지막 페이지
 		result.put("blockFirst", blockFirst); // 페이지네이션 목록에서 가장 첫번째 페이지
 		result.put("blockLast", blockLast); // 페이지네이션 목록에서 가장 마지막 페이지
 		result.put("previousBlock", previousBlock); // 이전 10개의 페이지네이션 블록에서 가장 첫번째 페이지
 		result.put("nextBlock", nextBlock); // 이후 10개의 페이지네이션 블록에서 가장 첫번째 페이지
 
-        /*
-         * 
-		int allPostCount = usersManageService.findAllClientCount(); // 모든 포스트의 수
+                 
+		// int allPostCount = usersManageService.findAllClientCount(); // 모든 포스트의 수
         int firstPage = 1; // 가장 첫 번째 페이지
-		int lastPage = allPostCount / BLOCK_COUNT; // 가장 마지막 페이지
-         */
+		int lastPage = (int) Math.ceil(allPostCount / POST_COUNT); // 가장 마지막 페이지
+        
 		
 		return result;
 	}
