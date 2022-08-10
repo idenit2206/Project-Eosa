@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.eosa.admin.util.pagination.PageList;
+import com.eosa.admin.util.pagination.PostList;
 import com.eosa.web.users.Users;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,49 +29,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(value="/admin/usersManage")
 public class UsersManageController {
 
-    @Autowired private UsersManageService usersManageService;
-
-    final int POST_COUNT = 10;
-    final int BLOCK_COUNT = 10;
-
-    public List<Users> postList(int currentPage) {
-		
-        int currentPageStartPost = (currentPage - 1) * POST_COUNT; 
-        List<Users> answer = usersManageService.findAllClient(currentPageStartPost, POST_COUNT);
-		
-		return answer;
-	}
-	public Map<String, Integer> pageList(int currentPage) {
-        Map<String, Integer> result = new HashMap<>();
-        
-		int allPostCount = usersManageService.findAllClientCount(); // 모든 포스트의 수
-		
-		int blockFirst = ((currentPage - 1) / BLOCK_COUNT) * BLOCK_COUNT + 1;
-		int blockLast = blockFirst + BLOCK_COUNT - 1;
-		
-		if(allPostCount < blockLast) {
-			blockLast = BLOCK_COUNT;
-		}
-		
-		int previousBlock = blockFirst - BLOCK_COUNT ;
-		int nextBlock = blockFirst + BLOCK_COUNT ;
-		
-		result.put("blockCount", BLOCK_COUNT);
-		result.put("fistBlock", 1); // 모든 페이지 중 가장 첫번째 페이지
-		result.put("lastBlock", (int) Math.ceil(allPostCount / POST_COUNT)); // 모든 페이지 중 가장 마지막 페이지
-		result.put("blockFirst", blockFirst); // 페이지네이션 목록에서 가장 첫번째 페이지
-		result.put("blockLast", blockLast); // 페이지네이션 목록에서 가장 마지막 페이지
-		result.put("previousBlock", previousBlock); // 이전 10개의 페이지네이션 블록에서 가장 첫번째 페이지
-		result.put("nextBlock", nextBlock); // 이후 10개의 페이지네이션 블록에서 가장 첫번째 페이지
-
-                 
-		// int allPostCount = usersManageService.findAllClientCount(); // 모든 포스트의 수
-        int firstPage = 1; // 가장 첫 번째 페이지
-		int lastPage = (int) Math.ceil(allPostCount / POST_COUNT); // 가장 마지막 페이지
-        
-		
-		return result;
-	}
+    @Autowired private UsersManageService usersManageService;    
+   
     @GetMapping("/allClientCount")
     @ResponseBody
     public int allClientCount() {
@@ -96,10 +57,29 @@ public class UsersManageController {
         @RequestParam(value="currentPage") int currentPage,
         Model model
     ) {
+        final int POST_COUNT = 10;
+        final int BLOCK_COUNT = 10;
+
+        PostList postList = new PostList(POST_COUNT, BLOCK_COUNT);   
+        
+        int currentPageStartPost = postList.getCurrentPageStartPost(currentPage);
+        List<Users> usersList = usersManageService.findAllClient(currentPageStartPost, POST_COUNT);
+        int allPostCount = usersManageService.findAllClientCount();
+        PageList pageList = new PageList(POST_COUNT, BLOCK_COUNT, currentPage, allPostCount);
+        
         // log.info("showUsersList currentPage: {}", currentPage);
         // List<Users> usersList = usersManageService.findAll();
-        List<Users> usersList = postList(currentPage);
-        Map<String, Integer> pagination = pageList(currentPage);
+
+        // List<Users> usersList = postList(currentPage);        
+        Map<String, Integer> pagination = new HashMap<>();
+        pagination.put("blockCount", BLOCK_COUNT);
+		pagination.put("fistBlock", pageList.getFirstBlock()); 
+		pagination.put("lastBlock", pageList.getLastBlock());
+		pagination.put("blockFirst", pageList.getBlockFirst());
+		pagination.put("blockLast", pageList.getBlockLast());
+		pagination.put("previousBlock", pageList.getPrevBlock());
+		pagination.put("nextBlock", pageList.getNextBlock());
+        
         
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("usersList", usersList);
