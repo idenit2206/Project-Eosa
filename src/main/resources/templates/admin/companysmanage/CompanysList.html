@@ -18,27 +18,29 @@
                 <input type="text" class="form-control" placeholder="탐정 아이디" aria-label="탐정 아이디" aria-describedby="searchBtn">
                 <button class="btn btn-outline-secondary" type="button" id="searchBtn">검색</button>
             </div>
-            <br/>            
+            <br/>
             <div class="tableDiv">
                 <table class="table">
                     <thead>
                         <tr class="table-success">
-                            <th>탐정 번호</th>
+                            <th>회원 번호</th>
                             <th>아이디</th>
                             <th>가입일</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <div th:if="companysList != null">
+                    <tbody th:if="companysList != null">
                         <tr th:each="companysList : ${companysList}">
                             <td>[[${companysList.companysIdx}]]</td>
-                            <td><a th:href="@{/admin/usersManage/usersInfo(usersAccount=${companys.usersAccount})}">[[${usersList.usersAccount}]]</a></td>
+                            <td><a th:href="@{/admin/usersManage/usersInfo(usersAccount=${companysList.companysCeoAccount})}">[[${companysList.companysCeoAccount}]]</a></td>                         
+                            <td>[[${companysList.companysRegistDate}]]</td>
                         </tr>
-                        </div>
-                        <div th:if="${companysList} == null">
-                            <td>No</td>
-                            <td>Data</td>
-                        </div>
+                    </tbody>
+                    <tbody th:unless="companysList != null">
+                        <tr th:each="companysList : ${companysList}">
+                            <td>No Result</td>
+                            <td>No Result</td>
+                            <td>No Result</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -51,11 +53,9 @@
                             </a>
                         </li>
                         <li class="page-item" th:each="page : ${#numbers.sequence(pagination.blockFirst, pagination.blockLast)}">
-                            <div th:if="page != 0">
-                                <a class="page-link" th:href="@{/admin/detectiveManage/detectiveList(currentPage=${page})}">
-                                    [[${page}]]
-                                </a>
-                            </div>                                           
+                            <a class="page-link" th:href="@{/admin/detectiveManage/detectiveList(currentPage=${page})}">
+                                [[${page}]]
+                            </a>
                         </li>
                         <li th:if="${currentPage <= pagination.lastBlock}">
                             <a class="page-link" th:href="@{/admin/detectiveManage/detectiveList(currentPage=${pagination.nextBlock})}">
@@ -64,7 +64,7 @@
                         </li>
                     </ul>
                 </nav>
-            </div>
+            </div>   
         </div>
     </div>
 </div>

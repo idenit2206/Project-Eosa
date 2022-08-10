@@ -25,19 +25,23 @@ public class RequestFormService implements RequestFormRepository {
         return null;
     }
 
-    public int requestFormSave(RequestForm entity) {
+    public int requestFormRegister(RequestForm entity) {
         LocalDateTime currentTime = LocalDateTime.now();
         
         entity.setRequestFormStatus("REQUEST");
         entity.setRequestFormDate(currentTime);
     
-        return requestFormRepository.requestFormSave(entity);
+        return requestFormRepository.requestFormRegister(entity);
     }
 
     @Override
     public List<RequestForm> findAll() {
-        // TODO Auto-generated method stub
-        return null;
+        return requestFormRepository.findAll();
+    }
+
+    @Override
+    public List<RequestForm> findByDetectiveIdx(Long detectiveidx) {
+        return requestFormRepository.findByDetectiveIdx(detectiveidx);
     }
 
     @Override
@@ -206,6 +210,6 @@ public class RequestFormService implements RequestFormRepository {
     public <S extends RequestForm, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
         // TODO Auto-generated method stub
         return null;
-    }
+    }    
 
 }

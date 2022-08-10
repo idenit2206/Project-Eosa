@@ -24,9 +24,6 @@ public class RequestForm {
     private Long usersIdx;
 
     @Column(nullable=false)
-    private Long companysIdx;
-
-    @Column(nullable=false)
     private Long detectiveIdx;
 
     @Column(nullable=false)

@@ -48,7 +48,7 @@ public class UsersManageController {
 		int blockLast = blockFirst + BLOCK_COUNT - 1;
 		
 		if(allPostCount < blockLast) {
-			blockLast = allPostCount;
+			blockLast = BLOCK_COUNT;
 		}
 		
 		int previousBlock = blockFirst - BLOCK_COUNT ;
