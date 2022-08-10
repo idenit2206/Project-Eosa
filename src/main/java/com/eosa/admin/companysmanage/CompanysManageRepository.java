@@ -1,4 +1,4 @@
-package com.eosa.admin.companysmanager;
+package com.eosa.admin.companysmanage;
 
 import java.util.List;
 
@@ -17,6 +17,13 @@ public interface CompanysManageRepository extends JpaRepository<Companys, Long> 
         "ORDER BY companysIdx DESC LIMIT ?1, ?2",
         nativeQuery=true
     )
-    List<Companys> findAllCompany(int currentStartPost, int postCount);
+    List<Companys> findAllDetective(int currentStartPost, int postCount);
+
+    @Query(
+        value="SELECT COUNT(*) FROM Companys WHERE " +
+        "companysEnabled=1 AND companysDelete=0",
+        nativeQuery=true
+    )
+    int findAllDetectiveCount();
 
 }

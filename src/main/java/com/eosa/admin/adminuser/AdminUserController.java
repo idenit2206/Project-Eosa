@@ -1,6 +1,9 @@
 package com.eosa.admin.adminuser;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -89,7 +92,80 @@ public class AdminUserController {
     ) throws IOException {
         log.error("## {} 님이 관리자 페이지 로그인에 실패했습니다.", usersAccount);
         model.addAttribute("msg", "Failed to SignIn");
-        response.sendRedirect("/admin/signIn");
+        response.sendRedirect("admin/signIn");
+    }
+
+    final int POST_COUNT = 10;
+    final int BLOCK_COUNT = 10;
+
+    public List<Users> postList(int currentPage) {		
+        int currentPageStartPost = (currentPage - 1) * POST_COUNT; 
+        List<Users> answer = adminUserService.findAllAdmin(currentPageStartPost, POST_COUNT);
+		
+		return answer;
+	}
+	public Map<String, Integer> pageList(int currentPage) {
+		Map<String, Integer> result = new HashMap<>();
+        
+		int allPostCount = adminUserService.findAllAdminCount(); // 모든 포스트의 수
+		
+		int blockFirst = ((currentPage - 1) / BLOCK_COUNT) * BLOCK_COUNT + 1;
+		int blockLast = blockFirst + BLOCK_COUNT - 1;
+		
+		if(allPostCount < blockLast) {
+			blockLast = allPostCount;
+		}
+		
+		int previousBlock = blockFirst - BLOCK_COUNT ;
+		int nextBlock = blockFirst + BLOCK_COUNT ;
+		
+		result.put("blockCount", BLOCK_COUNT);
+		result.put("fistBlock", 1); // 모든 페이지 중 가장 첫번째 페이지
+		result.put("lastBlock", (int) Math.ceil(allPostCount / POST_COUNT)); // 모든 페이지 중 가장 마지막 페이지
+		result.put("blockFirst", blockFirst); // 페이지네이션 목록에서 가장 첫번째 페이지
+		result.put("blockLast", blockLast); // 페이지네이션 목록에서 가장 마지막 페이지
+		result.put("previousBlock", previousBlock); // 이전 10개의 페이지네이션 블록에서 가장 첫번째 페이지
+		result.put("nextBlock", nextBlock); // 이후 10개의 페이지네이션 블록에서 가장 첫번째 페이지
+
+                 
+		// int allPostCount = usersManageService.findAllClientCount(); // 모든 포스트의 수
+        int firstPage = 1; // 가장 첫 번째 페이지
+		int lastPage = (int) Math.ceil(allPostCount / POST_COUNT); // 가장 마지막 페이지        
+		
+		return result;
+	}
+    @GetMapping("/allClientCount")
+    @ResponseBody
+    public int allClientCount() {
+        return adminUserService.findAllAdminCount();
+    }
+
+    @GetMapping(value="/adminList")
+    public String adminList(
+        @RequestParam(value="currentPage", defaultValue="1") int currentPage,
+        Model model
+    ) {
+        List<Users> adminList = postList(currentPage);
+        Map<String, Integer> pagination = pageList(currentPage);
+
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("usersList", adminList);
+        model.addAttribute("pagination", pagination);
+
+        return "admin/adminmanage/adminList";
+    }
+    @GetMapping(value="/adminInfo")
+    public ModelAndView adminInfo(
+        @RequestParam("usersAccount") String usersAccount
+    ) {
+        ModelAndView mv = new ModelAndView();
+
+        Users user = adminUserService.findByAdminUserAccount(usersAccount);
+
+        mv.addObject("user", user);
+        mv.setViewName("admin/adminmanage/adminInfo");
+
+        return mv;
     }
     
     @PostMapping(value="/adminUpdate")

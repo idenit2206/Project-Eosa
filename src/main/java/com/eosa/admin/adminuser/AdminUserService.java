@@ -24,11 +24,13 @@ public class AdminUserService implements AdminUserRepository {
 
     @Autowired AdminUserRepository adminUserRepository;
 
+    // 운영자의 정보를 조회할 때 사용
     @Override
     public Users findByAdminUserAccount(String adminUserAccount) {
         return adminUserRepository.findByAdminUserAccount(adminUserAccount);
     }
 
+    @Override
     public int adminRegist(Users adminUser) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodePass = passwordEncoder.encode(adminUser.getUsersPass());
@@ -37,6 +39,17 @@ public class AdminUserService implements AdminUserRepository {
         adminUser.setUsersJoinDate(LocalDateTime.now());
 
         return adminUserRepository.adminRegist(adminUser);
+    }
+
+    // 모든 운영자의 정보를 조회할 때 사용
+    @Override
+    public List<Users> findAllAdmin(int currentPageStartPost, int POST_COUNT) {
+        return adminUserRepository.findAllAdmin(currentPageStartPost, POST_COUNT);
+    }
+
+    @Override
+    public int findAllAdminCount() {
+        return adminUserRepository.findAllAdminCount();
     }
 
     @Override
@@ -217,6 +230,6 @@ public class AdminUserService implements AdminUserRepository {
     public <S extends Users, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
         // TODO Auto-generated method stub
         return null;
-    }      
+    }          
     
 }

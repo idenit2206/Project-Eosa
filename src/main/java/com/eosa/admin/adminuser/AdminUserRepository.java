@@ -1,5 +1,7 @@
 package com.eosa.admin.adminuser;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,21 +22,37 @@ public interface AdminUserRepository extends JpaRepository<Users, Long> {
     //     nativeQuery=true
     // )
     @Query(
-        value="SELECT * FROM AdminUser WHERE adminUserAccount = ?1",
+        value="SELECT * FROM Users WHERE usersAccount = ?1",
         nativeQuery=true
     )
     Users findByAdminUserAccount(String adminAccount);
-
    
     @Modifying
     @Transactional
     @Query(
-        value = "INSERT INTO AdminUser(adminUserAccount, adminUserPass, adminUserName, " +
-        "adminUserMobile, adminUserEmail, adminUserGrade, adminUserDate) " +
-        "VALUES(:#{#AdminUser.adminUserAccount}, :#{#AdminUser.adminUserPass}, :#{#AdminUser.adminUserName}," +
-        ":#{#AdminUser.adminUserMobile}, :#{#AdminUser.adminUserEmail}, :#{#AdminUser.adminUserGrade}, :#{#AdminUser.adminUserDate})"
+        value = "INSERT INTO Users(usersAccount, usersPass, usersName, " +
+        "usersPhone, usersEmail, usersRole, usersJoinDate) " +
+        "VALUES(:#{#Users.usersAccount}, :#{#Users.usersPass}, :#{#Users.usersName}," +
+        ":#{#Users.usersPhone}, :#{#Users.usersEmail}, :#{#Users.usersRole}, :#{#Users.usersJoinDate})"
         ,nativeQuery=true
     )
-    int adminRegist(@Param("AdminUser") Users adminUser);
+    int adminRegist(@Param("Users") Users adminUser);
+
+    @Query(
+        value="SELECT * FROM Users " +
+        "WHERE usersRole = 'ADMIN' OR usersRole = 'SUPER_ADMIN' AND " +
+        "usersEnabled = 1 AND usersDelete = 0 "  +
+        "LIMIT ?1 , ?2",
+        nativeQuery=true 
+    )
+    List<Users> findAllAdmin(int currentPageStartPost, int pOST_COUNT);
+
+    @Query(
+        value="SELECT COUNT(*) FROM Users " + 
+        "WHERE usersRole = 'ADMIN' OR usersRole = 'SUPER_ADMIN' AND " +
+        "usersEnabled = 1 AND usersDelete = 0 ",
+        nativeQuery=true
+    )
+    int findAllAdminCount();
     
 }

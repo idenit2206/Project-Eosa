@@ -40,7 +40,7 @@
                 </table>
             </div>
             <div class="">
-                <nav>
+                <nav th:if="pagination != null">
                     <ul class="pagination">
                         <li th:if="${pagination.blockCount < currentPage}">
                             <a class="page-link" th:href="@{/admin/usersManage/usersList(currentPage=${pagination.previousBlock})}">

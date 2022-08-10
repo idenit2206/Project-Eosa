@@ -13,9 +13,9 @@
             <nav th:replace="admin/fragments/html-sidebar.html :: html-sidebar" />
         </div>
         <div class="col-10">
-            <h3>탐정 관리</h3>
+            <h3>운영자 관리</h3>
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="탐정 아이디" aria-label="탐정 아이디" aria-describedby="searchBtn">
+                <input type="text" class="form-control" placeholder="운영자 아이디" aria-label="운영자 아이디" aria-describedby="searchBtn">
                 <button class="btn btn-outline-secondary" type="button" id="searchBtn">검색</button>
             </div>
             <br/>            
@@ -23,47 +23,52 @@
                 <table class="table">
                     <thead>
                         <tr class="table-success">
-                            <th>탐정 번호</th>
+                            <th>운영자 번호</th>
                             <th>아이디</th>
-                            <th>가입일</th>
+                            <th>이름</th>
+                            <th>등록일</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <div th:if="companysList != null">
-                        <tr th:each="companysList : ${companysList}">
-                            <td>[[${companysList.companysIdx}]]</td>
-                            <td><a th:href="@{/admin/usersManage/usersInfo(usersAccount=${companys.usersAccount})}">[[${usersList.usersAccount}]]</a></td>
+                        <div th:if="${usersList} != null">                       
+                        <tr th:each="usersList : ${usersList}">
+                            <td>[[${usersList.usersIdx}]]</td>
+                            <td><a th:href="@{/admin/adminInfo(usersAccount=${usersList.usersAccount})}">[[${usersList.usersAccount}]]</a></td>
+                            <td>[[${usersList.usersRole}]]</td>
+                            <td>[[${usersList.usersJoinDate}]]</td>
                         </tr>
                         </div>
-                        <div th:if="${companysList} == null">
-                            <td>No</td>
-                            <td>Data</td>
+                        <div th:if="${usersList} == null">
+                            <tr>
+                                <td>No</td>
+                                <td>Result</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
                         </div>
                     </tbody>
                 </table>
             </div>
             <div class="">
-                <nav th:if="pagination != null">
+                <nav th:if="${pagination != null}">
                     <ul class="pagination">
                         <li th:if="${pagination.blockCount < currentPage}">
-                            <a class="page-link" th:href="@{/admin/detectiveManage/detectiveList(currentPage=${pagination.previousBlock})}">
+                            <a class="page-link" th:href="@{/admin/adminList(currentPage=${pagination.previousBlock})}">
                                 PREV
                             </a>
                         </li>
                         <li class="page-item" th:each="page : ${#numbers.sequence(pagination.blockFirst, pagination.blockLast)}">
-                            <div th:if="page != 0">
-                                <a class="page-link" th:href="@{/admin/detectiveManage/detectiveList(currentPage=${page})}">
-                                    [[${page}]]
-                                </a>
-                            </div>                                           
+                            <a class="page-link" th:href="@{/admin/adminList(currentPage=${page})}">
+                                [[${page}]]
+                            </a>
                         </li>
                         <li th:if="${currentPage <= pagination.lastBlock}">
-                            <a class="page-link" th:href="@{/admin/detectiveManage/detectiveList(currentPage=${pagination.nextBlock})}">
+                            <a class="page-link" th:href="@{/admin/adminList(currentPage=${pagination.nextBlock})}">
                                 NEXT
                             </a>
                         </li>
                     </ul>
-                </nav>
+                </nav>                
             </div>
         </div>
     </div>

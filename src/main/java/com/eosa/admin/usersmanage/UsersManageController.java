@@ -33,17 +33,14 @@ public class UsersManageController {
     final int BLOCK_COUNT = 10;
 
     public List<Users> postList(int currentPage) {
-		// PageRequest pageRequest = PageRequest.of(currentPage-1, POST_COUNT, Sort.by(Sort.Direction.DESC, "usersIdx"));
-		// Page<Users> list =  usersManageService.findAll(pageRequest);
-		// List<Users> answer = list.getContent();
+		
         int currentPageStartPost = (currentPage - 1) * POST_COUNT; 
-
         List<Users> answer = usersManageService.findAllClient(currentPageStartPost, POST_COUNT);
 		
 		return answer;
 	}
 	public Map<String, Integer> pageList(int currentPage) {
-		Map<String, Integer> result = new HashMap<>();
+        Map<String, Integer> result = new HashMap<>();
         
 		int allPostCount = usersManageService.findAllClientCount(); // 모든 포스트의 수
 		

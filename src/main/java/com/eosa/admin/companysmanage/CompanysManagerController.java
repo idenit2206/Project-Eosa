@@ -1,4 +1,4 @@
-package com.eosa.admin.companysmanager;
+package com.eosa.admin.companysmanage;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,11 +16,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.eosa.web.companys.Companys;
+import com.eosa.web.users.Users;
 
 import io.swagger.v3.oas.annotations.Operation;
 
 @Controller
-@RequestMapping("/admin/companysManage")
+@RequestMapping("/admin/detectiveManage")
 public class CompanysManagerController {
 
     @Autowired private CompanysManageService companysManageService;
@@ -28,56 +29,54 @@ public class CompanysManagerController {
     final int POST_COUNT = 10;
     final int BLOCK_COUNT = 10;
 
-    public List<Companys> postList(int currentPage) {
-		PageRequest pageRequest = PageRequest.of(currentPage-1, POST_COUNT, Sort.by(Sort.Direction.DESC, "companysIdx"));
-		// Page<Users> list =  usersManageService.findAll(pageRequest);
-		// List<Users> answer = list.getContent();
+    public List<Companys> postList(int currentPage) {				
         int currentStartPost = (currentPage - 1) * BLOCK_COUNT; 
-
-        List<Companys> answer = companysManageService.findAllCompany(currentStartPost, POST_COUNT);
+        List<Companys> answer = companysManageService.findAllDetective(currentStartPost, POST_COUNT);
 		
 		return answer;
 	}
 	public Map<String, Integer> pageList(int currentPage) {
 		Map<String, Integer> result = new HashMap<>();
-		PageRequest pageRequest = PageRequest.of(currentPage - 1, POST_COUNT, Sort.by(Sort.Direction.DESC, "companysIdx"));
-		Page<Companys> list = companysManageService.findAll(pageRequest);
-		int blockCount = list.getTotalPages();
+		
+		int allPostCount = companysManageService.findAllDetectiveCount(); // 모든 포스트의 수
 		
 		int blockFirst = ((currentPage - 1) / BLOCK_COUNT) * BLOCK_COUNT + 1;
 		int blockLast = blockFirst + BLOCK_COUNT - 1;
 		
-		if(blockCount < blockLast) {
-			blockLast = blockCount;
+		if(allPostCount < blockLast) {
+			blockLast = BLOCK_COUNT;
 		}
 		
 		int previousBlock = blockFirst - BLOCK_COUNT ;
 		int nextBlock = blockFirst + BLOCK_COUNT ;
 		
-		result.put("currentpage", currentPage);
 		result.put("blockCount", BLOCK_COUNT);
 		result.put("fistBlock", 1); // 모든 페이지 중 가장 첫번째 페이지
-		result.put("lastBlock", blockCount); // 모든 페이지 중 가장 마지막 페이지
+		result.put("lastBlock", (int) Math.ceil(allPostCount / POST_COUNT)); // 모든 페이지 중 가장 마지막 페이지
 		result.put("blockFirst", blockFirst); // 페이지네이션 목록에서 가장 첫번째 페이지
 		result.put("blockLast", blockLast); // 페이지네이션 목록에서 가장 마지막 페이지
 		result.put("previousBlock", previousBlock); // 이전 10개의 페이지네이션 블록에서 가장 첫번째 페이지
 		result.put("nextBlock", nextBlock); // 이후 10개의 페이지네이션 블록에서 가장 첫번째 페이지
+
+                 
+		// int allPostCount = usersManageService.findAllClientCount(); // 모든 포스트의 수
+        int firstPage = 1; // 가장 첫 번째 페이지
+		int lastPage = (int) Math.ceil(allPostCount / POST_COUNT); // 가장 마지막 페이지
+        
 		
 		return result;
 	}
 
     /**
-     * 모든 업체명단을 출력합니다.
+     * 모든 탐정 명단을 출력합니다.
      * @return
      */
-    @Operation(summary = "업체 전체 목록 조회", description="모든 업체를 목록으로 출력합니다.")
-    @GetMapping("/companysList")
-    public String showCompanysList(
-        @RequestParam(value="currentPage") int currentPage,
+    @Operation(summary = "탐정 전체 목록 조회", description="모든 탐정을 목록으로 출력합니다.")
+    @GetMapping("/detectiveList")
+    public String showAllDetectiveList(
+        @RequestParam(value="currentPage", defaultValue="1") int currentPage,
         Model model
     ) {
-        // log.info("showUsersList currentPage: {}", currentPage);
-        // List<Users> usersList = usersManageService.findAll();
         List<Companys> companysList = postList(currentPage);
         Map<String, Integer> pagination = pageList(currentPage);
         
