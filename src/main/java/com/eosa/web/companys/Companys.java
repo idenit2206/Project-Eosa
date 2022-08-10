@@ -22,11 +22,11 @@ public class Companys {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long companysIdx;
 
-    @Column(nullable=false, length=100)
-    private String companysName;
+    @Column(nullable=false)
+    private Long companysCeoIdx;
 
     @Column(nullable=false, length=30)
-    private String companysCeo;
+    private String companysCeoAccount;
 
     @Column(nullable=true, length=255)
     private String companysComment;

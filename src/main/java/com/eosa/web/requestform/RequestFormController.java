@@ -14,17 +14,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.eosa.web.util.CustomResponseData;
 import com.eosa.web.util.NullCheck;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
-@RequestMapping("/api/requestform")
+@RequestMapping("/api/requestForm")
 public class RequestFormController {
-    
-    private Logger logger = LoggerFactory.getLogger(RequestFormController.class);
 
-    @Autowired
-    private RequestFormService requestFormService;
+    @Autowired private RequestFormService requestFormService;
 
-    @PostMapping("/request")
-    public CustomResponseData requestEvent(
+    @PostMapping("/requestRegister")
+    public CustomResponseData requestRegister(
         RequestForm param
     ) {
         CustomResponseData result = new CustomResponseData();
@@ -33,7 +33,6 @@ public class RequestFormController {
         String[] targets = {
             "usersIdx", "companysIdx", "requestFormCategory", "requestFormRegion1", "requestFormRegion2"
         };
-        logger.info("# {}", param.toString());
 
         NullCheck nullcheck = new NullCheck();
         Map<String, Object> items = nullcheck.ObjectNullCheck(param, targets);
@@ -41,7 +40,7 @@ public class RequestFormController {
         if(items.get("result") == "SUCCESS") {
             int transaction = requestFormService.requestFormSave(param);
             if(transaction == 1) {
-                logger.info("Success " + param.getIdx() + " has Requested!!");
+                log.info("[Success] {} request registrer", param.getIdx());
                 result.setStatusCode(HttpStatus.OK.value());
                 result.setResultItem(items);
                 result.setResponseDateTime(currentTime);
@@ -53,7 +52,7 @@ public class RequestFormController {
             }
         }
         else {
-            logger.error("Failure " + param.getIdx() + " has /request");
+            log.error("Failure " + param.getIdx() + " has /request");
             result.setStatusCode(HttpStatus.BAD_REQUEST.value());
             result.setResultItem(items);
             result.setResponseDateTime(currentTime);

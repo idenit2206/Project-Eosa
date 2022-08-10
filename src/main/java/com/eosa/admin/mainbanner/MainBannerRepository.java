@@ -1,4 +1,4 @@
-package com.eosa.web.mainbanner;
+package com.eosa.admin.mainbanner;
 
 import java.util.List;
 

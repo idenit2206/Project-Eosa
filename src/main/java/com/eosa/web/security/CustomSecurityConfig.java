@@ -3,13 +3,13 @@ package com.eosa.web.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
+
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.session.SessionRegistry;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.session.ConcurrentSessionFilter;
+
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -21,7 +21,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CustomSecurityConfig {
 
-    // @Autowired private CustomPrincipalOAuth2UserService customPrincipalOAuth2UserService;
     @Autowired private CustomLogoutSuccessHandler customLogoutSuccessHandler; 
 
     @Bean
@@ -58,7 +57,8 @@ public class CustomSecurityConfig {
             .csrf().disable()
             .authorizeRequests()
                 .antMatchers(ANYONE_PERMIT).permitAll()
-                .anyRequest().hasAnyAuthority("CLIENT, DETECTIVE")
+                // .anyRequest().hasAnyAuthority("CLIENT, DETECTIVE")
+                .anyRequest().permitAll()
         .and()
             .formLogin()
                 .loginPage("http://localhost:3000/user/signin")

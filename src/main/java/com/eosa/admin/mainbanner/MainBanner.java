@@ -1,4 +1,4 @@
-package com.eosa.web.mainbanner;
+package com.eosa.admin.mainbanner;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -27,11 +27,11 @@ public class CompanysController {
     private CompanysService companysService; 
     
     /**
-     * "업체를 등록"하는 메서드입니다.
+     * 탐정으로 등록하는 메서드입니다.
      * @param param
      * @return
      */
-    @PostMapping("/registcompanys")
+    @PostMapping("/registCompanys")
     public CustomResponseData RegistCompanys(
       Companys param  
     ) {
@@ -39,7 +39,7 @@ public class CompanysController {
         LocalDateTime currentTime = LocalDateTime.now();       
 
         String[] targets = {
-          "companysName", "companysCeo", "companysRegion1", 
+          "companysCeoAccount", "companysRegion1", 
           "companysRegion2", "companysRegion3", "companysRegistCerti"
         };
 
@@ -49,7 +49,7 @@ public class CompanysController {
         if(items.get("result") == "SUCCESS") {          
           Companys transaction = companysService.save(param);
           if(transaction != null) {
-            logger.info("Success " + param.getCompanysName() + " has Registed");
+            logger.info("[SUCCESS] {} register Success", param.getCompanysCeoAccount());
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem(items);
             result.setResponseDateTime(currentTime);
@@ -61,7 +61,7 @@ public class CompanysController {
           }         
         }
         else {
-          logger.error("Failure " + param.getCompanysName() + " has Registed");
+          logger.error("[Failure] {} register Fail", param.getCompanysCeoAccount());
           result.setStatusCode(HttpStatus.BAD_REQUEST.value());
           result.setResultItem(items);
           result.setResponseDateTime(currentTime);

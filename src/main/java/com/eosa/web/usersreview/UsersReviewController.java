@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping(value="/api/usersreview")
+@RequestMapping(value="/api/usersReview")
 public class UsersReviewController {
 
     @Autowired UsersReviewService usersReviewService;
