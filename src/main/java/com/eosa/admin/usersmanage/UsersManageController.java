@@ -30,10 +30,10 @@ import lombok.extern.slf4j.Slf4j;
 public class UsersManageController {
 
     @Autowired private UsersManageService usersManageService;
-    final int POST_COUNT = 10;
-    final int BLOCK_COUNT = 10;
 
-    PostList postList = new PostList(POST_COUNT, BLOCK_COUNT);   
+    final private int POST_COUNT = 10;
+    final private int BLOCK_COUNT = 10;
+    private PostList postList = new PostList(POST_COUNT, BLOCK_COUNT);   
    
     @GetMapping("/allClientCount")
     @ResponseBody
@@ -52,13 +52,13 @@ public class UsersManageController {
     }
 
     /**
-     * 모든 유저(CLIENT, DETECTIVE)의 명단을 출력합니다.
+     * 모든 유저(CLIENT)의 명단을 출력합니다.
      * @return
      */
     @Operation(summary = "회원 전체 목록 조회", description="모든 유저(CLIENT, DETECTIVE)의 명단을 출력합니다.")
     @GetMapping("/usersList")
     public String showUsersList(
-        @RequestParam(value="currentPage") int currentPage,
+        @RequestParam(value="currentPage", defaultValue="1") int currentPage,
         Model model
     ) {       
         int currentPageStartPost = postList.getCurrentPageStartPost(currentPage);
@@ -73,8 +73,7 @@ public class UsersManageController {
 		pagination.put("blockFirst", pageList.getBlockFirst());
 		pagination.put("blockLast", pageList.getBlockLast());
 		pagination.put("previousBlock", pageList.getPrevBlock());
-		pagination.put("nextBlock", pageList.getNextBlock());
-        
+		pagination.put("nextBlock", pageList.getNextBlock());        
         
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("usersList", usersList);
@@ -145,7 +144,7 @@ public class UsersManageController {
         @RequestParam(value="usersAccount") String usersAccount,
         Model model
     ) {
-        log.info("{} 님의 사용자 정보를 불러옵니다.", usersAccount);
+        log.info("[CLIENT] {} 의 정보를 불러옵니다.", usersAccount);
         Users usersInfo = usersManageService.getByUsersAccount(usersAccount);
         model.addAttribute("Users", usersInfo);
         return "admin/usersmanage/UsersInfo";

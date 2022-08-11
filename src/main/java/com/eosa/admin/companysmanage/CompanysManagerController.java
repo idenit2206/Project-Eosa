@@ -15,76 +15,124 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.eosa.admin.util.pagination.PageList;
+import com.eosa.admin.util.pagination.PostList;
 import com.eosa.web.companys.Companys;
-import com.eosa.web.users.Users;
 
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 @RequestMapping("/admin/detectiveManage")
 public class CompanysManagerController {
 
     @Autowired private CompanysManageService companysManageService;
     
-    final int POST_COUNT = 10;
-    final int BLOCK_COUNT = 10;
-
-    public List<Companys> postList(int currentPage) {				
-        int currentStartPost = (currentPage - 1) * BLOCK_COUNT; 
-        List<Companys> answer = companysManageService.findAllDetective(currentStartPost, POST_COUNT);
-		
-		return answer;
-	}
-	public Map<String, Integer> pageList(int currentPage) {
-		Map<String, Integer> result = new HashMap<>();
-		
-		int allPostCount = companysManageService.findAllDetectiveCount(); // 모든 포스트의 수
-		
-		int blockFirst = ((currentPage - 1) / BLOCK_COUNT) * BLOCK_COUNT + 1;
-		int blockLast = blockFirst + BLOCK_COUNT - 1;
-		
-		if(allPostCount < blockLast) {
-			blockLast = BLOCK_COUNT;
-		}
-		
-		int previousBlock = blockFirst - BLOCK_COUNT ;
-		int nextBlock = blockFirst + BLOCK_COUNT ;
-		
-		result.put("blockCount", BLOCK_COUNT);
-		result.put("fistBlock", 1); // 모든 페이지 중 가장 첫번째 페이지
-		result.put("lastBlock", (int) Math.ceil(allPostCount / POST_COUNT)); // 모든 페이지 중 가장 마지막 페이지
-		result.put("blockFirst", blockFirst); // 페이지네이션 목록에서 가장 첫번째 페이지
-		result.put("blockLast", blockLast); // 페이지네이션 목록에서 가장 마지막 페이지
-		result.put("previousBlock", previousBlock); // 이전 10개의 페이지네이션 블록에서 가장 첫번째 페이지
-		result.put("nextBlock", nextBlock); // 이후 10개의 페이지네이션 블록에서 가장 첫번째 페이지
-
-                 
-		// int allPostCount = usersManageService.findAllClientCount(); // 모든 포스트의 수
-        int firstPage = 1; // 가장 첫 번째 페이지
-		int lastPage = (int) Math.ceil(allPostCount / POST_COUNT); // 가장 마지막 페이지
-        
-		
-		return result;
-	}
+    final private int POST_COUNT = 10;
+    final private int BLOCK_COUNT = 10;
+    private PostList postList = new PostList(POST_COUNT, BLOCK_COUNT);
 
     /**
      * 모든 탐정 명단을 출력합니다.
      * @return
-     */
+    */
     @Operation(summary = "탐정 전체 목록 조회", description="모든 탐정을 목록으로 출력합니다.")
     @GetMapping("/detectiveList")
     public String showAllDetectiveList(
         @RequestParam(value="currentPage", defaultValue="1") int currentPage,
         Model model
     ) {
-        List<Companys> companysList = postList(currentPage);
-        Map<String, Integer> pagination = pageList(currentPage);
+        int currentPageStartPost = postList.getCurrentPageStartPost(currentPage);
+        List<Companys> companysList = companysManageService.findAllDetective(currentPageStartPost, POST_COUNT);
+        int allPostCount = companysManageService.findAllDetectiveCount();
+        PageList pageList = new PageList(POST_COUNT, BLOCK_COUNT, currentPage, allPostCount);
+
+        Map<String, Integer> pagination = new HashMap<>();
+        pagination.put("blockCount", BLOCK_COUNT);
+		pagination.put("fistBlock", pageList.getFirstBlock()); 
+		pagination.put("lastBlock", pageList.getLastBlock());
+		pagination.put("blockFirst", pageList.getBlockFirst());
+		pagination.put("blockLast", pageList.getBlockLast());
+		pagination.put("previousBlock", pageList.getPrevBlock());
+		pagination.put("nextBlock", pageList.getNextBlock());        
         
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("companysList", companysList);
         model.addAttribute("pagination", pagination);
 
         return "admin/companysmanage/CompanysList";
+    }
+
+    @GetMapping("/findByCompanysCeoAccount")
+    public String findByCompanysCeoAccount(
+        @RequestParam("companysCeoAccount") String companysCeoAccount,
+        @RequestParam(value="currentPage", defaultValue="1") int currentPage,
+        Model model
+    ) {
+        int currentPageStartPost = postList.getCurrentPageStartPost(currentPage);
+        List<Companys> companysList = null;
+        int allPostCount =  0;
+        PageList pageList = null;
+
+        if(!companysCeoAccount.isBlank()) {
+            currentPageStartPost = postList.getCurrentPageStartPost(currentPage);
+            companysList = companysManageService.findByCompanysCeoAccount(companysCeoAccount, currentPageStartPost, POST_COUNT);
+            allPostCount = companysManageService.findByCompanysCeoAccountCount(companysCeoAccount);
+            pageList = new PageList(POST_COUNT, BLOCK_COUNT, currentPage, allPostCount);
+        }
+        else {
+            pageList = new PageList(POST_COUNT, BLOCK_COUNT, currentPage, allPostCount);
+        }     
+
+        Map<String, Integer> pagination = new HashMap<>();
+        pagination.put("blockCount", BLOCK_COUNT);
+		pagination.put("fistBlock", pageList.getFirstBlock()); 
+		pagination.put("lastBlock", pageList.getLastBlock());
+		pagination.put("blockFirst", pageList.getBlockFirst());
+		pagination.put("blockLast", pageList.getBlockLast());
+		pagination.put("previousBlock", pageList.getPrevBlock());
+		pagination.put("nextBlock", pageList.getNextBlock());
+
+        if(companysList != null) {
+            // log.debug("currentPage: {}", currentPage);
+            // log.debug("usersList Size: {}", usersList.size());
+            // log.debug("pagination: {}", pagination.toString());
+            model.addAttribute("companysCeoAccount", companysCeoAccount);
+            model.addAttribute("currentPage", currentPage);
+            model.addAttribute("companysList", companysList);
+            model.addAttribute("pagination", pagination);
+        }
+        else {
+            // log.debug("currentPage: {}", currentPage);
+            // log.debug("usersList Size: {}", usersList.size());
+            // log.debug("pagination: {}", pagination.toString());
+            model.addAttribute("currentPage", currentPage);
+            model.addAttribute("companysList", companysList);
+            model.addAttribute("pagination", pagination);
+        }
+           
+        return "admin/companysmanage/FindByCompanysCeoAccount";
+    }
+
+    /**
+     * 회사의 상세정보를 조회합니다.
+     * @param companysName
+     * @param model
+     * @return
+     */
+    @GetMapping("/detectiveInfo")
+    public String detectiveInfo(
+        @RequestParam("companysName") String companysName,
+        Model model
+    ) {
+        log.info("[DETECTIVE] {} 의 정보를 불러옵니다.", companysName);
+        GetByCompanysName companysInfo = companysManageService.getByCompanysName(companysName);
+        GetUserNamePhone usersInfo = companysManageService.getUserNamePhone(companysName);
+        model.addAttribute("Users", usersInfo);
+        model.addAttribute("Companys", companysInfo);
+
+        return "admin/companysmanage/CompanysInfo";
     }
 
 }

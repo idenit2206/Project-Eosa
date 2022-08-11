@@ -25,8 +25,8 @@ public class Companys {
     @Column(nullable=false)
     private Long companysCeoIdx;
 
-    @Column(nullable=false, length=30)
-    private String companysCeoAccount;
+    @Column(nullable=false, length=255)
+    private String companysName;
 
     @Column(nullable=true, length=255)
     private String companysComment;

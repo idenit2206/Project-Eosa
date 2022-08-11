@@ -52,7 +52,7 @@
                 <nav th:if="pagination != null">
                     <ul class="pagination">
                         <li th:if="${pagination.blockCount < currentPage}">
-                            <a class="page-link" th:href="@{/admin/usersManage/findByUsersAccount(currentPage=${page},usersAccount=${usersAccount})}">
+                            <a class="page-link" th:href="@{/admin/usersManage/findByUsersAccount(currentPage=${pagination.previousBlock},usersAccount=${usersAccount})}">
                                 PREV
                             </a>
                         </li>              
@@ -67,7 +67,7 @@
                             </a>
                         </li>
                         <li th:if="${currentPage <= pagination.lastBlock}">
-                            <a class="page-link" th:if="${pagination.lastBlock >pagination.blockLast}" th:href="@{/admin/usersManage/findByUsersAccount(currentPage=${page},usersAccount=${usersAccount})}">
+                            <a class="page-link" th:if="${pagination.lastBlock >pagination.blockLast}" th:href="@{/admin/usersManage/findByUsersAccount(currentPage=${pagination.nextBlock},usersAccount=${usersAccount})}">
                                 NEXT
                             </a>
                         </li>

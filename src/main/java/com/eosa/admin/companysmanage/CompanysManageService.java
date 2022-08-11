@@ -26,11 +26,32 @@ public class CompanysManageService implements CompanysManageRepository {
     public List<Companys> findAllDetective(int currentStartPost, int postCount) {
         return companysManageRepository.findAllDetective(currentStartPost, postCount);
     }
-
     @Override
     public int findAllDetectiveCount() {
         return companysManageRepository.findAllDetectiveCount();
     }
+    
+    @Override
+    public List<Companys> findByCompanysCeoAccount(String companysCeoAccount, int currentPageStartPost, int POST_COUNT) {
+        return companysManageRepository.findByCompanysCeoAccount(companysCeoAccount, currentPageStartPost, POST_COUNT);
+    }
+    @Override
+    public int findByCompanysCeoAccountCount(String companysCeoAccount) {
+        return companysManageRepository.findByCompanysCeoAccountCount(companysCeoAccount);
+    }
+
+    @Override
+    public GetByCompanysName getByCompanysName(String companysName) {
+        return companysManageRepository.getByCompanysName(companysName);
+    }
+
+    @Override
+    public GetUserNamePhone getUserNamePhone(String companysName) {
+        return companysManageRepository.getUserNamePhone(companysName);
+    }
+
+    
+
     
     @Override
     public List<Companys> findAll() {

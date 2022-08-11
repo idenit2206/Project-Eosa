@@ -21,10 +21,24 @@ public class PageList {
         this.BLOCK_COUNT = BLOCK_COUNT;
         this.firstBlock = 1;
         this.lastBlock = (allPostCount / POST_COUNT) + 1;
-        this.blockFirst = ((currentPage -1) / BLOCK_COUNT) * BLOCK_COUNT + 1;
-        this.blockLast = (blockFirst + BLOCK_COUNT) - 1;
-        this.prevBlock = blockFirst - BLOCK_COUNT;
-        this.nextBlock = blockFirst + BLOCK_COUNT;
+        this.blockFirst = ((currentPage -1) / BLOCK_COUNT) * BLOCK_COUNT + 1;        
+        // this.blockLast = (blockFirst + BLOCK_COUNT) - 1;        
+        // this.prevBlock = blockFirst - BLOCK_COUNT;     
+        // this.nextBlock = blockFirst + BLOCK_COUNT;
+        
+        // blockLast, prevBlock, nextBlock
+        if(lastBlock == 1) {
+            this.blockLast = 1;
+            this.prevBlock = 1;
+            this.nextBlock = 1;
+        }
+        else {
+            this.blockLast = (blockFirst + BLOCK_COUNT) - 1;
+            this.prevBlock = blockFirst - BLOCK_COUNT;
+            this.nextBlock = blockFirst + BLOCK_COUNT;
+        }
+        
+       
     }
     
 }

@@ -3,7 +3,7 @@
 <head>
     <link rel="stylesheet" href="/assets/css/index.css" />
     <link rel="stylesheet" href="/assets/css/usersmanage/UsersManage.css" />
-<title>탐정 관리</title>
+<title>탐정 검색 결과</title>
 </head>
 <head th:replace="admin/fragments/html-head.html :: html-head" />
 <body>
@@ -27,18 +27,18 @@
                     <thead>
                         <tr class="table-success">
                             <th>회원 번호</th>
-                            <th>업체명</th>
+                            <th>아이디</th>
                             <th>가입일</th>
                         </tr>
                     </thead>
-                    <tbody th:if="companysList != null">
+                    <tbody th:if="${companysList} != null">
                         <tr th:each="companysList : ${companysList}">
                             <td>[[${companysList.companysIdx}]]</td>
-                            <td><a th:href="@{/admin/detectiveManage/detectiveInfo(companysName=${companysList.companysName})}">[[${companysList.companysName}]]</a></td>                         
+                            <td><a th:href="@{/admin/usersManage/usersInfo(usersAccount=${companysList.companysCeoAccount})}">[[${companysList.companysCeoAccount}]]</a></td>                         
                             <td>[[${companysList.companysRegistDate}]]</td>
                         </tr>
                     </tbody>
-                    <tbody th:unless="companysList != null">
+                    <tbody th:unless="${companysList} != null">
                         <tr>
                             <td>No Result</td>
                             <td>No Result</td>
@@ -48,7 +48,7 @@
                 </table>
             </div>
             <div class="">
-                <nav th:if="${pagination} != null">
+                <nav th:if="pagination != null">
                     <ul class="pagination">
                         <li th:if="${pagination.blockCount < currentPage}">
                             <a class="page-link" th:href="@{/admin/detectiveManage/detectiveList(currentPage=${pagination.previousBlock})}">
@@ -61,16 +61,9 @@
                             </a>
                         </li>
                         <li th:if="${currentPage <= pagination.lastBlock}">
-                                <a class="page-link" th:href="@{/admin/detectiveManage/detectiveList(currentPage=${pagination.nextBlock})}">
+                            <a class="page-link" th:href="@{/admin/detectiveManage/detectiveList(currentPage=${pagination.nextBlock})}">
                                 NEXT
                             </a>
-                        </li>
-                    </ul>
-                </nav>
-                <nav th:unless="${pagination} != null">
-                    <ul class="pagination">
-                        <li class="page-item">
-                            <a class="page-link">1</a>
                         </li>
                     </ul>
                 </nav>

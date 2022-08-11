@@ -2,7 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <link rel="stylesheet" href="/assets/css/index.css" />
-    <link rel="stylesheet" href="/assets/css/usersmanage/UsersInfo.css" />
+    <link rel="stylesheet" href="/assets/css/companymanage/CompanysInfo.css" />
+<title>탐정 상세정보 보기</title>
 </head>
 <head th:replace="admin/fragments/html-head.html :: html-head"></head>
 <body>
@@ -14,85 +15,74 @@
         </div>
         <div class="col-10">
             <div class="userInfo-main w-100 m-auto">
-                <h3>회원 상세정보</h3>
-                <form method="POST" th:action="@{/admin/usersManage/usersInfo.up}" class="form needs-valdiation">
-                    <div class="">
-                        <label class="form-label" for="usersAccount">아이디</label>
+                <h3>탐정 상세정보</h3>
+                <form method="POST" th:action="@{/admin/detectiveManage/detectiveInfo.up}" class="form needs-valdiation">
+                <div class="row">
+                    <div class="col">
+                        <label class="form-label" for="companysIdx">탐정넘버</label>
                         <div class="input-group has-validation">
-                            <input type="text" class="form-control" id="usersAccount" name="usersAccount" placeholder="아이디" th:value="${Users.usersAccount}" readonly>
+                            <input type="text" class="form-control" id="companysIdx" name="companysIdx" placeholder="탐정넘버" th:value="${Companys.companysIdx}" readonly>
                         </div>
                     </div>
-                    <div class="">
-                        <label class="form-label" for="usersPass">비밀번호</label>
+                    <div class="col">
+                        <label class="form-label" for="companysPhone">안심번호</label>
                         <div class="input-group has-validation">
-                            <input type="password" class="form-control" id="usersPass" name="usersPass" placeholder="비밀번호" required>
+                            <input type="text" class="form-control" id="companysPhone" name="companysPhone" placeholder="안심번호" readonly>
                         </div>
                     </div>
-                    <div class="">
-                        <label class="form-label" for="usersPassCheck">비밀번호 확인</label>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label class="form-label" for="usersName">대표명</label>
                         <div class="input-group has-validation">
-                            <input type="password" class="form-control" id="usersPassCheck" placeholder="비밀번호 확인" required>
+                            <input type="text" class="form-control" id="usersName" name="usersName" placeholder="대표명" th:value="${Users.usersName}" readonly>
+                        </div>
+                    </div>                    
+                    <div class="col">
+                        <label class="form-label" for="companysName">업체명</label>
+                        <div class="input-group has-validation">
+                            <input type="text" class="form-control" id="companysName" name="companysName" placeholder="회사명" th:value="${Companys.companysName}" readonly>
                         </div>
                     </div>
-                    <div class="">
-                        <label class="form-label" for="usersName">이름</label>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label class="form-label" for="usersPhone">연락처</label>
                         <div class="input-group has-validation">
-                            <input type="text" class="form-control" id="usersName" name="usersName" placeholder="이름" th:value="${Users.usersName}" readonly>
+                            <input type="text" class="form-control" id="usersPhone" name="usersPhone" th:value="${Users.usersPhone}" readonly/>
                         </div>
                     </div>
-                    <div class="">
-                        <label class="form-label" for="usersNick">닉네임</label>
-                        <div class="input-group has-validation">
-                            <input type="text" class="form-control" id="usersNick" name="usersNick" placeholder="닉네임" th:value="${Users.usersNick}" >
-                        </div>
-                    </div>
-                    <div class="">
-                        <label class="form-label" for="usersPhone">전화 번호</label>
-                        <div class="input-group has-validation">
-                            <input type="text" class="form-control" id="usersPhone" name="usersPhone" placeholder="전화 번호" th:value="${Users.usersPhone}" readonly>
-                        </div>
-                    </div>
-                    <div class="">
-                        <label class="form-label" for="usersEmail">이메일</label>
-                        <div class="input-group has-validation">
-                            <input type="text" class="form-control" id="usersEmail" name="usersEmail" placeholder="이메일" th:value="${Users.usersEmail}" readonly>
-                        </div>
-                    </div>
-                    <div class="">
-                        <label class="form-label" for="usersRole">분류</label>
-                        <div class="input-group has-validation">
-                            <input type="text" class="form-control" id="usersRole" name="usersRole" placeholder="분류" th:value="${Users.usersRole}" readonly>
-                        </div>
-                    </div>
-                    <div class="">
-                        <label class="form-label" for="usersRegion1">시/도</label>
-                        <select class="form-select" id="usersRegion1" name="usersRegion1" aria-label="Default select example">
-                            <option selected th:value="${Users.usersRegion1}">[[${Users.usersRegion1}]]</option>
-                        </select>
-                        <label class="form-label" for="usersRegion2">구/시/군</label>
-                        <select class="form-select" id="usersRegion2" name="usersRegion2" aria-label="Default select example">
-                            <option selected th:value="${Users.usersRegion2}">[[${Users.usersRegion2}]]</option>
+                    <div class="col">
+                        <label class="form-label" for="companysEnabled">승인상태</label>
+                        <select class="form-select" id="companysEnabled" name="companysEnabled" aria-label="Default select example">
+                            <option value="0">미승인</option>
+                            <option value="1">승인</option>
                         </select>
                     </div>
-                    <br/>
-                    <div class="form-check form-switch">
-                        <!-- <input class="form-check-input" type="checkbox" id="usersNotice" name="usersNotice" value="OK"> -->
-                        <input class="form-check-input" type="checkbox" id="usersNotice" name="usersNotice" th:value="${Users.usersNotice}"/>
-                        <label class="form-check-label" for="usersNotice">
-                            이메일 또는 휴대폰을 통해 이벤트 메시지 수신하시는 것을 동의하십니까?
-                        </label>                        
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label class="form-label" for="companysComment">업체 소개</label>                       
+                        <input type="text" class="form-control" id="companysComment" name="companysComponent" th:value="${Companys.companysComment}">
                     </div>
-                    <br/>
-                    <div class="">
-                        <input type="submit" class="btn btn-primary" value="수정"/>
-                        <input type="reset" id="cancleBtn" class="btn btn-light" value="취소"/>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label class="form-label" for="companysSpec">업체 상세 소개</label>                       
+                        <textarea class="form-control" id="companysSpec" name="companysSpec">[[${Companys.companysSpec}]]</textarea>
                     </div>
+                </div>                    
+                <br/>
+                <div class="">
+                    <input type="submit" class="btn btn-primary" value="수정"/>
+                    <input type="reset" id="cancleBtn" class="btn btn-light" value="취소"/>
+                </div>
                 </form>
             </div>            
         </div>
     </div>
 </div>
 </body>
-<script type="module" th:src="@{/assets/js/UsersInfo.js}"></script>
+<!-- <script type="module" th:src="@{/assets/js/UsersInfo.js}"></script>-->
 <script type="text/javascript" src="/assets/js/admin/CancleBtn.js"></script>
 </html>

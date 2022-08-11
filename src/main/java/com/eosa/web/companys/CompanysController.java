@@ -39,7 +39,7 @@ public class CompanysController {
         LocalDateTime currentTime = LocalDateTime.now();       
 
         String[] targets = {
-          "companysCeoAccount", "companysRegion1", 
+          "companysName", "companysRegion1", 
           "companysRegion2", "companysRegion3", "companysRegistCerti"
         };
 
@@ -49,7 +49,7 @@ public class CompanysController {
         if(items.get("result") == "SUCCESS") {          
           Companys transaction = companysService.save(param);
           if(transaction != null) {
-            logger.info("[SUCCESS] {} register Success", param.getCompanysCeoAccount());
+            logger.info("[SUCCESS] {} register Success", param.getCompanysName());
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem(items);
             result.setResponseDateTime(currentTime);
@@ -61,7 +61,7 @@ public class CompanysController {
           }         
         }
         else {
-          logger.error("[Failure] {} register Fail", param.getCompanysCeoAccount());
+          logger.error("[Failure] {} register Fail", param.getCompanysName());
           result.setStatusCode(HttpStatus.BAD_REQUEST.value());
           result.setResultItem(items);
           result.setResponseDateTime(currentTime);
