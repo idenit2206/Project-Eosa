@@ -29,7 +29,11 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(value="/admin/usersManage")
 public class UsersManageController {
 
-    @Autowired private UsersManageService usersManageService;    
+    @Autowired private UsersManageService usersManageService;
+    final int POST_COUNT = 10;
+    final int BLOCK_COUNT = 10;
+
+    PostList postList = new PostList(POST_COUNT, BLOCK_COUNT);   
    
     @GetMapping("/allClientCount")
     @ResponseBody
@@ -56,21 +60,12 @@ public class UsersManageController {
     public String showUsersList(
         @RequestParam(value="currentPage") int currentPage,
         Model model
-    ) {
-        final int POST_COUNT = 10;
-        final int BLOCK_COUNT = 10;
-
-        PostList postList = new PostList(POST_COUNT, BLOCK_COUNT);   
-        
+    ) {       
         int currentPageStartPost = postList.getCurrentPageStartPost(currentPage);
         List<Users> usersList = usersManageService.findAllClient(currentPageStartPost, POST_COUNT);
         int allPostCount = usersManageService.findAllClientCount();
         PageList pageList = new PageList(POST_COUNT, BLOCK_COUNT, currentPage, allPostCount);
-        
-        // log.info("showUsersList currentPage: {}", currentPage);
-        // List<Users> usersList = usersManageService.findAll();
-
-        // List<Users> usersList = postList(currentPage);        
+      
         Map<String, Integer> pagination = new HashMap<>();
         pagination.put("blockCount", BLOCK_COUNT);
 		pagination.put("fistBlock", pageList.getFirstBlock()); 
@@ -86,6 +81,57 @@ public class UsersManageController {
         model.addAttribute("pagination", pagination);
 
         return "admin/usersmanage/UsersList";
+    }
+
+    @GetMapping("/findByUsersAccount")
+    public String findByUsersAccount(
+        @RequestParam("usersAccount") String usersAccount,
+        @RequestParam(value="currentPage", defaultValue="1") int currentPage,
+        Model model
+    ) {
+        int currentPageStartPost = postList.getCurrentPageStartPost(currentPage);
+        List<Users> usersList = null;
+        int allPostCount =  0;
+        PageList pageList = null;
+
+        if(!usersAccount.isBlank()) {
+            currentPageStartPost = postList.getCurrentPageStartPost(currentPage);
+            usersList = usersManageService.findByUsersAccount(usersAccount, currentPageStartPost, POST_COUNT);
+            allPostCount =  usersManageService.findByUsersAccountCount(usersAccount);
+            pageList = new PageList(POST_COUNT, BLOCK_COUNT, currentPage, allPostCount);
+        }
+        else {
+            pageList = new PageList(POST_COUNT, BLOCK_COUNT, currentPage, allPostCount);
+        }     
+
+        Map<String, Integer> pagination = new HashMap<>();
+        pagination.put("blockCount", BLOCK_COUNT);
+		pagination.put("fistBlock", pageList.getFirstBlock()); 
+		pagination.put("lastBlock", pageList.getLastBlock());
+		pagination.put("blockFirst", pageList.getBlockFirst());
+		pagination.put("blockLast", pageList.getBlockLast());
+		pagination.put("previousBlock", pageList.getPrevBlock());
+		pagination.put("nextBlock", pageList.getNextBlock());
+
+        if(usersList != null) {
+            // log.debug("currentPage: {}", currentPage);
+            // log.debug("usersList Size: {}", usersList.size());
+            // log.debug("pagination: {}", pagination.toString());
+            model.addAttribute("usersAccount", usersAccount);
+            model.addAttribute("currentPage", currentPage);
+            model.addAttribute("usersList", usersList);
+            model.addAttribute("pagination", pagination);
+        }
+        else {
+            // log.debug("currentPage: {}", currentPage);
+            // log.debug("usersList Size: {}", usersList.size());
+            // log.debug("pagination: {}", pagination.toString());
+            model.addAttribute("currentPage", currentPage);
+            model.addAttribute("usersList", usersList);
+            model.addAttribute("pagination", pagination);
+        }
+           
+        return "admin/usersmanage/FindByUsersAccount";
     }
 
     /**

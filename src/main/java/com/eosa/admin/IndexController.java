@@ -20,7 +20,7 @@ public class IndexController {
     
     @Autowired UsersService usersService;
 
-    @GetMapping("/")
+    @GetMapping({"", "/"})
     public ModelAndView showIndexPage(
     ) {
         ModelAndView mv = new ModelAndView();

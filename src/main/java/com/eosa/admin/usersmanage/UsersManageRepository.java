@@ -47,4 +47,19 @@ public interface UsersManageRepository extends JpaRepository<Users, Long> {
     )
     int updateUsersInfo(@Param("Users") Users users);
 
+    @Query(
+        value="SELECT * FROM Users WHERE usersAccount LIKE CONCAT('%',?1,'%') " +
+        "AND usersRole='CLIENT' " + 
+        "LIMIT ?2, ?3",
+        nativeQuery=true
+    )
+    List<Users> findByUsersAccount(String usersAccount, int currentPageStartPost, int pOST_COUNT);
+
+    @Query(
+        value="SELECT COUNT(*) FROM Users WHERE usersAccount LIKE CONCAT('%',?1,'%') " +
+        "AND usersRole='CLIENT'",
+        nativeQuery=true
+    )
+    int findByUsersAccountCount(String usersAccount);
+
 }
