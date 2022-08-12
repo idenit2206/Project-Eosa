@@ -3,7 +3,7 @@ package com.eosa.web.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
@@ -14,29 +14,14 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import lombok.RequiredArgsConstructor;
 
 @Configuration
-@Order(2)
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class CustomAdminSecurityConfig {
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public CorsConfigurationSource customConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-
-        configuration.addAllowedOriginPattern("*");
-        configuration.addAllowedHeader("*");
-        configuration.addAllowedMethod("*");
-        configuration.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
     }
 
     private String[] ANYONE_PERMIT = {
@@ -47,13 +32,10 @@ public class CustomAdminSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .cors().disable()
-            .csrf().disable()
             .antMatcher("/admin/**")
-            .authorizeRequests()
+            .authorizeRequests().anyRequest().authenticated()
                 // .antMatchers(ANYONE_PERMIT).permitAll()
-                // .anyRequest().hasAnyAuthority("ADMIN, SUPER_ADMIN")
-                .anyRequest().authenticated()
+                // .anyRequest().hasAnyAuthority("ADMIN, SUPER_ADMIN")                
         .and()
             .formLogin()
                 .loginPage("/admin/sign/signIn")

@@ -40,7 +40,6 @@ public class CustomSecurityConfig {
     }
 
     private String[] ANYONE_PERMIT = {
-        "/assets/**", "/js/**", "/css/**", "/webjars/**",
         "/api/user/sign/**", "/api/mail/**"
     };
 
@@ -49,11 +48,9 @@ public class CustomSecurityConfig {
         http        
             .csrf().disable()
             .cors().configurationSource(customConfigurationSource())
-        .and()
-            .antMatcher("/api/**")
-            .authorizeRequests()
-                .antMatchers(ANYONE_PERMIT).permitAll()
-                .anyRequest().hasAnyAuthority("CLIENT, DETECTIVE")
+        .and()      
+            .antMatcher("/api/user/**")
+            .authorizeRequests().anyRequest().hasAnyAuthority("CLIENT, DETECTIVE")
         .and()
             .formLogin()
                 .loginPage("http://localhost:3000/user/signin")
@@ -72,8 +69,9 @@ public class CustomSecurityConfig {
         .and()
             .logout()
                     .logoutUrl("/api/user/signOut")
-                        .logoutSuccessHandler(customLogoutSuccessHandler);
-
+                        .logoutSuccessHandler(customLogoutSuccessHandler)
+                        .deleteCookies("JSESSIONID")
+                        .permitAll();
         return http.build();
     }
 }
