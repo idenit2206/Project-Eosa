@@ -7,9 +7,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.ColumnDefault;
+
+import com.eosa.web.users.Users;
 
 import lombok.Data;
 
@@ -59,5 +64,13 @@ public class Companys {
     @Column(nullable=false)
     @ColumnDefault("0")
     private boolean companysDelete;
+
+    @ManyToOne(optional = false)
+    @JoinTable(
+        name="Users",
+        joinColumns = @JoinColumn(name="companysCeoIdx"),
+        inverseJoinColumns = @JoinColumn(name="usersIdx")
+    )
+    private Users user;
 
 }
