@@ -44,7 +44,7 @@ public class UsersController {
 
     @Autowired private UsersService usersService;
 
-    @GetMapping("/test01")
+    @GetMapping("/sign/test01")
     public String test01() {
         return "/api/user/test01";
     }
@@ -56,7 +56,7 @@ public class UsersController {
      * @return
      */
     @Operation(summary="회원가입 Api", description="회원가입시 DB트랜잭션을 수행합니다")
-    @PostMapping("/signUp.do")
+    @PostMapping("/sign/signUp.do")
     public CustomResponseData doSignUp(
         HttpServletRequest req, 
         Users param
@@ -105,7 +105,7 @@ public class UsersController {
         "signIn에 성공했을 때 작동하는 메서드 입니다.\n" + 
         "성공하면 userInfo라는 이름으로 해당 사용자의 정보를 전송합니다."
     )
-    @PostMapping(value="/signIn.success")
+    @PostMapping(value="/sign/signIn.success")
     public CustomResponseData signInSuccess(
         HttpServletRequest req,
         HttpServletResponse res,
@@ -135,7 +135,7 @@ public class UsersController {
      * @return userInformation
      */    
     @Operation(summary="/signIn 실패", description="signIn에 실패했을 때 작동하는 메서드 입니다.")
-    @PostMapping(value="/signIn.failure")
+    @PostMapping(value="/sign/signIn.failure")
     public CustomResponseData signInfailure(
         HttpServletRequest req,
         @RequestParam(value="usersAccount") String usersAccount
@@ -163,7 +163,7 @@ public class UsersController {
      * @throws IOException
      * @throws ServletException
      */
-    @GetMapping("/oauth2SignIn.success")
+    @GetMapping("/sign/oauth2SignIn.success")
     public void oauth2SignInSuccess(
         HttpServletRequest request, HttpServletResponse response,
         RedirectAttributes redirectAttributes,
@@ -215,7 +215,7 @@ public class UsersController {
         // return result;
     }
 
-    @GetMapping("/oauth2SignIn.failure")
+    @GetMapping("/sign/oauth2SignIn.failure")
     public void oauth2SignInFailure(
         @AuthenticationPrincipal CustomPrincipalDetails principalUserDetails,
         HttpServletRequest request, HttpServletResponse response
@@ -238,7 +238,7 @@ public class UsersController {
      * @return
      */
     @Operation(summary="사용자가 계정을 분실했을 때 활용되는 메서드")
-    @GetMapping("/checkAccountByUsersEmail")
+    @GetMapping("/sign/checkAccountByUsersEmail")
     public CustomResponseData checkAccountByUsersEmail(
         @RequestParam("usersEmail") String usersEmail
     ) {

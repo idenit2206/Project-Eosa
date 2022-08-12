@@ -2,11 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <link rel="stylesheet" href="/assets/css/signin/signIn1.css" />
+<title>관리자 로그인</title>
 </head>
 <head th:replace="admin/fragments/html-head.html :: html-head" />
 <body class="text-center">
     <main class="signIn-main w-100 m-auto">
-        <form method="POST" action="/admin/signIn.do">
+        <form method="POST" action="/admin/sign/signIn.do">
             <h1 class="h3 mb-3 fw-normal">도와조 관리자 로그인</h1>
             <div class="form-floating">               
                 <input type="text" class="form-control" id="usersAccount" name="usersAccount" placeholder="아이디" value=""/>

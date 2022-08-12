@@ -8,14 +8,11 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.tomcat.util.buf.StringCache;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,25 +40,25 @@ public class AdminUserController {
         return "/admin/test01";
     }
 
-    @GetMapping("/signUp")
+    @GetMapping("/sign/signUp")
     public String adminSignUpForm() {
         return "admin/signin/SignUp";
     }
 
-    @PostMapping("/signUp.do")
+    @PostMapping("/sign/signUp.do")
     public String adminSignUpDo(Users adminUser) {
         adminUserService.adminRegist(adminUser);
         return "admin/signin/SignIn";
     }
 
     @Operation(summary="관리자페이지 로그인 view", description="관리자 페이지의 로그인을 위한 Form 페이지")
-    @GetMapping("/signIn")
+    @GetMapping("/sign/signIn")
     public String adminSignInForm() {
         // log.info("## Someone Request /signInForm");
         return "admin/signin/SignIn";
     }
 
-    @PostMapping(value="/signIn.success")
+    @PostMapping(value="/sign/signIn.success")
     public ModelAndView adminSignInSuceess(
         @AuthenticationPrincipal CustomPrincipalDetails users, 
         @RequestParam("usersAccount") String usersAccount
@@ -84,7 +81,7 @@ public class AdminUserController {
         }        
     }
 
-    @PostMapping(value="/signIn.failure")
+    @PostMapping(value="/sign/signIn.failure")
     public void adminSignInFailure(
         HttpServletRequest request, HttpServletResponse response,
         @RequestParam("usersAccount") String usersAccount,

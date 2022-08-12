@@ -37,6 +37,19 @@ public class IndexController {
         mv.setViewName("admin/index");
         mv.addObject("user", user);
         return mv;
+
+        // if(user.getUsersAccount().isBlank()) {
+        //     // user = new Users();
+        //     // user.setUsersAccount("");
+        //     // user.setUsersName("");
+        //     // user.setUsersPhone("");
+        //     // user.setUsersEmail("");
+        //     mv.setViewName("admin/index");
+        //     mv.addObject("user", user);
+        // }
+        // else {
+        //     mv.setViewName("admin/signin/SignIn");
+        // }
     }
 
 }

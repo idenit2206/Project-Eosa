@@ -14,11 +14,11 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-@Configuration
-@Order(1)
-public class CustomSecurityConfig {
+import lombok.RequiredArgsConstructor;
 
-    @Autowired private CustomLogoutSuccessHandler customLogoutSuccessHandler; 
+@Configuration
+@Order(2)
+public class CustomAdminSecurityConfig {
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
@@ -41,39 +41,29 @@ public class CustomSecurityConfig {
 
     private String[] ANYONE_PERMIT = {
         "/assets/**", "/js/**", "/css/**", "/webjars/**",
-        "/api/user/sign/**", "/api/mail/**"
+        "/admin/sign/**"
     };
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http        
+        http
+            .cors().disable()
             .csrf().disable()
-            .cors().configurationSource(customConfigurationSource())
-        .and()
-            .antMatcher("/api/**")
+            .antMatcher("/admin/**")
             .authorizeRequests()
-                .antMatchers(ANYONE_PERMIT).permitAll()
-                .anyRequest().hasAnyAuthority("CLIENT, DETECTIVE")
+                // .antMatchers(ANYONE_PERMIT).permitAll()
+                // .anyRequest().hasAnyAuthority("ADMIN, SUPER_ADMIN")
+                .anyRequest().authenticated()
         .and()
             .formLogin()
-                .loginPage("http://localhost:3000/user/signin")
-                    .loginProcessingUrl("/api/user/sign/signIn.do")
+                .loginPage("/admin/sign/signIn")
+                    .loginProcessingUrl("/admin/sign/signIn.do")
                     .usernameParameter("usersAccount").passwordParameter("usersPass")                       
-                    .successForwardUrl("/api/user/sign/signIn.success")
-                    .failureForwardUrl("/api/user/sign/signIn.failure")            
+                    .successForwardUrl("/admin/sign/signIn.success")
+                    .failureForwardUrl("/admin/sign/signIn.failure")            
         .and()
-            .oauth2Login()
-                .loginPage("http://localhost:3000/user/signin")
-                    .defaultSuccessUrl("/api/user/sign/oauth2SignIn.success")
-                    // .defaultSuccessUrl("/api/user2/oauth2SignIn.success")
-                    .failureUrl("/api/user/sign/oauth2SignIn.failure")
-                    // .userInfoEndpoint()
-                    // .userService(customPrincipalOAuth2UserService);
-        .and()
-            .logout()
-                    .logoutUrl("/api/user/signOut")
-                        .logoutSuccessHandler(customLogoutSuccessHandler);
-
+            .logout();
+            
         return http.build();
     }
 }

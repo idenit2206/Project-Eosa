@@ -61,13 +61,13 @@
                             </a>
                         </li>
                         <li th:if="${currentPage <= pagination.lastBlock}">
-                                <a class="page-link" th:href="@{/admin/detectiveManage/detectiveList(currentPage=${pagination.nextBlock})}">
+                                <a class="page-link" th:if="${pagination.lastBlock > pagination.blockLast}" th:href="@{/admin/detectiveManage/detectiveList(currentPage=${pagination.nextBlock})}">
                                 NEXT
                             </a>
                         </li>
                     </ul>
                 </nav>
-                <nav th:unless="${pagination} != null">
+                <nav th:unless="pagination != null">
                     <ul class="pagination">
                         <li class="page-item">
                             <a class="page-link">1</a>
