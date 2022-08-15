@@ -38,8 +38,7 @@ public class CustomSecurityConfig {
     }
 
     private String[] ANYONE_PERMIT = {
-        // Admin Page
-        "/assets/**", "/js/**", "/css/**", "/webjars/**", "/admin/signIn", "/admin/**",       
+        // Admin Page       
         "/api/user/**", "/api/mail/**"
     };
 

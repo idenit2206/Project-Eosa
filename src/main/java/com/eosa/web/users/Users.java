@@ -12,10 +12,14 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.core.GrantedAuthority;
+
+import com.eosa.web.companysmember.CompanysMember;
 
 import lombok.Builder;
 import lombok.Data;
@@ -97,6 +101,11 @@ public class Users {
     @Column(nullable=false)
     @ColumnDefault("0")
     private int usersDelete;
+
+    @OneToOne
+    @JoinColumn(name="usersIdx")
+    private CompanysMember companysMember;
+
 
     @Builder(builderClassName = "UserDetailRegister", buildMethodName = "userDetailRegister")
     public Users(String usersAccount, String usersEmail) {

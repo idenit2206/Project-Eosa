@@ -23,6 +23,7 @@ public class IndexController {
     @GetMapping("/")
     public ModelAndView showIndexPage(
     ) {
+        log.info("someone Request /admin/");
         ModelAndView mv = new ModelAndView();
         Users user = usersService.findByUsersAccount("superadmin88");
 

@@ -54,7 +54,7 @@ public class AdminUserController {
     @Operation(summary="관리자페이지 로그인 view", description="관리자 페이지의 로그인을 위한 Form 페이지")
     @GetMapping("/signIn")
     public String adminSignInForm() {
-        // log.info("## Someone Request /signInForm");
+        log.info("## Someone Request /signInForm");
         return "admin/signin/SignIn";
     }
 

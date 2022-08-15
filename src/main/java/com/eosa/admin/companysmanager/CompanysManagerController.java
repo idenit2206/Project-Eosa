@@ -13,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.eosa.web.companys.Companys;
 
@@ -42,7 +41,7 @@ public class CompanysManagerController {
 		Map<String, Integer> result = new HashMap<>();
 		PageRequest pageRequest = PageRequest.of(currentPage - 1, POST_COUNT, Sort.by(Sort.Direction.DESC, "companysIdx"));
 		Page<Companys> list = companysManageService.findAll(pageRequest);
-		int blockCount = list.getTotalPages();
+		int blockCount = list.getSize();
 		
 		int blockFirst = ((currentPage - 1) / BLOCK_COUNT) * BLOCK_COUNT + 1;
 		int blockLast = blockFirst + BLOCK_COUNT - 1;

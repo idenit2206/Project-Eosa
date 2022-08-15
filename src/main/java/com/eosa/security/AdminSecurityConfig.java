@@ -8,10 +8,14 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-@Order(1)
+@Order(2)
 public class AdminSecurityConfig {
 
     @Autowired private CustomLogoutSuccessHandler customLogoutSuccessHandler; 
+
+    private String[] PERMIT_URL = {
+        "/assets/**", "/js/**", "/css/**", "/webjars/**", "/admin/signIn"
+    };
     
     @Bean
     public SecurityFilterChain adminFilterChain(HttpSecurity http) throws Exception {
@@ -20,16 +24,16 @@ public class AdminSecurityConfig {
             .csrf().disable()
             .antMatcher("/admin/**")
             .authorizeRequests()
-                .antMatchers("/admin/singIn", "/admin/signUp", "/admin/test01").permitAll()
-                .anyRequest().hasAnyAuthority("ADMIN")
+                .antMatchers(PERMIT_URL).permitAll()
+                .anyRequest().hasAnyAuthority("ADMIN", "SUPER_ADMIN")
                 // .anyRequest().permitAll()
         .and()
             .formLogin()
                 .loginPage("/admin/signIn")
                     .loginProcessingUrl("/admin/signIn.do")
-                    // .usernameParameter("usersAccount").passwordParameter("usersPass")                       
-                    // .successForwardUrl("/api/user/signIn.success")
-                    // .failureForwardUrl("/api/user/signIn.failure")
+                    .usernameParameter("usersAccount").passwordParameter("usersPass")                       
+                    .successForwardUrl("/admin/signIn.success")
+                    .failureForwardUrl("/admin/signIn.failure")
         .and()
             .logout()
                     .logoutUrl("/api/user/signOut.do")
