@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.eosa.web.companys.Companys;
 
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 @RequestMapping("/admin/companysManage")
 public class CompanysManagerController {
@@ -76,13 +78,18 @@ public class CompanysManagerController {
         Model model
     ) {
         // log.info("showUsersList currentPage: {}", currentPage);
-        // List<Users> usersList = usersManageService.findAll();
-        List<Companys> companysList = postList(currentPage);
-        Map<String, Integer> pagination = pageList(currentPage);
+        // List<Companys> companysList = companysManageService.findAll();
+		// log.info(companysList.toString());
+
+        // List<Companys> companysList = postList(currentPage);
+        // Map<String, Integer> pagination = pageList(currentPage);
+
+		List<GetCompanysList> companysList = companysManageService.viewFindAll();
+		log.info(companysList.toString());
         
-        model.addAttribute("currentPage", currentPage);
+        // model.addAttribute("currentPage", currentPage);
         model.addAttribute("companysList", companysList);
-        model.addAttribute("pagination", pagination);
+        // model.addAttribute("pagination", pagination);
 
         return "admin/companysmanage/CompanysList";
     }

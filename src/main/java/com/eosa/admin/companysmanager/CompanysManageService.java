@@ -23,9 +23,13 @@ public class CompanysManageService implements CompanysManageRepository {
     @Autowired private CompanysManageRepository companysManageRepository;
 
     @Override
+    public List<GetCompanysList> viewFindAll() {
+        return companysManageRepository.viewFindAll();
+    }
+
+    @Override
     public List<Companys> findAll() {
-        // TODO Auto-generated method stub
-        return null;
+        return companysManageRepository.findAll();
     }
 
     @Override

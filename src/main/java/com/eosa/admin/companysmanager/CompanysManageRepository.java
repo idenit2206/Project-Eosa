@@ -19,4 +19,14 @@ public interface CompanysManageRepository extends JpaRepository<Companys, Long> 
     )
     List<Companys> findAllCompany(int currentStartPost, int postCount);
 
+    @Query(
+        value="SELECT Companys.companysIdx, Companys.companysName, " + 
+        "Users.usersName, Companys.companysPhone, " +
+        "Companys.companysRegion1, Companys.companysEnabled, Companys.companysPremium, " +
+        "Companys.companysLocalPremium, Companys.companysRegistDate " +
+        "FROM Companys INNER JOIN Users ON Companys.companysCeoIdx = Users.usersIdx",
+        nativeQuery = true
+    )
+    List<GetCompanysList> viewFindAll();
+
 }

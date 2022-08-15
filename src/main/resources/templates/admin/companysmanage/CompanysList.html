@@ -13,9 +13,9 @@
             <nav th:replace="admin/fragments/html-sidebar.html :: html-sidebar" />
         </div>
         <div class="col-10">
-            <h3>회원 관리</h3>
+            <h3>탐정 리스트</h3>
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="회원 아이디" aria-label="회원 아이디" aria-describedby="searchBtn">
+                <input type="text" class="form-control" placeholder="검색어 입력" aria-label="검색어 입력" aria-describedby="searchBtn">
                 <button class="btn btn-outline-secondary" type="button" id="searchBtn">검색</button>
             </div>
             <br/>            
@@ -23,41 +23,37 @@
                 <table class="table">
                     <thead>
                         <tr class="table-success">
-                            <th>회원 번호</th>
-                            <th>아이디</th>
-                            <th>속성</th>
-                            <th>가입일</th>
+                            <th>번호</th>
+                            <th>업체명</th>
+                            <th>대표자</th>
+                            <th>연락처</th>
+                            <th>분야</th>
+                            <th>지역</th>
+                            <th>승인상태</th>
+                            <th>프리미엄</th>
+                            <th>마패</th>
+                            <th>등록일시</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- <tr th:each="companysList : ${companysList}">
-                            <td>[[${companysList.companysIdx}]]</td>
-                            <td><a th:href="@{/admin/usersManage/usersInfo(usersAccount=${companys.usersAccount})}">[[${usersList.usersAccount}]]</a></td>
-                        </tr> -->
+                      <tr th:if="${companysList} != null" th:each="companysList : ${companysList}">
+                        <td>[[${companysList.companysIdx}]]</td>
+                        <td>
+                            <a th:href="@{#}">[[${companysList.companysName}]]</a>
+                        </td>
+                        <td>사업자 대표명</td>
+                        <td>[[${companysList.companysPhone}]]</td>
+                        <td>분야</td>
+                        <td>지역</td>
+                        <td>[[${companysList.companysEnabled}]]</td>
+                        <td>[[${companysList.companysPremium}]]</td>
+                        <td>[[${companysList.companysLocalPremium}]]</td>
+                        <td>[[${companysList.companysRegistDate}]]</td>
+                      </tr>
                     </tbody>
                 </table>
             </div>
-            <!-- <div class="">
-                <nav>
-                    <ul class="pagination">
-                        <li th:if="${currentPage > pagination.blockCount}">
-                            <a class="page-link" th:href="@{/admin/usersManage/usersList(currentPage=${pagination.previousBlock})}">
-                                PREV
-                            </a>
-                        </li>
-                        <li class="page-item" th:each="page : ${#numbers.sequence(pagination.blockFirst, pagination.blockLast)}">
-                            <a class="page-link" th:href="@{/admin/usersManage/usersList(currentPage=${page})}">
-                                [[${page}]]
-                            </a>
-                        </li>
-                        <li th:if="${pagination.blockCount > 10}">
-                            <a class="page-link" th:href="@{/admin/usersManage/usersList(currentPage=${pagination.nextBlock})}">
-                                NEXT
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div> -->
+        
         </div>
     </div>
 </div>

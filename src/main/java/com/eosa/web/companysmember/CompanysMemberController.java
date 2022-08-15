@@ -2,7 +2,6 @@ package com.eosa.web.companysmember;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -35,7 +34,7 @@ public class CompanysMemberController {
     private CompanysMemberService companysMemberService;
 
     /**
-     * @param CompanysMember 업체에 등록할 회원의 색인번호화 참가할 업체의 색인번호로 구성
+     * @param CompanysManage 업체에 등록할 회원의 색인번호화 참가할 업체의 색인번호로 구성
      */
     @Operation(summary="탐정회원 업체 등록", description="탐정회원을 업체에 등록합니다.")
     @PostMapping("/registdetective")
