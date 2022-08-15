@@ -1,4 +1,4 @@
-package com.eosa.web.security.oauth2;
+package com.eosa.security.oauth2;
 
 
 import java.util.Map;
@@ -11,7 +11,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import com.eosa.web.security.CustomPrincipalDetails;
+import com.eosa.security.CustomPrincipalDetails;
 import com.eosa.web.users.Users;
 import com.eosa.web.users.UsersRepository;
 

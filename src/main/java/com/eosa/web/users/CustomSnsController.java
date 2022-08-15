@@ -18,7 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.eosa.web.security.CustomPrincipalDetails;
+import com.eosa.security.CustomPrincipalDetails;
 import com.eosa.web.util.CustomResponseData;
 
 import lombok.extern.slf4j.Slf4j;

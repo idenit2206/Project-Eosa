@@ -1,4 +1,4 @@
-package com.eosa.web.security.oauth2;
+package com.eosa.security.oauth2;
 
 import java.util.Map;
 

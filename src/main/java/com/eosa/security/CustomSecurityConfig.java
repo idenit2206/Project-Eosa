@@ -1,24 +1,18 @@
-package com.eosa.web.security;
+package com.eosa.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.session.ConcurrentSessionFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import lombok.RequiredArgsConstructor;
-
 @Configuration
 @Order(1)
-@RequiredArgsConstructor
 public class CustomSecurityConfig {
 
     // @Autowired private CustomPrincipalOAuth2UserService customPrincipalOAuth2UserService;
@@ -52,10 +46,10 @@ public class CustomSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .cors().disable()
+            .csrf().disable()
             .cors().configurationSource(customConfigurationSource())
         .and()
-            .csrf().disable()
+            .antMatcher("/api/**")
             .authorizeRequests()
                 .antMatchers(ANYONE_PERMIT).permitAll()
                 .anyRequest().hasAnyAuthority("CLIENT, DETECTIVE")

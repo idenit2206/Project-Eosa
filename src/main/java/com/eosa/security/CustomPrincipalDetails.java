@@ -1,4 +1,4 @@
-package com.eosa.web.security;
+package com.eosa.security;
 
 import java.util.ArrayList;
 import java.util.Collection;
