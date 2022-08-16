@@ -34,14 +34,12 @@
                 <div class="row">
                     <div class="col">
                         <label class="form-label" for="companysRegion1">시/도</label>
-                        <select class="form-select" id="companysRegion1" name="companysRegion1" aria-label="Default select example">
-                           
+                        <select class="form-select" id="companysRegion1" name="companysRegion1" aria-label="Default select example">                           
                         </select>
                     </div>
                     <div class="col">
                         <label class="form-label" for="companysRegion2">구/시/군</label>
-                        <select class="form-select" id="companysRegion2" name="companysRegion2" aria-label="Default select example">
-                         
+                        <select class="form-select" id="companysRegion2" name="companysRegion2" aria-label="Default select example">                         
                         </select>
                     </div>
                 </div>
@@ -84,6 +82,25 @@
                         <br/>
                         
                     </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                    <label class="form-label" for="companysLocalPremiumRegion">마패 지역</label>
+                    <select class="form-select" id="companysLocalPremium" name="companysLocalPremium">
+                        <option value="0" selected>미승인</option>
+                        <option value="1">승인</option>
+                    </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <select class="form-select" id="companysLocalPremiumRegion1" name="companysLocalPremiumRegion1" disabled>
+                            <option value="시/도" selected>시/도</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <select class="form-select" id="companysLocalPremiumRegion2" name="companysLocalPremiumRegion2" disabled></select>
+                    </div>
                 </div>                    
                 <br/>
                 <div class="">
@@ -98,5 +115,7 @@
 </body>
 <script type="module" src="/assets/js/admin/CompanysInfo.js"></script>
 <script type="module" src="/assets/js/admin/CompanysCategoryCheckbox.js"></script>
+<script type="module" src="/assets/js/admin/CompanysActiveRegion.js"></script>
+<script type="module" src="/assets/js/admin/CompanysLocalPremiumRegion.js"></script>
 <script type="text/javascript" src="/assets/js/admin/CancleBtn.js"></script>
 </html>
