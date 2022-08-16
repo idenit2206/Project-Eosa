@@ -52,7 +52,12 @@ public class UsersService implements UsersRepository {
         }
                
         return result;
-    }    
+    }
+    
+    @Override
+    public int usersAccountDupliCheck(String usersAccount) {
+        return usersRepository.usersAccountDupliCheck(usersAccount);
+    }
 
     /**
      * 로그인 할 때 활용하는 메서드(Spring Security formLogin()을 통해 로그인을 할때 사용하는 메서드)

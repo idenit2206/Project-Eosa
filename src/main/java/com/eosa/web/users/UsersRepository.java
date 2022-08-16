@@ -27,6 +27,12 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     ,nativeQuery=true)
     int userSave(@Param("Users") Users user);
 
+    @Query(
+        value="SELECT 1 FROM Users WHERE usersAccount=?1",
+        nativeQuery=true
+    )
+    int usersAccountDupliCheck(String usersAccount);
+
     /**
      * Spring Security를 활용한 로근인에 사용하는 메서드
      * @param usersAccount
@@ -161,5 +167,7 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
         ,nativeQuery = true 
     )
     FindByUsersAccount checkMyPageByPass(@Param("usersAccount") String usersAccount, @Param("usersPass") String usersPass);
+
+    
      
 }

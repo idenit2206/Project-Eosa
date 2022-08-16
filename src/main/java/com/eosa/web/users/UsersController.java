@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -11,17 +12,21 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.tomcat.util.json.JSONParser;
+import org.apache.tomcat.util.json.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -30,9 +35,14 @@ import com.eosa.web.users.userinfo.FindByUsersAccount;
 import com.eosa.web.users.userinfo.SelectByUsersAccount;
 import com.eosa.web.util.CustomResponseData;
 import com.eosa.web.util.NullCheck;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
+import springfox.documentation.spring.web.json.Json;
 
 
 @Slf4j
@@ -54,41 +64,78 @@ public class UsersController {
      * @param req
      * @param param
      * @return
+     * @throws JSONException
+     * @throws ParseException
      */
     @Operation(summary="회원가입 Api", description="회원가입시 DB트랜잭션을 수행합니다")
     @PostMapping("/sign/signUp.do")
     public CustomResponseData doSignUp(
         HttpServletRequest req, 
-        Users param
-    ) {
+        @RequestBody String param
+    ) throws JSONException, ParseException {
         String requester = req.getLocalAddr();
+        JsonObject element = JsonParser.parseString(param).getAsJsonObject().get("info").getAsJsonObject();       
         log.info("[REQUEST] doSignUp from {}", requester);
+        Users paramUsers = new Users();
+            paramUsers.setUsersAccount(element.get("usersAccount").getAsString());
+            paramUsers.setUsersPass(element.get("usersPass").getAsString());
+            paramUsers.setUsersName(element.get("usersName").getAsString());
+            paramUsers.setUsersNick(element.get("usersNick").getAsString());
+            paramUsers.setUsersPhone(element.get("usersPhone").getAsString());
+            paramUsers.setUsersEmail(element.get("usersEmail").getAsString());
+            paramUsers.setUsersRole(element.get("usersRole").getAsString().toUpperCase());
+            paramUsers.setUsersAge(element.get("usersAge").getAsInt());
+            paramUsers.setUsersRegion1(element.get("usersRegion1").getAsString());
+            paramUsers.setUsersRegion2(element.get("usersRegion2").getAsString());
+            if(element.get("usersGender").getAsString().matches("남자")) {
+                paramUsers.setUsersGender(0);
+            } else {
+                paramUsers.setUsersGender(1);
+            }
+            // paramUsers.setUsersGender(element.get("usersGender").getAsInt());
+            if(element.get("usersNotice").getAsString().matches("true")) {
+                paramUsers.setUsersNotice(1);
+            } else {
+                paramUsers.setUsersNotice(0);
+            }
+            // paramUsers.setUsersNotice(element.get("usersNotice").getAsInt());
+        // log.debug("paramUsers: {}", paramUsers.toString());       
+
         CustomResponseData result = new CustomResponseData();
-        LocalDateTime currentTime = LocalDateTime.now();       
         
         String[] targets = {"usersAccount", "usersPass", "usersName", "usersNick", "usersPhone", "usersEmail", "usersRole", "usersAge", "usersRegion1", "usersRegion2", "usersGender", "usersNotice"};        
-        Map<String, Object> checkItem = nullCheck.ObjectNullCheck(param, targets);
+        Map<String, Object> checkItem = nullCheck.ObjectNullCheck(paramUsers, targets);
         
         if(checkItem.get("result") == "SUCCESS") {
-            int transaction = usersService.userSave(param);
+            int transaction = usersService.userSave(paramUsers);
             if(transaction == 1) {
-                log.info("Success " + param.getUsersAccount() + " 's Join");                
+                log.info("Success " + paramUsers.getUsersAccount() + " 's Join");                
                 result.setStatusCode(HttpStatus.OK.value());
                 result.setResultItem(checkItem);
-                result.setResponseDateTime(currentTime);
+                result.setResponseDateTime(LocalDateTime.now());
             }
             else {
                 result.setStatusCode(HttpStatus.BAD_REQUEST.value());
                 result.setResultItem("SQL ERROR /signUp.do");
-                result.setResponseDateTime(currentTime);
+                result.setResponseDateTime(LocalDateTime.now());
             }
         }
         else {
-            log.error("Failure " + param.getUsersAccount() + " 's Join");
+            log.error("Failure " + paramUsers.getUsersAccount() + " 's Join");
             result.setStatusCode(HttpStatus.BAD_REQUEST.value());
             result.setResultItem(checkItem);
-            result.setResponseDateTime(currentTime);
+            result.setResponseDateTime(LocalDateTime.now());
         }
+
+        return result;
+    }
+
+    @GetMapping("/sign/usersAccountDupliCheck")
+    public CustomResponseData usersAccountDupliCheck(
+        @RequestParam("usersAccount") String usersAccount
+    ) {
+        CustomResponseData result = new CustomResponseData();
+        int dupliCheckResult = usersService.usersAccountDupliCheck(usersAccount);
 
         return result;
     }

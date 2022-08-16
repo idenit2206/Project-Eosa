@@ -1,8 +1,6 @@
 # UI Project
 **/web-ui/**
 **/ui/**
-# !/resources/static/assets/
-! /resources/static/assets/**
 src/main/resources/static/
 # Back-end
 
