@@ -1,4 +1,4 @@
-package com.eosa.web.security;
+package com.eosa.security;
 
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.eosa.web.security.CustomPrincipalDetails;
+import com.eosa.security.CustomPrincipalDetails;
 import com.eosa.web.users.Users;
 import com.eosa.web.users.UsersService;
 
@@ -54,7 +54,7 @@ public class AdminUserController {
     @Operation(summary="관리자페이지 로그인 view", description="관리자 페이지의 로그인을 위한 Form 페이지")
     @GetMapping("/sign/signIn")
     public String adminSignInForm() {
-        // log.info("## Someone Request /signInForm");
+        log.info("## Someone Request /signInForm");
         return "admin/signin/SignIn";
     }
 

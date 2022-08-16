@@ -27,17 +27,19 @@ public class Companys {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long companysIdx;
 
+    @Column(nullable=false, length=100)
+    private String companysName;
+
     @Column(nullable=false)
     private Long companysCeoIdx;
-
-    @Column(nullable=false, length=255)
-    private String companysName;
 
     @Column(nullable=true, length=255)
     private String companysComment;
 
     @Column(nullable=true)
     private String companysSpec;
+
+    @Column private String companysPhone;
 
     @Column(nullable=false, length=50)
     private String companysRegion1;
@@ -58,8 +60,15 @@ public class Companys {
     private LocalDateTime companysRegistDate;
 
     @Column(nullable=false)
-    @ColumnDefault("1")
     private boolean companysEnabled;
+
+    @Column(nullable=false)
+    @ColumnDefault("0")
+    private boolean companysPremium;
+
+    @Column(nullable=false)
+    @ColumnDefault("0")
+    private boolean companysLocalPremium;
 
     @Column(nullable=false)
     @ColumnDefault("0")

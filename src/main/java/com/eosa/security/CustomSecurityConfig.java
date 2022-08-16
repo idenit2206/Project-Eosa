@@ -1,15 +1,15 @@
-package com.eosa.web.security;
+package com.eosa.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-
+import org.springframework.security.web.session.ConcurrentSessionFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -40,17 +40,21 @@ public class CustomSecurityConfig {
     }
 
     private String[] ANYONE_PERMIT = {
-        "/api/user/sign/**", "/api/mail/**"
+        // Admin Page
+        "/assets/**", "/js/**", "/css/**", "/webjars/**", "/admin/signIn", "/admin/**",       
+        "/api/user/**", "/api/mail/**"
     };
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http        
-            .csrf().disable()
+        http
+            .cors().disable()
             .cors().configurationSource(customConfigurationSource())
-        .and()      
-            .antMatcher("/api/user/**")
-            .authorizeRequests().anyRequest().hasAnyAuthority("CLIENT, DETECTIVE")
+        .and()
+            .csrf().disable()
+            .authorizeRequests()
+                .antMatchers(ANYONE_PERMIT).permitAll()
+                .anyRequest().hasAnyAuthority("CLIENT, DETECTIVE")
         .and()
             .formLogin()
                 .loginPage("http://localhost:3000/user/signin")
