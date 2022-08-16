@@ -1,4 +1,4 @@
-package com.eosa.admin.companysmanage;
+package com.eosa.admin.companysmanager;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,9 +18,9 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class CompanysManageService implements CompanysManageRepository {
+public class CompanysManagerService implements CompanysManagerRepository {
 
-    @Autowired private CompanysManageRepository companysManageRepository;
+    @Autowired private CompanysManagerRepository companysManageRepository;
 
     @Override
     public List<GetCompanysList> viewFindAll() {
@@ -34,8 +34,11 @@ public class CompanysManageService implements CompanysManageRepository {
 
     @Override
     public List<Companys> findAll(Sort sort) {
-        // TODO Auto-generated method stub
-        return null;
+        return companysManageRepository.findAll(sort);
+    }
+
+    public List<Companys> findAllCompany(int currentStartPost, int postCount) {
+        return companysManageRepository.findAllCompany(currentStartPost, postCount);
     }
 
     @Override
@@ -204,6 +207,6 @@ public class CompanysManageService implements CompanysManageRepository {
     public <S extends Companys, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
         // TODO Auto-generated method stub
         return null;
-    }
-
+    }   
+    
 }

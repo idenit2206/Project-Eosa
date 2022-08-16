@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.ColumnDefault;
@@ -56,12 +57,6 @@ public class Companys {
     @Column(nullable=true)
     private String companysProfileImage;
 
-    @Column(nullable=true, length=255)
-    private LocalDateTime companysRegistDate;
-
-    @Column(nullable=false)
-    private boolean companysEnabled;
-
     @Column(nullable=false)
     @ColumnDefault("0")
     private boolean companysPremium;
@@ -70,16 +65,17 @@ public class Companys {
     @ColumnDefault("0")
     private boolean companysLocalPremium;
 
+    @Column(nullable=true, length=255)
+    private LocalDateTime companysRegistDate;
+
+    @Column(nullable=false)
+    private boolean companysEnabled;   
+
     @Column(nullable=false)
     @ColumnDefault("0")
     private boolean companysDelete;
 
-    @ManyToOne(optional = false)
-    @JoinTable(
-        name="Users",
-        joinColumns = @JoinColumn(name="companysCeoIdx"),
-        inverseJoinColumns = @JoinColumn(name="usersIdx")
-    )
-    private Users user;
+    @OneToOne(mappedBy = "companys")
+    private Users users;
 
 }

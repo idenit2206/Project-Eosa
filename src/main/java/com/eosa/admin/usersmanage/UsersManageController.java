@@ -59,8 +59,8 @@ public class UsersManageController {
         Model model
     ) {       
         int currentPageStartPost = postList.getCurrentPageStartPost(currentPage);
-        List<Users> usersList = usersManageService.findAllClient(currentPageStartPost, POST_COUNT);
-        int allPostCount = usersManageService.findAllClientCount();
+        List<GetUsersList> usersList = usersManageService.findAllUsers(currentPageStartPost, POST_COUNT);
+        int allPostCount = usersManageService.findAllUsersCount();
         PageList pageList = new PageList(POST_COUNT, BLOCK_COUNT, currentPage, allPostCount);
       
         Map<String, Integer> pagination = new HashMap<>();
@@ -142,7 +142,8 @@ public class UsersManageController {
         Model model
     ) {
         log.info("[CLIENT] {} 의 정보를 불러옵니다.", usersAccount);
-        Users usersInfo = usersManageService.getByUsersAccount(usersAccount);
+        GetByUsersAccount usersInfo = usersManageService.getByUsersAccount(usersAccount);
+        
         model.addAttribute("Users", usersInfo);
         return "admin/usersmanage/UsersInfo";
     }
@@ -156,8 +157,8 @@ public class UsersManageController {
     public String modifyUsersInfo(
         Users param
     ) {
-        log.debug("변경된 사용자 정보: {}", param.toString());
-        log.debug("{}", param.getUsersNotice());
+        // log.debug("변경된 사용자 정보: {}", param.toString());
+        // log.debug("{}", param.getUsersNotice());
         int transaction = usersManageService.updateUsersInfo(param);
 
         if(transaction != 0) {

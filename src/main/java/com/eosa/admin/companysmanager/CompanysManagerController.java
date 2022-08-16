@@ -21,10 +21,10 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-@RequestMapping("/admin/companysManage")
+@RequestMapping("/admin/companysManager")
 public class CompanysManagerController {
 
-    @Autowired private CompanysManageService companysManageService;
+    @Autowired private CompanysManagerService companysManagerService;
     
     final int POST_COUNT = 10;
     final int BLOCK_COUNT = 10;
@@ -35,15 +35,17 @@ public class CompanysManagerController {
 		// List<Users> answer = list.getContent();
         int currentStartPost = (currentPage - 1) * BLOCK_COUNT; 
 
-        List<Companys> answer = companysManageService.findAllCompany(currentStartPost, POST_COUNT);
+        List<Companys> answer = companysManagerService.findAllCompany(currentStartPost, POST_COUNT);
 		
 		return answer;
 	}
 	public Map<String, Integer> pageList(int currentPage) {
 		Map<String, Integer> result = new HashMap<>();
 		PageRequest pageRequest = PageRequest.of(currentPage - 1, POST_COUNT, Sort.by(Sort.Direction.DESC, "companysIdx"));
-		Page<Companys> list = companysManageService.findAll(pageRequest);
+		Page<Companys> list = companysManagerService.findAll(pageRequest);
 		int blockCount = list.getSize();
+
+		if(blockCount == 0) { blockCount = 0; }
 		
 		int blockFirst = ((currentPage - 1) / BLOCK_COUNT) * BLOCK_COUNT + 1;
 		int blockLast = blockFirst + BLOCK_COUNT - 1;
@@ -78,20 +80,23 @@ public class CompanysManagerController {
         Model model
     ) {
         // log.info("showUsersList currentPage: {}", currentPage);
-        // List<Companys> companysList = companysManageService.findAll();
 		// log.info(companysList.toString());
-
-        // List<Companys> companysList = postList(currentPage);
-        // Map<String, Integer> pagination = pageList(currentPage);
-
-		List<GetCompanysList> companysList = companysManageService.viewFindAll();
-		log.info(companysList.toString());
         
-        // model.addAttribute("currentPage", currentPage);
+
+		List<GetCompanysList> companysList = companysManagerService.viewFindAll();
+		// log.info(companysList.toString());		
+        // Map<String, Integer> pagination = pageList(currentPage);
+		
+        model.addAttribute("currentPage", currentPage);
         model.addAttribute("companysList", companysList);
         // model.addAttribute("pagination", pagination);
 
         return "admin/companysmanage/CompanysList";
     }
+
+	@GetMapping("/companysRegister")
+	public String viewCompanysRegister() {
+		return "admin/companysmanage/CompanysRegister";
+	}
 
 }

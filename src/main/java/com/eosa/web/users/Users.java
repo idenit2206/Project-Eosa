@@ -22,8 +22,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.core.GrantedAuthority;
 
-import com.eosa.admin.companysmanager.CompanysManage;
-import com.eosa.web.companysmember.CompanysMember;
+import com.eosa.web.companys.Companys;
 
 import lombok.Builder;
 import lombok.Data;
@@ -107,8 +106,8 @@ public class Users {
     private int usersDelete;
 
     @OneToOne
-    @JoinColumn(name="usersIdx")
-    private CompanysManage companysManage;
+    @JoinColumn(name="companysCeoIdx")
+    private Companys companys;
 
     @Builder(builderClassName = "UserDetailRegister", buildMethodName = "userDetailRegister")
     public Users(String usersAccount, String usersEmail) {

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.eosa.web.companys.Companys;
 
 @Repository
-public interface CompanysManageRepository extends JpaRepository<Companys, Long> {
+public interface CompanysManagerRepository extends JpaRepository<Companys, Long> {
 
     @Query(
         value="SELECT * FROM Companys WHERE " +

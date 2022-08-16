@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.hibernate.type.TrueFalseType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,14 +17,17 @@ import com.eosa.web.users.Users;
 public interface UsersManageRepository extends JpaRepository<Users, Long> {
 
     @Query(
-        value="SELECT * FROM Users WHERE usersAccount = ?1",
+        value="SELECT usersAccount, usersName, usersNick, " + 
+        "usersPhone, usersEmail, usersRole, " +
+        "usersRegion1, usersRegion2, usersNotice " +
+        "FROM Users WHERE usersAccount = ?1",
         nativeQuery=true
     )
-    Users getByUsersAccount(String usersAccount);
+    GetByUsersAccount getByUsersAccount(String usersAccount);
 
     @Query(
         value="SELECT * FROM Users WHERE " + 
-        "usersRole='CLIENT'" + 
+        "usersRole='CLIENT' " + 
         "AND usersEnabled=1 AND usersDelete=0 " +
         "ORDER BY usersIdx DESC LIMIT ?1, ?2",
         nativeQuery=true
@@ -34,6 +38,17 @@ public interface UsersManageRepository extends JpaRepository<Users, Long> {
         value="SELECT COUNT(*) FROM Users WHERE usersRole='CLIENT'"
     )
     int findAllClientCount();
+
+    @Query(
+        value="SELECT usersIdx, usersAccount, usersRole, usersJoinDate FROM Users WHERE usersRole='CLIENT' OR usersRole='DETECTIVE' ORDER BY usersIdx DESC LIMIT ?1, ?2",
+        nativeQuery=true
+    )
+    List<GetUsersList> findAllUsers(int currentPageStartPost, int postSize);
+
+    @Query(
+        value="SELECT COUNT(*) FROM Users"
+    )
+    int findAllUsersCount();
 
     @Modifying
     @Transactional

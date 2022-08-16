@@ -16,6 +16,7 @@
 				<div class="row">
 					<h3 class="h3">마이페이지</h3>
 				</div>
+				<div th:if="${user} != null">
 				<form class="form" method="POST" th:action="@{/admin/adminUpdate}">
 				<div class="row invisible-row">
 					<div class="col-3 text-start">
@@ -84,6 +85,7 @@
 					</div>
 				</div>
 				</form>
+				</div>
 			</div>
 		</div>
 	</div>

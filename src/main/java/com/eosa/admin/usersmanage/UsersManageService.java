@@ -84,6 +84,16 @@ public class UsersManageService implements UsersManageRepository {
         return usersManageRepository.findAllClientCount();
     }
 
+    @Override
+    public List<GetUsersList> findAllUsers(int currentPageStartPost, int postSize) {
+        return usersManageRepository.findAllUsers(currentPageStartPost, postSize);
+    }
+
+    @Override
+    public int findAllUsersCount() {
+        return usersManageRepository.findAllUsersCount();
+    }
+
     public List<Users> findByUsersAccount(String usersAccount, int currentPageStartPost, int POST_COUNT) {
         return usersManageRepository.findByUsersAccount(usersAccount, currentPageStartPost, POST_COUNT);
     }
@@ -96,7 +106,8 @@ public class UsersManageService implements UsersManageRepository {
         return usersManageRepository.findAll(pageable);
     }
 
-    public Users getByUsersAccount(String usersAccount) {
+    @Override
+    public GetByUsersAccount getByUsersAccount(String usersAccount) {
         return usersManageRepository.getByUsersAccount(usersAccount);
     }
 
@@ -266,6 +277,6 @@ public class UsersManageService implements UsersManageRepository {
     public <S extends Users, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
         // TODO Auto-generated method stub
         return null;
-    }
+    }    
     
 }

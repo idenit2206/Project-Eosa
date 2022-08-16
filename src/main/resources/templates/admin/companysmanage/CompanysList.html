@@ -24,27 +24,42 @@
                 <table class="table">
                     <thead>
                         <tr class="table-success">
-                            <th>회원 번호</th>
-                            <th>아이디</th>
-                            <th>속성</th>
-                            <th>가입일</th>
+                            <th>번호</th>
+                            <th>업체명</th>
+                            <th>대표자</th>
+                            <th>연락처</th>
+                            <th>분야</th>
+                            <th>지역</th>
+                            <th>승인상태</th>
+                            <th>프리미엄</th>
+                            <th>마패</th>
+                            <th>등록일시</th>
                         </tr>
                     </thead>
                     <tbody th:if="companysList != null">
-                        <tr th:each="companysList : ${companysList}">
+                        <tr th:if="${companysList} != null" th:each="companysList : ${companysList}">
                             <td>[[${companysList.companysIdx}]]</td>
-                            <td><a th:href="@{/admin/detectiveManage/detectiveInfo(companysName=${companysList.companysName})}">[[${companysList.companysName}]]</a></td>                         
+                            <td>
+                                <a th:href="@{#}">[[${companysList.companysName}]]</a>
+                            </td>
+                            <td>[[${companysList.usersName}]]</td>
+                            <td>[[${companysList.companysPhone}]]</td>
+                            <td>분야</td>
+                            <td>지역</td>
+                            <td>[[${companysList.companysEnabled}]]</td>
+                            <td>[[${companysList.companysPremium}]]</td>
+                            <td>[[${companysList.companysLocalPremium}]]</td>
                             <td>[[${companysList.companysRegistDate}]]</td>
-                        </tr>
-                    </tbody>
-                    <tbody th:unless="companysList != null">
-                        <tr>
-                            <td>No Result</td>
-                            <td>No Result</td>
-                            <td>No Result</td>
-                        </tr>
+                          </tr>
                     </tbody>
                 </table>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <button class="btn btn-dark">
+                        <a class="text-white" href="companysRegister">등록</a>
+                    </button>
+                </div>
             </div>
             <!-- <div class="">
                 <nav>

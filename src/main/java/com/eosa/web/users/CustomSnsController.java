@@ -1,7 +1,6 @@
 package com.eosa.web.users;
 
 import java.io.IOException;
-import java.net.http.HttpRequest;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
