@@ -5,6 +5,7 @@ src/main/resources/static/
 # Back-end
 
 # HELP.md
+*.sql
 .DS_Store
 *.properties
 *.yml

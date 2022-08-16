@@ -95,14 +95,35 @@ public class CompanysManagerController {
         return "admin/companysmanage/CompanysList";
     }
 
+	/**
+	 * [관리자 페이지] 의뢰수행이 가능한 탐정등록 view 출력
+	 * @return
+	 */
 	@GetMapping("/companysRegister")
 	public String viewCompanysRegister() {
 		return "admin/companysmanage/CompanysRegister";
 	}
 
+	/**
+	 * [관리자 페이지] 의뢰수행이 가능한 탐정등록 수행
+	 * @return
+	 */
 	@PostMapping("/companysRegister.process")
-	public String companysRegisterProcess(Companys companys) {
-		log.info(companys.toString());
+	public String companysRegisterProcess(CompanysRegister companysRegister) {
+		log.info(companysRegister.toString());
+		
+		Companys companys = new Companys();
+		companys.setCompanysName(companysRegister.getCompanysName());
+		companys.setCompanysCeoIdx(companysRegister.getCompanysCeoIdx());
+		companys.setCompanysPhone(companysRegister.getCompanysPhone());
+		companys.setCompanysRegion1(companysRegister.getCompanysRegion1());
+		companys.setCompanysRegion2(companysRegister.getCompanysRegion2());
+		companys.setCompanysRegion3(companysRegister.getCompanysRegion3());
+		companys.setCompanysComment(companysRegister.getCompanysComment());
+		companys.setCompanysSpec(companysRegister.getCompanysSpec());
+
+		companysManagerService.save(companys);
+
 		return "/admin/companysmanage/CompanysList";
 	}
 
