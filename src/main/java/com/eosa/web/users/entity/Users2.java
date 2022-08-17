@@ -1,13 +1,21 @@
-package com.eosa.web.users;
+package com.eosa.web.users.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -24,8 +32,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name="Users")
-public class Users {
+public class Users2 {
 
     public enum usersRole {
         CLIENT, DETECTIVE, CEO, ADMIN, SUPER_ADMIN
@@ -97,18 +104,8 @@ public class Users {
     @ColumnDefault("0")
     private int usersDelete;
 
-    @Builder(builderClassName = "UserDetailRegister", buildMethodName = "userDetailRegister")
-    public Users(String usersAccount, String usersEmail) {
-        this.usersAccount = usersAccount;
-        this.usersEmail = usersEmail;
-    }
-
-    @Builder(builderClassName = "OAuth2Register", buildMethodName = "oauth2Register")
-    public Users(String usersAccount, String usersEmail, String provider, String providerId) {
-        this.usersAccount = usersAccount;
-        this.usersEmail = usersEmail;
-        this.provider = provider;
-        this.providerId = providerId;
-    }
+    @OneToOne
+    @JoinColumn(name="companysCeoIdx")
+    private Companys companys;
 
 }

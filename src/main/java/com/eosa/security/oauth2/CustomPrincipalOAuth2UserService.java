@@ -25,18 +25,16 @@ import lombok.extern.slf4j.Slf4j;
 public class CustomPrincipalOAuth2UserService extends DefaultOAuth2UserService {
     
     @Autowired private UsersRepository usersRepository;
-    // @Autowired private BCryptPasswordEncoder passwordEncoder;  
 
     @Override
-    public OAuth2User loadUser(OAuth2UserRequest userRequest ) throws OAuth2AuthenticationException {
+    public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         
         OAuth2User oAuth2User = super.loadUser(userRequest);
         CustomOAuth2UserInfo customOAuth2UserInfo = null;
-
         CustomPrincipalDetails result = null;
         Users user = null;
 
-        log.debug("[oAuth2User] -> {}", oAuth2User.toString());
+        log.debug("CustomPrincipalOAuth2UserService.class [OAuth2User] -> {}", oAuth2User.toString());
 
         // 플랫폼 명칭 ex) google, kakao, ...
         String provider = userRequest.getClientRegistration().getRegistrationId();
@@ -48,7 +46,7 @@ public class CustomPrincipalOAuth2UserService extends DefaultOAuth2UserService {
             customOAuth2UserInfo = new KakaoUserInfo(oAuth2User.getAttributes());
             platform = customOAuth2UserInfo.getProvider();
             usersEmail = customOAuth2UserInfo.getEmail();
-            // log.debug("# customOAuth2UserInfo[kakao]: {}", customOAuth2UserInfo.getProviderId());
+            log.debug("CustomPrincipalOAuth2UserService.class [kakao]: {}", customOAuth2UserInfo.getProviderId());
         }
         else if(provider.equals("google")) {
             platform = provider;
@@ -72,17 +70,20 @@ public class CustomPrincipalOAuth2UserService extends DefaultOAuth2UserService {
         user = (Users) usersRepository.selectByUsersEmail(usersEmail);
         // log.debug("# after DB check .selectByUsersEmail() -> oAuth2User: {}", oAuth2User.getAttributes());
 
-
-        // DB에 데이터가 없는 신규회원의 경우
+        
         if(user != null) {
-            result = new CustomPrincipalDetails(user, oAuth2User.getAttributes(), provider);            
-            // log.debug("[PrincipalOAuth2UserService] 사용자 DB체크 결과: {}", user.toString());
+            // DB에 데이터가 존재하는 경우(기존회원)
+            result = new CustomPrincipalDetails(user, oAuth2User.getAttributes(), provider);
+            log.debug("[PrincipalOAuth2UserService] 사용자 DB체크 결과: {}", user.toString());
         }
         else {
+            // DB에 데이터가 존재하지않는 경우(신규회원)
             int tempIndex = usersEmail.indexOf("@");
-            String tempAccount = usersEmail.substring(0, tempIndex);
-            user = new Users(tempAccount, usersEmail);
+            String tempAccount = usersEmail.substring(0, tempIndex);  
+            user = new Users(tempAccount, usersEmail);          
             result = new CustomPrincipalDetails(user, oAuth2User.getAttributes(), provider);
+            log.debug("사용자 DB체크 결과: {} 사용자는 신규회원입니다.", usersEmail);
+           
         }
         return result;
     }

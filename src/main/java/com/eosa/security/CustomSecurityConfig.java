@@ -41,7 +41,8 @@ public class CustomSecurityConfig {
 
     private String[] ANYONE_PERMIT = {
         // Admin Page
-        "/assets/**", "/js/**", "/css/**", "/webjars/**", "/admin/signIn", "/admin/**",       
+        "/assets/**", "/js/**", "/css/**", "/webjars/**", "/admin/signIn", "/admin/**",
+        "/oauth2/authorization/**",    
         "/api/user/**", "/api/mail/**"
     };
 
@@ -55,6 +56,7 @@ public class CustomSecurityConfig {
             .authorizeRequests()
                 .antMatchers(ANYONE_PERMIT).permitAll()
                 .anyRequest().hasAnyAuthority("CLIENT, DETECTIVE")
+                // .anyRequest().permitAll()
         .and()
             .formLogin()
                 .loginPage("http://localhost:3000/user/signin")
@@ -66,8 +68,7 @@ public class CustomSecurityConfig {
             .oauth2Login()
                 .loginPage("http://localhost:3000/user/signin")
                     .defaultSuccessUrl("/api/user/sign/oauth2SignIn.success")
-                    // .defaultSuccessUrl("/api/user2/oauth2SignIn.success")
-                    .failureUrl("/api/user/sign/oauth2SignIn.failure")
+                    // .failureUrl("/api/user/sign/oauth2SignIn.failure")
                     // .userInfoEndpoint()
                     // .userService(customPrincipalOAuth2UserService);
         .and()

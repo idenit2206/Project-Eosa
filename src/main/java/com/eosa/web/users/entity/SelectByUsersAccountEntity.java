@@ -1,6 +1,6 @@
-package com.eosa.web.users.userinfo;
+package com.eosa.web.users.entity;
 
-public interface SelectByUsersAccount {
+public interface SelectByUsersAccountEntity {
     Long getUsersIdx();
     String getUsersAccount();
     String getUsersNick();

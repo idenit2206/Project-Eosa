@@ -31,8 +31,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.eosa.security.CustomPrincipalDetails;
-import com.eosa.web.users.userinfo.FindByUsersAccount;
-import com.eosa.web.users.userinfo.SelectByUsersAccount;
+import com.eosa.web.users.entity.FindByUsersAccountEntity;
+import com.eosa.web.users.entity.SelectByUsersAccountEntity;
 import com.eosa.web.util.CustomResponseData;
 import com.eosa.web.util.NullCheck;
 import com.google.gson.JsonArray;
@@ -163,7 +163,7 @@ public class UsersController {
         CustomResponseData result = new CustomResponseData();
         LocalDateTime currentTime = LocalDateTime.now();
         
-        SelectByUsersAccount userInfo = usersService.selectByUsersAccount(usersAccount);
+        SelectByUsersAccountEntity userInfo = usersService.selectByUsersAccount(usersAccount);
 
         Map<String, Object> items = new HashMap<>();
         items.put("message", "Welcome");
@@ -212,50 +212,53 @@ public class UsersController {
      */
     @GetMapping("/sign/oauth2SignIn.success")
     public void oauth2SignInSuccess(
-        HttpServletRequest request, HttpServletResponse response,
-        RedirectAttributes redirectAttributes,
+        HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes,
         @AuthenticationPrincipal CustomPrincipalDetails principalUserDetails
     ) throws IOException, ServletException {
+        log.debug("SNS: {}", principalUserDetails.toString());
         CustomResponseData result = new CustomResponseData();
         Map<String, Object> items = new HashMap<>();
             
         String sns = principalUserDetails.getProvider();
         String usersAccount = principalUserDetails.getUsername();
         String usersEmail = principalUserDetails.getUsers().getUsersEmail();
-        String usersRole = principalUserDetails.getUsers().getUsersRole();
-        // log.debug("# sns:{}, usersEmail: {}, usersRole: {}",sns, usersEmail, usersRole);
-        Users user = usersService.selectByUsersEmail(usersEmail);
-        String existUsersEmail = "";
-        if(user != null) {
-            existUsersEmail = user.getUsersEmail();            
-            items.put("sns", sns);
-            items.put("usersAccount", usersAccount);
-            items.put("usersRole", usersRole);   
-        }
-        else {
-            items.put("sns", sns);
-            items.put("usersEmail", usersEmail);
-            items.put("usersRole", null);
-            items.put("message", "해당 회원은 신규회원입니다.");
-        }
-
-        result.setStatusCode(HttpStatus.OK.value());
-        result.setResultItem(items);
-        result.setResponseDateTime(LocalDateTime.now());
-
-        redirectAttributes.addAttribute("email", usersEmail);
-
-        Cookie cookie_sns = new Cookie("sns", sns);
-        Cookie cookie_account = new Cookie("account", usersAccount);
-        Cookie cookie_role = new Cookie("role", usersRole);
-
-        cookie_sns.setPath("/");
-        cookie_account.setPath("/");
-        cookie_role.setPath("/");
+        String usersRole = principalUserDetails.getUsers().getUsersRole(); 
+        // log.debug("# sns:{}, usersEmail: {}, usersRole: {}",sns, usersEmail, usersRole);       
        
-        response.addCookie(cookie_sns);
-        response.addCookie(cookie_account);
-        response.addCookie(cookie_role);
+
+        // Users user = usersService.selectByUsersEmail(usersEmail);
+        // String existUsersEmail = "";
+        // if(user != null) {
+        //     existUsersEmail = user.getUsersEmail();            
+        //     items.put("sns", sns);
+        //     items.put("usersAccount", usersAccount);
+        //     items.put("usersRole", usersRole);   
+        // }
+        // else {
+        //     log.info("신규회원");
+        //     items.put("sns", sns);
+        //     items.put("usersEmail", usersEmail);
+        //     items.put("usersRole", null);
+        //     items.put("message", "해당 회원은 신규회원입니다.");
+        // }
+
+        // result.setStatusCode(HttpStatus.OK.value());
+        // result.setResultItem(items);
+        // result.setResponseDateTime(LocalDateTime.now());
+
+        // redirectAttributes.addAttribute("email", usersEmail);
+
+        // Cookie cookie_sns = new Cookie("sns", sns);
+        // Cookie cookie_account = new Cookie("account", usersAccount);
+        // Cookie cookie_role = new Cookie("role", usersRole);
+
+        // cookie_sns.setPath("/");
+        // cookie_account.setPath("/");
+        // cookie_role.setPath("/");
+       
+        // response.addCookie(cookie_sns);
+        // response.addCookie(cookie_account);
+        // response.addCookie(cookie_role);
 
         response.sendRedirect("http://localhost:3000/");
 
@@ -270,11 +273,12 @@ public class UsersController {
         String platform = principalUserDetails.getProvider();
         String usersEmail = principalUserDetails.getUsername();
         log.info("# {}의 {} 계정을 활용한 로그인에 실패했습니다,", usersEmail, platform);
-        response.setContentType("text/html; charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        out.println("<script>alert(" + 
-        platform + " '계정을 활용한 로그인에 실패했습니다.'); location.href='http://localhost:3000/user/signin' " + 
-        "</script>");
+        response.sendRedirect("http://localhost:3000/");
+        // response.setContentType("text/html; charset=UTF-8");
+        // PrintWriter out = response.getWriter();
+        // out.println("<script>alert(" + 
+        // platform + " '계정을 활용한 로그인에 실패했습니다.'); location.href='http://localhost:3000/user/signin' " + 
+        // "</script>");
         // response.sendRedirect("http://localhost:3000/user/signin");
     }
 
@@ -317,7 +321,7 @@ public class UsersController {
     ) {
         CustomResponseData result = new CustomResponseData();
         log.debug("# usersAccount : usersPass -> {} : {}", usersAccount, usersPass);
-        FindByUsersAccount transaction = usersService.checkMyPageByPass(usersAccount, usersPass);
+        FindByUsersAccountEntity transaction = usersService.checkMyPageByPass(usersAccount, usersPass);
         // log.debug("# UserInfoByUsersAccount {}", transaction.getUsersAccount());
         
         if(transaction.getUsersAccount().equals(usersAccount)) {

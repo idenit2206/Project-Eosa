@@ -18,8 +18,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.eosa.security.CustomPrincipalDetails;
-import com.eosa.web.users.userinfo.FindByUsersAccount;
-import com.eosa.web.users.userinfo.SelectByUsersAccount;
+import com.eosa.web.users.entity.FindByUsersAccountEntity;
+import com.eosa.web.users.entity.SelectByUsersAccountEntity;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -71,8 +71,8 @@ public class UsersService implements UsersRepository {
     /**
      * 사용자 계정을 기반으로 해당 사용자의 정보 조회 (사용자 정보 조회시 사용)
      */
-    public SelectByUsersAccount selectByUsersAccount(String usersAccount) {
-        SelectByUsersAccount result = usersRepository.selectByUsersAccount(usersAccount);
+    public SelectByUsersAccountEntity selectByUsersAccount(String usersAccount) {
+        SelectByUsersAccountEntity result = usersRepository.selectByUsersAccount(usersAccount);
         if(result == null) {
             log.error("[ERROR] SQL RESULT NULL findByUsersAccount()");
         }
@@ -100,8 +100,8 @@ public class UsersService implements UsersRepository {
     /**
      * 회원정보를 조회하기전에 비밀번호를 입력해 검증합니다.
      */
-    public FindByUsersAccount checkMyPageByPass(String usersAccount, String usersPass) {
-        FindByUsersAccount result = null;
+    public FindByUsersAccountEntity checkMyPageByPass(String usersAccount, String usersPass) {
+        FindByUsersAccountEntity result = null;
         Users user = usersRepository.findByUsersAccount(usersAccount);
         UserDetails ud = new CustomPrincipalDetails(user);
 

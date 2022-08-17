@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.eosa.web.users.userinfo.FindByUsersAccount;
-import com.eosa.web.users.userinfo.SelectByUsersAccount;
+import com.eosa.web.users.entity.FindByUsersAccountEntity;
+import com.eosa.web.users.entity.SelectByUsersAccountEntity;
 
 @Repository
 public interface UsersRepository extends JpaRepository<Users, Long> {
@@ -45,7 +45,7 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
         "FROM Users WHERE usersAccount = ?1",
         nativeQuery=true
     )
-    SelectByUsersAccount selectByUsersAccount(String usersAccount);
+    SelectByUsersAccountEntity selectByUsersAccount(String usersAccount);
 
     /**
      * OAuth2Login() 작동시  SNS계정으로 로그인을 시도한 유저가 기존에 존재하던 사용자인지를
@@ -166,7 +166,7 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
         "FROM Users WHERE usersAccount=:usersAccount AND usersPass=:usersPass"
         ,nativeQuery = true 
     )
-    FindByUsersAccount checkMyPageByPass(@Param("usersAccount") String usersAccount, @Param("usersPass") String usersPass);
+    FindByUsersAccountEntity checkMyPageByPass(@Param("usersAccount") String usersAccount, @Param("usersPass") String usersPass);
 
     
      

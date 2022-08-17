@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.ColumnDefault;
 
 import com.eosa.web.users.Users;
+import com.eosa.web.users.entity.Users2;
 
 import lombok.Data;
 
@@ -76,6 +77,6 @@ public class Companys {
     private boolean companysDelete;
 
     @OneToOne(mappedBy = "companys")
-    private Users users;
+    private Users2 users;
 
 }
