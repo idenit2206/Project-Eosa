@@ -23,6 +23,7 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
     ) throws IOException, ServletException {
         String usersAccount = authentication.getName();
         String usersIp = request.getLocalAddr();
+        
         log.info("[OK] {} signOut Success FROM {}", usersAccount, usersIp);
     }
     

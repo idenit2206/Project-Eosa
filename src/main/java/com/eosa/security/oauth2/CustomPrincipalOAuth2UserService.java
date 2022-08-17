@@ -74,7 +74,7 @@ public class CustomPrincipalOAuth2UserService extends DefaultOAuth2UserService {
         if(user != null) {
             // DB에 데이터가 존재하는 경우(기존회원)
             result = new CustomPrincipalDetails(user, oAuth2User.getAttributes(), provider);
-            log.debug("[PrincipalOAuth2UserService] 사용자 DB체크 결과: {}", user.toString());
+            // log.debug("[PrincipalOAuth2UserService] 사용자 DB체크 결과: {}", user.toString());
         }
         else {
             // DB에 데이터가 존재하지않는 경우(신규회원)

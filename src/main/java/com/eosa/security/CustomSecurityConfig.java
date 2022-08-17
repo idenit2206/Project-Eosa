@@ -14,11 +14,14 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.eosa.security.oauth2.CustomPrincipalOAuth2UserService;
+
 @Configuration
 @Order(1)
 public class CustomSecurityConfig {
 
     @Autowired private CustomLogoutSuccessHandler customLogoutSuccessHandler; 
+    @Autowired private CustomPrincipalOAuth2UserService customPrincipalOAuth2UserService;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
@@ -39,9 +42,7 @@ public class CustomSecurityConfig {
         return source;
     }
 
-    private String[] ANYONE_PERMIT = {
-        // Admin Page
-        "/assets/**", "/js/**", "/css/**", "/webjars/**", "/admin/signIn", "/admin/**",
+    private String[] ANYONE_PERMIT = {      
         "/oauth2/authorization/**",    
         "/api/user/**", "/api/mail/**"
     };
@@ -68,9 +69,7 @@ public class CustomSecurityConfig {
             .oauth2Login()
                 .loginPage("http://localhost:3000/user/signin")
                     .defaultSuccessUrl("/api/user/sign/oauth2SignIn.success")
-                    // .failureUrl("/api/user/sign/oauth2SignIn.failure")
-                    // .userInfoEndpoint()
-                    // .userService(customPrincipalOAuth2UserService);
+                    
         .and()
             .logout()
                     .logoutUrl("/api/user/signOut")

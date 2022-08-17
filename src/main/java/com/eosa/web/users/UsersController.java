@@ -20,6 +20,7 @@ import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -73,8 +74,9 @@ public class UsersController {
         HttpServletRequest req, 
         @RequestBody String param
     ) throws JSONException, ParseException {
-        String requester = req.getLocalAddr();
-        JsonObject element = JsonParser.parseString(param).getAsJsonObject().get("info").getAsJsonObject();       
+        String requester = req.getLocalAddr();       
+        JsonObject element = JsonParser.parseString(param).getAsJsonObject();
+        log.info("{}", element.toString());       
         log.info("[REQUEST] doSignUp from {}", requester);
         Users paramUsers = new Users();
             paramUsers.setUsersAccount(element.get("usersAccount").getAsString());
@@ -84,7 +86,9 @@ public class UsersController {
             paramUsers.setUsersPhone(element.get("usersPhone").getAsString());
             paramUsers.setUsersEmail(element.get("usersEmail").getAsString());
             paramUsers.setUsersRole(element.get("usersRole").getAsString().toUpperCase());
-            paramUsers.setUsersAge(element.get("usersAge").getAsInt());
+            String prevUsersAge = element.get("usersAge").getAsString();
+            int usersAge = Integer.parseInt(prevUsersAge.substring(0, 2));
+            paramUsers.setUsersAge(usersAge);
             paramUsers.setUsersRegion1(element.get("usersRegion1").getAsString());
             paramUsers.setUsersRegion2(element.get("usersRegion2").getAsString());
             if(element.get("usersGender").getAsString().matches("남자")) {
@@ -215,8 +219,8 @@ public class UsersController {
         HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes,
         @AuthenticationPrincipal CustomPrincipalDetails principalUserDetails
     ) throws IOException, ServletException {
-        log.debug("SNS: {}", principalUserDetails.toString());
-            
+        // log.debug("SNS: {}", principalUserDetails.toString());
+
         String sns = principalUserDetails.getProvider();
         String usersAccount = principalUserDetails.getUsername();
         String usersEmail = principalUserDetails.getUsers().getUsersEmail();
@@ -226,8 +230,10 @@ public class UsersController {
         Users user = usersService.selectByUsersEmail(usersEmail);
         if(user != null) {    
             Cookie cookieAccount = new Cookie("usersAccount", usersAccount);
+            cookieAccount.setPath("/");
             response.addCookie(cookieAccount);
             response.sendRedirect("http://localhost:3000/");
+            
         }
         else {
             log.info("신규회원");
