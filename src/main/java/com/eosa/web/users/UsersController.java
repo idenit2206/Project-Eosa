@@ -216,53 +216,25 @@ public class UsersController {
         @AuthenticationPrincipal CustomPrincipalDetails principalUserDetails
     ) throws IOException, ServletException {
         log.debug("SNS: {}", principalUserDetails.toString());
-        CustomResponseData result = new CustomResponseData();
-        Map<String, Object> items = new HashMap<>();
             
         String sns = principalUserDetails.getProvider();
         String usersAccount = principalUserDetails.getUsername();
         String usersEmail = principalUserDetails.getUsers().getUsersEmail();
         String usersRole = principalUserDetails.getUsers().getUsersRole(); 
-        // log.debug("# sns:{}, usersEmail: {}, usersRole: {}",sns, usersEmail, usersRole);       
-       
+        // log.debug("# sns:{}, usersEmail: {}, usersRole: {}",sns, usersEmail, usersRole); 
 
-        // Users user = usersService.selectByUsersEmail(usersEmail);
-        // String existUsersEmail = "";
-        // if(user != null) {
-        //     existUsersEmail = user.getUsersEmail();            
-        //     items.put("sns", sns);
-        //     items.put("usersAccount", usersAccount);
-        //     items.put("usersRole", usersRole);   
-        // }
-        // else {
-        //     log.info("신규회원");
-        //     items.put("sns", sns);
-        //     items.put("usersEmail", usersEmail);
-        //     items.put("usersRole", null);
-        //     items.put("message", "해당 회원은 신규회원입니다.");
-        // }
-
-        // result.setStatusCode(HttpStatus.OK.value());
-        // result.setResultItem(items);
-        // result.setResponseDateTime(LocalDateTime.now());
-
-        // redirectAttributes.addAttribute("email", usersEmail);
-
-        // Cookie cookie_sns = new Cookie("sns", sns);
-        // Cookie cookie_account = new Cookie("account", usersAccount);
-        // Cookie cookie_role = new Cookie("role", usersRole);
-
-        // cookie_sns.setPath("/");
-        // cookie_account.setPath("/");
-        // cookie_role.setPath("/");
-       
-        // response.addCookie(cookie_sns);
-        // response.addCookie(cookie_account);
-        // response.addCookie(cookie_role);
-
-        response.sendRedirect("http://localhost:3000/");
-
-        // return result;
+        Users user = usersService.selectByUsersEmail(usersEmail);
+        if(user != null) {    
+            Cookie cookieAccount = new Cookie("usersAccount", usersAccount);
+            response.addCookie(cookieAccount);
+            response.sendRedirect("http://localhost:3000/");
+        }
+        else {
+            log.info("신규회원");
+            redirectAttributes.addFlashAttribute("info","info");    
+            response.sendRedirect("http://localhost:3000/user/register");
+            response.flushBuffer();
+        }
     }
 
     @GetMapping("/sign/oauth2SignIn.failure")
