@@ -39,9 +39,7 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
      * @return
      */
     @Query(
-        value= "SELECT usersIdx, usersAccount, usersName, usersNick, usersPhone, " +
-        "usersEmail, usersRole, usersAge, " +
-        "usersRegion1, usersRegion2, usersGender " +
+        value= "SELECT usersAccount, usersRole " +
         "FROM Users WHERE usersAccount = ?1",
         nativeQuery=true
     )

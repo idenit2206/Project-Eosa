@@ -42,7 +42,8 @@ public class CustomSecurityConfig {
         return source;
     }
 
-    private String[] ANYONE_PERMIT = {      
+    private String[] ANYONE_PERMIT = {
+        "/assets/**", "/js/**", "/css/**", "/webjars/**", 
         "/oauth2/authorization/**",    
         "/api/user/**", "/api/mail/**"
     };

@@ -35,6 +35,9 @@ public class Companys {
     @Column(nullable=false)
     private Long companysCeoIdx;
 
+    @Column(nullable=false)
+    private String companysCeoName;
+
     @Column(nullable=true, length=255)
     private String companysComment;
 

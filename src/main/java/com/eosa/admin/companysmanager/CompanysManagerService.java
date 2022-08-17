@@ -12,7 +12,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.stereotype.Service;
 
+import com.eosa.admin.companysmanager.entity.GetCompanysList;
 import com.eosa.web.companys.Companys;
+import com.eosa.web.companys.entity.CompanysCategory;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,6 +23,26 @@ import lombok.extern.slf4j.Slf4j;
 public class CompanysManagerService implements CompanysManagerRepository {
 
     @Autowired private CompanysManagerRepository companysManageRepository;
+
+    @Override
+    public <S extends Companys> S save(S entity) {
+        return companysManageRepository.save(entity);
+    }
+
+    @Override
+    public Long findCompanysIdxByCeoIdx(Long companysCeoIdx) {
+        return companysManageRepository.findCompanysIdxByCeoIdx(companysCeoIdx);
+    } 
+
+    @Override
+    public void insertCompanysCategory(Long companysIdx, String string) {
+        companysManageRepository.insertCompanysCategory(companysIdx, string);
+    }
+
+    @Override
+    public void insertCompanysActiveRegion(Long companysIdx, String string) {
+        companysManageRepository.insertCompanysActiveRegion(companysIdx, string);
+    }
 
     @Override
     public List<GetCompanysList> viewFindAll() {
@@ -123,13 +145,7 @@ public class CompanysManagerService implements CompanysManagerRepository {
     public Page<Companys> findAll(Pageable pageable) {
         // TODO Auto-generated method stub
         return null;
-    }
-
-    @Override
-    public <S extends Companys> S save(S entity) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    }    
 
     @Override
     public Optional<Companys> findById(Long id) {
@@ -207,6 +223,6 @@ public class CompanysManagerService implements CompanysManagerRepository {
     public <S extends Companys, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
         // TODO Auto-generated method stub
         return null;
-    }   
+    }       
     
 }

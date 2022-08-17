@@ -1,5 +1,6 @@
 package com.eosa.admin.companysmanager;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.eosa.admin.companysmanager.entity.CompanysRegister;
+import com.eosa.admin.companysmanager.entity.GetCompanysList;
 import com.eosa.web.companys.Companys;
+import com.eosa.web.companys.entity.CompanysActiveRegion;
+import com.eosa.web.companys.entity.CompanysCategory;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
@@ -81,8 +86,7 @@ public class CompanysManagerController {
         Model model
     ) {
         // log.info("showUsersList currentPage: {}", currentPage);
-		// log.info(companysList.toString());
-        
+		// log.info(companysList.toString());        
 
 		List<GetCompanysList> companysList = companysManagerService.viewFindAll();
 		// log.info(companysList.toString());		
@@ -115,16 +119,37 @@ public class CompanysManagerController {
 		Companys companys = new Companys();
 		companys.setCompanysName(companysRegister.getCompanysName());
 		companys.setCompanysCeoIdx(companysRegister.getCompanysCeoIdx());
+		companys.setCompanysCeoName(companysRegister.getCompanysCeoName());
 		companys.setCompanysPhone(companysRegister.getCompanysPhone());
+		companys.setCompanysComment(companysRegister.getCompanysComment());
+		companys.setCompanysSpec(companysRegister.getCompanysSpec());
 		companys.setCompanysRegion1(companysRegister.getCompanysRegion1());
 		companys.setCompanysRegion2(companysRegister.getCompanysRegion2());
 		companys.setCompanysRegion3(companysRegister.getCompanysRegion3());
-		companys.setCompanysComment(companysRegister.getCompanysComment());
-		companys.setCompanysSpec(companysRegister.getCompanysSpec());
+		companys.setCompanysRegistDate(LocalDateTime.now());
+		
+		CompanysCategory companysCategory = new CompanysCategory();
+		List<String> category = companysRegister.getCompanysCategory();
+
+		CompanysActiveRegion companysActiveRegion = new CompanysActiveRegion();
+		List<String> activeRegion = companysRegister.getCompanysActiveRegion();
+		
+		log.info("{}", companys.toString());
+		log.info("{}", category.toString());
+		log.info("{}", activeRegion.toString());
 
 		companysManagerService.save(companys);
+		Long companysIdx = companysManagerService.findCompanysIdxByCeoIdx(companysRegister.getCompanysCeoIdx());
+		log.info("new companysIdx: {}", companysIdx);
 
-		return "/admin/companysmanage/CompanysList";
+		for(int i = 0; i < category.size(); i++) {
+			companysManagerService.insertCompanysCategory(companysIdx, category.get(i));
+		}
+		for(int i = 0; i < activeRegion.size(); i++) {
+			companysManagerService.insertCompanysActiveRegion(companysIdx, activeRegion.get(i));
+		}
+
+		return "admin/companysmanage/CompanysList";
 	}
 
 }

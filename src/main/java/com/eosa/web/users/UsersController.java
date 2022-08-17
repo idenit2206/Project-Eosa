@@ -168,11 +168,16 @@ public class UsersController {
         LocalDateTime currentTime = LocalDateTime.now();
         
         SelectByUsersAccountEntity userInfo = usersService.selectByUsersAccount(usersAccount);
-
         Map<String, Object> items = new HashMap<>();
-        items.put("message", "Welcome");
-        items.put("userInfo", userInfo);
 
+        if(userInfo.getUsersRole().equals("CLIENT")) {           
+            items.put("message", "Welcome");
+            items.put("userInfo", userInfo);
+        }
+        else {
+            
+        }
+        
         result.setStatusCode(HttpStatus.OK.value());
         result.setResultItem(items);
         result.setResponseDateTime(currentTime);

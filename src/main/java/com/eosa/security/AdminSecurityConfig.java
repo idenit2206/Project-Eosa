@@ -14,7 +14,8 @@ public class AdminSecurityConfig {
     @Autowired private CustomLogoutSuccessHandler customLogoutSuccessHandler; 
 
     private String[] PERMIT_URL = {
-        "/assets/**", "/js/**", "/css/**", "/webjars/**", "/admin/signIn"
+        "/assets/**", "/js/**", "/css/**", "/webjars/**", 
+        "/admin/sign/**"
     };
     
     @Bean
@@ -29,11 +30,11 @@ public class AdminSecurityConfig {
                 .anyRequest().permitAll()
         .and()
             .formLogin()
-                .loginPage("/admin/signIn")
-                    .loginProcessingUrl("/admin/signIn.do")
+                .loginPage("/admin/sign/signIn")
+                    .loginProcessingUrl("/admin/sign/signIn.do")
                     .usernameParameter("usersAccount").passwordParameter("usersPass")                       
-                    .successForwardUrl("/admin/signIn.success")
-                    .failureForwardUrl("/admin/signIn.failure")
+                    .successForwardUrl("/admin/sign/signIn.success")
+                    .failureForwardUrl("/admin/sign/signIn.failure")
         .and()
             .logout()
                     .logoutUrl("/api/user/signOut.do")

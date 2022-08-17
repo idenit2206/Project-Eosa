@@ -1,4 +1,4 @@
-package com.eosa.admin.companysmanager;
+package com.eosa.admin.companysmanager.entity;
 
 import java.util.List;
 
@@ -6,6 +6,7 @@ public interface CompanysRegister {
     Long getCompanysidx();
     String getCompanysName();
     Long getCompanysCeoIdx();
+    String getCompanysCeoName();
     String getCompanysComment();
     String getCompanysSpec();
     String getCompanysPhone();

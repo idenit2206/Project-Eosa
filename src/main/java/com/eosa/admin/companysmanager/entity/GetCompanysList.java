@@ -1,4 +1,4 @@
-package com.eosa.admin.companysmanager;
+package com.eosa.admin.companysmanager.entity;
 
 import java.time.LocalDateTime;
 

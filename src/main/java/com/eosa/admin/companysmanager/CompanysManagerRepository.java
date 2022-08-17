@@ -2,14 +2,42 @@ package com.eosa.admin.companysmanager;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import com.eosa.admin.companysmanager.entity.GetCompanysList;
 import com.eosa.web.companys.Companys;
 
 @Repository
 public interface CompanysManagerRepository extends JpaRepository<Companys, Long> {
+
+    @Query(
+        value="SELECT companysIdx FROM Companys WHERE companysCeoIdx=?1",
+        nativeQuery=true
+    )
+    Long findCompanysIdxByCeoIdx(Long companysCeoIdx);
+
+    @Modifying
+    @Transactional
+    @Query(
+        value="INSERT INTO CompanysCategory(companysIdx, companysCategoryValue) " +
+        "VALUES(?1, ?2)",
+        nativeQuery=true
+    )
+    void insertCompanysCategory(Long companysIdx, String string);
+
+    @Modifying
+    @Transactional
+    @Query(
+        value="INSERT INTO CompanysActiveRegion(companysIdx, activeRegion) " +
+        "VALUES(?1, ?2)",
+        nativeQuery=true
+    )
+    void insertCompanysActiveRegion(Long companysIdx, String string);
 
     @Query(
         value="SELECT * FROM Companys WHERE " +
@@ -28,5 +56,7 @@ public interface CompanysManagerRepository extends JpaRepository<Companys, Long>
         nativeQuery = true
     )
     List<GetCompanysList> viewFindAll();
+
+    
 
 }
