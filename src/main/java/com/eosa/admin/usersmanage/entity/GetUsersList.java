@@ -1,4 +1,4 @@
-package com.eosa.admin.usersmanage;
+package com.eosa.admin.usersmanage.entity;
 
 import java.time.LocalDateTime;
 

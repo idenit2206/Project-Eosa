@@ -14,6 +14,8 @@ import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuer
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.eosa.admin.usersmanage.entity.GetByUsersAccount;
+import com.eosa.admin.usersmanage.entity.GetUsersList;
 import com.eosa.admin.util.random.AddressTempData;
 import com.eosa.admin.util.random.RandomGenAccount;
 import com.eosa.admin.util.random.RandomGenKorName;
@@ -31,6 +33,7 @@ public class UsersManageService implements UsersManageRepository {
 
     @Autowired BCryptPasswordEncoder passwordEncoder;
 
+    // Users 가데이터 생성에 사용
     @Override
     public <S extends Users> S save(S entity) {
         RandomGenAccount rgu = new RandomGenAccount();
@@ -75,23 +78,33 @@ public class UsersManageService implements UsersManageRepository {
     @Override
     public List<Users> findAll() {
         return usersManageRepository.findAll();
-    }
-    
-    public List<Users> findAllClient(int currentPageStartPost, int postSize) {
-        return usersManageRepository.findAllClient(currentPageStartPost, postSize);
-    }
-    public int findAllClientCount() {
-        return usersManageRepository.findAllClientCount();
-    }
+    } 
 
     @Override
     public List<GetUsersList> findAllUsers(int currentPageStartPost, int postSize) {
         return usersManageRepository.findAllUsers(currentPageStartPost, postSize);
-    }
+    }    
 
     @Override
     public int findAllUsersCount() {
         return usersManageRepository.findAllUsersCount();
+    }
+
+    @Override
+    public List<GetUsersList> findAllWithdrawalUser(int currentPageStartPost, int postSize) {
+        return usersManageRepository.findAllWithdrawalUser(currentPageStartPost, postSize);
+    }
+
+    @Override
+    public int findAllWithdrawalUserCount() {
+        return usersManageRepository.findAllWithdrawalUserCount();
+    }
+
+    public List<GetUsersList> findAllClient(int currentPageStartPost, int postSize) {
+        return usersManageRepository.findAllClient(currentPageStartPost, postSize);
+    }
+    public int findAllClientCount() {
+        return usersManageRepository.findAllClientCount();
     }
 
     public List<Users> findByUsersAccount(String usersAccount, int currentPageStartPost, int POST_COUNT) {

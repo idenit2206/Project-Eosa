@@ -82,7 +82,7 @@ public class CompanysManagerController {
     @Operation(summary = "업체 전체 목록 조회", description="모든 업체를 목록으로 출력합니다.")
     @GetMapping("/companysList")
     public String showCompanysList(
-        @RequestParam(value="currentPage") int currentPage,
+        @RequestParam(value="currentPage", defaultValue="1") int currentPage,
         Model model
     ) {
         // log.info("showUsersList currentPage: {}", currentPage);
@@ -138,6 +138,7 @@ public class CompanysManagerController {
 		log.info("{}", category.toString());
 		log.info("{}", activeRegion.toString());
 
+		//SQL 부분
 		companysManagerService.save(companys);
 		Long companysIdx = companysManagerService.findCompanysIdxByCeoIdx(companysRegister.getCompanysCeoIdx());
 		log.info("new companysIdx: {}", companysIdx);
@@ -149,7 +150,7 @@ public class CompanysManagerController {
 			companysManagerService.insertCompanysActiveRegion(companysIdx, activeRegion.get(i));
 		}
 
-		return "admin/companysmanage/CompanysList";
+		return "redirect:/admin/companysManager/companysList";
 	}
 
 }

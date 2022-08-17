@@ -14,26 +14,21 @@
             <nav th:replace="admin/fragments/html-sidebar.html :: html-sidebar" />
         </div>
         <div class="col">
-        <div class="container">
+        <div class="container text-center">
             <h3>회원 관리</h3>
             <div class="row">
                 <div class="col align-self-start">
                 </div>
                 <div class="col align-self-center">
-                    <button class="btn btn-light active">전체</button>
-                    <button class="btn btn-light" id="withdrawalBtn">탈퇴</button>
+                    <button class="btn btn-light" id="allListBtn">전체</button>
+                    <button class="btn btn-light" id="withdrawalBtn" active>탈퇴</button>
                 </div>
                 <div class="col align-self-end">
                 </div>
             </div>
             <div class="row">
-                <div class="col-1">
-                    <span th:if="${allPostCount} != null">전체 [[${allPostCount}]]</span>
-                </div>
                 <div class="col">
-                    <button class="btn btn-light">탐정</button>
-                    <button class="btn btn-light active">의뢰인</button>
-                    <button class="btn btn-light">비회원</button>
+
                 </div>
                 <div class="col-4">
                     <div class="input-group">            
@@ -45,7 +40,7 @@
             <form method="GET" action="/admin/usersManage/findByUsersAccount">            
             </form>
             <br/>
-                      
+            <p>전체 </p>
             <div class="tableDiv">
                 <table class="table">
                     <thead>
@@ -110,9 +105,9 @@
 </div>
 </body>
 <script>
-const WITHDRAWAL_BTN = document.querySelector("#withdrawalBtn");
-WITHDRAWAL_BTN.addEventListener("click", () => {
-    window.location.href="/admin/usersManage/withdrawalUsersList";
+const ALLLIST_BTN = document.querySelector("#allListBtn");
+ALLLIST_BTN.addEventListener("click", () => {
+    window.location.href="/admin/usersManage/usersList";
 })
 
 </script>

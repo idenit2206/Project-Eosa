@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.eosa.admin.usersmanage.entity.GetByUsersAccount;
+import com.eosa.admin.usersmanage.entity.GetUsersList;
 import com.eosa.admin.util.pagination.PageList;
 import com.eosa.admin.util.pagination.PostList;
 import com.eosa.web.users.Users;
@@ -52,15 +54,47 @@ public class UsersManageController {
      * 모든 유저(CLIENT)의 명단을 출력합니다.
      * @return
      */
-    @Operation(summary = "회원 전체 목록 조회", description="모든 유저(CLIENT, DETECTIVE)의 명단을 출력합니다.")
+    @Operation(summary = "회원 전체 목록 조회", description="모든 유저(CLIENT)의 명단을 출력합니다.")
     @GetMapping("/usersList")
-    public String showUsersList(
+    public String showClientUsersList(
         @RequestParam(value="currentPage", defaultValue="1") int currentPage,
         Model model
     ) {       
         int currentPageStartPost = postList.getCurrentPageStartPost(currentPage);
-        List<GetUsersList> usersList = usersManageService.findAllUsers(currentPageStartPost, POST_COUNT);
-        int allPostCount = usersManageService.findAllUsersCount();
+        List<GetUsersList> usersList = usersManageService.findAllClient(currentPageStartPost, POST_COUNT);
+        int allPostCount = usersManageService.findAllClientCount();
+        PageList pageList = new PageList(POST_COUNT, BLOCK_COUNT, currentPage, allPostCount);
+      
+        Map<String, Integer> pagination = new HashMap<>();
+        pagination.put("blockCount", BLOCK_COUNT);
+		pagination.put("fistBlock", pageList.getFirstBlock()); 
+		pagination.put("lastBlock", pageList.getLastBlock());
+		pagination.put("blockFirst", pageList.getBlockFirst());
+		pagination.put("blockLast", pageList.getBlockLast());
+		pagination.put("previousBlock", pageList.getPrevBlock());
+		pagination.put("nextBlock", pageList.getNextBlock());        
+        
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("allPostCount", allPostCount);
+        model.addAttribute("usersList", usersList);
+        model.addAttribute("pagination", pagination);
+
+        return "admin/usersmanage/UsersList";
+    }
+
+    /**
+     * 모든 탈퇴회원(CLIENT)의 명단을 출력합니다.
+     * @return
+     */
+    @Operation(summary = "탈퇴회원 전체 목록 조회", description="모든 탈퇴회원(CLIENT)의 명단을 출력합니다.")
+    @GetMapping("/withdrawalUsersList")
+    public String showWithdrawalUsersList(
+        @RequestParam(value="currentPage", defaultValue="1") int currentPage,
+        Model model
+    ) {       
+        int currentPageStartPost = postList.getCurrentPageStartPost(currentPage);
+        List<GetUsersList> usersList = usersManageService.findAllWithdrawalUser(currentPageStartPost, POST_COUNT);
+        int allPostCount = usersManageService.findAllWithdrawalUserCount();
         PageList pageList = new PageList(POST_COUNT, BLOCK_COUNT, currentPage, allPostCount);
       
         Map<String, Integer> pagination = new HashMap<>();
@@ -76,7 +110,7 @@ public class UsersManageController {
         model.addAttribute("usersList", usersList);
         model.addAttribute("pagination", pagination);
 
-        return "admin/usersmanage/UsersList";
+        return "admin/usersmanage/WithdrawalUsersList";
     }
 
     @GetMapping("/findByUsersAccount")

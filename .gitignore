@@ -2,7 +2,7 @@
 **/web-ui/**
 **/ui/**
 
-/src/main/resources/static
+# /src/main/resources/static
 !**/assets/
 
 # Back-end

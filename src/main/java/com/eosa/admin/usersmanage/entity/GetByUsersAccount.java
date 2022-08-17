@@ -1,4 +1,4 @@
-package com.eosa.admin.usersmanage;
+package com.eosa.admin.usersmanage.entity;
 
 public interface GetByUsersAccount {
     String getUsersAccount();
