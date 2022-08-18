@@ -21,7 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.eosa.security.CustomPrincipalDetails;
 import com.eosa.web.users.Users;
-import com.eosa.web.users.UsersService;
+import com.eosa.web.users.service.UsersService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;

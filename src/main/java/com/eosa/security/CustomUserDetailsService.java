@@ -10,7 +10,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import com.eosa.web.users.Users;
-import com.eosa.web.users.UsersRepository;
+import com.eosa.web.users.repository.UsersRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

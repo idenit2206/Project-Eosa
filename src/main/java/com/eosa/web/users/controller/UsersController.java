@@ -1,10 +1,8 @@
-package com.eosa.web.users;
+package com.eosa.web.users.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -12,15 +10,11 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.tomcat.util.json.JSONParser;
 import org.apache.tomcat.util.json.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,18 +26,17 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.eosa.security.CustomPrincipalDetails;
+import com.eosa.web.users.Users;
 import com.eosa.web.users.entity.FindByUsersAccountEntity;
 import com.eosa.web.users.entity.SelectByUsersAccountEntity;
+import com.eosa.web.users.service.UsersService;
 import com.eosa.web.util.CustomResponseData;
 import com.eosa.web.util.NullCheck;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
-import springfox.documentation.spring.web.json.Json;
 
 
 @Slf4j
@@ -167,19 +160,10 @@ public class UsersController {
         CustomResponseData result = new CustomResponseData();
         LocalDateTime currentTime = LocalDateTime.now();
         
-        SelectByUsersAccountEntity userInfo = usersService.selectByUsersAccount(usersAccount);
-        Map<String, Object> items = new HashMap<>();
-
-        if(userInfo.getUsersRole().equals("CLIENT")) {           
-            items.put("message", "Welcome");
-            items.put("userInfo", userInfo);
-        }
-        else {
-            
-        }
+        SelectByUsersAccountEntity user = usersService.selectByUsersAccount(usersAccount);
         
         result.setStatusCode(HttpStatus.OK.value());
-        result.setResultItem(items);
+        result.setResultItem(user);
         result.setResponseDateTime(currentTime);
 
         return result;

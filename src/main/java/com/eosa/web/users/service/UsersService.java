@@ -1,4 +1,4 @@
-package com.eosa.web.users;
+package com.eosa.web.users.service;
 
 import java.time.LocalDateTime;
 
@@ -18,8 +18,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.eosa.security.CustomPrincipalDetails;
+import com.eosa.web.users.Users;
 import com.eosa.web.users.entity.FindByUsersAccountEntity;
 import com.eosa.web.users.entity.SelectByUsersAccountEntity;
+import com.eosa.web.users.repository.UsersRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -106,7 +108,7 @@ public class UsersService implements UsersRepository {
         UserDetails ud = new CustomPrincipalDetails(user);
 
         if(passwordEncoder.matches(usersPass, ud.getPassword())) {
-            log.debug("## MyPage접근 Pass 일치");
+            log.debug("{} 사용자가 사용자 정보를 조회합니다.", usersAccount);
             result = usersRepository.checkMyPageByPass(usersAccount, ud.getPassword());
             // checkMyPageByPass(usersAccount, usersPass);
         }

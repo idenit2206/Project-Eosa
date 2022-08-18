@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.eosa.web.users.Users;
-import com.eosa.web.users.UsersService;
+import com.eosa.web.users.service.UsersService;
 
 import lombok.extern.slf4j.Slf4j;
 

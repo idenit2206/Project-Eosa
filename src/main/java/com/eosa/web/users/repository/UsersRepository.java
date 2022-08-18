@@ -1,4 +1,4 @@
-package com.eosa.web.users;
+package com.eosa.web.users.repository;
 
 import javax.transaction.Transactional;
 
@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.eosa.web.users.Users;
 import com.eosa.web.users.entity.FindByUsersAccountEntity;
 import com.eosa.web.users.entity.SelectByUsersAccountEntity;
 

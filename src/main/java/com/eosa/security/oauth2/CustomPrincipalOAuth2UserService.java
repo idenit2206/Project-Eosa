@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.eosa.security.CustomPrincipalDetails;
 import com.eosa.web.users.Users;
-import com.eosa.web.users.UsersRepository;
+import com.eosa.web.users.repository.UsersRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -64,7 +64,7 @@ public class CustomPrincipalOAuth2UserService extends DefaultOAuth2UserService {
             usersEmail = response.get("email").toString();
         }
        
-        log.debug("# platform: {}, email: {}", platform, usersEmail);
+        log.debug("platform: {}, email: {}", platform, usersEmail);
 
         // DB에 기존유저로써 존재하는지 검사
         user = (Users) usersRepository.selectByUsersEmail(usersEmail);
