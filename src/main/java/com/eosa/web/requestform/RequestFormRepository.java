@@ -25,7 +25,6 @@ public interface RequestFormRepository extends JpaRepository<RequestForm, Long> 
     ,nativeQuery=true)
     int requestFormRegister(@Param("RequestForm") RequestForm entity);
 
-
     @Query(
         value="SELECT * FROM RequestForm " + 
         "WHERE detectiveIdx = ?1 " +
@@ -34,5 +33,12 @@ public interface RequestFormRepository extends JpaRepository<RequestForm, Long> 
         nativeQuery=true
     )
     List<RequestForm> findByDetectiveIdx(Long detectiveidx);
+
+    @Query(
+        value="SELECT * FROM RequestForm " +
+        "WHERE usersIdx = ?1",
+        nativeQuery=true
+    )
+    List<RequestForm> findAllRequestClientByUsersIdx(Long usersIdx);
 
 }

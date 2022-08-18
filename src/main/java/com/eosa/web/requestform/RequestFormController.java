@@ -9,12 +9,14 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.eosa.security.CustomPrincipalDetails;
 import com.eosa.web.util.CustomResponseData;
 import com.eosa.web.util.NullCheck;
 
@@ -26,6 +28,12 @@ import lombok.extern.slf4j.Slf4j;
 public class RequestFormController {
 
     @Autowired private RequestFormService requestFormService;
+
+    @GetMapping("/test01")
+    public String test01(@AuthenticationPrincipal CustomPrincipalDetails auth) {
+        log.debug("{} 사용자가 /test01 을 요청했습니다.", auth.getUsername());
+        return "/test01";
+    }
 
     final int POST_COUNT = 10;
     final int BLOCK_COUNT = 10;
@@ -75,7 +83,7 @@ public class RequestFormController {
     /**
      * 모든 의뢰신청 내역 조회
      * @return
-     */
+    */
     @GetMapping("/getAllRequestForm")
     public CustomResponseData getAllRequestForm() {
         CustomResponseData result = new CustomResponseData();
@@ -120,6 +128,33 @@ public class RequestFormController {
             result.setResponseDateTime(LocalDateTime.now());
         }
 
+        return result;
+    }
+
+    /**
+     * CLIENT의 의뢰신청 내역 조회
+     * 
+     */
+    @GetMapping("/getAllRequestClient")
+    public CustomResponseData getAllRequestClient(
+        @RequestParam("usersIdx") Long usersIdx
+    ) {
+        log.debug("usersIdx: {}", usersIdx);
+        CustomResponseData result = new CustomResponseData();
+        List<RequestForm> list = requestFormService.findAllRequestClientByUsersIdx(usersIdx);
+
+        if(list.size() != 0) {
+            log.debug("Client List: {}", list.toString());
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(list);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        
         return result;
     }
 }

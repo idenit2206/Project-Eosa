@@ -35,12 +35,13 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     int usersAccountDupliCheck(String usersAccount);
 
     /**
-     * Spring Security를 활용한 로근인에 사용하는 메서드
+     * Spring Security formLogin()에서 인증을 성공했을 때
+     * 인증성공한 회원의 회원정보를 갖고온다.
      * @param usersAccount
      * @return
      */
     @Query(
-        value= "SELECT usersAccount, usersRole " +
+        value= "SELECT usersIdx, usersAccount, usersRole " +
         "FROM Users WHERE usersAccount = ?1",
         nativeQuery=true
     )
