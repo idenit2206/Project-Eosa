@@ -13,65 +13,102 @@
             <nav th:replace="admin/fragments/html-sidebar.html :: html-sidebar" />
         </div>
         <div class="col-10">
-            <h3>운영자 관리</h3>
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="운영자 아이디" aria-label="운영자 아이디" aria-describedby="searchBtn">
-                <button class="btn btn-outline-secondary" type="button" id="searchBtn">검색</button>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <h3>운영자 관리</h3>
+                </div>
             </div>
-            <br/>            
-            <div class="tableDiv">
-                <table class="table">
-                    <thead>
-                        <tr class="table-success">
-                            <th>운영자 번호</th>
-                            <th>아이디</th>
-                            <th>이름</th>
-                            <th>등록일</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <div th:if="${usersList} != null">                       
-                        <tr th:each="usersList : ${usersList}">
-                            <td>[[${usersList.usersIdx}]]</td>
-                            <td><a th:href="@{/admin/adminInfo(usersAccount=${usersList.usersAccount})}">[[${usersList.usersAccount}]]</a></td>
-                            <td>[[${usersList.usersRole}]]</td>
-                            <td>[[${usersList.usersJoinDate}]]</td>
-                        </tr>
-                        </div>
-                        <div th:if="${usersList} == null">
-                            <tr>
-                                <td>No</td>
-                                <td>Result</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        </div>
-                    </tbody>
-                </table>
+            <div class="row">
+                <div class="col">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="운영자 아이디" aria-label="운영자 아이디" aria-describedby="searchBtn">
+                        <button class="btn btn-outline-secondary" type="button" id="searchBtn">검색</button>
+                    </div>
+                </div>
             </div>
-            <div class="">
-                <nav th:if="${pagination != null}">
-                    <ul class="pagination">
-                        <li th:if="${pagination.blockCount < currentPage}">
-                            <a class="page-link" th:href="@{/admin/adminList(currentPage=${pagination.previousBlock})}">
-                                PREV
-                            </a>
-                        </li>
-                        <li class="page-item" th:each="page : ${#numbers.sequence(pagination.blockFirst, pagination.blockLast)}">
-                            <a class="page-link" th:href="@{/admin/adminList(currentPage=${page})}">
-                                [[${page}]]
-                            </a>
-                        </li>
-                        <li th:if="${currentPage <= pagination.lastBlock}">
-                            <a class="page-link" th:href="@{/admin/adminList(currentPage=${pagination.nextBlock})}">
-                                NEXT
-                            </a>
-                        </li>
-                    </ul>
-                </nav>                
+            <div class="row">
+                <div class="col">&nbsp;</div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="tableDiv">
+                        <table class="table">
+                            <thead>
+                                <tr class="table-success">
+                                    <th><input class="form-check-input" type="checkbox"/></th>
+                                    <th>운영자 번호</th>
+                                    <th>아이디</th>
+                                    <th>이름</th>
+                                    <th>등록일</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <div th:if="${usersList} != null">                       
+                                <tr th:each="usersList : ${usersList}">
+                                    <td><input class="form-check-input" type="checkbox"/></td>
+                                    <td>[[${usersList.usersIdx}]]</td>
+                                    <td><a th:href="@{/admin/adminInfo(usersAccount=${usersList.usersAccount})}">[[${usersList.usersAccount}]]</a></td>
+                                    <td>[[${usersList.usersName}]]</td>
+                                    <td>[[${usersList.usersJoinDate}]]</td>
+                                </tr>
+                                </div>
+                                <div th:if="${usersList} == null">
+                                    <tr>
+                                        <td>No</td>
+                                        <td>Result</td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </div>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>            
+            <div class="row">
+                <div class="col-4"></div>
+                <div class="col-4">
+                    <nav th:if="${pagination != null}">
+                        <ul class="pagination">
+                            <li th:if="${pagination.blockCount < currentPage}">
+                                <a class="page-link" th:href="@{/admin/adminList(currentPage=${pagination.previousBlock})}">
+                                    PREV
+                                </a>
+                            </li>
+                            <li class="page-item" th:each="page : ${#numbers.sequence(pagination.blockFirst, pagination.blockLast)}">
+                                <a class="page-link" th:href="@{/admin/adminList(currentPage=${page})}">
+                                    [[${page}]]
+                                </a>
+                            </li>
+                            <li th:if="${currentPage <= pagination.lastBlock}">
+                                <a class="page-link" th:href="@{/admin/adminList(currentPage=${pagination.nextBlock})}">
+                                    NEXT
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>  
+                </div>
+                <div class="col-4"></div>          
+            </div>
+            <!-- <div th:if="${usersRole} == SUPER_ADMIN" class="row justify-content-between"> -->
+            <div class="row justify-content-between">
+                <div class="col-4">
+                    <button class="btn btn-danger" id="adminDelete">삭제</button>
+                </div>
+                <div class="col-4 text-end">
+                    <button class="btn btn-primary" id="adminAdd">운영자 추가</button>
+                </div>
             </div>
         </div>
     </div>
+    </div>
 </div>
 </body>
+<script>
+    const ADMIN_ADD_BTN = document.querySelector("#adminAdd");
+    ADMIN_ADD_BTN.addEventListener("click", () => {
+        window.location.href="/admin/adminAdd";
+    })
+</script>
 </html>

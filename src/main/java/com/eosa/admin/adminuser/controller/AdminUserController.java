@@ -1,4 +1,4 @@
-package com.eosa.admin.adminuser;
+package com.eosa.admin.adminuser.controller;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.eosa.admin.adminuser.AdminUserService;
 import com.eosa.security.CustomPrincipalDetails;
 import com.eosa.web.users.Users;
 import com.eosa.web.users.service.UsersService;
@@ -140,11 +141,20 @@ public class AdminUserController {
     @GetMapping(value="/adminList")
     public String adminList(
         @RequestParam(value="currentPage", defaultValue="1") int currentPage,
+        @AuthenticationPrincipal CustomPrincipalDetails auth,
         Model model
     ) {
         List<Users> adminList = postList(currentPage);
         Map<String, Integer> pagination = pageList(currentPage);
-
+        String usersRole = "";
+        if(auth != null) {
+            usersRole = auth.getUsersRole();
+        }
+        else {
+            usersRole = "";
+        }
+        
+        model.addAttribute("usersRole", usersRole);
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("usersList", adminList);
         model.addAttribute("pagination", pagination);

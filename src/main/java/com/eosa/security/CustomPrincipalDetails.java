@@ -98,6 +98,10 @@ public class CustomPrincipalDetails implements UserDetails, OAuth2User {
         return users.getUsersPass();
     }
 
+    public String getUsersRole() {
+        return users.getUsersRole();
+    }
+
     /**
     * UserDetails와 연동
     */
