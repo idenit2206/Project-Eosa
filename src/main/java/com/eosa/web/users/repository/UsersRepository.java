@@ -28,11 +28,29 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     ,nativeQuery=true)
     int userSave(@Param("Users") Users user);
 
+    /**
+     * 회원가입을 할 때 아이디가 중복인지 검사하기 위한 메서드
+     * 중복일 경우 1을 반환
+     * @param usersAccount
+     * @return 1 | null
+     */
     @Query(
         value="SELECT 1 FROM Users WHERE usersAccount=?1",
         nativeQuery=true
     )
     int usersAccountDupliCheck(String usersAccount);
+
+    /**
+     * 회원가입을 할 때 이메일이 중복인지 검사하기 위한 메서드
+     * 중복일 경우 1을 반환
+     * @param usersEmail
+     * @return 1 | null
+     */
+    @Query(
+        value="SELECT 1 FROM Users WHERE usersEmail=?1",
+        nativeQuery=true
+    )
+    int usersEmailDupliCheck(String usersEmail);
 
     /**
      * Spring Security formLogin()에서 인증을 성공했을 때

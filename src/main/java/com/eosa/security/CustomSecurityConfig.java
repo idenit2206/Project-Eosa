@@ -71,6 +71,7 @@ public class CustomSecurityConfig {
             .oauth2Login()
                 .loginPage("http://localhost:3000/user/signin")
                     .defaultSuccessUrl("/api/user/sign/oauth2SignIn.success")
+                    .failureUrl("/api/user/sign/oauth2SignIn.failure")
                     
         .and()
             .logout()

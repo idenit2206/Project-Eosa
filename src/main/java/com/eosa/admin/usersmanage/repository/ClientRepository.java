@@ -1,4 +1,4 @@
-package com.eosa.admin.usersmanage;
+package com.eosa.admin.usersmanage.repository;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import com.eosa.admin.usersmanage.entity.GetUsersList;
 import com.eosa.web.users.Users;
 
 @Repository
-public interface UsersManageRepository extends JpaRepository<Users, Long> {
+public interface ClientRepository extends JpaRepository<Users, Long> {
 
     @Query(
         value="SELECT usersAccount, usersName, usersNick, " + 
@@ -28,13 +28,15 @@ public interface UsersManageRepository extends JpaRepository<Users, Long> {
     GetByUsersAccount getByUsersAccount(String usersAccount);    
 
     @Query(
-        value="SELECT usersIdx, usersAccount, usersRole, usersJoinDate FROM Users WHERE usersDelete=0 AND usersRole='CLIENT' OR usersRole='DETECTIVE' ORDER BY usersIdx DESC LIMIT ?1, ?2",
+        value="SELECT usersIdx, usersAccount, usersRole, usersJoinDate FROM Users " +
+        "WHERE usersDelete=0 AND usersRole='CLIENT' ORDER BY usersIdx DESC LIMIT ?1, ?2",
         nativeQuery=true
     )
     List<GetUsersList> findAllUsers(int currentPageStartPost, int postSize);
 
     @Query(
-        value="SELECT COUNT(*) FROM Users WHERE usersDelete=0 AND usersRole='CLIENT' OR usersRole='DETECTIVE'",
+        value="SELECT COUNT(*) FROM Users " + 
+        "WHERE usersDelete=0 AND usersRole='CLIENT'",
         nativeQuery=true
     )
     int findAllUsersCount();

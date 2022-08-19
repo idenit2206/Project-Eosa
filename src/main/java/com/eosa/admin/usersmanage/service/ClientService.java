@@ -1,4 +1,4 @@
-package com.eosa.admin.usersmanage;
+package com.eosa.admin.usersmanage.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.eosa.admin.usersmanage.entity.GetByUsersAccount;
 import com.eosa.admin.usersmanage.entity.GetUsersList;
+import com.eosa.admin.usersmanage.repository.ClientRepository;
 import com.eosa.admin.util.random.AddressTempData;
 import com.eosa.admin.util.random.RandomGenAccount;
 import com.eosa.admin.util.random.RandomGenKorName;
@@ -27,9 +28,9 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class UsersManageService implements UsersManageRepository {
+public class ClientService implements ClientRepository {
 
-    @Autowired private UsersManageRepository usersManageRepository;
+    @Autowired private ClientRepository usersManageRepository;
 
     @Autowired BCryptPasswordEncoder passwordEncoder;
 

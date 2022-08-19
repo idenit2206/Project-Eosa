@@ -1,10 +1,13 @@
 package com.eosa.web.users.controller;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.mail.internet.InternetAddress;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -45,12 +48,14 @@ import lombok.extern.slf4j.Slf4j;
 public class UsersController {
  
     private NullCheck nullCheck = new NullCheck();
+    private String myHostName = new InternetAddress().getAddress();
 
     @Autowired private UsersService usersService;
 
     @GetMapping("/sign/test01")
-    public String test01() {
-        return "/api/user/test01";
+    public String test01() throws UnknownHostException {
+        String hostAddress = InetAddress.getLocalHost().getHostAddress();
+        return hostAddress + "/api/user/test01";
     }
 
     /**
@@ -133,7 +138,27 @@ public class UsersController {
     ) {
         CustomResponseData result = new CustomResponseData();
         int dupliCheckResult = usersService.usersAccountDupliCheck(usersAccount);
+        if(dupliCheckResult != 1) {
+            dupliCheckResult = 0;
+        }
+        result.setStatusCode(HttpStatus.OK.value());
+        result.setResultItem(dupliCheckResult);
+        result.setResponseDateTime(LocalDateTime.now());
+        return result;
+    }
 
+    @GetMapping("/sign/usersEmailDupliCheck")
+    public CustomResponseData usersEmailDupliCheck(
+        @RequestParam("usersEmail") String usersEmail
+    ) {
+        CustomResponseData result = new CustomResponseData();
+        int dupliCheckResult = usersService.usersEmailDupliCheck(usersEmail);
+        if(dupliCheckResult != 1) {
+            dupliCheckResult = 0;
+        }
+        result.setStatusCode(HttpStatus.OK.value());
+        result.setResultItem(dupliCheckResult);
+        result.setResponseDateTime(LocalDateTime.now());
         return result;
     }
 
@@ -214,18 +239,17 @@ public class UsersController {
         String usersAccount = principalUserDetails.getUsername();
         String usersEmail = principalUserDetails.getUsers().getUsersEmail();
         String usersRole = principalUserDetails.getUsers().getUsersRole(); 
-        // log.debug("# sns:{}, usersEmail: {}, usersRole: {}",sns, usersEmail, usersRole); 
+        // log.debug("# sns:{}, usersEmail: {}, usersRole: {}",sns, usersEmail, usersRole);
 
         Users user = usersService.selectByUsersEmail(usersEmail);
         if(user != null) {    
             Cookie cookieAccount = new Cookie("usersAccount", usersAccount);
             cookieAccount.setPath("/");
             response.addCookie(cookieAccount);
-            response.sendRedirect("http://localhost:3000/");
-            
+            response.sendRedirect("http://localhost:3000/");            
         }
         else {
-            log.info("신규회원");
+            log.info("{}, {} 님은 신규회원 입니다. 회원가입 페이지로 이동합니다.", sns, usersAccount);
             redirectAttributes.addFlashAttribute("info","info");
             // Cookie cookieProvider = new Cookie("provider", sns);
             // cookieProvider.setPath("/");

@@ -111,7 +111,7 @@ public class AdminUserController {
 		int blockLast = blockFirst + BLOCK_COUNT - 1;
 		
 		if(allPostCount < blockLast) {
-			blockLast = allPostCount;
+			blockLast = 1;
 		}
 		
 		int previousBlock = blockFirst - BLOCK_COUNT ;

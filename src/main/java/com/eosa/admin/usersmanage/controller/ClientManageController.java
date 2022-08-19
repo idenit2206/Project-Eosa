@@ -1,4 +1,4 @@
-package com.eosa.admin.usersmanage;
+package com.eosa.admin.usersmanage.controller;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.eosa.admin.usersmanage.entity.GetByUsersAccount;
 import com.eosa.admin.usersmanage.entity.GetUsersList;
+import com.eosa.admin.usersmanage.service.ClientService;
 import com.eosa.admin.util.pagination.PageList;
 import com.eosa.admin.util.pagination.PostList;
 import com.eosa.web.users.Users;
@@ -26,9 +27,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 @RequestMapping(value="/admin/usersManage")
-public class UsersManageController {
+public class ClientManageController {
 
-    @Autowired private UsersManageService usersManageService;
+    @Autowired private ClientService usersManageService;
 
     final private int POST_COUNT = 10;
     final private int BLOCK_COUNT = 10;
@@ -55,8 +56,8 @@ public class UsersManageController {
      * @return
      */
     @Operation(summary = "회원 전체 목록 조회", description="모든 유저(CLIENT)의 명단을 출력합니다.")
-    @GetMapping("/usersList")
-    public String showClientUsersList(
+    @GetMapping("/clientList")
+    public String showClientList(
         @RequestParam(value="currentPage", defaultValue="1") int currentPage,
         Model model
     ) {       
@@ -79,7 +80,7 @@ public class UsersManageController {
         model.addAttribute("usersList", usersList);
         model.addAttribute("pagination", pagination);
 
-        return "admin/usersmanage/UsersList";
+        return "admin/usersmanage/client/ClientList";
     }
 
     /**
@@ -87,8 +88,8 @@ public class UsersManageController {
      * @return
      */
     @Operation(summary = "탈퇴회원 전체 목록 조회", description="모든 탈퇴회원(CLIENT)의 명단을 출력합니다.")
-    @GetMapping("/withdrawalUsersList")
-    public String showWithdrawalUsersList(
+    @GetMapping("/withdrawalClientList")
+    public String showWithdrawalClientList(
         @RequestParam(value="currentPage", defaultValue="1") int currentPage,
         Model model
     ) {       
@@ -107,14 +108,18 @@ public class UsersManageController {
 		pagination.put("nextBlock", pageList.getNextBlock());        
         
         model.addAttribute("currentPage", currentPage);
+        model.addAttribute("allPostCount", allPostCount);
         model.addAttribute("usersList", usersList);
         model.addAttribute("pagination", pagination);
 
-        return "admin/usersmanage/WithdrawalUsersList";
+        return "admin/usersmanage/client/WithdrawalClientList";
     }
 
-    @GetMapping("/findByUsersAccount")
-    public String findByUsersAccount(
+    /**
+     * 유저 계정기준의 사용자 검색 
+    */
+    @GetMapping("/findByClientAccount")
+    public String findByClientAccount(
         @RequestParam("usersAccount") String usersAccount,
         @RequestParam(value="currentPage", defaultValue="1") int currentPage,
         Model model
@@ -161,7 +166,7 @@ public class UsersManageController {
             model.addAttribute("pagination", pagination);
         }
            
-        return "admin/usersmanage/FindByUsersAccount";
+        return "admin/usersmanage/FindByClientAccount";
     }
 
     /**

@@ -3,7 +3,7 @@
 <head>
     <link rel="stylesheet" href="/assets/css/index.css" />
     <link rel="stylesheet" href="/assets/css/usersmanage/UsersManage.css" />
-<title>회원 관리 페이지</title>
+<title>탐정 회원 관리 페이지</title>
 </head>
 <head th:replace="admin/fragments/html-head.html :: html-head" />
 <body>
@@ -14,14 +14,14 @@
             <nav th:replace="admin/fragments/html-sidebar.html :: html-sidebar" />
         </div>
         <div class="col">
-        <div class="container">
-            <h3>회원 관리</h3>
+        <div class="container text-center">
+            <h3>탐정 관리</h3>
             <div class="row">
                 <div class="col align-self-start">
                 </div>
                 <div class="col align-self-center">
-                    <button class="btn btn-light active">전체</button>
-                    <button class="btn btn-light" id="withdrawalBtn">탈퇴</button>
+                    <button class="btn btn-light" id="allListBtn">전체</button>
+                    <button class="btn btn-light active" id="withdrawalBtn" >탈퇴</button>
                 </div>
                 <div class="col align-self-end">
                 </div>
@@ -31,9 +31,9 @@
                     <span th:if="${allPostCount} != null">전체 [[${allPostCount}]]</span>
                 </div>
                 <div class="col">
-                    <button class="btn btn-light">탐정</button>
-                    <button class="btn btn-light active">의뢰인</button>
-                    <button class="btn btn-light">비회원</button>
+                    <button id="detectiveList" class="btn btn-light active">탐정</button>
+                    <button id="clientList" class="btn btn-light">의뢰인</button>
+                    <button id="tempList" class="btn btn-light">비회원</button>
                 </div>
                 <div class="col-4">
                     <div class="input-group">            
@@ -44,8 +44,7 @@
             </div>
             <form method="GET" action="/admin/usersManage/findByUsersAccount">            
             </form>
-            <br/>
-                      
+            <br/>          
             <div class="tableDiv">
                 <table class="table">
                     <thead>
@@ -110,9 +109,9 @@
 </div>
 </body>
 <script>
-const WITHDRAWAL_BTN = document.querySelector("#withdrawalBtn");
-WITHDRAWAL_BTN.addEventListener("click", () => {
-    window.location.href="/admin/usersManage/withdrawalUsersList";
+const ALLLIST_BTN = document.querySelector("#allListBtn");
+ALLLIST_BTN.addEventListener("click", () => {
+    window.location.href="/admin/usersManage/detectiveList";
 })
 
 </script>
