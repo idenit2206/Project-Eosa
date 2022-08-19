@@ -69,7 +69,7 @@ public class UsersController {
     ) throws JSONException, ParseException {
         String requester = req.getLocalAddr();       
         JsonObject element = JsonParser.parseString(param).getAsJsonObject();
-        log.info("{}", element.toString());       
+        // log.info("{}", element.toString());       
         log.info("[REQUEST] doSignUp from {}", requester);
         Users paramUsers = new Users();
             paramUsers.setUsersAccount(element.get("usersAccount").getAsString());
