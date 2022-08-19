@@ -16,12 +16,12 @@
         <div class="col-10">
             <div class="userInfo-main w-100 m-auto">
                 <h3>탐정 상세정보</h3>
-                <form method="POST" th:action="@{/admin/detectiveManage/detectiveInfo.up}" class="form needs-valdiation">
+                <form method="POST" th:action="@{#}" class="form needs-valdiation">
                 <div class="row">
                     <div class="col">
                         <label class="form-label" for="companysIdx">탐정넘버</label>
                         <div class="input-group has-validation">
-                            <input type="text" class="form-control" id="companysIdx" name="companysIdx" placeholder="탐정넘버" th:value="${Companys.companysIdx}" readonly>
+                            <input type="text" class="form-control" id="companysIdx" name="companysIdx" placeholder="탐정넘버" readonly>
                         </div>
                     </div>
                     <div class="col">
@@ -35,13 +35,13 @@
                     <div class="col">
                         <label class="form-label" for="usersName">대표명</label>
                         <div class="input-group has-validation">
-                            <input type="text" class="form-control" id="usersName" name="usersName" placeholder="대표명" th:value="${Users.usersName}" readonly>
+                            <input type="text" class="form-control" id="usersName" name="usersName" placeholder="대표명"  readonly>
                         </div>
                     </div>                    
                     <div class="col">
                         <label class="form-label" for="companysName">업체명</label>
                         <div class="input-group has-validation">
-                            <input type="text" class="form-control" id="companysName" name="companysName" placeholder="회사명" th:value="${Companys.companysName}" readonly>
+                            <input type="text" class="form-control" id="companysName" name="companysName" placeholder="회사명" readonly>
                         </div>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
                     <div class="col">
                         <label class="form-label" for="usersPhone">연락처</label>
                         <div class="input-group has-validation">
-                            <input type="text" class="form-control" id="usersPhone" name="usersPhone" th:value="${Users.usersPhone}" readonly/>
+                            <input type="text" class="form-control" id="usersPhone" name="usersPhone"  readonly/>
                         </div>
                     </div>
                     <div class="col">
@@ -63,13 +63,13 @@
                 <div class="row">
                     <div class="col">
                         <label class="form-label" for="companysComment">업체 소개</label>                       
-                        <input type="text" class="form-control" id="companysComment" name="companysComponent" th:value="${Companys.companysComment}">
+                        <input type="text" class="form-control" id="companysComment" name="companysComponent">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
                         <label class="form-label" for="companysSpec">업체 상세 소개</label>                       
-                        <textarea class="form-control" id="companysSpec" name="companysSpec">[[${Companys.companysSpec}]]</textarea>
+                        <textarea class="form-control" id="companysSpec" name="companysSpec"></textarea>
                     </div>
                 </div>                    
                 <br/>

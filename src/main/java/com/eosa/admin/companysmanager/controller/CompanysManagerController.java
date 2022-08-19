@@ -1,4 +1,4 @@
-package com.eosa.admin.companysmanager;
+package com.eosa.admin.companysmanager.controller;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -18,9 +18,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.eosa.admin.companysmanager.entity.CompanysRegister;
 import com.eosa.admin.companysmanager.entity.GetCompanysList;
-import com.eosa.web.companys.Companys;
+import com.eosa.admin.companysmanager.service.CompanysManagerService;
+import com.eosa.web.companys.entity.Companys;
 import com.eosa.web.companys.entity.CompanysActiveRegion;
 import com.eosa.web.companys.entity.CompanysCategory;
+import com.eosa.web.companysmember.CompanysMember;
+import com.eosa.web.companysmember.CompanysMemberService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CompanysManagerController {
 
     @Autowired private CompanysManagerService companysManagerService;
+	@Autowired private CompanysMemberService companysMemberService;
     
     final int POST_COUNT = 10;
     final int BLOCK_COUNT = 10;
@@ -150,7 +154,27 @@ public class CompanysManagerController {
 			companysManagerService.insertCompanysActiveRegion(companysIdx, activeRegion.get(i));
 		}
 
+		CompanysMember companysMember = new CompanysMember();
+		companysMember.setUsersIdx(companysRegister.getCompanysCeoIdx());
+		companysMember.setCompanysIdx(companysIdx);
+		companysMember.setRegistDate(LocalDateTime.now());
+		companysMember.setStatusValue(1);
+		companysMemberService.save(companysMember);
+
 		return "redirect:/admin/companysManager/companysList";
+	}
+
+	@GetMapping("/companysInfo")
+	public String viewCompanysInfo(
+		@RequestParam(value="companysIdx") String companysIdx,
+	Model model
+	) {
+		log.info("CompanysIdx: {} 의 업체 정보를 불러옵니다.", companysIdx);
+		Long longCompanysIdx = Long.parseLong(companysIdx);
+		Companys company = companysManagerService.findByCompanysIdx(longCompanysIdx);
+		
+		model.addAttribute("Company", company);
+		return "admin/companysmanage/CompanysInfo";
 	}
 
 }

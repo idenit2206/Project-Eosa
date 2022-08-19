@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.core.GrantedAuthority;
 
-import com.eosa.web.companys.Companys;
+import com.eosa.web.companys.entity.Companys;
 
 import lombok.Builder;
 import lombok.Data;

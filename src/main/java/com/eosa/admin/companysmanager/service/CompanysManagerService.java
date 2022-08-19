@@ -1,4 +1,4 @@
-package com.eosa.admin.companysmanager;
+package com.eosa.admin.companysmanager.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +13,8 @@ import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuer
 import org.springframework.stereotype.Service;
 
 import com.eosa.admin.companysmanager.entity.GetCompanysList;
-import com.eosa.web.companys.Companys;
+import com.eosa.admin.companysmanager.repository.CompanysManagerRepository;
+import com.eosa.web.companys.entity.Companys;
 import com.eosa.web.companys.entity.CompanysCategory;
 
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +33,7 @@ public class CompanysManagerService implements CompanysManagerRepository {
     @Override
     public Long findCompanysIdxByCeoIdx(Long companysCeoIdx) {
         return companysManageRepository.findCompanysIdxByCeoIdx(companysCeoIdx);
-    } 
+    }
 
     @Override
     public void insertCompanysCategory(Long companysIdx, String string) {
@@ -61,6 +62,11 @@ public class CompanysManagerService implements CompanysManagerRepository {
 
     public List<Companys> findAllCompany(int currentStartPost, int postCount) {
         return companysManageRepository.findAllCompany(currentStartPost, postCount);
+    }
+
+    @Override
+    public Companys findByCompanysIdx(Long companysIdx) {
+        return companysManageRepository.findByCompanysIdx(companysIdx);
     }
 
     @Override

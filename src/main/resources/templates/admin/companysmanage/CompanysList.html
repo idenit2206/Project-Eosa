@@ -14,11 +14,28 @@
             <nav th:replace="admin/fragments/html-sidebar.html :: html-sidebar" />
         </div>
         <div class="col-10">
-            <h3>회원 관리</h3>
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="회원 아이디" aria-label="회원 아이디" aria-describedby="searchBtn">
-                <button class="btn btn-outline-secondary" type="button" id="searchBtn">검색</button>
+            <h3>탐정 관리</h3>
+            <div class="row">
+                <div class="col-5">&nbsp;</div>            
+                <div class="col">
+                    <select class="form-select">                       
+                        <option value="미승인">미승인</option>
+                        <option value="승인" selected>승인</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <select class="form-select">
+                        <option value="" selected disabled>선택</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="검색어" aria-label="검색어" aria-describedby="searchBtn">
+                        <button class="btn btn-outline-secondary" type="button" id="searchBtn">검색</button>
+                    </div>
+                </div>
             </div>
+            
             <br/>            
             <div class="tableDiv">
                 <table class="table">
@@ -40,7 +57,7 @@
                         <tr th:if="${companysList} != null" th:each="companysList : ${companysList}">
                             <td>[[${companysList.companysIdx}]]</td>
                             <td>
-                                <a th:href="@{#}">[[${companysList.companysName}]]</a>
+                                <a th:href="@{/admin/companysManager/companysInfo(companysIdx=${companysList.companysIdx})}">[[${companysList.companysName}]]</a>
                             </td>
                             <td>[[${companysList.usersName}]]</td>
                             <td>[[${companysList.companysPhone}]]</td>
@@ -55,10 +72,18 @@
                 </table>
             </div>
             <div class="row">
+                <div class="col text-end">
+                    <button class="btn btn-outline-secondary" id="csvBtn">CSV 다운</button>
+                </div>
                 <div class="col">
-                    <button class="btn btn-dark">
-                        <a class="text-white" href="companysRegister">등록</a>
-                    </button>
+                    <button class="btn btn-outline-secondary" id="selectedDelete">삭제</button>
+                </div>
+                <div class="col-6">&nbsp;</div>
+                <div class="col text-end">
+                    <button class="btn btn-outline-secondary" id="addCompany">등록</button>
+                </div>
+                <div class="col">
+                    <button class="btn btn-outline-secondary" id="updateCategory">분야수정</button>
                 </div>
             </div>
             <!-- <div class="">
@@ -86,4 +111,10 @@
     </div>
 </div>
 </body>
+<script>
+const ADD_COMPANY_BTN = document.querySelector("#addCompany");
+ADD_COMPANY_BTN.addEventListener("click", () => {
+    window.location.href="/admin/companysManager/companysRegister";
+})
+</script>
 </html>

@@ -1,4 +1,4 @@
-package com.eosa.admin.companysmanager;
+package com.eosa.admin.companysmanager.repository;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.eosa.admin.companysmanager.entity.GetCompanysList;
-import com.eosa.web.companys.Companys;
+import com.eosa.web.companys.entity.Companys;
 
 @Repository
 public interface CompanysManagerRepository extends JpaRepository<Companys, Long> {
@@ -57,6 +57,11 @@ public interface CompanysManagerRepository extends JpaRepository<Companys, Long>
     )
     List<GetCompanysList> viewFindAll();
 
-    
+    @Query(
+        value="SELECT * FROM Companys " +
+        "WHERE companysIdx = ?1",
+        nativeQuery=true
+    )
+    Companys findByCompanysIdx(Long companysIdx);
 
 }

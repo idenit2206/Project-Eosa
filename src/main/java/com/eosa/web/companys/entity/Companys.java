@@ -1,9 +1,10 @@
-package com.eosa.web.companys;
+package com.eosa.web.companys.entity;
 
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -79,7 +80,8 @@ public class Companys {
     @ColumnDefault("0")
     private boolean companysDelete;
 
-    @OneToOne(mappedBy = "companys")
-    private Users2 users;
+    // @ManyToOne(targetEntity=Users2.class, fetch=FetchType.LAZY)
+    // @JoinColumn(name="usersIdx")
+    // private Users2 users;
 
 }
