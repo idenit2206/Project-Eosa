@@ -55,7 +55,7 @@ public class CustomSecurityConfig {
             .cors().configurationSource(customConfigurationSource())
         .and()
             .csrf().disable()
-            .antMatcher("/api/**")
+            // .antMatcher("/api/**")
             .authorizeRequests()
                 .antMatchers(ANYONE_PERMIT).permitAll()
                 // .anyRequest().hasAnyAuthority("CLIENT", "DETECTIVE")

@@ -34,7 +34,7 @@ public class CustomPrincipalOAuth2UserService extends DefaultOAuth2UserService {
         CustomPrincipalDetails result = null;
         Users user = null;
 
-        log.debug("CustomPrincipalOAuth2UserService.class [OAuth2User] -> {}", oAuth2User.toString());
+        // log.debug("CustomPrincipalOAuth2UserService.class [OAuth2User] -> {}", oAuth2User.toString());
 
         // 플랫폼 명칭 ex) google, kakao, ...
         String provider = userRequest.getClientRegistration().getRegistrationId();

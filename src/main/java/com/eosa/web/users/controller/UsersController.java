@@ -68,35 +68,35 @@ public class UsersController {
         @RequestBody String param
     ) throws JSONException, ParseException {
         String requester = req.getLocalAddr();       
-        JsonObject element = JsonParser.parseString(param).getAsJsonObject();
-        // log.info("{}", element.toString());       
+        JsonObject jsonObject = (JsonObject) JsonParser.parseString(param).getAsJsonObject().get("info");
+        // log.info("{}", jsonObject.toString());
         log.info("[REQUEST] doSignUp from {}", requester);
         Users paramUsers = new Users();
-            paramUsers.setUsersAccount(element.get("usersAccount").getAsString());
-            paramUsers.setUsersPass(element.get("usersPass").getAsString());
-            paramUsers.setUsersName(element.get("usersName").getAsString());
-            paramUsers.setUsersNick(element.get("usersNick").getAsString());
-            paramUsers.setUsersPhone(element.get("usersPhone").getAsString());
-            paramUsers.setUsersEmail(element.get("usersEmail").getAsString());
-            paramUsers.setUsersRole(element.get("usersRole").getAsString().toUpperCase());
-            String prevUsersAge = element.get("usersAge").getAsString();
+            paramUsers.setUsersAccount(jsonObject.get("usersAccount").getAsString());
+            paramUsers.setUsersPass(jsonObject.get("usersPass").getAsString());
+            paramUsers.setUsersName(jsonObject.get("usersName").getAsString());
+            paramUsers.setUsersNick(jsonObject.get("usersNick").getAsString());
+            paramUsers.setUsersPhone(jsonObject.get("usersPhone").getAsString());
+            paramUsers.setUsersEmail(jsonObject.get("usersEmail").getAsString());
+            paramUsers.setUsersRole(jsonObject.get("usersRole").getAsString().toUpperCase());
+            String prevUsersAge = jsonObject.get("usersAge").getAsString();
             int usersAge = Integer.parseInt(prevUsersAge.substring(0, 2));
             paramUsers.setUsersAge(usersAge);
-            paramUsers.setUsersRegion1(element.get("usersRegion1").getAsString());
-            paramUsers.setUsersRegion2(element.get("usersRegion2").getAsString());
-            if(element.get("usersGender").getAsString().matches("남자")) {
+            paramUsers.setUsersRegion1(jsonObject.get("usersRegion1").getAsString());
+            paramUsers.setUsersRegion2(jsonObject.get("usersRegion2").getAsString());
+            if(jsonObject.get("usersGender").getAsString().equals("남자")) {
                 paramUsers.setUsersGender(0);
             } else {
                 paramUsers.setUsersGender(1);
             }
             // paramUsers.setUsersGender(element.get("usersGender").getAsInt());
-            if(element.get("usersNotice").getAsString().matches("true")) {
+            if(jsonObject.get("usersNotice").getAsString().equals("true")) {
                 paramUsers.setUsersNotice(1);
             } else {
                 paramUsers.setUsersNotice(0);
             }
             // paramUsers.setUsersNotice(element.get("usersNotice").getAsInt());
-        // log.debug("paramUsers: {}", paramUsers.toString());       
+        // log.debug("paramUsers: {}", paramUsers.toString());
 
         CustomResponseData result = new CustomResponseData();
         
@@ -226,7 +226,10 @@ public class UsersController {
         }
         else {
             log.info("신규회원");
-            redirectAttributes.addFlashAttribute("info","info");    
+            redirectAttributes.addFlashAttribute("info","info");
+            // Cookie cookieProvider = new Cookie("provider", sns);
+            // cookieProvider.setPath("/");
+            // response.addCookie(cookieProvider);
             response.sendRedirect("http://localhost:3000/user/register");
             response.flushBuffer();
         }
