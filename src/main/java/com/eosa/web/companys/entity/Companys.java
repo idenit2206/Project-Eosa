@@ -1,6 +1,8 @@
 package com.eosa.web.companys.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -83,5 +86,8 @@ public class Companys {
     // @ManyToOne(targetEntity=Users2.class, fetch=FetchType.LAZY)
     // @JoinColumn(name="usersIdx")
     // private Users2 users;
+
+    @OneToMany(mappedBy="companys")
+    private List<CompanysCategory> companysCategory = new ArrayList<>();
 
 }

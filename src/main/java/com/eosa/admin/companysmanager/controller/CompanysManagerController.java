@@ -35,49 +35,7 @@ public class CompanysManagerController {
 
     @Autowired private CompanysManagerService companysManagerService;
 	@Autowired private CompanysMemberService companysMemberService;
-    
-    final int POST_COUNT = 10;
-    final int BLOCK_COUNT = 10;
-
-    public List<Companys> postList(int currentPage) {
-		PageRequest pageRequest = PageRequest.of(currentPage-1, POST_COUNT, Sort.by(Sort.Direction.DESC, "companysIdx"));
-		// Page<Users> list =  usersManageService.findAll(pageRequest);
-		// List<Users> answer = list.getContent();
-        int currentStartPost = (currentPage - 1) * BLOCK_COUNT; 
-
-        List<Companys> answer = companysManagerService.findAllCompany(currentStartPost, POST_COUNT);
-		
-		return answer;
-	}
-	public Map<String, Integer> pageList(int currentPage) {
-		Map<String, Integer> result = new HashMap<>();
-		PageRequest pageRequest = PageRequest.of(currentPage - 1, POST_COUNT, Sort.by(Sort.Direction.DESC, "companysIdx"));
-		Page<Companys> list = companysManagerService.findAll(pageRequest);
-		int blockCount = list.getSize();
-
-		if(blockCount == 0) { blockCount = 0; }
-		
-		int blockFirst = ((currentPage - 1) / BLOCK_COUNT) * BLOCK_COUNT + 1;
-		int blockLast = blockFirst + BLOCK_COUNT - 1;
-		
-		if(blockCount < blockLast) {
-			blockLast = blockCount;
-		}
-		
-		int previousBlock = blockFirst - BLOCK_COUNT ;
-		int nextBlock = blockFirst + BLOCK_COUNT ;
-		
-		result.put("currentpage", currentPage);
-		result.put("blockCount", BLOCK_COUNT);
-		result.put("fistBlock", 1); // 모든 페이지 중 가장 첫번째 페이지
-		result.put("lastBlock", blockCount); // 모든 페이지 중 가장 마지막 페이지
-		result.put("blockFirst", blockFirst); // 페이지네이션 목록에서 가장 첫번째 페이지
-		result.put("blockLast", blockLast); // 페이지네이션 목록에서 가장 마지막 페이지
-		result.put("previousBlock", previousBlock); // 이전 10개의 페이지네이션 블록에서 가장 첫번째 페이지
-		result.put("nextBlock", nextBlock); // 이후 10개의 페이지네이션 블록에서 가장 첫번째 페이지
-		
-		return result;
-	}
+   
 
     /**
      * 모든 업체명단을 출력합니다.
@@ -92,7 +50,8 @@ public class CompanysManagerController {
         // log.info("showUsersList currentPage: {}", currentPage);
 		// log.info(companysList.toString());        
 
-		List<GetCompanysList> companysList = companysManagerService.viewFindAll();
+		// List<GetCompanysList> companysList = companysManagerService.viewFindAll();
+		List<Companys> companysList = companysManagerService.viewFindAll();
 		// log.info(companysList.toString());		
         // Map<String, Integer> pagination = pageList(currentPage);
 		
@@ -104,7 +63,7 @@ public class CompanysManagerController {
     }
 
 	/**
-	 * [관리자 페이지] 의뢰수행이 가능한 탐정등록 view 출력
+	 * [관리자 페이지] 의뢰수행이 가능한 탐정 등록 FORM view 출력
 	 * @return
 	 */
 	@GetMapping("/companysRegister")

@@ -59,13 +59,16 @@
                             <td>
                                 <a th:href="@{/admin/companysManager/companysInfo(companysIdx=${companysList.companysIdx})}">[[${companysList.companysName}]]</a>
                             </td>
-                            <td>[[${companysList.usersName}]]</td>
+                            <td>[[${companysList.companysCeoName}]]</td>
                             <td>[[${companysList.companysPhone}]]</td>
                             <td>분야</td>
                             <td>지역</td>
-                            <td>[[${companysList.companysEnabled}]]</td>
-                            <td>[[${companysList.companysPremium}]]</td>
-                            <td>[[${companysList.companysLocalPremium}]]</td>
+                            <td th:if="${companysList.companysEnabled} == true">승인</td>
+                            <td th:unless="${companysList.companysEnabled} == true">미승인</td>
+                            <td th:if="${companysList.companysPremium} == true">적용</td>
+                            <td th:unless="${companysList.companysPremium} == true">미적용</td>
+                            <td th:if="${companysList.companysLocalPremium} == true">적용</td>
+                            <td th:unless="${companysList.companysLocalPremium} == true">미적용</td>
                             <td>[[${companysList.companysRegistDate}]]</td>
                           </tr>
                     </tbody>

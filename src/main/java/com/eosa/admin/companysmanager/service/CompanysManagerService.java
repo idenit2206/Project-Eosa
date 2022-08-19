@@ -46,7 +46,7 @@ public class CompanysManagerService implements CompanysManagerRepository {
     }
 
     @Override
-    public List<GetCompanysList> viewFindAll() {
+    public List<Companys> viewFindAll() {
         return companysManageRepository.viewFindAll();
     }
 

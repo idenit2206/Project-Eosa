@@ -8,7 +8,7 @@ public interface GetCompanysList {
     String getCompanysName();
     String getUsersName();
     String getCompanysPhone();
-    // String getCompanysCategory();
+    String getCompanysCategory();
     String getComapnysRegion1();
     int getCompanysEnabled();
     int getCompanysPremium();
