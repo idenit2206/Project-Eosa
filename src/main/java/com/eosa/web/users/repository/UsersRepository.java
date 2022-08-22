@@ -9,7 +9,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.eosa.web.users.Users;
-import com.eosa.web.users.entity.DuplicateAccountAndEmail;
 import com.eosa.web.users.entity.FindByUsersAccountEntity;
 import com.eosa.web.users.entity.SelectByUsersAccountEntity;
 
@@ -69,7 +68,7 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
      * @return
      */
     @Query(
-        value= "SELECT usersIdx, usersAccount, usersRole " +
+        value= "SELECT usersIdx, usersAccount, usersName, usersRole " +
         "FROM Users WHERE usersAccount = ?1",
         nativeQuery=true
     )

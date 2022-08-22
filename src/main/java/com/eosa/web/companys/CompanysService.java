@@ -14,6 +14,7 @@ import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuer
 import org.springframework.stereotype.Service;
 
 import com.eosa.web.companys.entity.Companys;
+import com.eosa.web.companys.entity.SelectAllCompanysList;
 
 @Service
 public class CompanysService implements CompanysRepository {
@@ -28,8 +29,19 @@ public class CompanysService implements CompanysRepository {
         return companysRepository.save(entity);
     }
 
+    @Override
     public List<String> selectAllCategory() {
         return companysRepository.selectAllCategory();
+    }
+
+    // @Override
+    // public int insertCompanys(Companys entity) {
+    //     return companysRepository.insertCompanys(entity);
+    // }
+
+    @Override
+    public List<SelectAllCompanysList> selectAllCompanysList() {
+        return companysRepository.selectAllCompanysList();
     }
 
     @Override

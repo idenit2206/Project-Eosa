@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import com.eosa.security.CustomPrincipalDetails;
 import com.eosa.web.users.Users;
-import com.eosa.web.users.entity.DuplicateAccountAndEmail;
 import com.eosa.web.users.entity.FindByUsersAccountEntity;
 import com.eosa.web.users.entity.SelectByUsersAccountEntity;
 import com.eosa.web.users.repository.UsersRepository;
