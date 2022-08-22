@@ -1,15 +1,17 @@
-package com.eosa.admin.companysmanager.entity;
+package com.eosa.admin.companysmanage.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface GetCompanysList {
     
     Long getCompanysIdx();
     String getCompanysName();
-    String getUsersName();
+    Long geCompanysCeoIdx();
+    String getCompanysCeoName();
     String getCompanysPhone();
-    String getCompanysCategory();
-    String getComapnysRegion1();
+    List<String> getCompanysCategory();
+    String getCompanysRegion1();
     int getCompanysEnabled();
     int getCompanysPremium();
     int getCompanysLocalPremium();

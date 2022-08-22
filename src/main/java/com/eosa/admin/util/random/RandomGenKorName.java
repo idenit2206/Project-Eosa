@@ -25,9 +25,9 @@ public class RandomGenKorName {
     public String RandomGenKorName(int nameLength) {
         String result = "";
         
-        result += LastName[(int) Math.round(Math.random() * LastName.length)];
+        result += LastName[(int) Math.floor(Math.random() * LastName.length)];
         for(int i = 0; i < nameLength - 1; i++) {
-            int temp = (int) Math.round(Math.random() * LastName.length);
+            int temp = (int) Math.floor(Math.random() * LastName.length);
             result += FirstName[temp];
         }
 

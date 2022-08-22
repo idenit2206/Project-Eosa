@@ -1,4 +1,4 @@
-package com.eosa.admin.companysmanager.entity;
+package com.eosa.admin.companysmanage.entity;
 
 import java.util.List;
 

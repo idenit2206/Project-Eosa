@@ -37,42 +37,6 @@ public class ClientService implements ClientRepository {
     // Users 가데이터 생성에 사용
     @Override
     public <S extends Users> S save(S entity) {
-        RandomGenAccount rgu = new RandomGenAccount();
-        String usersAccount = rgu.generateAccount();
-        String usersPass = passwordEncoder.encode(usersAccount);
-
-        RandomGenKorName rgkn = new RandomGenKorName();
-        String usersName = rgkn.RandomGenKorName(3);
-
-        RandomGenMobileNumber rgmn = new RandomGenMobileNumber();
-        String usersPhone = rgmn.RandomGenMobileNumber();
-
-        String usersEmail = usersAccount + "@email.com";
-
-        String[] usersRole = {"CLIENT", "DETECTIVE"};
-
-        AddressTempData atd = new AddressTempData();
-        int RegionTemp = (int) Math.floor(Math.random() * atd.getREGIONAL_LOCAL_NAME().length);
-        String usersRegion1 = atd.getREGIONAL_LOCAL_NAME()[RegionTemp];
-        String usersRegion2 = atd.getREGION2()[RegionTemp][(int) Math.floor(Math.random() * atd.getREGION2()[RegionTemp].length)];
-        LocalDateTime usersJoinDate = LocalDateTime.now();
-        int usersNotice = (int) Math.floor(Math.random() * 1);
-
-        entity.setUsersAccount(usersAccount);
-        entity.setUsersPass(usersPass);
-        entity.setUsersName(usersName);
-        entity.setUsersNick(usersAccount.substring(0, 5));
-        entity.setUsersPhone(usersPhone);
-        entity.setUsersEmail(usersEmail);
-        // entity.setUsersRole(usersRole[(int) Math.floor(Math.random() * 2)]);
-        entity.setUsersRole(usersRole[0]);
-        entity.setUsersAge((int) Math.floor(Math.random() * 9) * 10);
-        entity.setUsersRegion1(usersRegion1);
-        entity.setUsersRegion2(usersRegion2);
-        entity.setUsersJoinDate(usersJoinDate);
-        entity.setUsersNotice(usersNotice);
-        entity.setUsersEnabled(1);
-
         return usersManageRepository.save(entity);
     }
 
