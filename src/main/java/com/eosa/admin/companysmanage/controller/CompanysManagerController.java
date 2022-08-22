@@ -1,12 +1,9 @@
-package com.eosa.admin.companysmanager.controller;
+package com.eosa.admin.companysmanage.controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,9 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.eosa.admin.companysmanager.entity.CompanysRegister;
-import com.eosa.admin.companysmanager.entity.GetCompanysList;
-import com.eosa.admin.companysmanager.service.CompanysManagerService;
+import com.eosa.admin.companysmanage.entity.CompanysRegister;
+import com.eosa.admin.companysmanage.entity.GetCompanysList;
+import com.eosa.admin.companysmanage.service.CompanysManagerService;
 import com.eosa.web.companys.entity.Companys;
 import com.eosa.web.companys.entity.CompanysActiveRegion;
 import com.eosa.web.companys.entity.CompanysCategory;
@@ -24,6 +21,7 @@ import com.eosa.web.companysmember.CompanysMember;
 import com.eosa.web.companysmember.CompanysMemberService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -34,6 +32,54 @@ public class CompanysManagerController {
     @Autowired private CompanysManagerService companysManagerService;
 	@Autowired private CompanysMemberService companysMemberService;
    
+	// @GetMapping(value="/tempAddCompanys")
+	// @RequestBody
+	// public String tempAddCompanys() {
+	// 	int size = 0;
+	// 	for(int i = 0; i < size; i++) {
+	// 		Companys companys = new Companys();
+	// 		companys.setCompanysName(companysRegister.getCompanysName());
+	// 		companys.setCompanysCeoIdx(companysRegister.getCompanysCeoIdx());
+	// 		companys.setCompanysCeoName(companysRegister.getCompanysCeoName());
+	// 		companys.setCompanysPhone(companysRegister.getCompanysPhone());
+	// 		companys.setCompanysComment(companysRegister.getCompanysComment());
+	// 		companys.setCompanysSpec(companysRegister.getCompanysSpec());
+	// 		companys.setCompanysRegion1(companysRegister.getCompanysRegion1());
+	// 		companys.setCompanysRegion2(companysRegister.getCompanysRegion2());
+	// 		companys.setCompanysRegion3(companysRegister.getCompanysRegion3());
+	// 		companys.setCompanysRegistDate(LocalDateTime.now());
+		
+	// 		CompanysCategory companysCategory = new CompanysCategory();
+	// 		List<String> category = companysRegister.getCompanysCategory();
+
+	// 		CompanysActiveRegion companysActiveRegion = new CompanysActiveRegion();
+	// 		List<String> activeRegion = companysRegister.getCompanysActiveRegion();
+			
+	// 		log.info("{}", companys.toString());
+	// 		log.info("{}", category.toString());
+	// 		log.info("{}", activeRegion.toString());
+
+	// 		//SQL 부분
+	// 		companysManagerService.save(companys);
+	// 		Long companysIdx = companysManagerService.findCompanysIdxByCeoIdx(companysRegister.getCompanysCeoIdx());
+	// 		log.info("new companysIdx: {}", companysIdx);
+
+	// 		for(int i = 0; i < category.size(); i++) {
+	// 			companysManagerService.insertCompanysCategory(companysIdx, category.get(i));
+	// 		}
+	// 		for(int i = 0; i < activeRegion.size(); i++) {
+	// 			companysManagerService.insertCompanysActiveRegion(companysIdx, activeRegion.get(i));
+	// 		}
+
+	// 		CompanysMember companysMember = new CompanysMember();
+	// 		companysMember.setUsersIdx(companysRegister.getCompanysCeoIdx());
+	// 		companysMember.setCompanysIdx(companysIdx);
+	// 		companysMember.setRegistDate(LocalDateTime.now());
+	// 		companysMember.setStatusValue(1);
+	// 		companysMemberService.save(companysMember);
+	// 		}
+	// 	return "임시 업체데이터 추가 완료";
+	// } 
 
     /**
      * 모든 업체명단을 출력합니다.
@@ -49,8 +95,7 @@ public class CompanysManagerController {
 		// log.info(companysList.toString());        
 
 		// List<GetCompanysList> companysList = companysManagerService.viewFindAll();
-		List<Companys> companysList = companysManagerService.viewFindAll();
-		// log.info(companysList.toString());		
+		List<GetCompanysList> companysList = companysManagerService.viewFindAll();	
         // Map<String, Integer> pagination = pageList(currentPage);
 		
         model.addAttribute("currentPage", currentPage);
@@ -61,7 +106,7 @@ public class CompanysManagerController {
     }
 
 	/**
-	 * [관리자 페이지] 의뢰수행이 가능한 탐정 등록 FORM view 출력
+	 * [관리자 페이지] 의뢰수행이 가능한 탐정 등록FORM view 출력
 	 * @return
 	 */
 	@GetMapping("/companysRegister")

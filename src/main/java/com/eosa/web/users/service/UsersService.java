@@ -55,15 +55,22 @@ public class UsersService implements UsersRepository {
                
         return result;
     }
+
+    // @Override
+    // public DuplicateAccountAndEmail dupliCheck(String usersAccount, String usersEmail) {
+    //     return usersRepository.dupliCheck(usersAccount, usersEmail);
+    // }
     
     @Override
-    public int usersAccountDupliCheck(String usersAccount) {
-        return usersRepository.usersAccountDupliCheck(usersAccount);
+    public Users usersAccountDupliCheck(String usersAccount) {
+        Users result = usersRepository.usersAccountDupliCheck(usersAccount);
+        return result;
     }
 
     @Override
-    public int usersEmailDupliCheck(String usersEmail) {
-        return usersRepository.usersEmailDupliCheck(usersEmail);
+    public Users usersEmailDupliCheck(String usersEmail) {
+        Users result = usersRepository.usersEmailDupliCheck(usersEmail);       
+        return result;
     }
 
     /**

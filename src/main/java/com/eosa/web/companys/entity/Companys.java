@@ -65,6 +65,9 @@ public class Companys {
     @Column(nullable=true)
     private String companysProfileImage;
 
+    @Column private String companysBankName;
+    @Column private String companysBankNumber;
+
     @Column(nullable=false)
     @ColumnDefault("0")
     private boolean companysPremium;

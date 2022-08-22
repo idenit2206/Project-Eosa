@@ -131,18 +131,32 @@ public class UsersController {
 
         return result;
     }
+    // @GetMapping("/sign/dupliCheck")
+    // public CustomResponseData signUpDupliCheck(
+    //     @RequestParam("usersAccount") String usersAccount,
+    //     @RequestParam("usersEmail") String usersEmail
+    // ) {
+    //     CustomResponseData result = new CustomResponseData();
+
+    //     result.setStatusCode(HttpStatus.OK.value());
+    //     result.setResultItem(null);
+    //     result.setResponseDateTime(LocalDateTime.now());
+    //     return result;
+    // }
 
     @GetMapping("/sign/usersAccountDupliCheck")
     public CustomResponseData usersAccountDupliCheck(
         @RequestParam("usersAccount") String usersAccount
     ) {
         CustomResponseData result = new CustomResponseData();
-        int dupliCheckResult = usersService.usersAccountDupliCheck(usersAccount);
-        if(dupliCheckResult != 1) {
-            dupliCheckResult = 0;
+        String item = "";
+        Users entity = usersService.usersAccountDupliCheck(usersAccount);
+        if(entity == null) {
+            item = usersAccount;
         }
+        
         result.setStatusCode(HttpStatus.OK.value());
-        result.setResultItem(dupliCheckResult);
+        result.setResultItem(item);
         result.setResponseDateTime(LocalDateTime.now());
         return result;
     }
@@ -152,12 +166,14 @@ public class UsersController {
         @RequestParam("usersEmail") String usersEmail
     ) {
         CustomResponseData result = new CustomResponseData();
-        int dupliCheckResult = usersService.usersEmailDupliCheck(usersEmail);
-        if(dupliCheckResult != 1) {
-            dupliCheckResult = 0;
+        String item = "";
+        Users entity = usersService.usersEmailDupliCheck(usersEmail);
+        if(entity == null) {
+            item = usersEmail;
         }
+
         result.setStatusCode(HttpStatus.OK.value());
-        result.setResultItem(dupliCheckResult);
+        result.setResultItem(item);
         result.setResponseDateTime(LocalDateTime.now());
         return result;
     }

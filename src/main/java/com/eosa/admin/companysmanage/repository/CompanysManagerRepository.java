@@ -1,4 +1,4 @@
-package com.eosa.admin.companysmanager.repository;
+package com.eosa.admin.companysmanage.repository;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.eosa.admin.companysmanager.entity.GetCompanysList;
+import com.eosa.admin.companysmanage.entity.GetCompanysList;
 import com.eosa.web.companys.entity.Companys;
 
 @Repository
@@ -47,11 +47,20 @@ public interface CompanysManagerRepository extends JpaRepository<Companys, Long>
     )
     List<Companys> findAllCompany(int currentStartPost, int postCount);
 
+    /** 회사 전체 목록 조회에 활용되는 메서드
+     * 
+     */
     @Query(       
-        value="SELECT * FROM Companys",
+        value="SELECT " + 
+        "Companys.companysIdx, Companys.companysName, Companys.companysCeoIdx, Companys.companysCeoName, " +
+        "Companys.companysPhone, Companys.companysComment, Companys.companysSpec, Companys.companysRegistDate, " +        
+        "Companys.companysRegion1, Companys.companysEnabled, Companys.companysPremium, Companys.companysLocalPremium, " +
+        "GROUP_CONCAT(CompanysCategory.companysCategoryValue) AS companysCategory " +
+        "FROM Companys INNER JOIN CompanysCategory ON Companys.companysIdx = CompanysCategory.companysIdx " +
+        "GROUP BY Companys.companysIdx",
         nativeQuery = true
     )
-    List<Companys> viewFindAll();
+    List<GetCompanysList> viewFindAll();
 
     @Query(
         value="SELECT * FROM Companys " +

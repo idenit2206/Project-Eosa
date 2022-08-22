@@ -1,10 +1,19 @@
 package com.eosa.admin.usersmanage.controller;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +28,10 @@ import com.eosa.admin.usersmanage.entity.GetUsersList;
 import com.eosa.admin.usersmanage.service.ClientService;
 import com.eosa.admin.util.pagination.PageList;
 import com.eosa.admin.util.pagination.PostList;
+import com.eosa.admin.util.random.AddressTempData;
+import com.eosa.admin.util.random.RandomGenAccount;
+import com.eosa.admin.util.random.RandomGenKorName;
+import com.eosa.admin.util.random.RandomGenMobileNumber;
 import com.eosa.web.users.Users;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,6 +43,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ClientManageController {
 
     @Autowired private ClientService usersManageService;
+    @Autowired BCryptPasswordEncoder passwordEncoder;
 
     final private int POST_COUNT = 10;
     final private int BLOCK_COUNT = 10;
@@ -43,12 +57,74 @@ public class ClientManageController {
 
     @GetMapping("/tempUserRegist")
     @ResponseBody
-    public void userRegist() {
-        log.debug("[임시] 100명의 유저데이터를 생성합니다.");
-        for(int i =0; i < 100; i++) {
-            Users user = new Users();
-            usersManageService.save(user);
-        }        
+    public String userRegist() {
+        int size = 20;
+        log.debug("[임시] {}개의 유저데이터를 생성합니다.", size);
+        Set<String> tempUser = new HashSet<>();
+        ArrayList<String> tempName = new ArrayList<>();
+        Set<String> tempMobile = new HashSet<>();
+        AddressTempData atd = new AddressTempData();
+        ArrayList<String> tempRegion = new ArrayList<>();
+        while(tempUser.size() < size) {
+            RandomGenAccount rgu = new RandomGenAccount();
+            String usersAccount = rgu.generateAccount();
+            tempUser.add(usersAccount);
+        }
+        while(tempName.size() < size) {
+            RandomGenKorName rgkn = new RandomGenKorName();
+            String usersName = rgkn.RandomGenKorName(3);
+            tempName.add(usersName);
+        }
+        while(tempMobile.size() < size) {
+            RandomGenMobileNumber rgmn = new RandomGenMobileNumber();
+            String usersPhone = rgmn.RandomGenMobileNumber();
+            tempMobile.add(usersPhone);
+        }
+        while(tempRegion.size() < size) {
+            int RegionTemp = (int) Math.floor(Math.random() * atd.getREGIONAL_LOCAL_NAME().length);
+            String usersRegion1 = atd.getREGIONAL_LOCAL_NAME()[RegionTemp];
+            String usersRegion2 = atd.getREGION2()[RegionTemp][(int) Math.floor(Math.random() * atd.getREGION2()[RegionTemp].length)];
+            tempRegion.add(usersRegion1+":"+usersRegion2);
+        }
+
+        List<String> usersAccountList = new ArrayList<>();
+        List<String> usersPhoneList = new ArrayList<>();
+        for (String u : tempUser) {
+            // log.info("account: {}", u);
+            usersAccountList.add(u);
+        }
+        for (String p : tempMobile) {
+            usersPhoneList.add(p);
+        }
+
+        for(int i = 0; i < usersAccountList.size(); i++) {
+            Users entity = new Users();
+            String usersAccount = usersAccountList.get(i);
+            String usersPass = passwordEncoder.encode(usersAccount);
+            String usersEmail = usersAccount + "@email.com";
+            LocalDateTime usersJoinDate = LocalDateTime.now();
+            int usersNotice = (int) Math.floor(Math.random() * 1);
+
+            entity.setUsersAccount(usersAccount);
+            entity.setUsersPass(usersPass);
+            entity.setUsersName(tempName.get(i));
+            entity.setUsersNick(usersAccount.substring(0, 5));
+            entity.setUsersPhone(usersPhoneList.get(i));
+            entity.setUsersEmail(usersEmail);
+            // entity.setUsersRole(usersRole[(int) Math.floor(Math.random() * 2)]);
+            entity.setUsersRole("DETECTIVE");
+            entity.setUsersAge((int) Math.floor(Math.random() * 9 + 1) * 10);
+            int tempRegionSeperatorIndex = tempRegion.get(i).indexOf(":");
+            entity.setUsersRegion1(tempRegion.get(i).substring(0, tempRegionSeperatorIndex));
+            entity.setUsersRegion2(tempRegion.get(i).substring(tempRegionSeperatorIndex+1, tempRegion.get(i).length()));
+            entity.setUsersGender((int) Math.floor(Math.random() * 2));
+            entity.setUsersJoinDate(usersJoinDate);
+            entity.setUsersNotice(usersNotice);
+            entity.setUsersEnabled(1);
+
+            usersManageService.save(entity);
+        }
+        return "임시회원등록 완료";
     }
 
     /**
