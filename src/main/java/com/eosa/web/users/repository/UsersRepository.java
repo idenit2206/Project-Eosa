@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.eosa.web.users.Users;
+import com.eosa.web.users.entity.DuplicateAccountAndEmail;
 import com.eosa.web.users.entity.FindByUsersAccountEntity;
 import com.eosa.web.users.entity.SelectByUsersAccountEntity;
 
@@ -26,31 +27,40 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
         ":#{#Users.usersRegion1}, :#{#Users.usersRegion2}, :#{#Users.usersGender}, :#{#Users.usersJoinDate}," +
         ":#{#Users.usersNotice}, :#{#Users.usersEnabled})"
     ,nativeQuery=true)
-    int userSave(@Param("Users") Users user);
+    int userSave(@Param("Users") Users user);    
+
+    // /**
+    //  * 회원가입시 계정, 이메일 중복 체크
+    //  * @param usersAccount, @param usersEmail
+    //  * @return
+    //  */
+    // @Query(
+    //     value="SELECT usersAccount, usersEmail FROM Users WHERE usersAccount=?1 AND usersEmail=?2",
+    //     nativeQuery=true
+    // )
+    // DuplicateAccountAndEmail dupliCheck(String usersAccount, String usersEmail);
 
     /**
      * 회원가입을 할 때 아이디가 중복인지 검사하기 위한 메서드
-     * 중복일 경우 1을 반환
      * @param usersAccount
-     * @return 1 | null
+     * @return 0 | null
      */
     @Query(
-        value="SELECT 1 FROM Users WHERE usersAccount=?1",
+        value="SELECT * FROM Users WHERE usersAccount=?1",
         nativeQuery=true
     )
-    int usersAccountDupliCheck(String usersAccount);
+    Users usersAccountDupliCheck(String usersAccount);
 
     /**
      * 회원가입을 할 때 이메일이 중복인지 검사하기 위한 메서드
-     * 중복일 경우 1을 반환
      * @param usersEmail
-     * @return 1 | null
+     * @return 0 | null
      */
     @Query(
-        value="SELECT 1 FROM Users WHERE usersEmail=?1",
+        value="SELECT * FROM Users WHERE usersEmail=?1",
         nativeQuery=true
     )
-    int usersEmailDupliCheck(String usersEmail);
+    Users usersEmailDupliCheck(String usersEmail);
 
     /**
      * Spring Security formLogin()에서 인증을 성공했을 때

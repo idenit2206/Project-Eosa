@@ -1,8 +1,10 @@
 package com.eosa.admin.test;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +32,10 @@ public class TestController {
         CustomResponseData result = new CustomResponseData();
 
         List<RequestForm> list = requestFormManageRepository.testRequestFormByLocation(keyword);
-
+        // log.debug("list: {}", list.toString());
+        result.setStatusCode(HttpStatus.OK.value());
+        result.setResultItem(list);
+        result.setResponseDateTime(LocalDateTime.now());
         return result;
     } 
 
