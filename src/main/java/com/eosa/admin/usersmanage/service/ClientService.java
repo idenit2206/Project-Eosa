@@ -49,8 +49,6 @@ public class ClientService implements ClientRepository {
 
         String usersEmail = usersAccount + "@email.com";
 
-        String[] usersRole = {"CLIENT", "DETECTIVE"};
-
         AddressTempData atd = new AddressTempData();
         int RegionTemp = (int) Math.floor(Math.random() * atd.getREGIONAL_LOCAL_NAME().length);
         String usersRegion1 = atd.getREGIONAL_LOCAL_NAME()[RegionTemp];
@@ -65,7 +63,7 @@ public class ClientService implements ClientRepository {
         entity.setUsersPhone(usersPhone);
         entity.setUsersEmail(usersEmail);
         // entity.setUsersRole(usersRole[(int) Math.floor(Math.random() * 2)]);
-        entity.setUsersRole(usersRole[0]);
+        entity.setUsersRole("CLIENT");
         entity.setUsersAge((int) Math.floor(Math.random() * 9) * 10);
         entity.setUsersRegion1(usersRegion1);
         entity.setUsersRegion2(usersRegion2);

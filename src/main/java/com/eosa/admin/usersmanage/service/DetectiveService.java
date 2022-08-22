@@ -1,5 +1,6 @@
 package com.eosa.admin.usersmanage.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -20,6 +21,12 @@ import com.eosa.web.users.Users;
 public class DetectiveService implements DetectiveRepository  {
     
     @Autowired private DetectiveRepository detectiveRepository;
+
+    // Users 가데이터 생성에 사용
+    @Override
+    public <S extends Users> S save(S entity) {
+        return detectiveRepository.save(entity);
+    }
 
     @Override
     public List<GetUsersList> findAllDetective(int currentPageStartPost, int postSize) {
@@ -133,12 +140,6 @@ public class DetectiveService implements DetectiveRepository  {
 
     @Override
     public Page<Users> findAll(Pageable pageable) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public <S extends Users> S save(S entity) {
         // TODO Auto-generated method stub
         return null;
     }
