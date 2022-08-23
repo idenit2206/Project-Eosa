@@ -1,4 +1,4 @@
-package com.eosa.web.companys;
+package com.eosa.web.companys.controller;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -21,15 +21,15 @@ import com.eosa.web.companys.entity.Companys;
 import com.eosa.web.companys.entity.CompanysActiveRegion;
 import com.eosa.web.companys.entity.CompanysCategory;
 import com.eosa.web.companys.entity.CompanysLicense;
+import com.eosa.web.companys.entity.CompanysMember;
 import com.eosa.web.companys.entity.SelectAllCompanysList;
 import com.eosa.web.companys.repository.CompanysActiveRegionRepository;
 import com.eosa.web.companys.repository.CompanysCategoryRepository;
 import com.eosa.web.companys.repository.CompanysLicenseRepository;
+import com.eosa.web.companys.repository.CompanysMemberRepository;
 import com.eosa.web.companys.service.CompanysActiveRegionService;
 import com.eosa.web.companys.service.CompanysCategoryService;
 import com.eosa.web.companys.service.CompanysService;
-import com.eosa.web.companysmember.CompanysMember;
-import com.eosa.web.companysmember.CompanysMemberRepository;
 import com.eosa.web.util.CustomResponseData;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

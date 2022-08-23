@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.eosa.admin.requestmanage.RequestFormManageRepository;
-import com.eosa.web.requestform.RequestForm;
+import com.eosa.web.requestform.entity.RequestForm;
 import com.eosa.web.util.CustomResponseData;
 
 import lombok.extern.slf4j.Slf4j;

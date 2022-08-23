@@ -12,7 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.stereotype.Service;
 
-import com.eosa.web.requestform.RequestForm;
+import com.eosa.web.requestform.entity.RequestForm;
 
 @Service
 public class RequestFormManageService implements RequestFormManageRepository{

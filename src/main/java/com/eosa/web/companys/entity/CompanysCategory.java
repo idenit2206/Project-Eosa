@@ -6,9 +6,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -21,13 +18,12 @@ public class CompanysCategory {
     
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name="companysCategoryIdx")
     private Long companysCategoryIdx;
 
     @Column private Long companysIdx;
     @Column private String companysCategoryValue;
 
-    @ManyToOne(targetEntity=Companys.class, fetch=FetchType.LAZY)
+    @ManyToOne(targetEntity=Companys.class, fetch=FetchType.EAGER)
     private Companys companys;
 
 }

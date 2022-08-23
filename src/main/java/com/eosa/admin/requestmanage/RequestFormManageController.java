@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.eosa.admin.util.random.AddressTempData;
 import com.eosa.admin.util.random.RandomDate;
-import com.eosa.web.requestform.RequestForm;
+import com.eosa.web.requestform.entity.RequestForm;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -49,8 +49,8 @@ public class RequestFormManageController {
         for(int i = 0; i < 100; i++) {
             RequestForm entity = new RequestForm();
             entity.setUsersIdx(Long.valueOf(((int)(Math.floor(Math.random()*10000)))));
-            entity.setDetectiveIdx(Long.valueOf(((int)(Math.floor(Math.random()*10000)))));
-            entity.setRequestFormCategory(REQUEST_CATEGORY[(int) Math.floor(Math.random() * REQUEST_CATEGORY.length)]);
+            entity.setCompanysIdx(Long.valueOf(((int)(Math.floor(Math.random()*10000)))));
+            // entity.setRequestFormCategory(REQUEST_CATEGORY[(int) Math.floor(Math.random() * REQUEST_CATEGORY.length)]);
             entity.setRequestFormStatus(REQUEST_STATUS[(int) Math.floor(Math.random() * REQUEST_STATUS.length)]);
             int tempRegionSeperatorIndex = tempRegion.get(i).indexOf(":");
             entity.setRequestFormRegion1(tempRegion.get(i).substring(0, tempRegionSeperatorIndex));

@@ -17,8 +17,8 @@ import com.eosa.admin.companysmanage.service.CompanysManagerService;
 import com.eosa.web.companys.entity.Companys;
 import com.eosa.web.companys.entity.CompanysActiveRegion;
 import com.eosa.web.companys.entity.CompanysCategory;
-import com.eosa.web.companysmember.CompanysMember;
-import com.eosa.web.companysmember.CompanysMemberService;
+import com.eosa.web.companys.entity.CompanysMember;
+import com.eosa.web.companys.service.CompanysMemberService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;

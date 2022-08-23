@@ -1,4 +1,4 @@
-package com.eosa.web.companysmember;
+package com.eosa.web.companys.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.stereotype.Service;
+
+import com.eosa.web.companys.entity.CompanysMember;
+import com.eosa.web.companys.repository.CompanysMemberRepository;
 
 @Service
 public class CompanysMemberService implements CompanysMemberRepository {

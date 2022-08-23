@@ -1,4 +1,4 @@
-package com.eosa.web.requestform;
+package com.eosa.web.requestform.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,6 +13,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.stereotype.Service;
 
+import com.eosa.web.requestform.entity.RequestForm;
+import com.eosa.web.requestform.entity.SelectRequestFormList;
+import com.eosa.web.requestform.repository.RequestFormRepository;
+
 @Service
 public class RequestFormService implements RequestFormRepository {
 
@@ -21,8 +25,7 @@ public class RequestFormService implements RequestFormRepository {
     
     @Override
     public <S extends RequestForm> S save(S entity) {
-        // return requestFormRepository.save(entity);
-        return null;
+        return requestFormRepository.save(entity);
     }
 
     public int requestFormRegister(RequestForm entity) {
@@ -40,13 +43,18 @@ public class RequestFormService implements RequestFormRepository {
     }
 
     @Override
-    public List<RequestForm> findByDetectiveIdx(Long detectiveidx) {
-        return requestFormRepository.findByDetectiveIdx(detectiveidx);
+    public List<SelectRequestFormList> selectAllRequestFormList() {
+        return requestFormRepository.selectAllRequestFormList();
     }
 
     @Override
-    public List<RequestForm> findAllRequestClientByUsersIdx(Long usersIdx) {
-        return requestFormRepository.findAllRequestClientByUsersIdx(usersIdx);
+    public List<SelectRequestFormList> selectAllRequestFormListByUsersIdx(Long usersIdx) {
+        return requestFormRepository.selectAllRequestFormListByUsersIdx(usersIdx);
+    }
+
+    @Override
+    public List<RequestForm> findByDetectiveIdx(Long detectiveidx) {
+        return requestFormRepository.findByDetectiveIdx(detectiveidx);
     }
 
     @Override
