@@ -1,4 +1,4 @@
-package com.eosa.web.companysmember;
+package com.eosa.web.companys.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,36 +12,44 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.stereotype.Service;
 
+import com.eosa.web.companys.entity.CompanysActiveRegion;
+import com.eosa.web.companys.repository.CompanysActiveRegionRepository;
+
 @Service
-public class CompanysMemberService implements CompanysMemberRepository {
+public class CompanysActiveRegionService implements CompanysActiveRegionRepository {
 
-    @Autowired CompanysMemberRepository companysMemberRepository;
+    @Autowired private CompanysActiveRegionRepository companysActiveRegionRepository;
 
     @Override
-    public <S extends CompanysMember> S save(S entity) {
-        return companysMemberRepository.save(entity);
+    public <S extends CompanysActiveRegion> S save(S entity) {
+        return companysActiveRegionRepository.save(entity);
     }
 
     @Override
-    public List<CompanysMember> findAll() {
+    public void insertCompanysActiveRegion(CompanysActiveRegion entity) {
+        companysActiveRegionRepository.insertCompanysActiveRegion(entity);
+    }
+
+    @Override
+    public List<CompanysActiveRegion> findAll() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<CompanysMember> findAll(Sort sort) {
+    public List<CompanysActiveRegion> findAll(Sort sort) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<CompanysMember> findAllById(Iterable<Long> ids) {
+    public List<CompanysActiveRegion> findAllById(Iterable<Long> ids) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <S extends CompanysMember> List<S> saveAll(Iterable<S> entities) {
+    public <S extends CompanysActiveRegion> List<S> saveAll(Iterable<S> entities) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -53,19 +61,19 @@ public class CompanysMemberService implements CompanysMemberRepository {
     }
 
     @Override
-    public <S extends CompanysMember> S saveAndFlush(S entity) {
+    public <S extends CompanysActiveRegion> S saveAndFlush(S entity) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <S extends CompanysMember> List<S> saveAllAndFlush(Iterable<S> entities) {
+    public <S extends CompanysActiveRegion> List<S> saveAllAndFlush(Iterable<S> entities) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public void deleteAllInBatch(Iterable<CompanysMember> entities) {
+    public void deleteAllInBatch(Iterable<CompanysActiveRegion> entities) {
         // TODO Auto-generated method stub
         
     }
@@ -83,43 +91,43 @@ public class CompanysMemberService implements CompanysMemberRepository {
     }
 
     @Override
-    public CompanysMember getOne(Long id) {
+    public CompanysActiveRegion getOne(Long id) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public CompanysMember getById(Long id) {
+    public CompanysActiveRegion getById(Long id) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public CompanysMember getReferenceById(Long id) {
+    public CompanysActiveRegion getReferenceById(Long id) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <S extends CompanysMember> List<S> findAll(Example<S> example) {
+    public <S extends CompanysActiveRegion> List<S> findAll(Example<S> example) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <S extends CompanysMember> List<S> findAll(Example<S> example, Sort sort) {
+    public <S extends CompanysActiveRegion> List<S> findAll(Example<S> example, Sort sort) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Page<CompanysMember> findAll(Pageable pageable) {
+    public Page<CompanysActiveRegion> findAll(Pageable pageable) {
         // TODO Auto-generated method stub
         return null;
-    }   
+    }    
 
     @Override
-    public Optional<CompanysMember> findById(Long id) {
+    public Optional<CompanysActiveRegion> findById(Long id) {
         // TODO Auto-generated method stub
         return Optional.empty();
     }
@@ -143,7 +151,7 @@ public class CompanysMemberService implements CompanysMemberRepository {
     }
 
     @Override
-    public void delete(CompanysMember entity) {
+    public void delete(CompanysActiveRegion entity) {
         // TODO Auto-generated method stub
         
     }
@@ -155,7 +163,7 @@ public class CompanysMemberService implements CompanysMemberRepository {
     }
 
     @Override
-    public void deleteAll(Iterable<? extends CompanysMember> entities) {
+    public void deleteAll(Iterable<? extends CompanysActiveRegion> entities) {
         // TODO Auto-generated method stub
         
     }
@@ -167,34 +175,34 @@ public class CompanysMemberService implements CompanysMemberRepository {
     }
 
     @Override
-    public <S extends CompanysMember> Optional<S> findOne(Example<S> example) {
+    public <S extends CompanysActiveRegion> Optional<S> findOne(Example<S> example) {
         // TODO Auto-generated method stub
         return Optional.empty();
     }
 
     @Override
-    public <S extends CompanysMember> Page<S> findAll(Example<S> example, Pageable pageable) {
+    public <S extends CompanysActiveRegion> Page<S> findAll(Example<S> example, Pageable pageable) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <S extends CompanysMember> long count(Example<S> example) {
+    public <S extends CompanysActiveRegion> long count(Example<S> example) {
         // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
-    public <S extends CompanysMember> boolean exists(Example<S> example) {
+    public <S extends CompanysActiveRegion> boolean exists(Example<S> example) {
         // TODO Auto-generated method stub
         return false;
     }
 
     @Override
-    public <S extends CompanysMember, R> R findBy(Example<S> example,
+    public <S extends CompanysActiveRegion, R> R findBy(Example<S> example,
             Function<FetchableFluentQuery<S>, R> queryFunction) {
         // TODO Auto-generated method stub
         return null;
     }
-    
+
 }

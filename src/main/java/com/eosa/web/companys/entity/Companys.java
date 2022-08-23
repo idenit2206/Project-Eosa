@@ -6,21 +6,13 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.ColumnDefault;
-
-import com.eosa.web.users.Users;
-import com.eosa.web.users.entity.Users2;
 
 import lombok.Data;
 
@@ -31,6 +23,7 @@ public class Companys {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="companysIdx")
     private Long companysIdx;
 
     @Column(nullable=false, length=100)
@@ -92,5 +85,11 @@ public class Companys {
 
     @OneToMany(mappedBy="companys")
     private List<CompanysCategory> companysCategory = new ArrayList<>();
+
+    @OneToMany(mappedBy="companys")
+    private List<CompanysActiveRegion> companysActiveRegion = new ArrayList<>();
+
+    @OneToMany(mappedBy="companys")
+    private List<CompanysMember> companysMembers = new ArrayList<>();
 
 }

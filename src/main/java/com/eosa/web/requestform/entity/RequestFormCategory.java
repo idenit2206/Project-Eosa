@@ -1,4 +1,4 @@
-package com.eosa.web.companys.entity;
+package com.eosa.web.requestform.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -6,7 +6,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -14,17 +13,15 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name="CompanysActiveRegion")
-public class CompanysActiveRegion {
+@Table(name="RequestFormCategory")
+public class RequestFormCategory {
     
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long comapnysActiveRegionIdx;
+    private Long requestFormCategoryIdx;
+    @Column private Long requestFormIdx;
+    @Column private String requestFormCategoryValue;
 
-    @Column private Long companysIdx;
-    @Column private String activeRegion;
-
-    @ManyToOne(targetEntity=Companys.class, fetch=FetchType.EAGER)
-    private Companys companys;
-
+    @ManyToOne(targetEntity=RequestForm.class, fetch=FetchType.EAGER)
+    private RequestForm requestForm;
 }
