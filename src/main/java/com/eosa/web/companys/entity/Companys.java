@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,6 +32,7 @@ public class Companys {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="companysIdx")
     private Long companysIdx;
 
     @Column(nullable=false, length=100)
@@ -92,5 +94,8 @@ public class Companys {
 
     @OneToMany(mappedBy="companys")
     private List<CompanysCategory> companysCategory = new ArrayList<>();
+
+    @OneToMany(mappedBy="companys")
+    private List<CompanysActiveRegion> companysActiveRegion = new ArrayList<>();
 
 }

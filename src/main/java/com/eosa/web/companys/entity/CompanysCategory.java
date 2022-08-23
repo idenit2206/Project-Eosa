@@ -21,12 +21,13 @@ public class CompanysCategory {
     
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name="companysCategoryIdx")
     private Long companysCategoryIdx;
 
     @Column private Long companysIdx;
     @Column private String companysCategoryValue;
 
-    @ManyToOne(targetEntity=Companys.class, fetch=FetchType.EAGER)
+    @ManyToOne(targetEntity=Companys.class, fetch=FetchType.LAZY)
     private Companys companys;
 
 }

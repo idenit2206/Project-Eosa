@@ -1,6 +1,5 @@
-package com.eosa.web.companys;
+package com.eosa.web.companys.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -13,61 +12,44 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.stereotype.Service;
 
-import com.eosa.web.companys.entity.Companys;
-import com.eosa.web.companys.entity.SelectAllCompanysList;
+import com.eosa.web.companys.entity.CompanysCategory;
+import com.eosa.web.companys.repository.CompanysCategoryRepository;
 
 @Service
-public class CompanysService implements CompanysRepository {
+public class CompanysCategoryService implements CompanysCategoryRepository {
 
-    @Autowired
-    private CompanysRepository companysRepository;
+    @Autowired private CompanysCategoryRepository companysCategoryRepository;
 
     @Override
-    public <S extends Companys> S save(S entity) {
-        LocalDateTime currentTime = LocalDateTime.now();
-        entity.setCompanysRegistDate(currentTime);
-        return companysRepository.save(entity);
+    public <S extends CompanysCategory> S save(S entity) {
+        return companysCategoryRepository.save(entity);
     }
 
     @Override
-    public List<String> selectAllCategory() {
-        return companysRepository.selectAllCategory();
-    }
-
-    // @Override
-    // public int insertCompanys(Companys entity) {
-    //     return companysRepository.insertCompanys(entity);
-    // }
-
-    @Override
-    public List<SelectAllCompanysList> selectAllCompanysList() {
-        return companysRepository.selectAllCompanysList();
+    public void insertCompanysCategory(CompanysCategory entity) {
+        companysCategoryRepository.insertCompanysCategory(entity);
     }
 
     @Override
-    public List<Companys> findAll() {
+    public List<CompanysCategory> findAll() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<Companys> findAll(Sort sort) {
+    public List<CompanysCategory> findAll(Sort sort) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<Companys> findAllById(Iterable<Long> ids) {
+    public List<CompanysCategory> findAllById(Iterable<Long> ids) {
         // TODO Auto-generated method stub
         return null;
     }
-    
-    public int findByCompanysIdx(Long companysIdx) {
-        return companysRepository.findByCompanysIdx(companysIdx);
-    }
 
     @Override
-    public <S extends Companys> List<S> saveAll(Iterable<S> entities) {
+    public <S extends CompanysCategory> List<S> saveAll(Iterable<S> entities) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -79,19 +61,19 @@ public class CompanysService implements CompanysRepository {
     }
 
     @Override
-    public <S extends Companys> S saveAndFlush(S entity) {
+    public <S extends CompanysCategory> S saveAndFlush(S entity) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <S extends Companys> List<S> saveAllAndFlush(Iterable<S> entities) {
+    public <S extends CompanysCategory> List<S> saveAllAndFlush(Iterable<S> entities) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public void deleteAllInBatch(Iterable<Companys> entities) {
+    public void deleteAllInBatch(Iterable<CompanysCategory> entities) {
         // TODO Auto-generated method stub
         
     }
@@ -109,43 +91,43 @@ public class CompanysService implements CompanysRepository {
     }
 
     @Override
-    public Companys getOne(Long id) {
+    public CompanysCategory getOne(Long id) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Companys getById(Long id) {
+    public CompanysCategory getById(Long id) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Companys getReferenceById(Long id) {
+    public CompanysCategory getReferenceById(Long id) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <S extends Companys> List<S> findAll(Example<S> example) {
+    public <S extends CompanysCategory> List<S> findAll(Example<S> example) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <S extends Companys> List<S> findAll(Example<S> example, Sort sort) {
+    public <S extends CompanysCategory> List<S> findAll(Example<S> example, Sort sort) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Page<Companys> findAll(Pageable pageable) {
+    public Page<CompanysCategory> findAll(Pageable pageable) {
         // TODO Auto-generated method stub
         return null;
     }    
 
     @Override
-    public Optional<Companys> findById(Long id) {
+    public Optional<CompanysCategory> findById(Long id) {
         // TODO Auto-generated method stub
         return Optional.empty();
     }
@@ -169,7 +151,7 @@ public class CompanysService implements CompanysRepository {
     }
 
     @Override
-    public void delete(Companys entity) {
+    public void delete(CompanysCategory entity) {
         // TODO Auto-generated method stub
         
     }
@@ -181,7 +163,7 @@ public class CompanysService implements CompanysRepository {
     }
 
     @Override
-    public void deleteAll(Iterable<? extends Companys> entities) {
+    public void deleteAll(Iterable<? extends CompanysCategory> entities) {
         // TODO Auto-generated method stub
         
     }
@@ -193,33 +175,34 @@ public class CompanysService implements CompanysRepository {
     }
 
     @Override
-    public <S extends Companys> Optional<S> findOne(Example<S> example) {
+    public <S extends CompanysCategory> Optional<S> findOne(Example<S> example) {
         // TODO Auto-generated method stub
         return Optional.empty();
     }
 
     @Override
-    public <S extends Companys> Page<S> findAll(Example<S> example, Pageable pageable) {
+    public <S extends CompanysCategory> Page<S> findAll(Example<S> example, Pageable pageable) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <S extends Companys> long count(Example<S> example) {
+    public <S extends CompanysCategory> long count(Example<S> example) {
         // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
-    public <S extends Companys> boolean exists(Example<S> example) {
+    public <S extends CompanysCategory> boolean exists(Example<S> example) {
         // TODO Auto-generated method stub
         return false;
     }
 
     @Override
-    public <S extends Companys, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
+    public <S extends CompanysCategory, R> R findBy(Example<S> example,
+            Function<FetchableFluentQuery<S>, R> queryFunction) {
         // TODO Auto-generated method stub
         return null;
-    }   
+    }
 
 }
