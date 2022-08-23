@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Websocket ChatRoom</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/webjars/bootstrap/4.3.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/roomdetail.css">
+</head>
+<body>
+<div class="container" id="app" v-cloak>
+<div class="row">
+    <div class="col-5">
+        <h2>{{room.roomName}}</h2>        
+    </div>
+    <div class="col-5">
+        <span>현재 사용자명: </span>
+        <span>{{sender}}</span>
+    </div>
+    <div class="col bg-custom-danger text-white">
+        <h3 v-on:click="leaveChatRoom">나가기</h3>
+    </div>
+</div>
+<div class="row">
+    <ul class="list-group chatMessageBoard">
+        <li class="list-group-item" v-for="message in messages">
+            {{message.sender}} - {{message.message}}
+            <span v-if="fileMessage != null">
+                다운로드
+            </span>
+        </li>       
+    </ul>
+</div>
+<div class="row">
+    <div class="input-group">       
+        <label class="input-group-text">내용</label>        
+        <input type="text" id="message" class="form-control" v-model="message" v-on:keypress.enter="sendMessage">
+        <input class="btn btn-success" type="button" @click="sendMessage" value="보내기"/>
+        <input type="file" id="fileMessage" class="form-control" v-model="fileMessage" @change="fileMessageChange">
+        <label for="fileMessage" class="input-group-text text-white bg-primary" type="button">파일+</label>
+        </div>
+    </div>
+</div>
+</div>
+<!-- JavaScript -->
+<script src="/webjars/vue/2.5.16/dist/vue.min.js"></script>
+<script src="/webjars/axios/0.17.1/dist/axios.min.js"></script>
+<script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
+<script src="/webjars/stomp-websocket/2.3.3-1/stomp.min.js"></script>
+
+<script src="/assets/js/CurrentDate.js"></script>
+<script>
+    //alert(document.title);
+    // websocket & stomp initialize
+    var sock = new SockJS("/ws/chat");
+    // let sock = new WebSocket("ws://localhost:8080/ws/chat");
+    var ws = Stomp.over(sock);
+    var reconnect = 0;
+
+    const crntDate = new CurrentDate();
+    const _FILE_MESSAGE = document.querySelector("#fileMessage");
+    const SaveFileBlob = () => {
+
+    }
+    const SaveFileArrayBuffer = (arrayBuffer, fileName) => {
+        const a_Tag = document.createElement("a");
+        let parts = [];
+        parts.push(arrayBuffer);        
+        let url = window.URL.createObjectURL(new Blob(parts));
+    }
+
+    // vue.js
+    var vm = new Vue({       
+        el: '#app',
+        data: {
+            roomId: '',
+            room: {},
+            sender: '',
+            message: "",            
+            fileMessage: null,
+            sendDate: "",
+            messages: []
+        },
+        created() {
+            this.roomId = localStorage.getItem('wschat.roomId');
+            this.sender = localStorage.getItem('wschat.sender');
+            this.findRoom();
+        },
+        methods: {
+            fileMessageChange: (e) => {
+                const fileList = e.target.files;
+                const file = fileList[0];
+                const fileReader = new FileReader();              
+
+                fileReader.onload = (e) => {
+                    this.message = file.name;
+                    this.fileMessage = e.target.result;
+                    console.log(e.target.result);
+                    // console.log(this.fileMessage);
+                    vm.sendFileMessage();
+                }
+                fileReader.readAsBinaryString(file);
+                
+            },
+            findRoom: function() {
+                // console.log(crntDate.ShowCurrentDate());
+                axios.get('/chat/room/'+this.roomId)
+                    .then((response) => {
+                        this.room = response.data; 
+                    });
+            },           
+            sendMessage: function() {
+                const _MESSAGE = document.querySelector("#message");                
+                if(_MESSAGE.value !== "") {
+                    // console.log("NOT NULL")
+                    ws.send("/app/chat/message", {}, JSON.stringify({
+                        messageType:"TALK", 
+                        roomId:this.roomId, 
+                        sender:this.sender, 
+                        message:this.message,
+                        fileMessage: null,
+                        sendDate: crntDate.ShowCurrentDate()
+                    }));
+                    this.message = '';
+                }
+            },
+            sendFileMessage: () => {
+                ws.send("/app/chat/message", {}, JSON.stringify({
+                    messageType:"FILE", 
+                    roomId: vm.$data.roomId,
+                    sender: vm.$data.sender,
+                    message: this.message,
+                    fileMessage: vm.$data.fileMessage,
+                    sendDate: crntDate.ShowCurrentDate()
+                }));
+                vm.$data.message = "";
+                vm.$data.fileMessage = null;
+                
+            },
+            recvMessage: function(recv) {                
+                /*
+                // 위로 갈수록 가장 최근 메시지
+                this.messages.unshift({})              
+                */
+
+                // 아래로 갈수록 가장 최근 메시지
+                this.messages.push({
+                    "messageType": recv.messageType,
+                    "sender": recv.messageType == "ENTER" ? '[알림]' : 
+                        recv.messageType == "LEAVE" ? "[알림]" : recv.sender,
+                    "message": recv.message,
+                    "fileMessage": recv.message,
+                    "sendDate": recv.sendDate
+                });
+            },
+            leaveChatRoom: () => {
+                ws.send("/app/chat/message", {}, JSON.stringify({
+                    messageType:"LEAVE", 
+                    roomId: vm.$data.roomId, 
+                    sender: vm.$data.sender,
+                    sendDate: crntDate.ShowCurrentDate()
+                }));
+                location.href="/chat/room/";
+            }            
+        }
+    });
+    const roomExistCheck = (roomId) => {
+        const URL = "/chat/room/" + roomId;
+
+        const request = fetch(URL);
+        return request
+            .then(response => response.json())
+            .then(result => {
+                if(roomId == result.roomId) return 1;
+                else return 0;
+            })
+            .catch(err => { return 0; })
+    }
+
+    async function connect() {
+        // pub/sub event
+        let roomCheck = await roomExistCheck(vm.$data.roomId);
+        if(roomCheck == 1) {
+            ws.connect({}, function(frame) {
+            ws.subscribe("/topic/chat/room/"+vm.$data.roomId, function(message) {
+                var recv = JSON.parse(message.body);
+                vm.recvMessage(recv);
+            })
+            ws.send("/app/chat/message", {}, JSON.stringify({
+                messageType:'ENTER',
+                roomId:vm.$data.roomId,
+                sender:vm.$data.sender,
+                sendDate: crntDate.ShowCurrentDate()
+            }));
+            }, function(error) {
+                if(reconnect++ <= 5) {
+                    setTimeout(function() {
+                        console.log("connection reconnect");
+                        sock = new SockJS("/ws/chat");
+                        ws = Stomp.over(sock);
+                        connect();
+                    },10*1000);
+                }
+            });
+        }
+        else {
+            alert("채팅방이 존재하지 않습니다.\n이전 페이지로 돌아갑니다.");
+            console.log("조건에 맞는 채팅방이 존재하지 않습니다.");
+            location.href="/chat/room";
+            location.go(-1);
+        }
+
+
+        
+    }
+    connect();
+</script>
+</body>
+</html>

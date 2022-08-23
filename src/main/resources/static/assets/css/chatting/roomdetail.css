@@ -1,0 +1,19 @@
+.bg-custom-danger {
+    background-color: #dc3545;
+}
+
+
+[v-cloak] {
+    display: none;
+}
+
+.chatMessageBoard {
+    /* width: 80%; */
+    width: 100%;
+    height: 300px;
+    overflow-y: scroll;
+}
+
+#fileMessage {
+    display: none;    
+}
