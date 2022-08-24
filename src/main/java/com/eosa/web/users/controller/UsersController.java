@@ -31,7 +31,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.eosa.security.CustomPrincipalDetails;
 import com.eosa.web.users.Users;
 import com.eosa.web.users.entity.FindByUsersAccountEntity;
-import com.eosa.web.users.entity.GetUserInfoByUsersAccount;
 import com.eosa.web.users.entity.GetUsersInfoByUsersAccountEntity;
 import com.eosa.web.users.service.UsersService;
 import com.eosa.web.util.CustomResponseData;
@@ -202,7 +201,7 @@ public class UsersController {
         CustomResponseData result = new CustomResponseData();
         LocalDateTime currentTime = LocalDateTime.now();
         
-        GetUsersInfoByUsersAccountEntity user = usersService.selectByUsersAccount(usersAccount);
+        GetUsersInfoByUsersAccountEntity user = usersService.getUsersInfoByUsersAccount(usersAccount);
         
         result.setStatusCode(HttpStatus.OK.value());
         result.setResultItem(user);
