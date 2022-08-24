@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.eosa.web.users.Users;
 import com.eosa.web.users.entity.FindByUsersAccountEntity;
-import com.eosa.web.users.entity.SelectByUsersAccountEntity;
+import com.eosa.web.users.entity.GetUsersInfoByUsersAccountEntity;
 
 @Repository
 public interface UsersRepository extends JpaRepository<Users, Long> {
@@ -72,7 +72,7 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
         "FROM Users WHERE usersAccount = ?1",
         nativeQuery=true
     )
-    SelectByUsersAccountEntity selectByUsersAccount(String usersAccount);
+    GetUsersInfoByUsersAccountEntity getUsersInfoByUsersAccount(String usersAccount);
 
     /**
      * OAuth2Login() 작동시  SNS계정으로 로그인을 시도한 유저가 기존에 존재하던 사용자인지를
