@@ -35,6 +35,10 @@ public class ChatService implements ChatRepository {
         chatRooms = new LinkedHashMap<>();
     }
 
+    public void testAllFlush() {
+        chatRooms.clear();
+    }
+
     @Autowired
     private ChatRepository chatRepository;
 
@@ -61,10 +65,11 @@ public class ChatService implements ChatRepository {
      * 채팅방 생성하기
      * @param roomName
      * @param usersIdx
+     * @Param companysIdx
      * @return
      */
-    public ChatRoom createChatRoom(String roomName, Long usersIdx) {
-        ChatRoom chatRoom = ChatRoom.create(roomName, usersIdx);
+    public ChatRoom createChatRoom(String roomName, Long usersIdx, Long companysIdx) {
+        ChatRoom chatRoom = ChatRoom.create(roomName, usersIdx, companysIdx);
         chatRooms.put(chatRoom.getRoomId(), chatRoom);
         log.info("## UsersIdx: {} create ChatROOM RoomId: {}\n## T: {}", Long.toString(usersIdx), chatRoom.getRoomId(), LocalDateTime.now());
         // chatRepository.createChatRoom(chatRoom);

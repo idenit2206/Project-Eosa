@@ -1,6 +1,6 @@
 package com.eosa.web.users.entity;
 
-public interface SelectByUsersAccountEntity {   
+public interface GetUsersInfoByUsersAccountEntity {   
     Long getUsersIdx();
     String getUsersAccount();
     String getUsersName();

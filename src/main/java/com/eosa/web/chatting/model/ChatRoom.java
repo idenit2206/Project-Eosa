@@ -47,12 +47,13 @@ public class ChatRoom {
     @Column
     private int usable;
 
-    public static ChatRoom create(String roomName, Long usersIdx) {
+    public static ChatRoom create(String roomName, Long usersIdx, Long companysIdx) {
         ChatRoom room = new ChatRoom();
         room.roomId = UUID.randomUUID().toString();
         room.roomName = roomName;
         room.usersIdx = usersIdx;
-        room.companysIdx = Long.parseLong("1");
+        // room.companysIdx = Long.parseLong("1");
+        room.companysIdx = companysIdx;
         room.dataInfo = "데이터 로그파일 주소";
         room.createdDate = LocalDateTime.now();
         room.usable = 1;

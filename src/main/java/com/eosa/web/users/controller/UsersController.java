@@ -31,7 +31,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.eosa.security.CustomPrincipalDetails;
 import com.eosa.web.users.Users;
 import com.eosa.web.users.entity.FindByUsersAccountEntity;
-import com.eosa.web.users.entity.SelectByUsersAccountEntity;
+import com.eosa.web.users.entity.GetUsersInfoByUsersAccountEntity;
 import com.eosa.web.users.service.UsersService;
 import com.eosa.web.util.CustomResponseData;
 import com.eosa.web.util.NullCheck;
@@ -73,8 +73,8 @@ public class UsersController {
         @RequestBody String param
     ) throws JSONException, ParseException {
         String requester = req.getLocalAddr();       
-        JsonObject jsonObject = (JsonObject) JsonParser.parseString(param).getAsJsonObject().get("info");
-        // log.info("{}", jsonObject.toString());
+        JsonObject jsonObject = (JsonObject) JsonParser.parseString(param).getAsJsonObject();
+        log.info("{}", jsonObject.toString());
         log.info("[REQUEST] doSignUp from {}", requester);
         Users paramUsers = new Users();
             paramUsers.setUsersAccount(jsonObject.get("usersAccount").getAsString());
@@ -201,7 +201,7 @@ public class UsersController {
         CustomResponseData result = new CustomResponseData();
         LocalDateTime currentTime = LocalDateTime.now();
         
-        SelectByUsersAccountEntity user = usersService.selectByUsersAccount(usersAccount);
+        GetUsersInfoByUsersAccountEntity user = usersService.getUsersInfoByUsersAccount(usersAccount);
         
         result.setStatusCode(HttpStatus.OK.value());
         result.setResultItem(user);
@@ -348,7 +348,21 @@ public class UsersController {
         return result;
     }
 
-    // @Operation(summary="회원정보 조회")
+    @Operation(summary="회원정보 조회 (메인페이지 전용)")
+    @GetMapping(value="/getUsersInfo")
+    public CustomResponseData getUsersInfoByUsersAccount(
+        @RequestParam(value="usersAccount") String usersAccount
+    ) {
+        CustomResponseData result = new CustomResponseData();
+        GetUsersInfoByUsersAccountEntity item = usersService.getUsersInfoByUsersAccount(usersAccount);
+
+        result.setStatusCode(HttpStatus.OK.value());
+        result.setResultItem(item);
+        result.setResponseDateTime(LocalDateTime.now());
+
+        return result;
+    }
+    // @Operation(summary="회원정보 조회 (마이페이지 전용)")
     // @GetMapping(value="/getUsersInfo")
     // public CustomResponseData getUsersInfoByUsersAccount(
     //     @RequestParam(value="usersAccount") String usersAccount

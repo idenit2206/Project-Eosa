@@ -10,18 +10,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.eosa.web.chatting.model.ChatRoom;
 import com.eosa.web.chatting.service.ChatService;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-@RequestMapping("/chat")
+@RequestMapping("/api/chat")
 public class ChatRoomController {
 
     @Autowired private ChatService chatService;
@@ -41,10 +44,12 @@ public class ChatRoomController {
     @PostMapping("/room")
     @ResponseBody
     public ChatRoom createRoom(
-        @RequestParam("name") String roomName,
-        @RequestParam("usersName") String usersName
+        @RequestParam("roomName") String roomName,
+        @RequestParam("usersIdx") String usersIdx,
+        @RequestParam("companysIdx") String companysIdx
+       
     ) {
-        return chatService.createChatRoom(roomName, Long.parseLong("1"));
+        return chatService.createChatRoom(roomName, Long.parseLong(usersIdx), Long.parseLong(companysIdx));
     }
 
     @PutMapping("/room")
@@ -55,9 +60,21 @@ public class ChatRoomController {
         return chatService.deleteChatRoom(roomId);
     }   
 
-    // roomId에 해당하는 채팅방에 입장
+    // // roomId에 해당하는 채팅방에 입장
+    // @GetMapping("/room/enter/{roomId}")
+    // public String roomDetail(Model model, 
+    //     @PathVariable String roomId,
+    //     @RequestParam(value="usersName") String usersName,
+    //     @RequestParam(value="messageType") String messageType
+    // ) {
+    //     model.addAttribute("roomId", roomId);
+    //     log.info("## User: {} get in RoomId: {}\n## T: {}", usersName, roomId, LocalDateTime.now());
+    //     return "/chat/roomdetail";
+    // }
+
     @GetMapping("/room/enter/{roomId}")
-    public String roomDetail(Model model, 
+    @ResponseBody
+    public String roomDetailREST(Model model, 
         @PathVariable String roomId,
         @RequestParam(value="usersName") String usersName,
         @RequestParam(value="messageType") String messageType
@@ -75,5 +92,13 @@ public class ChatRoomController {
         model.addAttribute("room", transaction);
 
         return transaction;
+    }
+
+    // TestMethod 현재 존재하는 모든 채팅방 삭제
+    @GetMapping("/testAllFlush")
+    @ResponseBody
+    public void testAllFlush() {
+        log.debug("서버에 존재하는 모든 채팅방을 삭제합니다.");
+        chatService.testAllFlush();
     }
 }

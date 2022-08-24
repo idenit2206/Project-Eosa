@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 import com.eosa.security.CustomPrincipalDetails;
 import com.eosa.web.users.Users;
 import com.eosa.web.users.entity.FindByUsersAccountEntity;
-import com.eosa.web.users.entity.SelectByUsersAccountEntity;
+import com.eosa.web.users.entity.GetUsersInfoByUsersAccountEntity;
 import com.eosa.web.users.repository.UsersRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -85,8 +85,8 @@ public class UsersService implements UsersRepository {
     /**
      * 사용자 계정을 기반으로 해당 사용자의 정보 조회 (사용자 정보 조회시 사용)
      */
-    public SelectByUsersAccountEntity selectByUsersAccount(String usersAccount) {
-        SelectByUsersAccountEntity result = usersRepository.selectByUsersAccount(usersAccount);
+    public GetUsersInfoByUsersAccountEntity getUsersInfoByUsersAccount(String usersAccount) {
+        GetUsersInfoByUsersAccountEntity result = usersRepository.getUsersInfoByUsersAccount(usersAccount);
         if(result == null) {
             log.error("[ERROR] SQL RESULT NULL findByUsersAccount()");
         }
