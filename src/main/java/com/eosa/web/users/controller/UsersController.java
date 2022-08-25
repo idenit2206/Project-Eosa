@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tomcat.util.json.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
@@ -51,11 +52,13 @@ public class UsersController {
     private String myHostName = new InternetAddress().getAddress();
 
     @Autowired private UsersService usersService;
+    @Value("${my.service.domain}") private String myDomain;
 
     @GetMapping("/sign/test01")
     public String test01() throws UnknownHostException {
-        String hostAddress = InetAddress.getLocalHost().getHostAddress();
-        return hostAddress + "/api/user/test01";
+        // String hostAddress = InetAddress.getLocalHost().getHostAddress();
+        // return hostAddress + "/api/user/test01";
+        return myDomain; 
     }
 
     /**
@@ -262,7 +265,7 @@ public class UsersController {
             Cookie cookieAccount = new Cookie("usersAccount", usersAccount);
             cookieAccount.setPath("/");
             response.addCookie(cookieAccount);
-            response.sendRedirect("http://localhost:3000/");            
+            response.sendRedirect("http://" + myDomain + ":3000/");            
         }
         else {
             log.info("{}, {} 님은 신규회원 입니다. 회원가입 페이지로 이동합니다.", sns, usersAccount);
@@ -270,7 +273,7 @@ public class UsersController {
             // Cookie cookieProvider = new Cookie("provider", sns);
             // cookieProvider.setPath("/");
             // response.addCookie(cookieProvider);
-            response.sendRedirect("http://localhost:3000/user/register");
+            response.sendRedirect("http://" + myDomain +":3000/user/register");
             response.flushBuffer();
         }
     }
@@ -283,7 +286,7 @@ public class UsersController {
         String platform = principalUserDetails.getProvider();
         String usersEmail = principalUserDetails.getUsername();
         log.info("# {}의 {} 계정을 활용한 로그인에 실패했습니다,", usersEmail, platform);
-        response.sendRedirect("http://localhost:3000/");
+        response.sendRedirect("http://" + myDomain +":3000/");
         // response.setContentType("text/html; charset=UTF-8");
         // PrintWriter out = response.getWriter();
         // out.println("<script>alert(" + 

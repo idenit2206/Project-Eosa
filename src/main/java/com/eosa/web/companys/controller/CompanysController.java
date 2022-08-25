@@ -31,6 +31,8 @@ import com.eosa.web.companys.repository.CompanysMemberRepository;
 import com.eosa.web.companys.service.CompanysActiveRegionService;
 import com.eosa.web.companys.service.CompanysCategoryService;
 import com.eosa.web.companys.service.CompanysService;
+import com.eosa.web.users.Users;
+import com.eosa.web.users.repository.UsersRepository;
 import com.eosa.web.util.CustomResponseData;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -52,6 +54,8 @@ public class CompanysController {
     @Autowired private CompanysCategoryService companysCategoryService;
     @Autowired private CompanysActiveRegionService companysActiveRegionService;
     @Autowired private CompanysMemberRepository companysMemberRepository;
+
+    @Autowired private UsersRepository usersRepository;
 
     @PostMapping("/insertCompanys")
     public CustomResponseData insertCompanys(
@@ -129,6 +133,16 @@ public class CompanysController {
         result.setResponseDateTime(LocalDateTime.now());
       }
       return result;
+    }
+
+    @GetMapping("/testInsert")
+    public String testInsert() {
+      List<Users> usersLists = usersRepository.selectAllDetective();
+      List<Users> answer = new ArrayList<>();
+      for (Users users : usersLists) {
+        log.debug("{} : {}", users.getUsersIdx(), users.getUsersName());
+      }
+      return "";
     }
     
     @GetMapping("/selectAllCategory")

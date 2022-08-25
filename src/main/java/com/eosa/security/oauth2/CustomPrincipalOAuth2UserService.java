@@ -12,6 +12,9 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import com.eosa.security.CustomPrincipalDetails;
+import com.eosa.security.oauth2.entity.GoogleUserInfo;
+import com.eosa.security.oauth2.entity.KakaoUserInfo;
+import com.eosa.security.oauth2.entity.NaverUserInfo;
 import com.eosa.web.users.Users;
 import com.eosa.web.users.repository.UsersRepository;
 
@@ -59,6 +62,7 @@ public class CustomPrincipalOAuth2UserService extends DefaultOAuth2UserService {
         }
         else if(provider.equals("naver")) {
             Map<String, Object> response = oAuth2User.getAttribute("response");
+            log.debug(response.toString());
             platform = provider;
             providerId = oAuth2User.getAttribute("sub");
             usersEmail = response.get("email").toString();

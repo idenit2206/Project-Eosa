@@ -1,5 +1,7 @@
 package com.eosa.web.users.repository;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -195,6 +197,9 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     )
     FindByUsersAccountEntity checkMyPageByPass(@Param("usersAccount") String usersAccount, @Param("usersPass") String usersPass);
 
-    
-     
+    @Query(
+        value="SELECT * FROM Users WHERE usersRole='DETECTIVE' ORDER BY usersIdx DESC",
+        nativeQuery=true
+    )
+    List<Users> selectAllDetective();
 }

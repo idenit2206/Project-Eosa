@@ -1,17 +1,19 @@
-package com.eosa.security.oauth2;
+package com.eosa.security.oauth2.entity;
 
 import java.util.Map;
 
-public class GoogleUserInfo implements CustomOAuth2UserInfo {
+import com.eosa.security.oauth2.CustomOAuth2UserInfo;
+
+public class KakaoUserInfo implements CustomOAuth2UserInfo {
 
     private Map<String, Object> attributes;
     private Map<String, Object> attributesAccount;
     private Map<String, Object> attributesProfile;
 
-    public GoogleUserInfo(Map<String, Object> attributes) {
+    public KakaoUserInfo(Map<String, Object> attributes) {
         this.attributes = attributes;
-        // this.attributesAccount = (Map<String, Object>) attributes.get("email");
-        // this.attributesProfile = (Map<String, Object>) attributesAccount.get("profile");
+        this.attributesAccount = (Map<String, Object>) attributes.get("kakao_account");
+        this.attributesProfile = (Map<String, Object>) attributesAccount.get("profile");
     }
 
     @Override
@@ -21,7 +23,7 @@ public class GoogleUserInfo implements CustomOAuth2UserInfo {
 
     @Override
     public String getProvider() {
-        return "Google";
+        return "Kakao";
     }
 
     @Override
