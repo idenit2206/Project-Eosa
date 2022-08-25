@@ -41,7 +41,7 @@ public class MessageController {
         }
 
         if((message.getMessageType()).equals(MessageType.TALK)) {
-            log.info("{} - {} TIME: {}", message.getSender(), message.getRoomId(), message.getSendDate());
+            log.info("[발신인]: {} / [내용]: {} / [시간]: {}", message.getSender(), message.getMessage(), message.getSendDate());
             chatMessageService.addMessage(message);
         }
 

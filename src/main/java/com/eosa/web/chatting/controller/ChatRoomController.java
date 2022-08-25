@@ -41,7 +41,8 @@ public class ChatRoomController {
         return chatService.findAllRoom();
     }
     // 채팅방 생성
-    @PostMapping("/room")
+    // @PostMapping("/room")
+    @GetMapping("/createRoom")
     @ResponseBody
     public ChatRoom createRoom(
         @RequestParam("roomName") String roomName,
@@ -49,6 +50,7 @@ public class ChatRoomController {
         @RequestParam("companysIdx") String companysIdx
        
     ) {
+        log.debug("채팅방 {} 생성을 요청 합니다. 요청한 사용자의 인덱스: {}, 대상 회사의 인덱스: {}, 생성된 시간: {}", roomName, usersIdx, companysIdx, LocalDateTime.now());
         return chatService.createChatRoom(roomName, Long.parseLong(usersIdx), Long.parseLong(companysIdx));
     }
 
@@ -71,17 +73,16 @@ public class ChatRoomController {
     //     log.info("## User: {} get in RoomId: {}\n## T: {}", usersName, roomId, LocalDateTime.now());
     //     return "/chat/roomdetail";
     // }
-
     @GetMapping("/room/enter/{roomId}")
     @ResponseBody
-    public String roomDetailREST(Model model, 
+    public ChatRoom roomDetailREST(
         @PathVariable String roomId,
-        @RequestParam(value="usersName") String usersName,
-        @RequestParam(value="messageType") String messageType
+        @RequestParam(value="usersName") String usersName
     ) {
-        model.addAttribute("roomId", roomId);
-        log.info("## User: {} get in RoomId: {}\n## T: {}", usersName, roomId, LocalDateTime.now());
-        return "/chat/roomdetail";
+        // model.addAttribute("roomId", roomId);
+        log.info("사용자 '{}' 가 RoomId: {} 채팅방에 입장했습니다. 입장시간: {}", usersName, roomId, LocalDateTime.now());
+        ChatRoom result = chatService.findById(roomId);
+        return result;
     }
     // roomId에 해당하는 채팅방 조회
     @GetMapping("/room/{roomId}")
@@ -98,7 +99,7 @@ public class ChatRoomController {
     @GetMapping("/testAllFlush")
     @ResponseBody
     public void testAllFlush() {
-        log.debug("서버에 존재하는 모든 채팅방을 삭제합니다.");
+        log.debug("서버에 존재하는 모든 채팅방을 삭제합니다. 삭제시간: {}", LocalDateTime.now());
         chatService.testAllFlush();
     }
 }
