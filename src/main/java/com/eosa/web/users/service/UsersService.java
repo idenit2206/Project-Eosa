@@ -362,5 +362,11 @@ public class UsersService implements UsersRepository {
         // TODO Auto-generated method stub
         return null;
     }
+
+    @Override
+    public List<Users> selectAllDetective() {
+        // TODO Auto-generated method stub
+        return null;
+    }
     
 }
