@@ -45,22 +45,18 @@ public class ChatRoomController {
     @GetMapping("/createRoom")
     @ResponseBody
     public ChatRoom createRoom(
-        @RequestParam("roomName") String roomName,
         @RequestParam("usersIdx") String usersIdx,
-        @RequestParam("companysIdx") String companysIdx
-       
+        @RequestParam("companysIdx") String companysIdx       
     ) {
-        log.debug("채팅방 {} 생성을 요청 합니다. 요청한 사용자의 인덱스: {}, 대상 회사의 인덱스: {}, 생성된 시간: {}", roomName, usersIdx, companysIdx, LocalDateTime.now());
-        return chatService.createChatRoom(roomName, Long.parseLong(usersIdx), Long.parseLong(companysIdx));
+        log.debug("채팅방 생성을 요청 합니다. 요청한 사용자의 인덱스: {}, 대상 회사의 인덱스: {}, 생성된 시간: {}", usersIdx, companysIdx, LocalDateTime.now());
+        return chatService.createChatRoom(Long.parseLong(usersIdx), Long.parseLong(companysIdx));
     }
 
-    @PutMapping("/room")
-    @ResponseBody
-    public List<ChatRoom> deleteRoom(
-        @RequestParam("roomId") String roomId
-    ) {
-        return chatService.deleteChatRoom(roomId);
-    }   
+    /**
+     * roomId가 일치하는 채팅방 삭제 
+     * @param roomId
+     * @return
+     */    
 
     // // roomId에 해당하는 채팅방에 입장
     // @GetMapping("/room/enter/{roomId}")
@@ -77,7 +73,7 @@ public class ChatRoomController {
     @ResponseBody
     public ChatRoom roomDetailREST(
         @PathVariable String roomId,
-        @RequestParam(value="usersName") String usersName
+        @RequestParam(value="usersIdx") String usersName
     ) {
         // model.addAttribute("roomId", roomId);
         log.info("사용자 '{}' 가 RoomId: {} 채팅방에 입장했습니다. 입장시간: {}", usersName, roomId, LocalDateTime.now());
@@ -94,6 +90,14 @@ public class ChatRoomController {
 
         return transaction;
     }
+
+    @PutMapping("/room")
+    @ResponseBody
+    public List<ChatRoom> deleteRoom(
+        @RequestParam("roomId") String roomId
+    ) {
+        return chatService.deleteChatRoom(roomId);
+    }   
 
     // TestMethod 현재 존재하는 모든 채팅방 삭제
     @GetMapping("/testAllFlush")
