@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.function.Function;
 
 import javax.annotation.PostConstruct;
@@ -68,7 +69,15 @@ public class ChatService implements ChatRepository {
      * @Param companysIdx
      * @return
      */
-    public ChatRoom createChatRoom(String roomName, Long usersIdx, Long companysIdx) {
+    // public ChatRoom createChatRoom(String roomName, Long usersIdx, Long companysIdx) {
+    //     ChatRoom chatRoom = ChatRoom.create(roomName, usersIdx, companysIdx);
+    //     chatRooms.put(chatRoom.getRoomId(), chatRoom);
+    //     log.info("## UsersIdx: {} create ChatROOM RoomId: {}\n## T: {}", Long.toString(usersIdx), chatRoom.getRoomId(), LocalDateTime.now());
+    //     // chatRepository.createChatRoom(chatRoom);
+    //     return chatRoom;
+    // }
+    public ChatRoom createChatRoom(Long usersIdx, Long companysIdx) {
+        String roomName = String.valueOf(usersIdx) + "_" + String.valueOf(companysIdx);
         ChatRoom chatRoom = ChatRoom.create(roomName, usersIdx, companysIdx);
         chatRooms.put(chatRoom.getRoomId(), chatRoom);
         log.info("## UsersIdx: {} create ChatROOM RoomId: {}\n## T: {}", Long.toString(usersIdx), chatRoom.getRoomId(), LocalDateTime.now());
