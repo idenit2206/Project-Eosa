@@ -12,7 +12,9 @@ import com.eosa.web.users.Users;
 
 import lombok.Getter;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Getter
 @ToString
 // UserDetails - SpringSecurity에서 FormLogin()이 작동할 때 쓰임
@@ -22,10 +24,15 @@ public class CustomPrincipalDetails implements UserDetails, OAuth2User {
     private Users users;
     private Map<String, Object> attributes;
     private String provider;
-
+    private UserDetails userDetails;
+    
     // UserDetails와 연동 FormLogin() 작동시 사용
-    public CustomPrincipalDetails(Users users) {
-        this.users = users;
+    public CustomPrincipalDetails(Users user) {
+        this.users = user;
+    }
+
+    public CustomPrincipalDetails(UserDetails userDetails) {
+        this.userDetails = userDetails;
     }
 
     // OAuth2User와 연동 OAuth2Login() 작동시 사용

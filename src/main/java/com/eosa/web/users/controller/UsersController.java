@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +20,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -199,6 +203,10 @@ public class UsersController {
         HttpServletResponse res,
         @RequestParam(value="usersAccount") String usersAccount
     ) throws IOException, ServletException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        // Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+        // authorities.stream().forEach(e -> log.debug("{}", e.getAuthority()));
+        // log.debug(auth.toString());
         String requester = req.getLocalAddr();
         log.info("[OK] {} signIn Success FROM {}",usersAccount, requester);
         CustomResponseData result = new CustomResponseData();

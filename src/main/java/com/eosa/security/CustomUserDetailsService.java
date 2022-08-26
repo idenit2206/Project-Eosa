@@ -1,12 +1,9 @@
 package com.eosa.security;
 
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import com.eosa.web.users.Users;
@@ -27,15 +24,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserDetails result = null;
-        Users user = usersRepository.findByUsersAccount(username);
-        // CustomPrincipalDetails user = new CustomPrincipalDetails(usersRepository.findByUsersAccount(username));
+        UserDetails result = new CustomPrincipalDetails(usersRepository.findByUsersAccount(username));
+        // Users user = usersRepository.findByUsersAccount(username);        
     
-        if(user != null) {
-            result = new CustomPrincipalDetails(user);
+        if(result != null) {
+            return result;
         }
-
-        return result;
+        return null;
     }
     
 }

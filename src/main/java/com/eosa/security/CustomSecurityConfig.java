@@ -14,6 +14,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.eosa.security.handler.CustomLogoutSuccessHandler;
+import com.eosa.security.handler.FormLoginSuccessHandler;
 import com.eosa.security.oauth2.CustomPrincipalOAuth2UserService;
 
 @Configuration
@@ -58,7 +60,7 @@ public class CustomSecurityConfig {
             // .antMatcher("/api/**")
             .authorizeRequests()
                 .antMatchers(ANYONE_PERMIT).permitAll()
-                // .anyRequest().hasAnyAuthority("CLIENT", "DETECTIVE")
+                // .anyRequest().hasAnyAuthority("CLIENT, DETECTIVE")
                 .anyRequest().permitAll()
         .and()
             .formLogin()
@@ -66,6 +68,7 @@ public class CustomSecurityConfig {
                     .loginProcessingUrl("/api/user/sign/signIn.do")
                     .usernameParameter("usersAccount").passwordParameter("usersPass")                       
                     .successForwardUrl("/api/user/sign/signIn.success")
+                    // .successHandler(new FormLoginSuccessHandler())
                     .failureForwardUrl("/api/user/sign/signIn.failure")            
         .and()
             .oauth2Login()
