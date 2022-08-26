@@ -54,13 +54,11 @@ public class ChatRoomController {
         return chatService.createChatRoom(roomName, Long.parseLong(usersIdx), Long.parseLong(companysIdx));
     }
 
-    @PutMapping("/room")
-    @ResponseBody
-    public List<ChatRoom> deleteRoom(
-        @RequestParam("roomId") String roomId
-    ) {
-        return chatService.deleteChatRoom(roomId);
-    }   
+    /**
+     * roomId가 일치하는 채팅방 삭제 
+     * @param roomId
+     * @return
+     */    
 
     // // roomId에 해당하는 채팅방에 입장
     // @GetMapping("/room/enter/{roomId}")
@@ -94,6 +92,14 @@ public class ChatRoomController {
 
         return transaction;
     }
+
+    @PutMapping("/room")
+    @ResponseBody
+    public List<ChatRoom> deleteRoom(
+        @RequestParam("roomId") String roomId
+    ) {
+        return chatService.deleteChatRoom(roomId);
+    }   
 
     // TestMethod 현재 존재하는 모든 채팅방 삭제
     @GetMapping("/testAllFlush")
