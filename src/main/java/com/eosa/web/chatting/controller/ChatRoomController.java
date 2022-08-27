@@ -40,6 +40,14 @@ public class ChatRoomController {
     public List<ChatRoom> rooms() {
         return chatService.findAllRoom();
     }
+
+    @GetMapping("/getChatRoomList")
+    @ResponseBody
+    public List<ChatRoom> getChatRoomListByUsersIdx(@RequestParam("usersIdx") String usersIdx) {
+        return chatService.getChatRoomListByUsersIdx(Long.parseLong(usersIdx));
+    }
+
+
     // 채팅방 생성
     // @PostMapping("/room")
     @GetMapping("/createRoom")

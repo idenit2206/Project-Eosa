@@ -3,6 +3,7 @@ package com.eosa.web.chatting.service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +63,19 @@ public class ChatService implements ChatRepository {
         return chatRooms.get(roomId);
     }
 
+    public List<ChatRoom> getChatRoomListByUsersIdx(Long usersIdx) {
+        List<ChatRoom> result = new ArrayList<>();
+        Iterator<String> keys = chatRooms.keySet().iterator();
+        while(keys.hasNext()) {
+            String key = keys.next();
+            ChatRoom c = chatRooms.get(key);
+            if(c.getUsersIdx() == usersIdx) {
+                result.add(c);
+            }
+        }
+        return result;
+    }
+
     /**
      * 채팅방 생성하기
      * @param roomName
@@ -77,11 +91,22 @@ public class ChatService implements ChatRepository {
     //     return chatRoom;
     // }
     public ChatRoom createChatRoom(Long usersIdx, Long companysIdx) {
+        // List<ChatRoom> result = new ArrayList<>();
         String roomName = String.valueOf(usersIdx) + "_" + String.valueOf(companysIdx);
         ChatRoom chatRoom = ChatRoom.create(roomName, usersIdx, companysIdx);
         chatRooms.put(chatRoom.getRoomId(), chatRoom);
         log.info("## UsersIdx: {} create ChatROOM RoomId: {}\n## T: {}", Long.toString(usersIdx), chatRoom.getRoomId(), LocalDateTime.now());
         // chatRepository.createChatRoom(chatRoom);
+
+        // Iterator<String> keys = chatRooms.keySet().iterator();
+        // while(keys.hasNext()) {
+        //     String key = keys.next();
+        //     ChatRoom c = chatRooms.get(key);
+        //     if(c.getUsersIdx() == usersIdx) {
+        //         result.add(c);
+        //     }
+        // }
+
         return chatRoom;
     }
     
