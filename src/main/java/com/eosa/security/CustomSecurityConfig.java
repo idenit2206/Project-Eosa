@@ -47,7 +47,7 @@ public class CustomSecurityConfig {
     private String[] ANYONE_PERMIT = {
         "/assets/**", "/js/**", "/css/**", "/webjars/**", 
         "/oauth2/authorization/**",    
-        "/api/user/**", "/api/mail/**"
+        "/api/user/**", "/api/mail/**",
     };
 
     @Bean
@@ -57,11 +57,11 @@ public class CustomSecurityConfig {
             .cors().configurationSource(customConfigurationSource())
         .and()
             .csrf().disable()
-            // .antMatcher("/api/**")
+            .antMatcher("/api/**")
             .authorizeRequests()
                 .antMatchers(ANYONE_PERMIT).permitAll()
-                // .anyRequest().hasAnyAuthority("CLIENT, DETECTIVE")
-                .anyRequest().permitAll()
+                .anyRequest().hasAnyAuthority("CLIENT", "DETECTIVE")
+                // .anyRequest().permitAll()
         .and()
             .formLogin()
                 .loginPage("http://localhost:3000/user/signin")
