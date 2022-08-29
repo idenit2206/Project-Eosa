@@ -43,9 +43,7 @@ public class CustomSecurityConfig {
     }
 
     private String[] ANYONE_PERMIT = {
-        "/assets/**", "/js/**", "/css/**", "/webjars/**", 
-        "/oauth2/**", 
-        "/api/user/**", "/api/mail/**",
+        "/oauth2/**", "/api/user/**", "/api/mail/**",
     };
 
     @Bean
