@@ -10,13 +10,13 @@ import org.springframework.security.web.SecurityFilterChain;
 import com.eosa.security.handler.CustomLogoutSuccessHandler;
 
 @Configuration
-@Order(2)
 public class AdminSecurityConfig {
 
     @Autowired private CustomLogoutSuccessHandler customLogoutSuccessHandler; 
 
     private String[] PERMIT_URL = {
-        "/assets/**", "/js/**", "/css/**", "/webjars/**", 
+        "/assets/**", "/js/**", "/css/**", "/webjars/**",
+        "/oauth2/**", 
         "/admin/sign/**"
     };
     

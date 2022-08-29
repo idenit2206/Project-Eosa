@@ -1,29 +1,27 @@
 package com.eosa.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.session.ConcurrentSessionFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.eosa.security.handler.CustomLogoutSuccessHandler;
-import com.eosa.security.handler.FormLoginSuccessHandler;
 import com.eosa.security.oauth2.CustomPrincipalOAuth2UserService;
 
 @Configuration
-@Order(1)
 public class CustomSecurityConfig {
 
     @Autowired private CustomLogoutSuccessHandler customLogoutSuccessHandler; 
-    @Autowired private CustomPrincipalOAuth2UserService customPrincipalOAuth2UserService;
+    @Autowired private CustomPrincipalOAuth2UserService customPrincipalOAuth2UserService;    
+    @Value("${my.service.domain}") private String myDomain;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
@@ -46,7 +44,7 @@ public class CustomSecurityConfig {
 
     private String[] ANYONE_PERMIT = {
         "/assets/**", "/js/**", "/css/**", "/webjars/**", 
-        "/oauth2/authorization/**",    
+        "/oauth2/**", 
         "/api/user/**", "/api/mail/**",
     };
 
@@ -60,8 +58,8 @@ public class CustomSecurityConfig {
             .antMatcher("/api/**")
             .authorizeRequests()
                 .antMatchers(ANYONE_PERMIT).permitAll()
-                // .anyRequest().hasAnyAuthority("CLIENT", "DETECTIVE")
-                .anyRequest().permitAll()
+                .anyRequest().hasAnyAuthority("CLIENT", "DETECTIVE")
+                // .anyRequest().permitAll()
         .and()
             .formLogin()
                 .loginPage("http://localhost:3000/user/signin")
