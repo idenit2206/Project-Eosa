@@ -6,6 +6,8 @@
 !**/assets/
 
 # Back-end
+logfile*.txt
+log*.log
 
 # HELP.md
 *.sql

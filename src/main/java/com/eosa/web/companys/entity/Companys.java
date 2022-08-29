@@ -90,6 +90,9 @@ public class Companys {
     private List<CompanysActiveRegion> companysActiveRegion = new ArrayList<>();
 
     @OneToMany(mappedBy="companys")
+    private List<CompanysLicense> companysLicense = new ArrayList<>();
+
+    @OneToMany(mappedBy="companys")
     private List<CompanysMember> companysMembers = new ArrayList<>();
 
 }

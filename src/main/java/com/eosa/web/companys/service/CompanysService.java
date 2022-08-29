@@ -16,7 +16,10 @@ import org.springframework.stereotype.Service;
 
 import com.eosa.web.companys.entity.Companys;
 import com.eosa.web.companys.entity.SelectAllCompanysList;
+import com.eosa.web.companys.entity.SelectCompanyInfoByUsersIdx;
 import com.eosa.web.companys.repository.CompanysRepository;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 public class CompanysService implements CompanysRepository {
@@ -44,6 +47,11 @@ public class CompanysService implements CompanysRepository {
     @Override
     public List<SelectAllCompanysList> selectAllCompanysList() {
         return companysRepository.selectAllCompanysList();
+    }
+
+    @Override
+    public SelectCompanyInfoByUsersIdx selectCompanyInfoByUsersIdx(Long usersIdx) {
+        return companysRepository.selectCompanyInfoByUsersIdx(usersIdx);
     }
 
     @Override

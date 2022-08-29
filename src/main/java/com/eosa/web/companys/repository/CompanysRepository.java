@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.eosa.web.companys.entity.Companys;
 import com.eosa.web.companys.entity.SelectAllCompanysList;
+import com.eosa.web.companys.entity.SelectCompanyInfoByUsersIdx;
 
 @Repository
 public interface CompanysRepository extends JpaRepository<Companys, Long> {
@@ -48,4 +49,22 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         nativeQuery = true
     )
     List<SelectAllCompanysList> selectAllCompanysList();
+
+    @Query(
+        value="SELECT " +
+        "Companys.companysIdx, Companys.companysName, " +
+        "Companys.companysComment, Companys.companysSpec, " +
+        "Companys.companysRegion1, Companys.companysRegion2, Companys.companysRegion3, " +
+        "Companys.companysRegistCerti, Companys.companysProfileImage, " +
+        "GROUP_CONCAT(DISTINCT CompanysCategory.companysCategoryValue) AS companysCategory, " +
+        "GROUP_CONCAT(DISTINCT CompanysActiveRegion.activeRegion) AS CompanysActiveRegion, " +
+        "GROUP_CONCAT(DISTINCT CompanysLicense.companysLicenseName) AS CompanysLicenseName "  +
+        "FROM Companys INNER JOIN CompanysCategory ON Companys.companysIdx = CompanysCategory.companysIdx " +
+        "INNER JOIN CompanysActiveRegion ON Companys.companysIdx = CompanysActiveRegion.companysIdx " +
+        "LEFT JOIN CompanysLicense ON Companys.companysIdx = CompanysLicense.companysIdx " +
+        "WHERE Companys.companysCeoIdx = ?1 " +
+        "GROUP BY Companys.companysIdx",
+        nativeQuery=true
+    )
+    SelectCompanyInfoByUsersIdx selectCompanyInfoByUsersIdx(Long companysCeoIdx);
 }

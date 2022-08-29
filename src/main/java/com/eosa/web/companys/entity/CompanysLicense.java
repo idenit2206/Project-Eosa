@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -20,12 +21,12 @@ public class CompanysLicense {
     
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    Long idx;
+    private Long idx;
 
-    @Column Long companysIdx;
-    @Column String companysLicenseName;
-    @Column String companysLicenseValue;
-    @Column LocalDateTime insertDate;
+    @Column private Long companysIdx;
+    @Column private String companysLicenseName;
+    @Column private String companysLicenseValue;
+    @Column private LocalDateTime insertDate;
 
     @ManyToOne(targetEntity=Companys.class, fetch=FetchType.EAGER)
     private Companys companys;

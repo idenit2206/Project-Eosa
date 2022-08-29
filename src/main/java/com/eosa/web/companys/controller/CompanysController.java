@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eosa.web.companys.entity.Companys;
@@ -25,6 +26,7 @@ import com.eosa.web.companys.entity.CompanysCategory;
 import com.eosa.web.companys.entity.CompanysLicense;
 import com.eosa.web.companys.entity.CompanysMember;
 import com.eosa.web.companys.entity.SelectAllCompanysList;
+import com.eosa.web.companys.entity.SelectCompanyInfoByUsersIdx;
 import com.eosa.web.companys.repository.CompanysActiveRegionRepository;
 import com.eosa.web.companys.repository.CompanysCategoryRepository;
 import com.eosa.web.companys.repository.CompanysLicenseRepository;
@@ -47,8 +49,6 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping(value="/api/companys")
 public class CompanysController {
-
-    private Logger logger = LoggerFactory.getLogger(CompanysController.class);
 
     @Autowired private CompanysService companysService;
     @Autowired private CompanysLicenseRepository companysLicenseRepository;
@@ -164,6 +164,28 @@ public class CompanysController {
       result.setStatusCode(HttpStatus.OK.value());
       result.setResultItem(list);
       result.setResponseDateTime(LocalDateTime.now());
+      return result;
+    }
+
+    @GetMapping("/selectCompanyInfoByUsersIdx")
+    public CustomResponseData selectCompanyInfoByUsersIdx(
+      @RequestParam("usersIdx") String param
+    ){
+      CustomResponseData result = new CustomResponseData();
+      Long usersIdx = Long.parseLong(param);
+      log.debug("usersIdx: {}의  Companys 정보를 조회합니다", usersIdx);
+      SelectCompanyInfoByUsersIdx info = companysService.selectCompanyInfoByUsersIdx(usersIdx);
+      if(info == null) {
+        log.info("usersIdx: {} 는 소속된 업체가 없습니다.");
+        result.setStatusCode(HttpStatus.OK.value());
+        result.setResultItem(null);
+        result.setResponseDateTime(LocalDateTime.now());
+      }
+      else {
+        result.setStatusCode(HttpStatus.OK.value());
+        result.setResultItem(info);
+        result.setResponseDateTime(LocalDateTime.now());
+      }
       return result;
     }
 

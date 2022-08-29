@@ -81,10 +81,10 @@ public class UsersController {
     ) throws JSONException, ParseException {
         String requester = req.getLocalAddr();       
         JsonObject jsonObject = (JsonObject) JsonParser.parseString(param).getAsJsonObject();
-        log.info("{}", jsonObject.toString());
-        log.info("[REQUEST] doSignUp from {}", requester);
+        // log.info("{}", jsonObject.toString());
+        log.info("[REQUEST] doSignUp from {}, usersAccount: {}", requester, jsonObject.get("usersAccount").getAsString());
         Users paramUsers = new Users();
-            paramUsers.setUsersAccount(jsonObject.get("usersAccount").getAsString());
+            paramUsers.setUsersAccount(jsonObject.get("usersAccount").getAsString().toLowerCase());
             paramUsers.setUsersPass(jsonObject.get("usersPass").getAsString());
             paramUsers.setUsersName(jsonObject.get("usersName").getAsString());
             paramUsers.setUsersNick(jsonObject.get("usersNick").getAsString());
@@ -341,7 +341,7 @@ public class UsersController {
         @RequestParam("usersPass") String usersPass
     ) {
         CustomResponseData result = new CustomResponseData();
-        log.debug("# usersAccount : usersPass -> {} : {}", usersAccount, usersPass);
+        // log.debug("# usersAccount : usersPass -> {} : {}", usersAccount, usersPass);
         FindByUsersAccountEntity transaction = usersService.checkMyPageByPass(usersAccount, usersPass);
         // log.debug("# UserInfoByUsersAccount {}", transaction.getUsersAccount());
         
