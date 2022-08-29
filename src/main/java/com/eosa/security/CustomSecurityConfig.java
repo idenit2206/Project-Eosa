@@ -6,7 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
@@ -46,17 +47,18 @@ public class CustomSecurityConfig {
         "/oauth2/**", "/api/user/**", "/api/mail/**",
     };
 
+    
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .cors().disable()
             .cors().configurationSource(customConfigurationSource())
         .and()
-            .csrf().disable()
-            .antMatcher("/api/**")
+            .csrf().disable()       
             .authorizeRequests()
                 .antMatchers(ANYONE_PERMIT).permitAll()
-                .anyRequest().hasAnyAuthority("CLIENT", "DETECTIVE")
+                .antMatchers("/api/**").hasAnyAuthority("CLIENT", "DETECTIVE")
                 // .anyRequest().permitAll()
         .and()
             .formLogin()
