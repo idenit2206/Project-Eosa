@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.eosa.admin.companysmanage.entity.CompanysRegister;
-import com.eosa.admin.companysmanage.entity.GetCompanysList;
+import com.eosa.admin.companysmanage.entity.SelectCompanyInfo;
+import com.eosa.admin.companysmanage.entity.SelectCompanysList;
 import com.eosa.admin.companysmanage.service.CompanysManagerService;
 import com.eosa.web.companys.entity.Companys;
 import com.eosa.web.companys.entity.CompanysActiveRegion;
@@ -95,7 +96,7 @@ public class CompanysManagerController {
 		// log.info(companysList.toString());        
 
 		// List<GetCompanysList> companysList = companysManagerService.viewFindAll();
-		List<GetCompanysList> companysList = companysManagerService.viewFindAll();	
+		List<SelectCompanysList> companysList = companysManagerService.viewFindAll();	
         // Map<String, Integer> pagination = pageList(currentPage);
 		
         model.addAttribute("currentPage", currentPage);
@@ -173,8 +174,10 @@ public class CompanysManagerController {
 	) {
 		log.info("CompanysIdx: {} 의 업체 정보를 불러옵니다.", companysIdx);
 		Long longCompanysIdx = Long.parseLong(companysIdx);
-		Companys company = companysManagerService.findByCompanysIdx(longCompanysIdx);
-		
+		// Companys company = companysManagerService.findByCompanysIdx(longCompanysIdx);
+		SelectCompanyInfo company = companysManagerService.selectCompanyInfoByCompanyIdx(longCompanysIdx);
+		log.debug("comapnyInfo: {}", company.getCompanysComment());
+
 		model.addAttribute("Company", company);
 		return "admin/companysmanage/CompanysInfo";
 	}

@@ -12,7 +12,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.stereotype.Service;
 
-import com.eosa.admin.companysmanage.entity.GetCompanysList;
+import com.eosa.admin.companysmanage.entity.SelectCompanyInfo;
+import com.eosa.admin.companysmanage.entity.SelectCompanysList;
 import com.eosa.admin.companysmanage.repository.CompanysManagerRepository;
 import com.eosa.web.companys.entity.Companys;
 import com.eosa.web.companys.entity.CompanysCategory;
@@ -46,7 +47,7 @@ public class CompanysManagerService implements CompanysManagerRepository {
     }
 
     @Override
-    public List<GetCompanysList> viewFindAll() {
+    public List<SelectCompanysList> viewFindAll() {
         return companysManageRepository.viewFindAll();
     }
 
@@ -67,6 +68,11 @@ public class CompanysManagerService implements CompanysManagerRepository {
     @Override
     public Companys findByCompanysIdx(Long companysIdx) {
         return companysManageRepository.findByCompanysIdx(companysIdx);
+    }
+
+    @Override
+    public SelectCompanyInfo selectCompanyInfoByCompanyIdx(Long companysIdx) {
+        return companysManageRepository.selectCompanyInfoByCompanyIdx(companysIdx);
     }
 
     @Override

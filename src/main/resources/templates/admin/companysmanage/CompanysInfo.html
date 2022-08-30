@@ -17,11 +17,11 @@
             <div class="userInfo-main w-100 m-auto">
                 <h3>탐정 상세정보</h3>
                 <form method="POST" th:action="@{#}" class="form needs-valdiation">
-                <div class="row">
+                <div class="row" th:if="${Company != null}">
                     <div class="col">
                         <label class="form-label" for="companysIdx">탐정넘버</label>
                         <div class="input-group has-validation">
-                            <input type="text" class="form-control" id="companysIdx" name="companysIdx" placeholder="탐정넘버" readonly>
+                            <input type="text" class="form-control" id="companysIdx" name="companysIdx" placeholder="탐정넘버" th:value="${Company.companysIdx}" readonly>
                         </div>
                     </div>
                     <div class="col">
@@ -35,13 +35,13 @@
                     <div class="col">
                         <label class="form-label" for="usersName">대표명</label>
                         <div class="input-group has-validation">
-                            <input type="text" class="form-control" id="usersName" name="usersName" placeholder="대표명"  readonly>
+                            <input type="text" class="form-control" id="usersName" name="usersName" placeholder="대표명" th:value="${Company.companysCeoName}" readonly>
                         </div>
                     </div>                    
                     <div class="col">
                         <label class="form-label" for="companysName">업체명</label>
                         <div class="input-group has-validation">
-                            <input type="text" class="form-control" id="companysName" name="companysName" placeholder="회사명" readonly>
+                            <input type="text" class="form-control" id="companysName" name="companysName" placeholder="회사명" th:value="${Company.companysName}" readonly>
                         </div>
                     </div>
                 </div>
@@ -63,13 +63,13 @@
                 <div class="row">
                     <div class="col">
                         <label class="form-label" for="companysComment">업체 소개</label>                       
-                        <input type="text" class="form-control" id="companysComment" name="companysComponent">
+                        <input type="text" class="form-control" id="companysComment" name="companysComponent" th:value="${Company.companysComment}">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
                         <label class="form-label" for="companysSpec">업체 상세 소개</label>                       
-                        <textarea class="form-control" id="companysSpec" name="companysSpec"></textarea>
+                        <textarea class="form-control" id="companysSpec" name="companysSpec">[[${Company.companysSpec}]]</textarea>
                     </div>
                 </div>
                 <div class="row">

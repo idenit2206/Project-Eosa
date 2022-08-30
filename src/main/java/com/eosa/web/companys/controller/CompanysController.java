@@ -117,7 +117,7 @@ public class CompanysController {
         JsonArray companysActiveRegions = jsonObject.get("companysActiveRegion").getAsJsonArray();
         log.debug("companysIdx {} 의 활동 지역 {}",companysIdx, companysActiveRegions.toString());
         for(int i = 0; i < companysActiveRegions.size(); i++) {
-          String companysActiveRegion = companysActiveRegions.get(i).toString();
+          String companysActiveRegion = companysActiveRegions.get(i).getAsString();
           entity4.setCompanysIdx(companysIdx);
           entity4.setActiveRegion(companysActiveRegion);
           companysActiveRegionService.insertCompanysActiveRegion(entity4);
@@ -167,6 +167,11 @@ public class CompanysController {
       return result;
     }
 
+    /**
+     * usersIdx가 소유한 업체정보를 조회
+     * @param param
+     * @return
+     */
     @GetMapping("/selectCompanyInfoByUsersIdx")
     public CustomResponseData selectCompanyInfoByUsersIdx(
       @RequestParam("usersIdx") String param

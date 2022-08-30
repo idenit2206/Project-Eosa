@@ -3,7 +3,7 @@ package com.eosa.admin.companysmanage.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface GetCompanysList {
+public interface SelectCompanysList {
     
     Long getCompanysIdx();
     String getCompanysName();

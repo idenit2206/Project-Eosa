@@ -9,7 +9,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.eosa.admin.companysmanage.entity.GetCompanysList;
+import com.eosa.admin.companysmanage.entity.SelectCompanyInfo;
+import com.eosa.admin.companysmanage.entity.SelectCompanysList;
 import com.eosa.web.companys.entity.Companys;
 
 @Repository
@@ -60,7 +61,7 @@ public interface CompanysManagerRepository extends JpaRepository<Companys, Long>
         "GROUP BY Companys.companysIdx",
         nativeQuery = true
     )
-    List<GetCompanysList> viewFindAll();
+    List<SelectCompanysList> viewFindAll();
 
     @Query(
         value="SELECT * FROM Companys " +
@@ -68,5 +69,19 @@ public interface CompanysManagerRepository extends JpaRepository<Companys, Long>
         nativeQuery=true
     )
     Companys findByCompanysIdx(Long companysIdx);
+
+    @Query(
+        value="SELECT " +
+        "Companys.companysIdx, Companys.companysCeoName, Companys.companysName, " +
+        "Companys.companysComment, Companys.companysSpec, " +
+        "GROUP_CONCAT(CompanysCategory.companysCategoryValue) AS companysCategory, " +
+        "GROUP_CONCAT(CompanysActiveRegion.activeRegion) AS companysActiveRegion " + 
+        "FROM Companys INNER JOIN CompanysCategory ON Companys.companysIdx = CompanysCategory.companysIdx " +
+        "INNER JOIN CompanysActiveRegion ON Companys.companysIdx = CompanysActiveRegion.companysIdx " +
+        "WHERE Companys.companysIdx = ?1 " +
+        "GROUP BY Companys.companysIdx",
+        nativeQuery=true
+    )
+    SelectCompanyInfo selectCompanyInfoByCompanyIdx(Long companysIdx);
 
 }

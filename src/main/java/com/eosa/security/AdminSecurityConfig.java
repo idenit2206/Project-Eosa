@@ -16,7 +16,6 @@ public class AdminSecurityConfig {
 
     private String[] PERMIT_URL = {
         "/assets/**", "/js/**", "/css/**", "/webjars/**",
-        "/oauth2/**", 
         "/admin/sign/**"
     };
     
