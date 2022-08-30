@@ -1,5 +1,6 @@
 package com.eosa.web.companys.controller;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -18,7 +19,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.eosa.web.companys.entity.Companys;
 import com.eosa.web.companys.entity.CompanysActiveRegion;
@@ -44,6 +48,7 @@ import com.nimbusds.jose.shaded.json.JSONArray;
 import com.nimbusds.oauth2.sdk.ParseException;
 
 import lombok.extern.slf4j.Slf4j;
+import springfox.documentation.spring.web.json.Json;
 
 @Slf4j
 @RestController
@@ -61,26 +66,52 @@ public class CompanysController {
     @PostMapping("/insertCompanys")
     public CustomResponseData insertCompanys(
       @RequestBody String param
-    ) throws JSONException, ParseException {
+      // MultipartHttpServletRequest req
+    ) throws JSONException, ParseException, IOException {
       CustomResponseData result = new CustomResponseData();
       JsonObject jsonObject = (JsonObject) JsonParser.parseString(param).getAsJsonObject();
-      // log.debug("param: {}", jsonObject.toString());
+      // log.debug("param: {}", param.toString());
+      // log.debug("jsonObject: {}", jsonObject.toString());
+
+      // log.debug("req1: {}", req.getParameter("companyName"));
+      // MultipartFile file1 = req.getFile("companyRegisterCerti");
+      // MultipartFile file2 = req.getFile("comapnyProfileImage");
+      // MultipartFile file3 = req.getFile("comapnyCerti");
+      // // List<MultipartFile> files3 = req.getFiles("companyCerti");
       
       Companys entity = new Companys();
-        entity.setCompanysCeoIdx(jsonObject.get("companysCeoIdx").getAsLong());
+        // @RequestBody String param JSON으로 받는 방식 파일처리 하는방법을 못 찾아서 이 방식은 보류
+        entity.setCompanysCeoIdx(Long.parseLong(jsonObject.get("companysCeoIdx").getAsString()));
         entity.setCompanysCeoName(jsonObject.get("companysCeoName").getAsString());
-        entity.setCompanysName(jsonObject.get("companysName").getAsString());
-        entity.setCompanysComment(jsonObject.get("companysComment").getAsString());
+        entity.setCompanysName(jsonObject.get("companyName").getAsString());
+        entity.setCompanysComment(jsonObject.get("companyComment").getAsString());
         entity.setCompanysSpec(jsonObject.get("companysSpec").getAsString());
         // entity.setCompanysPhone(jsonObject.get("companysPhone").getAsString());
-        entity.setCompanysRegion1(jsonObject.get("companysRegion1").getAsString());
-        entity.setCompanysRegion2(jsonObject.get("companysRegion2").getAsString());
-        entity.setCompanysRegion3(jsonObject.get("companysRegion3").getAsString());
-        entity.setCompanysRegistCerti(jsonObject.get("companysRegistCerti").getAsString());
-        entity.setCompanysProfileImage(jsonObject.get("companysProfileImage").getAsString());
-        entity.setCompanysBankName(jsonObject.get("companysBankName").getAsString());
-        entity.setCompanysBankNumber(jsonObject.get("companysBankNumber").getAsString());
+        entity.setCompanysRegion1(jsonObject.get("companyRegion1").getAsString());
+        entity.setCompanysRegion2(jsonObject.get("companyRegion2").getAsString());
+        entity.setCompanysRegion3(jsonObject.get("companyRegion3").getAsString());
+        // entity.setCompanysRegistCerti(jsonObject.get("companyRegistCerti").getAsString());
+        // entity.setCompanysProfileImage(jsonObject.get("companyProfileImage").getAsString());
+        entity.setCompanysBankName(jsonObject.get("companyBankName").getAsString());
+        entity.setCompanysBankNumber(jsonObject.get("companyBankNumber").getAsString());
+
+        // entity.setCompanysCeoIdx(Long.parseLong(req.getParameter("companysCeoIdx")));
+        // entity.setCompanysCeoName(req.getParameter("companysCeoName"));
+        // entity.setCompanysName(req.getParameter("companyName"));
+        // entity.setCompanysComment(req.getParameter("companyComment"));
+        // entity.setCompanysSpec(req.getParameter("companysSpec"));
+        // // entity.setCompanysPhone(jsonObject.get("companysPhone").getAsString());
+        // entity.setCompanysRegion1(req.getParameter("companyRegion1"));
+        // entity.setCompanysRegion2(req.getParameter("companyRegion2"));
+        // entity.setCompanysRegion3(req.getParameter("companyRegion3"));
+        // entity.setCompanysRegistCerti(file1.getOriginalFilename());
+        // if(file2 != null) {
+        //   entity.setCompanysProfileImage(file2.getOriginalFilename());
+        // }
+        // entity.setCompanysBankName(req.getParameter("companyBankName"));
+        // entity.setCompanysBankNumber(req.getParameter("companyBankNumber"));        
         
+        log.debug("entity: {}", entity.toString());
       Companys step1 = companysService.save(entity);
 
       CompanysLicense entity2 = new CompanysLicense();
@@ -88,21 +119,24 @@ public class CompanysController {
       CompanysActiveRegion entity4 = new CompanysActiveRegion();
       CompanysMember entity5 = new CompanysMember();
       
-      log.debug("step1: {}", step1.toString());
+      // log.debug("step1: {}", step1.toString());
       if(step1 != null) {
         Long companysIdx = step1.getCompanysIdx();
 
-        JsonArray companyLicenses = jsonObject.get("companysLicense").getAsJsonArray();
-        log.debug("companysIdx {} 가 보유중인 자격증명 {}", companysIdx, companyLicenses.toString());
-        for(int i = 0; i < companyLicenses.size(); i++) {
-          String companysLicenseValue = companyLicenses.get(i).getAsString();
-          entity2.setCompanysIdx(companysIdx);
-          entity2.setCompanysLicenseName("companysLicenseName");
-          entity2.setCompanysLicenseValue(companysLicenseValue);
-          entity2.setInsertDate(LocalDateTime.now());
-          companysLicenseRepository.insertCompanysLicense(entity2);          
+        if(jsonObject.get("companysLicense").getAsJsonArray() != null) {
+          JsonArray companyLicenses = jsonObject.get("companysLicense").getAsJsonArray();
+          log.debug("companysIdx {} 가 보유중인 자격증명 {}", companysIdx, companyLicenses.toString());
+          if(companyLicenses.size() > 0) {
+            for(int i = 0; i < companyLicenses.size(); i++) {
+              String companysLicenseValue = companyLicenses.get(i).getAsString();
+              entity2.setCompanysIdx(companysIdx);
+              entity2.setCompanysLicenseName("companysLicenseName");
+              entity2.setCompanysLicenseValue(companysLicenseValue);
+              entity2.setInsertDate(LocalDateTime.now());
+              companysLicenseRepository.insertCompanysLicense(entity2);          
+            }
+          }
         }
-
         JsonArray companysCategoryValues = jsonObject.get("companysCategory").getAsJsonArray();
         log.debug("companysIdx {} 의 활동 분야 {}",companysIdx, companysCategoryValues.toString());
         for(int i = 0; i < companysCategoryValues.size(); i++) {
