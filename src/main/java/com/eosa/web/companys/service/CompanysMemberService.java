@@ -26,6 +26,11 @@ public class CompanysMemberService implements CompanysMemberRepository {
     }
 
     @Override
+    public int insertCompanysMember(CompanysMember entity) {
+        return companysMemberRepository.insertCompanysMember(entity);
+    }
+
+    @Override
     public List<CompanysMember> findAll() {
         // TODO Auto-generated method stub
         return null;
@@ -199,5 +204,5 @@ public class CompanysMemberService implements CompanysMemberRepository {
         // TODO Auto-generated method stub
         return null;
     }
-    
+
 }

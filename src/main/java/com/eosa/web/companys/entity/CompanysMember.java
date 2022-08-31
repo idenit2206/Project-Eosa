@@ -23,7 +23,7 @@ public class CompanysMember {
     Long idx;
 
     @Column Long usersIdx;
-    @Column Long companysIdx;
+    @Column(name="companysIdx") Long companysIdx;
     @Column LocalDateTime registDate;
     @Column int statusValue;
 

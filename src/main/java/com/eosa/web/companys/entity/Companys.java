@@ -55,7 +55,7 @@ public class Companys {
     @Column(nullable=false, length=255)
     private String companysRegistCerti;
 
-    @Column(nullable=true)
+    @Column(nullable=true, length=255)
     private String companysProfileImage;
 
     @Column private String companysBankName;
@@ -83,16 +83,16 @@ public class Companys {
     // @JoinColumn(name="usersIdx")
     // private Users2 users;
 
-    @OneToMany(mappedBy="companys")
-    private List<CompanysCategory> companysCategory = new ArrayList<>();
-
-    @OneToMany(mappedBy="companys")
-    private List<CompanysActiveRegion> companysActiveRegion = new ArrayList<>();
-
-    @OneToMany(mappedBy="companys")
-    private List<CompanysLicense> companysLicense = new ArrayList<>();
-
-    @OneToMany(mappedBy="companys")
-    private List<CompanysMember> companysMembers = new ArrayList<>();
+//    @OneToMany(mappedBy="companys")
+//    private List<CompanysCategory> companysCategory = new ArrayList<>();
+//
+//    @OneToMany(mappedBy="companys")
+//    private List<CompanysActiveRegion> companysActiveRegion = new ArrayList<>();
+//
+//    @OneToMany(mappedBy="companys")
+//    private List<CompanysLicense> companysLicense = new ArrayList<>();
+//
+//    @OneToMany(mappedBy="companys")
+//    private List<CompanysMember> companysMembers = new ArrayList<>();
 
 }

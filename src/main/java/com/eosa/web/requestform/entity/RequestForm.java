@@ -23,20 +23,17 @@ public class RequestForm {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long requestFormIdx;
 
-    @Column(nullable=false)
-    private Long usersIdx;
+    @Column(nullable=false) private Long usersIdx;
 
-    @Column(nullable=false)
-    private Long companysIdx;
+    @Column(nullable=false) private Long companysIdx;
 
-    @Column(nullable=false)
-    private String requestFormRegion1;
+    @Column(nullable=false) private String requestFormRegion1;
 
-    @Column(nullable=false)
-    private String requestFormRegion2;
+    @Column(nullable=false) private String requestFormRegion2;
 
-    @Column(nullable=false)
-    private String requestFormStatus;
+    @Column(nullable=false) private String requestFormChannel;
+
+    @Column(nullable=false) private String requestFormStatus;
 
     @Column(nullable=true) private LocalDateTime requestConsultDate;    
     @Column(nullable=true) private LocalDateTime requestFormDate;
@@ -44,6 +41,6 @@ public class RequestForm {
     @Column(nullable=true) private LocalDateTime requestFormCompDate;
     @Column(nullable=true) private String requestFormRejectMessage;
 
-    @OneToMany(mappedBy = "requestForm")
-    private List<RequestFormCategory> requestFormCategory = new ArrayList<>();
+//    @OneToMany(mappedBy = "requestForm")
+//    private List<RequestFormCategory> requestFormCategory = new ArrayList<>();
 }

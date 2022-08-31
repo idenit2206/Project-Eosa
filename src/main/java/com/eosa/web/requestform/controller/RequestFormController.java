@@ -11,12 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.eosa.security.CustomPrincipalDetails;
 import com.eosa.web.requestform.entity.RequestForm;
@@ -52,34 +47,38 @@ public class RequestFormController {
      */
     @PostMapping("/requestFormRegister")
     public CustomResponseData requestFormRegister(
-        @RequestBody String param
+          @RequestPart("RequestForm") RequestForm param,
+          @RequestPart("RequestFormCategory") List<String> requestFormCategory
     )throws JSONException, ParseException {
         CustomResponseData result = new CustomResponseData();
-        JsonObject jsonObject = JsonParser.parseString(param).getAsJsonObject();
-        log.debug("param: {}", jsonObject.toString());
+        log.debug(param.toString());
+        log.debug(requestFormCategory.toString());
 
         RequestForm entity = new RequestForm();
-            entity.setUsersIdx(jsonObject.get("usersIdx").getAsLong());
-            entity.setCompanysIdx(jsonObject.get("companysIdx").getAsLong());
-            entity.setRequestFormRegion1(jsonObject.get("requestFormRegion1").getAsString());
-            entity.setRequestFormRegion2(jsonObject.get("requestFormRegion2").getAsString());
+            entity.setUsersIdx(param.getUsersIdx());
+            entity.setCompanysIdx(param.getCompanysIdx());
+            entity.setRequestFormRegion1(param.getRequestFormRegion1());
+            entity.setRequestFormRegion2(param.getRequestFormRegion2());
+            entity.setRequestFormChannel("의뢰");
             entity.setRequestFormStatus("의뢰대기");
             entity.setRequestFormDate(LocalDateTime.now());
         RequestForm step1 = requestFormService.save(entity);
-        // log.debug("step1: {}", step1.toString());
+        log.debug("step1: {}", step1.toString());
 
         if(step1 != null) {
             Long requestFormIdx = step1.getRequestFormIdx();
-            JsonArray requestFormCategorys = jsonObject.get("requestFormCategory").getAsJsonArray();  
-            for(int i = 0; i < requestFormCategorys.size(); i++) {
+            for(int i = 0; i < requestFormCategory.size(); i++) {
                 RequestFormCategory entity2 = new RequestFormCategory();
-                String requestFormCategoryValue = requestFormCategorys.get(i).getAsString();
+                String requestFormCategoryValue = requestFormCategory.get(i);
                 log.debug("String: {}", requestFormCategoryValue);
                 entity2.setRequestFormIdx(requestFormIdx);
                 entity2.setRequestFormCategoryValue(requestFormCategoryValue);
                 int step2 = requestFormCategoryRepository.insertRequestFormCategory(entity2);
             }
-        } 
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem("SUCCESS");
+            result.setResponseDateTime(LocalDateTime.now());
+        }
 
         return result;
     }
