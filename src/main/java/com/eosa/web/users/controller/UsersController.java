@@ -6,7 +6,9 @@ import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.mail.internet.InternetAddress;
 import javax.servlet.ServletException;
@@ -18,6 +20,7 @@ import org.apache.tomcat.util.json.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -45,6 +48,11 @@ import com.google.gson.JsonParser;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
+import net.nurigo.sdk.NurigoApp;
+import net.nurigo.sdk.message.model.Message;
+import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
+import net.nurigo.sdk.message.response.SingleMessageSentResponse;
+import net.nurigo.sdk.message.service.DefaultMessageService;
 
 
 @Slf4j
@@ -54,6 +62,11 @@ public class UsersController {
  
     private NullCheck nullCheck = new NullCheck();
     private String myHostName = new InternetAddress().getAddress();
+    
+    final DefaultMessageService messageService;
+    public UsersController() {
+        this.messageService = NurigoApp.INSTANCE.initialize("NCSVBBUZQHJ2IJW8", "SL2MVRXGWZB7KQODM6XHMLZSPMQFDWZP", "https://api.coolsms.co.kr");
+    }
 
     @Autowired private UsersService usersService;
     @Value("${my.service.domain}") private String myDomain;
@@ -63,6 +76,56 @@ public class UsersController {
         // String hostAddress = InetAddress.getLocalHost().getHostAddress();
         // return hostAddress + "/api/user/test01";
         return myDomain; 
+    }
+
+    private static Map<String, String> mobileCheckKeyList = new HashMap<>();
+
+    // @PostMapping(value="/sign/sendPhoneCheckMessage")
+    // public SingleMessageSentResponse sendOne(@RequestParam("usersPhone") String usersPhone) {
+    //     Message message = new Message();
+    //     String passKey = "";
+    //     while(passKey.length() <= 5) {
+    //         passKey += String.valueOf((int) Math.floor(Math.random() * 9));
+    //     }
+    //     mobileCheckKeyList.put(usersPhone, passKey);
+
+    //     // 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
+    //     message.setFrom("01071899972");
+    //     message.setTo(usersPhone);
+    //     message.setText("어사 회원가입 핸드폰 인증 단계입니다.\n다음의 번호를 입력해주세요.\n"+passKey);
+
+    //     SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+    //     System.out.println(response);
+    //     passKey = "";
+
+    //     return response;
+    // }
+    @PostMapping(value="/sign/sendPhoneCheckMessage")
+    public String sendOne(@RequestParam("usersPhone") String usersPhone) {
+        // Message message = new Message();
+        String passKey = "";
+        while(passKey.length() <= 5) {
+            passKey += String.valueOf((int) Math.floor(Math.random() * 9));
+        }
+        mobileCheckKeyList.put(usersPhone, passKey);
+
+        // 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
+        // message.setFrom("01071899972");
+        // message.setTo(usersPhone);
+        // message.setText("어사 회원가입 핸드폰 인증 단계입니다.\n다음의 번호를 입력해주세요.\n"+passKey);
+        log.debug("수신 번호: {}", usersPhone);
+        log.debug("어사 회원가입 핸드폰 인증 단계입니다.\n다음의 번호를 입력해주세요.\n{}", passKey);
+        
+        passKey = "";
+
+        return passKey;
+    }
+
+    @PostMapping(value="/sign/checkMyPhone")
+    public CustomResponseData checkMyPhone(@RequestParam("passKey")String passKey) {
+        CustomResponseData result = new CustomResponseData();
+
+        return result;
     }
 
     /**

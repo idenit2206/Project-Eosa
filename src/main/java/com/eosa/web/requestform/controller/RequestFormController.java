@@ -110,15 +110,20 @@ public class RequestFormController {
         return result;
     }
 
-    @GetMapping("/findByDetectiveIdx")
-    public CustomResponseData findByDetectiveIdx(
-        @RequestParam("detectiveIdx") Long detectiveidx
+    /**
+     * companysIdx와 일치하는 업체의 의뢰내역 조회
+     * @param companysIdx
+     * @return List<RequestForm>
+     */
+    @GetMapping("/findByCompanysIdx")
+    public CustomResponseData findByCompanysIdx(
+        @RequestParam("companysIdx") String companysIdx
     ) {
         CustomResponseData result = new CustomResponseData();
         
         Map<String, Object> items = new HashMap<>();
 
-        List<RequestForm> list = requestFormService.findByDetectiveIdx(detectiveidx);
+        List<SelectRequestFormList> list = requestFormService.findByCompanysIdxIdx(Long.parseLong(companysIdx));
 
         if(list != null) {
             items.put("item", list);

@@ -38,6 +38,11 @@ public class RequestFormService implements RequestFormRepository {
     }
 
     @Override
+    public List<SelectRequestFormList> findByCompanysIdxIdx(Long companysIdx) {
+        return requestFormRepository.findByCompanysIdxIdx(companysIdx);
+    }
+
+    @Override
     public List<RequestForm> findAll() {
         return requestFormRepository.findAll();
     }
@@ -50,11 +55,6 @@ public class RequestFormService implements RequestFormRepository {
     @Override
     public List<SelectRequestFormList> selectAllRequestFormListByUsersIdx(Long usersIdx) {
         return requestFormRepository.selectAllRequestFormListByUsersIdx(usersIdx);
-    }
-
-    @Override
-    public List<RequestForm> findByDetectiveIdx(Long detectiveidx) {
-        return requestFormRepository.findByDetectiveIdx(detectiveidx);
     }
 
     @Override
