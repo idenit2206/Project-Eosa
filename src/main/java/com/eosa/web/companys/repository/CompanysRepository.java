@@ -6,6 +6,7 @@ import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.eosa.web.companys.entity.Companys;
@@ -14,6 +15,25 @@ import com.eosa.web.companys.entity.SelectCompanyInfoByUsersIdx;
 
 @Repository
 public interface CompanysRepository extends JpaRepository<Companys, Long> {
+
+    @Transactional
+    @Modifying
+    @Query(value=
+            "UPDATE Companys " +
+                    "SET companysRegistCerti = :file1Name " +
+                    "WHERE companysIdx = :companysIdx",
+            nativeQuery = true
+    )
+    int updateRegistCerti(@Param("companysIdx") Long companysIdx, @Param("file1Name") String file1Name);
+    @Transactional
+    @Modifying
+    @Query(value=
+        "UPDATE Companys " +
+        "SET companysRegistCerti = :file1Name, companysProfileImage = :file3Name " +
+        "WHERE companysIdx = :companysIdx",
+        nativeQuery = true
+    )
+    int updateRegistCertiAndProfileImage(@Param("companysIdx") Long companysIdx, @Param("file1Name") String file1Name, @Param("file3Name") String file3Name);
 
     @Query(value=
             "SELECT Companys.companysIdx FROM Companys " +

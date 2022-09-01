@@ -35,6 +35,15 @@ public class CompanysService implements CompanysRepository {
     }
 
     @Override
+    public int updateRegistCerti(Long companysIdx, String file1Name) {
+        return companysRepository.updateRegistCerti(companysIdx, file1Name);
+    }
+    @Override
+    public int updateRegistCertiAndProfileImage(Long companysIdx, String file1Name, String file3Name) {
+        return companysRepository.updateRegistCertiAndProfileImage(companysIdx, file1Name, file3Name);
+    }
+
+    @Override
     public List<String> selectAllCategory() {
         return companysRepository.selectAllCategory();
     }

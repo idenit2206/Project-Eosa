@@ -13,7 +13,6 @@ import java.util.Map;
 
 import com.eosa.web.companys.service.CompanysMemberService;
 import com.eosa.web.util.file.AwsS3Service;
-import com.eosa.web.util.file.FileService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,8 +89,7 @@ public class CompanysController {
           log.debug("params: {}", params.toString());
           log.debug("{}, {}", companysCategory.toString(), companysActiveRegions.toString());
           log.debug("file1: {}", file1.getOriginalFilename());
-
-          String file1Name = awsS3Service.uploadRegistCertiFile(file1, params.getCompanysCeoIdx());
+//          log.debug("file3: {}", file3.getOriginalFilename());
 
       Companys entity = new Companys();
 //        // @RequestBody String param JSON으로 받는 방식 파일처리 하는방법을 못 찾아서 이 방식은 보류
@@ -122,62 +120,71 @@ public class CompanysController {
             entity.setCompanysRegion1(params.getCompanysRegion1());
             entity.setCompanysRegion2(params.getCompanysRegion2());
             entity.setCompanysRegion3(params.getCompanysRegion3());
-//            entity.setCompanysRegistCerti(file1Name);
-//            if(file3 != null) { entity.setCompanysProfileImage(file3.getOriginalFilename()); }
             entity.setCompanysBankName(params.getCompanysBankName());
             entity.setCompanysBankNumber(params.getCompanysBankNumber());
             log.debug("entity: {}", entity.toString());
 
-//      Companys step1 = companysService.save(entity);
-//      log.debug("step1: {}", step1.toString());
-//
-//      CompanysLicense entity2 = new CompanysLicense();
-//      CompanysCategory entity3 = new CompanysCategory();
-//      CompanysActiveRegion entity4 = new CompanysActiveRegion();
-//      CompanysMember entity5 = new CompanysMember();
-//
-//       log.debug("step1: {}", step1.toString());
-//      if(step1 != null) {
-//        Long companysIdx = step1.getCompanysIdx();
-//        if(file2 != null) {
-//          log.debug("companysIdx {} 가 보유중인 자격증명 {}", companysIdx, file2.toString());
-//            for(int i = 0; i < file2.size(); i++) {
-//              String companysLicenseValue = file2.get(i).getOriginalFilename();
-//              entity2.setCompanysIdx(companysIdx);
-//              entity2.setCompanysLicenseName("companysLicenseName");
-//              entity2.setCompanysLicenseValue(companysLicenseValue);
-//              entity2.setInsertDate(LocalDateTime.now());
-//              companysLicenseRepository.insertCompanysLicense(entity2);
-//            }
-//          }
-//
-//        log.debug("companysIdx {} 의 활동 분야 {}",companysIdx, companysCategory.toString());
-//        for(int i = 0; i < companysCategory.size(); i++) {
-//          String companysCategoryValue = companysCategory.get(i);
-//          // log.debug("companysIdx: {} 의 활동 분야 {}", companysIdx, companysCategoryValue);
-//          entity3.setCompanysIdx(companysIdx);
-//          entity3.setCompanysCategoryValue(companysCategoryValue);
-//          // log.debug("entity3: {}", entity3.toString());
-//          companysCategoryService.insertCompanysCategory(entity3);
-//        }
-//        log.debug("companysIdx {} 의 활동 지역 {}",companysIdx, companysActiveRegions.toString());
-//        for(int i = 0; i < companysActiveRegions.size(); i++) {
-//          String companysActiveRegion = companysActiveRegions.get(i);
-//          entity4.setCompanysIdx(companysIdx);
-//          entity4.setActiveRegion(companysActiveRegion);
-//          companysActiveRegionService.insertCompanysActiveRegion(entity4);
-//        }
-//
-//        entity5.setUsersIdx(step1.getCompanysCeoIdx());
-//        entity5.setCompanysIdx(companysIdx);
-//        entity5.setStatusValue(1);
-//        entity5.setRegistDate(LocalDateTime.now());
-//        companysMemberService.insertCompanysMember(entity5);
-//
-//        result.setStatusCode(HttpStatus.OK.value());
-//        result.setResultItem("resultItem");
-//        result.setResponseDateTime(LocalDateTime.now());
-//      }
+      Companys step1 = companysService.save(entity);
+      log.debug("step1: {}", step1.toString());
+
+      if(file3 != null) {
+          String file1Name = awsS3Service.uploadSingleFile(file1,"registcerti", step1.getCompanysIdx());
+          String file3Name = awsS3Service.uploadSingleFile(file3, "profileimage", step1.getCompanysIdx());
+          int step1b = companysService.updateRegistCertiAndProfileImage(step1.getCompanysIdx(), file1Name, file3Name);
+      }
+      if(file3 == null) {
+          log.debug("{}, {}", file1.getOriginalFilename(), step1.getCompanysIdx());
+          String file1Name = awsS3Service.uploadSingleFile(file1,"registcerti", step1.getCompanysIdx());
+          int step1b = companysService.updateRegistCerti(step1.getCompanysIdx(), file1Name);
+      }
+
+      CompanysLicense entity2 = new CompanysLicense();
+      CompanysCategory entity3 = new CompanysCategory();
+      CompanysActiveRegion entity4 = new CompanysActiveRegion();
+      CompanysMember entity5 = new CompanysMember();
+
+       log.debug("step1: {}", step1.toString());
+      if(step1 != null) {
+        Long companysIdx = step1.getCompanysIdx();
+        if(file2 != null) {
+          log.debug("companysIdx {} 가 보유중인 자격증명 {}", companysIdx, file2.toString());
+            for(int i = 0; i < file2.size(); i++) {
+              String companysLicenseValue = file2.get(i).getOriginalFilename();
+              entity2.setCompanysIdx(companysIdx);
+              entity2.setCompanysLicenseName("companysLicenseName");
+              entity2.setCompanysLicenseValue(companysLicenseValue);
+              entity2.setInsertDate(LocalDateTime.now());
+              companysLicenseRepository.insertCompanysLicense(entity2);
+            }
+          }
+
+        log.debug("companysIdx {} 의 활동 분야 {}",companysIdx, companysCategory.toString());
+        for(int i = 0; i < companysCategory.size(); i++) {
+          String companysCategoryValue = companysCategory.get(i);
+          // log.debug("companysIdx: {} 의 활동 분야 {}", companysIdx, companysCategoryValue);
+          entity3.setCompanysIdx(companysIdx);
+          entity3.setCompanysCategoryValue(companysCategoryValue);
+          // log.debug("entity3: {}", entity3.toString());
+          companysCategoryService.insertCompanysCategory(entity3);
+        }
+        log.debug("companysIdx {} 의 활동 지역 {}",companysIdx, companysActiveRegions.toString());
+        for(int i = 0; i < companysActiveRegions.size(); i++) {
+          String companysActiveRegion = companysActiveRegions.get(i);
+          entity4.setCompanysIdx(companysIdx);
+          entity4.setActiveRegion(companysActiveRegion);
+          companysActiveRegionService.insertCompanysActiveRegion(entity4);
+        }
+
+        entity5.setUsersIdx(step1.getCompanysCeoIdx());
+        entity5.setCompanysIdx(companysIdx);
+        entity5.setStatusValue(1);
+        entity5.setRegistDate(LocalDateTime.now());
+        companysMemberService.insertCompanysMember(entity5);
+
+        result.setStatusCode(HttpStatus.OK.value());
+        result.setResultItem("resultItem");
+        result.setResponseDateTime(LocalDateTime.now());
+      }
       return result;
     }
 
