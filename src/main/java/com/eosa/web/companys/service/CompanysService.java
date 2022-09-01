@@ -73,8 +73,8 @@ public class CompanysService implements CompanysRepository {
     }
 
     @Override
-    public Long selectCompanysCeoIdxByUsersIdx(Long usersIdx) {
-        return companysRepository.selectCompanysCeoIdxByUsersIdx(usersIdx);
+    public Long selectCompanysIdxByUsersIdx(Long usersIdx) {
+        return companysRepository.selectCompanysIdxByUsersIdx(usersIdx);
     }
 
     public int findByCompanysIdx(Long companysIdx) {

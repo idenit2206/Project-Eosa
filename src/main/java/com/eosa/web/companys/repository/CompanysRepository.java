@@ -16,11 +16,11 @@ import com.eosa.web.companys.entity.SelectCompanyInfoByUsersIdx;
 public interface CompanysRepository extends JpaRepository<Companys, Long> {
 
     @Query(value=
-            "SELECT Companys.companysCeoIdx FROM Companys " +
+            "SELECT Companys.companysIdx FROM Companys " +
             "WHERE Companys.companysCeoIdx = ?1",
             nativeQuery=true
     )
-    Long selectCompanysCeoIdxByUsersIdx(Long usersIdx);
+    Long selectCompanysIdxByUsersIdx(Long usersIdx);
 
     @Query(
         value="SELECT 1 FROM Companys WHERE companysIdx = ?1",

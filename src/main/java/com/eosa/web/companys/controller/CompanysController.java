@@ -239,13 +239,13 @@ public class CompanysController {
       return result;
     }
 
-    @GetMapping("/selectCompanysCeoIdxByUsersIdx")
-    public CustomResponseData selectCompanysCeoIdxByUsersIdx(
+    @GetMapping("/selectCompanysIdxByUsersIdx")
+    public CustomResponseData selectCompanysIdxByUsersIdx(
             @RequestParam("usersIdx") String usersIdx)
     {
         CustomResponseData result = new CustomResponseData();
 
-        String item = String.valueOf(companysService.selectCompanysCeoIdxByUsersIdx(Long.parseLong(usersIdx)));
+        String item = String.valueOf(companysService.selectCompanysIdxByUsersIdx(Long.parseLong(usersIdx)));
         if(item != null) {
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem(item);
