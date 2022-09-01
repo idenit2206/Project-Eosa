@@ -15,6 +15,13 @@ import com.eosa.web.companys.entity.SelectCompanyInfoByUsersIdx;
 @Repository
 public interface CompanysRepository extends JpaRepository<Companys, Long> {
 
+    @Query(value=
+            "SELECT Companys.companysCeoIdx FROM Companys " +
+            "WHERE Companys.companysCeoIdx = ?1",
+            nativeQuery=true
+    )
+    Long selectCompanysCeoIdxByUsersIdx(Long usersIdx);
+
     @Query(
         value="SELECT 1 FROM Companys WHERE companysIdx = ?1",
         nativeQuery=true
@@ -37,6 +44,10 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
     // ")", nativeQuery=true)
     // int insertCompanys(Companys entity);
 
+    /**
+     * 모든 업체정보를 목록으로 출력
+     * @return
+     */
     @Query(
         value="SELECT " + 
         "Companys.companysIdx, Companys.companysName, Companys.companysCeoIdx, Companys.companysCeoName, " +

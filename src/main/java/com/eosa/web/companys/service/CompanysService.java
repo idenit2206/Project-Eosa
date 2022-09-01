@@ -71,7 +71,12 @@ public class CompanysService implements CompanysRepository {
         // TODO Auto-generated method stub
         return null;
     }
-    
+
+    @Override
+    public Long selectCompanysCeoIdxByUsersIdx(Long usersIdx) {
+        return companysRepository.selectCompanysCeoIdxByUsersIdx(usersIdx);
+    }
+
     public int findByCompanysIdx(Long companysIdx) {
         return companysRepository.findByCompanysIdx(companysIdx);
     }

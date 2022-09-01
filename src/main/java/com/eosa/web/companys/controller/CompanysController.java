@@ -72,7 +72,6 @@ public class CompanysController {
     @Autowired private UsersRepository usersRepository;
     @Autowired private FileService fileService;
 
-
     @PostMapping("/insertCompanys")
     public CustomResponseData insertCompanys(
 //      @RequestBody String param
@@ -238,6 +237,27 @@ public class CompanysController {
         result.setResponseDateTime(LocalDateTime.now());
       }
       return result;
+    }
+
+    @GetMapping("/selectCompanysCeoIdxByUsersIdx")
+    public CustomResponseData selectCompanysCeoIdxByUsersIdx(
+            @RequestParam("usersIdx") String usersIdx)
+    {
+        CustomResponseData result = new CustomResponseData();
+
+        String item = String.valueOf(companysService.selectCompanysCeoIdxByUsersIdx(Long.parseLong(usersIdx)));
+        if(item != null) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(item);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            result.setResultItem("FALSE");
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
     }
 
 }
