@@ -56,6 +56,14 @@ public class RequestFormService implements RequestFormRepository {
     public List<SelectRequestFormList> selectAllRequestFormListByUsersIdx(Long usersIdx) {
         return requestFormRepository.selectAllRequestFormListByUsersIdx(usersIdx);
     }
+    @Override
+    public List<SelectRequestFormList> selectAllRequestFormListByUsersIdxOrderByDESC(Long usersIdx) {
+        return requestFormRepository.selectAllRequestFormListByUsersIdxOrderByDESC(usersIdx);
+    }
+    @Override
+    public List<SelectRequestFormList> selectAllRequestFormListByUsersIdxOrderByASC(Long usersIdx) {
+        return requestFormRepository.selectAllRequestFormListByUsersIdxOrderByASC(usersIdx);
+    }
 
     @Override
     public List<RequestForm> findAll(Sort sort) {

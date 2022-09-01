@@ -69,4 +69,34 @@ public interface RequestFormRepository extends JpaRepository<RequestForm, Long> 
     )
     List<SelectRequestFormList> selectAllRequestFormListByUsersIdx(Long usersIdx);
 
+    @Query(
+            value="SELECT " +
+                    "RequestForm.requestFormIdx, RequestForm.usersIdx, RequestForm.companysIdx, " +
+                    "RequestForm.requestFormRegion1, RequestForm.requestFormRegion2, " +
+                    "RequestForm.requestFormStatus, RequestForm.requestConsultDate, RequestForm.requestFormDate, " +
+                    "RequestForm.requestFormAcceptDate, RequestForm.requestFormCompDate, RequestForm.requestFormRejectMessage, " +
+                    "GROUP_CONCAT(RequestFormCategory.requestFormCategoryValue) AS requestFormCategory " +
+                    "FROM RequestForm INNER JOIN RequestFormCategory ON RequestForm.requestFormIdx = RequestFormCategory.requestFormIdx " +
+                    "WHERE usersIdx = ?1 " +
+                    "GROUP BY RequestForm.RequestFormIdx" +
+                    "ORDER BY RequestForm.requestFormDate DESC",
+            nativeQuery=true
+    )
+    List<SelectRequestFormList> selectAllRequestFormListByUsersIdxOrderByDESC(Long usersIdx);
+
+    @Query(
+            value="SELECT " +
+                    "RequestForm.requestFormIdx, RequestForm.usersIdx, RequestForm.companysIdx, " +
+                    "RequestForm.requestFormRegion1, RequestForm.requestFormRegion2, " +
+                    "RequestForm.requestFormStatus, RequestForm.requestConsultDate, RequestForm.requestFormDate, " +
+                    "RequestForm.requestFormAcceptDate, RequestForm.requestFormCompDate, RequestForm.requestFormRejectMessage, " +
+                    "GROUP_CONCAT(RequestFormCategory.requestFormCategoryValue) AS requestFormCategory " +
+                    "FROM RequestForm INNER JOIN RequestFormCategory ON RequestForm.requestFormIdx = RequestFormCategory.requestFormIdx " +
+                    "WHERE usersIdx = ?1 " +
+                    "GROUP BY RequestForm.RequestFormIdx" +
+                    "ORDER BY RequestForm.requestFormDate ASC",
+            nativeQuery=true
+    )
+    List<SelectRequestFormList> selectAllRequestFormListByUsersIdxOrderByASC(Long usersIdx);
+
 }

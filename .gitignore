@@ -8,6 +8,8 @@
 # Back-end
 logfile*.txt
 log*.log
+/logs
+*.gz
 
 # HELP.md
 *.sql

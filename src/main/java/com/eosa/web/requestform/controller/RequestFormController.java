@@ -166,4 +166,49 @@ public class RequestFormController {
         
         return result;
     }
+    @GetMapping("/selectAllRequestFormListByUsersIdxOrderByDESC")
+    public CustomResponseData selectAllRequestFormListByUsersIdxOrderByDESC(
+            @RequestParam("usersIdx") Long usersIdx
+    ) {
+        log.debug("usersIdx: {}", usersIdx);
+        CustomResponseData result = new CustomResponseData();
+        List<SelectRequestFormList> list = requestFormService.selectAllRequestFormListByUsersIdxOrderByDESC(usersIdx);
+
+        if(list.size() != 0) {
+            log.debug("Client List: {}", list.toString());
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(list);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
+    @GetMapping("/selectAllRequestFormListByUsersIdxOrderByASC")
+    public CustomResponseData selectAllRequestFormListByUsersIdxOrderByASC(
+            @RequestParam("usersIdx") Long usersIdx
+    ) {
+        log.debug("usersIdx: {}", usersIdx);
+        CustomResponseData result = new CustomResponseData();
+        List<SelectRequestFormList> list = requestFormService.selectAllRequestFormListByUsersIdxOrderByASC(usersIdx);
+
+        if(list.size() != 0) {
+            log.debug("Client List: {}", list.toString());
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(list);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
+
 }
