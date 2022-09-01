@@ -60,20 +60,14 @@ public class CustomPrincipalDetails implements UserDetails, OAuth2User {
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        String role = users.getUsersRole();
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role);
-        Collection<GrantedAuthority> authorities = new ArrayList<>(); //List인 이유 : 여러개의 권한을 가질 수 있다
-        authorities.add(authority);
-
-        return authorities;
-        // Collection<GrantedAuthority> auths = new ArrayList<>();
-        // auths.add(new GrantedAuthority() {
-        //     @Override
-        //     public String getAuthority() {
-        //         return users.getUsersRole();
-        //     }         
-        // });
-        // return auths;
+         Collection<GrantedAuthority> auths = new ArrayList<>();
+         auths.add(new GrantedAuthority() {
+             @Override
+             public String getAuthority() {
+                 return users.getUsersRole();
+             }
+         });
+         return auths;
     }
 
     public String customGetAuthorities() {

@@ -52,7 +52,7 @@ public class Companys {
     @Column(nullable=false, length=255)
     private String companysRegion3;
 
-    @Column(nullable=false, length=255)
+    @Column(nullable=true, length=255)
     private String companysRegistCerti;
 
     @Column(nullable=true, length=255)

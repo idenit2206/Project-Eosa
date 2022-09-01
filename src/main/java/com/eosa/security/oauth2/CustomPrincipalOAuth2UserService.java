@@ -52,6 +52,7 @@ public class CustomPrincipalOAuth2UserService extends DefaultOAuth2UserService {
             log.debug("CustomPrincipalOAuth2UserService.class [kakao]: {}", customOAuth2UserInfo.getProviderId());
         }
         else if(provider.equals("google")) {
+//            log.debug("google_userInfo: {}", oAuth2User.toString());
             platform = provider;
             providerId = oAuth2User.getAttribute("sub");
             usersEmail = oAuth2User.getAttribute("email").toString();
@@ -61,6 +62,7 @@ public class CustomPrincipalOAuth2UserService extends DefaultOAuth2UserService {
             // log.debug("# customOAuth2UserInfo[google]: {}", customOAuth2UserInfo);
         }
         else if(provider.equals("naver")) {
+//            log.debug("naver_userInfo: {}", oAuth2User.toString());
             Map<String, Object> response = oAuth2User.getAttribute("response");
             log.debug(response.toString());
             platform = provider;

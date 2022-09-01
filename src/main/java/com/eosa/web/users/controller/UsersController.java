@@ -354,9 +354,7 @@ public class UsersController {
         @AuthenticationPrincipal CustomPrincipalDetails principalUserDetails,
         HttpServletRequest request, HttpServletResponse response
     ) throws IOException {
-        String platform = principalUserDetails.getProvider();
-        String usersEmail = principalUserDetails.getUsername();
-        log.info("# {}의 {} 계정을 활용한 로그인에 실패했습니다,", usersEmail, platform);
+        log.info("# SNS 계정을 활용한 로그인에 실패했습니다,");
         response.sendRedirect("http://" + myDomain +":3000/");
         // response.setContentType("text/html; charset=UTF-8");
         // PrintWriter out = response.getWriter();
