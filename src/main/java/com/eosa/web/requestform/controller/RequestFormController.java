@@ -37,9 +37,6 @@ public class RequestFormController {
     @Autowired private RequestFormService requestFormService;
     @Autowired private RequestFormCategoryRepository requestFormCategoryRepository;
 
-    final int POST_COUNT = 10;
-    final int BLOCK_COUNT = 10;
-
     /**
      * 의뢰를 신청하는 메서드
      * @param param
@@ -141,8 +138,7 @@ public class RequestFormController {
     }
 
     /**
-     * CLIENT의 의뢰신청 내역 조회
-     * 
+     * CLIENT의 의뢰신청 내역 조회     *
      */
     @GetMapping("/selectAllRequestFormListByUsersIdx")
     public CustomResponseData selectAllRequestFormListByUsersIdx(
@@ -175,7 +171,7 @@ public class RequestFormController {
         List<SelectRequestFormList> list = requestFormService.selectAllRequestFormListByUsersIdxOrderByDESC(usersIdx);
 
         if(list.size() != 0) {
-            log.debug("Client List: {}", list.toString());
+//            log.debug("Client List: {}", list.toString());
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem(list);
             result.setResponseDateTime(LocalDateTime.now());
@@ -192,7 +188,7 @@ public class RequestFormController {
     public CustomResponseData selectAllRequestFormListByUsersIdxOrderByASC(
             @RequestParam("usersIdx") Long usersIdx
     ) {
-        log.debug("usersIdx: {}", usersIdx);
+//        log.debug("usersIdx: {}", usersIdx);
         CustomResponseData result = new CustomResponseData();
         List<SelectRequestFormList> list = requestFormService.selectAllRequestFormListByUsersIdxOrderByASC(usersIdx);
 

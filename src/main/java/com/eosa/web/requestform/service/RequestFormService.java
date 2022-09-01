@@ -20,8 +20,7 @@ import com.eosa.web.requestform.repository.RequestFormRepository;
 @Service
 public class RequestFormService implements RequestFormRepository {
 
-    @Autowired
-    private RequestFormRepository requestFormRepository;
+    @Autowired private RequestFormRepository requestFormRepository;
     
     @Override
     public <S extends RequestForm> S save(S entity) {

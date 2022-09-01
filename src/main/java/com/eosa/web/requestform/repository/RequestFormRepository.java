@@ -78,7 +78,7 @@ public interface RequestFormRepository extends JpaRepository<RequestForm, Long> 
                     "GROUP_CONCAT(RequestFormCategory.requestFormCategoryValue) AS requestFormCategory " +
                     "FROM RequestForm INNER JOIN RequestFormCategory ON RequestForm.requestFormIdx = RequestFormCategory.requestFormIdx " +
                     "WHERE usersIdx = ?1 " +
-                    "GROUP BY RequestForm.RequestFormIdx" +
+                    "GROUP BY RequestForm.RequestFormIdx " +
                     "ORDER BY RequestForm.requestFormDate DESC",
             nativeQuery=true
     )
@@ -93,7 +93,7 @@ public interface RequestFormRepository extends JpaRepository<RequestForm, Long> 
                     "GROUP_CONCAT(RequestFormCategory.requestFormCategoryValue) AS requestFormCategory " +
                     "FROM RequestForm INNER JOIN RequestFormCategory ON RequestForm.requestFormIdx = RequestFormCategory.requestFormIdx " +
                     "WHERE usersIdx = ?1 " +
-                    "GROUP BY RequestForm.RequestFormIdx" +
+                    "GROUP BY RequestForm.RequestFormIdx " +
                     "ORDER BY RequestForm.requestFormDate ASC",
             nativeQuery=true
     )
