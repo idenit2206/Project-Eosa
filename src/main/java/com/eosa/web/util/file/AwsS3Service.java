@@ -29,7 +29,7 @@ public class AwsS3Service {
 
 
     public String uploadSingleFile(MultipartFile file, String directoryName, Long companysIdx) {
-        String fileName = directoryName+"_"+"companysIdx_"+String.valueOf(companysIdx);
+        String fileName = directoryName+"_"+file.getOriginalFilename().substring(0,4)+"companysIdx_"+String.valueOf(companysIdx);
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentLength(file.getSize());
         objectMetadata.setContentType(file.getContentType());

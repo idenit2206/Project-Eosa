@@ -149,10 +149,10 @@ public class CompanysController {
         if(file2 != null) {
           log.debug("companysIdx {} 가 보유중인 자격증명 {}", companysIdx, file2.toString());
             for(int i = 0; i < file2.size(); i++) {
-              String companysLicenseValue = file2.get(i).getOriginalFilename();
+              String fileName = awsS3Service.uploadSingleFile(file2.get(i), "license", companysIdx);
               entity2.setCompanysIdx(companysIdx);
               entity2.setCompanysLicenseName("companysLicenseName");
-              entity2.setCompanysLicenseValue(companysLicenseValue);
+              entity2.setCompanysLicenseValue(fileName);
               entity2.setInsertDate(LocalDateTime.now());
               companysLicenseRepository.insertCompanysLicense(entity2);
             }
