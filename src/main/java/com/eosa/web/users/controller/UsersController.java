@@ -510,7 +510,8 @@ public class UsersController {
 
     /**
      * 회원 탈퇴를 요청하는 url입니다.
-     * @param usersIdx
+     * @param Long usersIdx
+     * @param String terminateReason 
      * @return
      */
     @Operation(summary="회원탈퇴", description="회원이 직접 서비스로부터 회원탈퇴를 신청합니다.")
