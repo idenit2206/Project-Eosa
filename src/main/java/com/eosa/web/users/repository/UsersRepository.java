@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.eosa.web.users.entity.FindByUsersAccountEntity;
 import com.eosa.web.users.entity.GetUsersInfoByUsersAccountEntity;
+import com.eosa.web.users.entity.TerminateUser;
 import com.eosa.web.users.entity.Users;
 
 @Repository

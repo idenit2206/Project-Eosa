@@ -1,14 +1,10 @@
 package com.eosa.web.users.controller;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.mail.internet.InternetAddress;
 import javax.servlet.ServletException;
@@ -20,11 +16,9 @@ import org.apache.tomcat.util.json.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +33,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.eosa.security.CustomPrincipalDetails;
 import com.eosa.web.users.entity.FindByUsersAccountEntity;
 import com.eosa.web.users.entity.GetUsersInfoByUsersAccountEntity;
+import com.eosa.web.users.entity.TerminateUser;
 import com.eosa.web.users.entity.Users;
+import com.eosa.web.users.service.TerminateUserService;
 import com.eosa.web.users.service.UsersService;
 import com.eosa.web.util.CustomResponseData;
 import com.eosa.web.util.NullCheck;
@@ -49,9 +45,6 @@ import com.google.gson.JsonParser;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import net.nurigo.sdk.NurigoApp;
-import net.nurigo.sdk.message.model.Message;
-import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
-import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
 
 
@@ -69,6 +62,8 @@ public class UsersController {
     }
 
     @Autowired private UsersService usersService;
+    @Autowired private TerminateUserService terminateUserService;
+
     @Value("${my.service.domain}") private String myDomain;
     @Value("${my.ui.port}") private String myUiPort;
 
@@ -520,25 +515,47 @@ public class UsersController {
      */
     @Operation(summary="회원탈퇴", description="회원이 직접 서비스로부터 회원탈퇴를 신청합니다.")
     @PutMapping("/deleteUserInfo")
-    public CustomResponseData deleteUserInfo(@Param("usersIdx") Long usersIdx) {
+    public CustomResponseData deleteUserInfo(
+        @Param("usersIdx") Long usersIdx,
+        @Param("terminateReason") String terminateReason
+    ) {
         CustomResponseData result = new CustomResponseData();
         Map<String, Object> item = new HashMap<>();
         LocalDateTime currentTime = LocalDateTime.now();        
        
         int transaction = usersService.deleteUserInfo(usersIdx);
-
         if(transaction == 1) {
-            result.setStatusCode(HttpStatus.OK.value());
-            item.put("message", "Success Delete Users idx=" + Long.valueOf(usersIdx));
-            result.setResultItem(item);
-            result.setResponseDateTime(currentTime);
+            TerminateUser entity = new TerminateUser();
+            entity.setUsersIdx(usersIdx);
+            entity.setTerminateReason(terminateReason);
+            TerminateUser step2 = terminateUserService.save(entity);
+            if(step2 != null) {
+                result.setStatusCode(HttpStatus.OK.value());
+                item.put("message", "회원탈퇴가 완료되었습니다. ");
+                result.setResultItem(item);
+                result.setResponseDateTime(currentTime);
+            }
         }
         else {
             result.setStatusCode(HttpStatus.BAD_REQUEST.value());
-            item.put("message", "Failure Delete Users idx=" + Long.valueOf(usersIdx) );
+            item.put("message", "회원탈퇴에 실패했습니다 사용자의 사용자번호 idx: " + String.valueOf(usersIdx) );
             result.setResultItem(item);
             result.setResponseDateTime(currentTime);
         }
+        
+
+        // if(transaction == 1) {
+        //     result.setStatusCode(HttpStatus.OK.value());
+        //     item.put("message", "Success Delete Users idx=" + Long.valueOf(usersIdx));
+        //     result.setResultItem(item);
+        //     result.setResponseDateTime(currentTime);
+        // }
+        // else {
+        //     result.setStatusCode(HttpStatus.BAD_REQUEST.value());
+        //     item.put("message", "Failure Delete Users idx=" + Long.valueOf(usersIdx) );
+        //     result.setResultItem(item);
+        //     result.setResponseDateTime(currentTime);
+        // }
         return result;
     }
 
