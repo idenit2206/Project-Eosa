@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import com.eosa.web.companys.entity.CompanysCategory;
 
+import java.util.List;
+
 @Repository
 public interface CompanysCategoryRepository extends JpaRepository<CompanysCategory, Long>{
     
@@ -22,5 +24,13 @@ public interface CompanysCategoryRepository extends JpaRepository<CompanysCatego
         nativeQuery=true
     )
     void insertCompanysCategory(@Param(value="CompanysCategory") CompanysCategory entity);
+
+    @Query(value="SELECT companysCategoryValue FROM CompanysCategory WHERE companysIdx = ?1", nativeQuery = true)
+    List<String> selectByCompanysIdx(Long companysIdx);
+
+    @Transactional
+    @Modifying
+    @Query(value="DELETE FROM CompanysCategory WHERE companysIdx = ?1", nativeQuery = true)
+    int deleteCategoryByCompanysIdx(Long companysIdx);
 
 }

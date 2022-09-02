@@ -31,6 +31,16 @@ public class CompanysActiveRegionService implements CompanysActiveRegionReposito
     }
 
     @Override
+    public List<String> selectByCompanysIdx(Long companysIdx) {
+        return companysActiveRegionRepository.selectByCompanysIdx(companysIdx);
+    }
+
+    @Override
+    public int deleteActiveRegionByCompanysIdx(Long companysIdx) {
+        return companysActiveRegionRepository.deleteActiveRegionByCompanysIdx(companysIdx);
+    }
+
+    @Override
     public List<CompanysActiveRegion> findAll() {
         // TODO Auto-generated method stub
         return null;

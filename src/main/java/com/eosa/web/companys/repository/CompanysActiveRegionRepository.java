@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import com.eosa.web.companys.entity.CompanysActiveRegion;
 
+import java.util.List;
+
 @Repository
 public interface CompanysActiveRegionRepository extends JpaRepository<CompanysActiveRegion, Long> {
 
@@ -22,5 +24,13 @@ public interface CompanysActiveRegionRepository extends JpaRepository<CompanysAc
         nativeQuery=true
     )
     void insertCompanysActiveRegion(@Param(value="CompanysActiveRegion") CompanysActiveRegion entity);
+
+    @Query(value="SELECT activeRegion FROM CompanysActiveRegion WHERE companysIdx = ?1", nativeQuery = true)
+    List<String> selectByCompanysIdx(Long companysIdx);
+
+    @Transactional
+    @Modifying
+    @Query(value="DELETE FROM CompanysActiveRegion WHERE companysIdx = ?1", nativeQuery = true)
+    int deleteActiveRegionByCompanysIdx(Long companysIdx);
     
 }

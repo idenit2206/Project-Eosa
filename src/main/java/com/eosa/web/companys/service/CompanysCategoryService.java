@@ -31,6 +31,16 @@ public class CompanysCategoryService implements CompanysCategoryRepository {
     }
 
     @Override
+    public List<String> selectByCompanysIdx(Long companysIdx) {
+        return companysCategoryRepository.selectByCompanysIdx(companysIdx);
+    }
+
+    @Override
+    public int deleteCategoryByCompanysIdx(Long companysIdx) {
+        return companysCategoryRepository.deleteCategoryByCompanysIdx(companysIdx);
+    }
+
+    @Override
     public List<CompanysCategory> findAll() {
         // TODO Auto-generated method stub
         return null;

@@ -20,11 +20,22 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
     @Modifying
     @Query(value=
             "UPDATE Companys " +
-                    "SET companysRegistCerti = :file1Name " +
+                    "SET companysRegistCerti = :file1URL " +
                     "WHERE companysIdx = :companysIdx",
             nativeQuery = true
     )
-    int updateRegistCerti(@Param("companysIdx") Long companysIdx, @Param("file1Name") String file1Name);
+    int updateRegistCerti(@Param("companysIdx") Long companysIdx, @Param("file1URL") String file1URL);
+
+    @Transactional
+    @Modifying
+    @Query(value=
+            "UPDATE Companys " +
+                    "SET companysLicense = :file2URL " +
+                    "WHERE companysIdx = :companysIdx",
+            nativeQuery = true
+    )
+    int updateLicense(@Param("companysIdx") Long companysIdx, @Param("file2URL") String file2URL);
+
     @Transactional
     @Modifying
     @Query(value=
@@ -41,6 +52,19 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
             nativeQuery=true
     )
     Long selectCompanysIdxByUsersIdx(Long usersIdx);
+
+    @Transactional
+    @Modifying
+    @Query(value=
+        "UPDATE Companys " +
+        "SET companysName = :#{#Companys.companysName}, companysComment = :#{#Companys.companysComment}, " +
+        "companysRegion1 = :#{#Companys.companysRegion1}, companysRegion2 = :#{#Companys.companysRegion2}, companysRegion3 = :#{#Companys.companysRegion3}, " +
+        "companysRegistCerti = :#{#Companys.companysRegistCerti}, companysProfileImage = :#{#Companys.companysProfileImage}, " +
+        "companysBankName = :#{#Companys.companysBankName}, companysBankNumber = :#{#Companys.companysBankNumber} " +
+        "WHERE companysIdx = :#{#Companys.companysIdx} ",
+        nativeQuery=true
+    )
+    int updateCompanys(@Param("Companys") Companys entity);
 
     @Query(
         value="SELECT 1 FROM Companys WHERE companysIdx = ?1",
@@ -81,21 +105,23 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
     )
     List<SelectAllCompanysList> selectAllCompanysList();
 
-    @Query(
-        value="SELECT " +
-        "Companys.companysIdx, Companys.companysName, " +
-        "Companys.companysComment, Companys.companysSpec, " +
-        "Companys.companysRegion1, Companys.companysRegion2, Companys.companysRegion3, " +
-        "Companys.companysRegistCerti, Companys.companysProfileImage, " +
-        "GROUP_CONCAT(DISTINCT CompanysCategory.companysCategoryValue) AS companysCategory, " +
-        "GROUP_CONCAT(DISTINCT CompanysActiveRegion.activeRegion) AS CompanysActiveRegion, " +
-        "GROUP_CONCAT(DISTINCT CompanysLicense.companysLicenseName) AS CompanysLicenseName "  +
-        "FROM Companys INNER JOIN CompanysCategory ON Companys.companysIdx = CompanysCategory.companysIdx " +
-        "INNER JOIN CompanysActiveRegion ON Companys.companysIdx = CompanysActiveRegion.companysIdx " +
-        "LEFT JOIN CompanysLicense ON Companys.companysIdx = CompanysLicense.companysIdx " +
-        "WHERE Companys.companysCeoIdx = ?1 " +
-        "GROUP BY Companys.companysIdx",
-        nativeQuery=true
-    )
-    SelectCompanyInfoByUsersIdx selectCompanyInfoByUsersIdx(Long companysCeoIdx);
+    @Query(value = "SELECT * FROM Companys WHERE companysCeoIdx = ?1", nativeQuery = true)
+    Companys selectCompanyInfoByUsersIdx(Long companysCeoIdx);
+//    @Query(
+//        value="SELECT " +
+//        "Companys.companysIdx, Companys.companysName, " +
+//        "Companys.companysComment, Companys.companysSpec, " +
+//        "Companys.companysRegion1, Companys.companysRegion2, Companys.companysRegion3, " +
+//        "Companys.companysRegistCerti, Companys.companysProfileImage, " +
+//        "GROUP_CONCAT(DISTINCT CompanysCategory.companysCategoryValue) AS companysCategory, " +
+//        "GROUP_CONCAT(DISTINCT CompanysActiveRegion.activeRegion) AS CompanysActiveRegion, " +
+//        "GROUP_CONCAT(DISTINCT CompanysLicense.companysLicenseName) AS CompanysLicenseName "  +
+//        "FROM Companys LEFT JOIN CompanysCategory ON Companys.companysIdx = CompanysCategory.companysIdx " +
+//        "LEFT JOIN CompanysActiveRegion ON Companys.companysIdx = CompanysActiveRegion.companysIdx " +
+//        "LEFT JOIN CompanysLicense ON Companys.companysIdx = CompanysLicense.companysIdx " +
+//        "WHERE Companys.companysCeoIdx = ?1 " +
+//        "GROUP BY Companys.companysIdx",
+//        nativeQuery=true
+//    )
+//    SelectCompanyInfoByUsersIdx selectCompanyInfoByUsersIdx(Long companysCeoIdx);
 }

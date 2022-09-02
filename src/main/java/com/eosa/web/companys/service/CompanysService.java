@@ -35,12 +35,18 @@ public class CompanysService implements CompanysRepository {
     }
 
     @Override
+    public int updateRegistCertiAndProfileImage(Long companysIdx, String file1Name, String file3Name) {
+        return companysRepository.updateRegistCertiAndProfileImage(companysIdx, file1Name, file3Name);
+    }
+
+    @Override
     public int updateRegistCerti(Long companysIdx, String file1Name) {
         return companysRepository.updateRegistCerti(companysIdx, file1Name);
     }
+
     @Override
-    public int updateRegistCertiAndProfileImage(Long companysIdx, String file1Name, String file3Name) {
-        return companysRepository.updateRegistCertiAndProfileImage(companysIdx, file1Name, file3Name);
+    public int updateLicense(Long companysIdx, String file2URL) {
+        return companysRepository.updateLicense(companysIdx, file2URL);
     }
 
     @Override
@@ -59,9 +65,14 @@ public class CompanysService implements CompanysRepository {
     }
 
     @Override
-    public SelectCompanyInfoByUsersIdx selectCompanyInfoByUsersIdx(Long usersIdx) {
+    public Companys selectCompanyInfoByUsersIdx(Long usersIdx) {
         return companysRepository.selectCompanyInfoByUsersIdx(usersIdx);
     }
+
+//    @Override
+//    public SelectCompanyInfoByUsersIdx selectCompanyInfoByUsersIdx(Long usersIdx) {
+//        return companysRepository.selectCompanyInfoByUsersIdx(usersIdx);
+//    }
 
     @Override
     public List<Companys> findAll() {
@@ -84,6 +95,11 @@ public class CompanysService implements CompanysRepository {
     @Override
     public Long selectCompanysIdxByUsersIdx(Long usersIdx) {
         return companysRepository.selectCompanysIdxByUsersIdx(usersIdx);
+    }
+
+    @Override
+    public int updateCompanys(Companys entity) {
+        return companysRepository.updateCompanys(entity);
     }
 
     public int findByCompanysIdx(Long companysIdx) {
