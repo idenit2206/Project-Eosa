@@ -1,4 +1,4 @@
-package com.eosa.web.users;
+package com.eosa.web.users.entity;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

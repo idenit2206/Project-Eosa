@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.eosa.admin.usersmanage.entity.GetUsersList;
-import com.eosa.web.users.Users;
+import com.eosa.web.users.entity.Users;
 
 @Repository
 public interface DetectiveRepository extends JpaRepository<Users, Long> {

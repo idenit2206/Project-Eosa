@@ -9,8 +9,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import com.eosa.web.users.Users;
-import com.eosa.web.users.UsersRole;
+import com.eosa.web.users.entity.Users;
+import com.eosa.web.users.entity.UsersRole;
 
 import lombok.Getter;
 import lombok.ToString;

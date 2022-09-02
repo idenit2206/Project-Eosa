@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.eosa.admin.usersmanage.entity.GetUsersList;
 import com.eosa.admin.usersmanage.repository.DetectiveRepository;
-import com.eosa.web.users.Users;
+import com.eosa.web.users.entity.Users;
 
 @Service
 public class DetectiveService implements DetectiveRepository  {

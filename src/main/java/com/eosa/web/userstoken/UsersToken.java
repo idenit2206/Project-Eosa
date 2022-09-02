@@ -11,7 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.eosa.web.users.Users;
+import com.eosa.web.users.entity.Users;
 
 import lombok.Builder;
 import lombok.Data;

@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.eosa.web.users.Users;
+import com.eosa.web.users.entity.Users;
 import com.eosa.web.users.repository.UsersRepository;
 
 import lombok.RequiredArgsConstructor;

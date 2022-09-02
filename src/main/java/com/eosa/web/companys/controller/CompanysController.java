@@ -45,7 +45,7 @@ import com.eosa.web.companys.repository.CompanysMemberRepository;
 import com.eosa.web.companys.service.CompanysActiveRegionService;
 import com.eosa.web.companys.service.CompanysCategoryService;
 import com.eosa.web.companys.service.CompanysService;
-import com.eosa.web.users.Users;
+import com.eosa.web.users.entity.Users;
 import com.eosa.web.users.repository.UsersRepository;
 import com.eosa.web.util.CustomResponseData;
 import com.google.gson.JsonArray;

@@ -15,7 +15,7 @@ import com.eosa.security.CustomPrincipalDetails;
 import com.eosa.security.oauth2.entity.GoogleUserInfo;
 import com.eosa.security.oauth2.entity.KakaoUserInfo;
 import com.eosa.security.oauth2.entity.NaverUserInfo;
-import com.eosa.web.users.Users;
+import com.eosa.web.users.entity.Users;
 import com.eosa.web.users.repository.UsersRepository;
 
 import lombok.extern.slf4j.Slf4j;

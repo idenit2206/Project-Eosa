@@ -37,9 +37,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.eosa.security.CustomPrincipalDetails;
-import com.eosa.web.users.Users;
 import com.eosa.web.users.entity.FindByUsersAccountEntity;
 import com.eosa.web.users.entity.GetUsersInfoByUsersAccountEntity;
+import com.eosa.web.users.entity.Users;
 import com.eosa.web.users.service.UsersService;
 import com.eosa.web.util.CustomResponseData;
 import com.eosa.web.util.NullCheck;
@@ -70,6 +70,7 @@ public class UsersController {
 
     @Autowired private UsersService usersService;
     @Value("${my.service.domain}") private String myDomain;
+    @Value("${my.ui.port}") private String myUiPort;
 
     @GetMapping("/sign/test01")
     public String test01() throws UnknownHostException {
@@ -336,7 +337,7 @@ public class UsersController {
             Cookie cookieAccount = new Cookie("usersAccount", usersAccount);
             cookieAccount.setPath("/");
             response.addCookie(cookieAccount);
-            response.sendRedirect("http://" + myDomain + ":3000/");            
+            response.sendRedirect("http://" + myDomain + ":" + myUiPort + "/");
         }
         else {
             log.info("{}, {} 님은 신규회원 입니다. 회원가입 페이지로 이동합니다.", sns, usersAccount);
@@ -344,7 +345,7 @@ public class UsersController {
             // Cookie cookieProvider = new Cookie("provider", sns);
             // cookieProvider.setPath("/");
             // response.addCookie(cookieProvider);
-            response.sendRedirect("http://" + myDomain +":3000/user/register");
+            response.sendRedirect("http://" + myDomain + ":" + myUiPort + "/user/register");
             response.flushBuffer();
         }
     }
@@ -355,7 +356,7 @@ public class UsersController {
         HttpServletRequest request, HttpServletResponse response
     ) throws IOException {
         log.info("# SNS 계정을 활용한 로그인에 실패했습니다,");
-        response.sendRedirect("http://" + myDomain +":3000/");
+        response.sendRedirect("http://" + myDomain + ":" + myUiPort);
         // response.setContentType("text/html; charset=UTF-8");
         // PrintWriter out = response.getWriter();
         // out.println("<script>alert(" + 

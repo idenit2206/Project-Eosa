@@ -14,7 +14,7 @@ import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuer
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.eosa.web.users.Users;
+import com.eosa.web.users.entity.Users;
 
 import lombok.extern.slf4j.Slf4j;
 

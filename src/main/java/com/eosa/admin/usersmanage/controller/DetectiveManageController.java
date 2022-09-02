@@ -28,7 +28,7 @@ import com.eosa.admin.util.random.AddressTempData;
 import com.eosa.admin.util.random.RandomGenAccount;
 import com.eosa.admin.util.random.RandomGenKorName;
 import com.eosa.admin.util.random.RandomGenMobileNumber;
-import com.eosa.web.users.Users;
+import com.eosa.web.users.entity.Users;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;

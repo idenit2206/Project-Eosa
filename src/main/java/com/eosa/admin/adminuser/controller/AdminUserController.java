@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.eosa.admin.adminuser.AdminUserService;
 import com.eosa.security.CustomPrincipalDetails;
-import com.eosa.web.users.Users;
+import com.eosa.web.users.entity.Users;
 import com.eosa.web.users.service.UsersService;
 
 import io.swagger.v3.oas.annotations.Operation;

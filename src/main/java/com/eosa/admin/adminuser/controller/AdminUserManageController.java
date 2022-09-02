@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.eosa.web.users.Users;
+import com.eosa.web.users.entity.Users;
 import com.eosa.web.users.service.UsersService;
 
 import lombok.extern.slf4j.Slf4j;

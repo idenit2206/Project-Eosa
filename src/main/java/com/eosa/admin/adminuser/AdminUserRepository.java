@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.eosa.web.users.Users;
+import com.eosa.web.users.entity.Users;
 
 @Repository
 public interface AdminUserRepository extends JpaRepository<Users, Long> {
