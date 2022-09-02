@@ -24,13 +24,15 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserDetails result = new CustomPrincipalDetails(usersRepository.findByUsersAccount(username));
-        // Users user = usersRepository.findByUsersAccount(username);        
+        // UserDetails result = new CustomPrincipalDetails(usersRepository.findByUsersAccount(username));
+        Users result = usersRepository.findByUsersAccount(username);        
     
-        if(result != null) {
-            return result;
+        if(result == null) {
+            throw new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다.");
         }
-        return null;
+        else {
+            return new CustomPrincipalDetails(result);
+        }
     }
     
 }

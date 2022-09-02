@@ -3,16 +3,19 @@ package com.eosa.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.eosa.security.handler.CustomLogoutSuccessHandler;
+import com.eosa.security.handler.adminsite.CustomAdminAuthFailureHandler;
+import com.eosa.security.handler.adminsite.CustomAdminAuthSuccessHandler;
+import com.eosa.security.handler.adminsite.CustomAdminLogoutSuccessHandler;
 
 @Configuration
 public class AdminSecurityConfig {
 
-    @Autowired private CustomLogoutSuccessHandler customLogoutSuccessHandler; 
+    @Autowired private CustomAdminLogoutSuccessHandler customAdminLogoutSuccessHandler;
+    @Autowired private CustomAdminAuthSuccessHandler customAdminAuthSuccessHandler;
+    private CustomAdminAuthFailureHandler customAdminAuthFailureHandler;
 
     private String[] PERMIT_URL = {
         "/assets/**", "/js/**", "/css/**", "/webjars/**",
@@ -27,19 +30,20 @@ public class AdminSecurityConfig {
             .antMatcher("/admin/**")
             .authorizeRequests()
                 .antMatchers(PERMIT_URL).permitAll()
-                // .anyRequest().hasAnyAuthority("ADMIN", "SUPER_ADMIN")
-                .anyRequest().permitAll()
+                .anyRequest().hasAnyAuthority("ADMIN", "SUPER_ADMIN")
+                // .anyRequest().permitAll()
         .and()
             .formLogin()
                 .loginPage("/admin/sign/signIn")
-                    .loginProcessingUrl("/admin/sign/signIn.do")
-                    .usernameParameter("usersAccount").passwordParameter("usersPass")                       
-                    .successForwardUrl("/admin/sign/signIn.success")
-                    .failureForwardUrl("/admin/sign/signIn.failure")
+                    .usernameParameter("usersAccount").passwordParameter("usersPass")
+                    .loginProcessingUrl("/admin/sign/signIn.do")                        
+                    // .defaultSuccessUrl("/admin/sign/signIn.success")
+                    .successHandler(customAdminAuthSuccessHandler)
+                    .failureHandler(customAdminAuthFailureHandler)
         .and()
             .logout()
-                    .logoutUrl("/api/user/signOut.do")
-                        .logoutSuccessHandler(customLogoutSuccessHandler);
+                    .logoutUrl("/admin/sign/signOut")
+                        .logoutSuccessHandler(customAdminLogoutSuccessHandler);
 
         return http.build();
     }

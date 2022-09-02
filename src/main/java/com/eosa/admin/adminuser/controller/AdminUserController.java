@@ -1,12 +1,8 @@
 package com.eosa.admin.adminuser.controller;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -54,43 +50,16 @@ public class AdminUserController {
 
     @Operation(summary="관리자페이지 로그인 view", description="관리자 페이지의 로그인을 위한 Form 페이지")
     @GetMapping("/sign/signIn")
-    public String adminSignInForm() {
-        log.info("## Someone Request /signInForm");
-        return "admin/signin/SignIn";
-    }
-
-    @PostMapping(value="/sign/signIn.success")
-    public ModelAndView adminSignInSuceess(
-        @AuthenticationPrincipal CustomPrincipalDetails users, 
-        @RequestParam("usersAccount") String usersAccount
-    ) {
-        ModelAndView mv = new ModelAndView();
-        String author = users.customGetAuthorities();
-        if(author.matches("ADMIN") || author.matches("SUPER_ADMIN")) {
-            log.info("## 환영합니다 {} 님.", usersAccount);
-            Users user = usersService.findByUsersAccount(usersAccount);
-
-            mv.setViewName("admin/index");
-            mv.addObject("user", user);
-            
-            return mv;
-        }
-        else {
-            log.info("## 권한이 없는 사용자 입니다. 사용자명: {}.", usersAccount);
-            mv.setViewName("admin/signin/SignIn");
-            return mv;
-        }        
-    }
-
-    @PostMapping(value="/sign/signIn.failure")
-    public void adminSignInFailure(
-        HttpServletRequest request, HttpServletResponse response,
-        @RequestParam("usersAccount") String usersAccount,
+    public String adminSignInForm(
+        @RequestParam(value="error", required=false) String error,
+        @RequestParam(value="exception", required=false) String exception,
         Model model
-    ) throws IOException {
-        log.error("## {} 님이 관리자 페이지 로그인에 실패했습니다.", usersAccount);
-        model.addAttribute("msg", "Failed to SignIn");
-        response.sendRedirect("admin/signIn");
+    ) {
+        model.addAttribute("error", error);
+        model.addAttribute("execption", exception);
+
+        log.info("SignIn Form View");
+        return "admin/signin/SignIn";
     }
 
     final int POST_COUNT = 10;
