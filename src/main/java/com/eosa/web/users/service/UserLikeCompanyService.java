@@ -1,6 +1,8 @@
 package com.eosa.web.users.service;
 
 import com.eosa.web.users.repository.UserLikeCompanyRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,12 +10,23 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+@Slf4j
 @Service
-public class UserLikeCompany implements UserLikeCompanyRepository {
+public class UserLikeCompanyService implements UserLikeCompanyRepository {
+
+    @Autowired private UserLikeCompanyRepository userLikeCompanyRepository;
+
+    @Override
+    public <S extends com.eosa.web.users.entity.UserLikeCompany> S save(S entity) {
+        entity.setLikeDate(LocalDateTime.now());
+        log.debug("[save]: {}", entity.toString());
+        return userLikeCompanyRepository.save(entity);
+    }
 
     @Override
     public List<com.eosa.web.users.entity.UserLikeCompany> findAll() {
@@ -63,11 +76,6 @@ public class UserLikeCompany implements UserLikeCompanyRepository {
     @Override
     public void deleteAll() {
 
-    }
-
-    @Override
-    public <S extends com.eosa.web.users.entity.UserLikeCompany> S save(S entity) {
-        return null;
     }
 
     @Override

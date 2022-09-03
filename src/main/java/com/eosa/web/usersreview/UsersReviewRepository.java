@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface UsersReviewRepository extends JpaRepository<UsersReview, Long>{
 
@@ -23,6 +25,19 @@ public interface UsersReviewRepository extends JpaRepository<UsersReview, Long>{
         ":#{#UsersReview.reviewDetail}, :#{#UsersReview.reviewDate})"
         ,nativeQuery=true
     )
-    int registUsersReview(@Param("UsersReview") UsersReview param);
+    int insertUsersReview(@Param("UsersReview") UsersReview param);
 
+    @Query(
+            value="SELECT * FROM UsersReview " +
+            "WHERE companysIdx = ?1",
+            nativeQuery = true
+    )
+    List<UsersReview> selectUsersReviewByCompanysIdx(Long comapnysIdx);
+
+    @Query(
+            value="SELECT * FROM UsersReview " +
+                    "WHERE usersIdx = ?1",
+            nativeQuery = true
+    )
+    List<UsersReview> selectUsersReviewByUsersIdx(Long usersIdx);
 }

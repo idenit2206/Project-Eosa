@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -13,14 +14,36 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class UsersReviewService implements UsersReviewRepository{
 
     @Autowired UsersReviewRepository usersReviewRepository;
 
-    public int registUsersReview(UsersReview param) {
+    @Override
+    public <S extends UsersReview> S save(S entity) {
+        entity.setReviewDate(LocalDateTime.now());
+        entity.setReviewDetail(entity.getReviewDetail().trim());
+//        log.debug("[save]: {]", entity.toString());
+        return null;
+    }
+
+    @Override
+    public int insertUsersReview(UsersReview param) {
         param.setReviewDate(LocalDateTime.now());
-        return usersReviewRepository.registUsersReview(param);
+        param.setReviewDetail(param.getReviewDetail().trim());
+//        log.debug("[insertUsersReview]: {}", param.toString());
+        return usersReviewRepository.insertUsersReview(param);
+    }
+
+    @Override
+    public List<UsersReview> selectUsersReviewByCompanysIdx(Long comapnysIdx) {
+        return usersReviewRepository.selectUsersReviewByCompanysIdx(comapnysIdx);
+    }
+
+    @Override
+    public List<UsersReview> selectUsersReviewByUsersIdx(Long usersIdx) {
+        return usersReviewRepository.selectUsersReviewByUsersIdx(usersIdx);
     }
 
     @Override
@@ -115,12 +138,6 @@ public class UsersReviewService implements UsersReviewRepository{
 
     @Override
     public Page<UsersReview> findAll(Pageable pageable) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public <S extends UsersReview> S save(S entity) {
         // TODO Auto-generated method stub
         return null;
     }

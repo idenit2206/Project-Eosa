@@ -82,7 +82,7 @@ public interface RequestFormRepository extends JpaRepository<RequestForm, Long> 
                     "ORDER BY RequestForm.requestFormDate DESC",
             nativeQuery=true
     )
-    List<SelectRequestFormList> selectAllRequestFormListByUsersIdxOrderByDESC(Long usersIdx);
+    List<SelectRequestFormList> selectAllRequestFormListByUsersIdxOrderByRequestFormDateDESC(Long usersIdx);
 
     @Query(
             value="SELECT " +
@@ -97,6 +97,6 @@ public interface RequestFormRepository extends JpaRepository<RequestForm, Long> 
                     "ORDER BY RequestForm.requestFormDate ASC",
             nativeQuery=true
     )
-    List<SelectRequestFormList> selectAllRequestFormListByUsersIdxOrderByASC(Long usersIdx);
+    List<SelectRequestFormList> selectAllRequestFormListByUsersIdxOrderByRequestFormDateASC(Long usersIdx);
 
 }

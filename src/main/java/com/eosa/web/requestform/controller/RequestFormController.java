@@ -38,8 +38,8 @@ public class RequestFormController {
     @Autowired private RequestFormCategoryRepository requestFormCategoryRepository;
 
     /**
-     * 의뢰를 신청하는 메서드
-     * @param param
+     * CLIENT회원의 의뢰하기 버튼을 통한 의뢰 신청
+     * @param RequestFrom param
      * @return
      */
     @PostMapping("/requestFormRegister")
@@ -57,8 +57,100 @@ public class RequestFormController {
             entity.setRequestFormRegion1(param.getRequestFormRegion1());
             entity.setRequestFormRegion2(param.getRequestFormRegion2());
             entity.setRequestFormChannel("의뢰");
-            entity.setRequestFormStatus("의뢰대기");
+            entity.setRequestFormStatus("상담대기");
             entity.setRequestFormDate(LocalDateTime.now());
+        RequestForm step1 = requestFormService.save(entity);
+        log.debug("step1: {}", step1.toString());
+
+        if(step1 != null) {
+            Long requestFormIdx = step1.getRequestFormIdx();
+            for(int i = 0; i < requestFormCategory.size(); i++) {
+                RequestFormCategory entity2 = new RequestFormCategory();
+                String requestFormCategoryValue = requestFormCategory.get(i);
+                log.debug("String: {}", requestFormCategoryValue);
+                entity2.setRequestFormIdx(requestFormIdx);
+                entity2.setRequestFormCategoryValue(requestFormCategoryValue);
+                int step2 = requestFormCategoryRepository.insertRequestFormCategory(entity2);
+            }
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem("SUCCESS");
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
+
+    /**
+     * CLIENT회원의 전화상담 버튼을 통한 의뢰신청
+     * @param param
+     * @param requestFormCategory
+     * @return
+     * @throws JSONException
+     * @throws ParseException
+     */
+    @PostMapping("/requestFormRegisterChannelPhone")
+    public CustomResponseData insertFormRegisterChannelPhone(
+            @RequestPart("RequestForm") RequestForm param,
+            @RequestPart("RequestFormCategory") List<String> requestFormCategory
+    )throws JSONException, ParseException {
+        CustomResponseData result = new CustomResponseData();
+        log.debug(param.toString());
+        log.debug(requestFormCategory.toString());
+
+        RequestForm entity = new RequestForm();
+        entity.setUsersIdx(param.getUsersIdx());
+        entity.setCompanysIdx(param.getCompanysIdx());
+        entity.setRequestFormRegion1(param.getRequestFormRegion1());
+        entity.setRequestFormRegion2(param.getRequestFormRegion2());
+        entity.setRequestFormChannel("전화");
+        entity.setRequestFormStatus("상담대기");
+        entity.setRequestFormDate(LocalDateTime.now());
+        RequestForm step1 = requestFormService.save(entity);
+        log.debug("step1: {}", step1.toString());
+
+        if(step1 != null) {
+            Long requestFormIdx = step1.getRequestFormIdx();
+            for(int i = 0; i < requestFormCategory.size(); i++) {
+                RequestFormCategory entity2 = new RequestFormCategory();
+                String requestFormCategoryValue = requestFormCategory.get(i);
+                log.debug("String: {}", requestFormCategoryValue);
+                entity2.setRequestFormIdx(requestFormIdx);
+                entity2.setRequestFormCategoryValue(requestFormCategoryValue);
+                int step2 = requestFormCategoryRepository.insertRequestFormCategory(entity2);
+            }
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem("SUCCESS");
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
+
+    /**
+     * CLIENT회원의 채팅상담 버튼을 통한 의뢰신청
+     * @param param
+     * @param requestFormCategory
+     * @return
+     * @throws JSONException
+     * @throws ParseException
+     */
+    @PostMapping("/requestFormRegisterChannelChatting")
+    public CustomResponseData insertFormRegisterChannelChatting(
+            @RequestPart("RequestForm") RequestForm param,
+            @RequestPart("RequestFormCategory") List<String> requestFormCategory
+    )throws JSONException, ParseException {
+        CustomResponseData result = new CustomResponseData();
+        log.debug(param.toString());
+        log.debug(requestFormCategory.toString());
+
+        RequestForm entity = new RequestForm();
+        entity.setUsersIdx(param.getUsersIdx());
+        entity.setCompanysIdx(param.getCompanysIdx());
+        entity.setRequestFormRegion1(param.getRequestFormRegion1());
+        entity.setRequestFormRegion2(param.getRequestFormRegion2());
+        entity.setRequestFormChannel("채팅");
+        entity.setRequestFormStatus("상담대기");
+        entity.setRequestFormDate(LocalDateTime.now());
         RequestForm step1 = requestFormService.save(entity);
         log.debug("step1: {}", step1.toString());
 
@@ -138,7 +230,7 @@ public class RequestFormController {
     }
 
     /**
-     * CLIENT의 의뢰신청 내역 조회     *
+     * CLIENT의 usersIdx와 일치하는 모든 의뢰신청 내역 조회     *
      */
     @GetMapping("/selectAllRequestFormListByUsersIdx")
     public CustomResponseData selectAllRequestFormListByUsersIdx(
@@ -162,13 +254,19 @@ public class RequestFormController {
         
         return result;
     }
+
+    /**
+     * CLIENT의 usersIdx와 일치하는 모든 의뢰신청 내역 조회(의뢰 신청날짜 내림차순)
+     * @param usersIdx
+     * @return
+     */
     @GetMapping("/selectAllRequestFormListByUsersIdxOrderByDESC")
     public CustomResponseData selectAllRequestFormListByUsersIdxOrderByDESC(
             @RequestParam("usersIdx") Long usersIdx
     ) {
         log.debug("usersIdx: {}", usersIdx);
         CustomResponseData result = new CustomResponseData();
-        List<SelectRequestFormList> list = requestFormService.selectAllRequestFormListByUsersIdxOrderByDESC(usersIdx);
+        List<SelectRequestFormList> list = requestFormService.selectAllRequestFormListByUsersIdxOrderByRequestFormDateDESC(usersIdx);
 
         if(list.size() != 0) {
 //            log.debug("Client List: {}", list.toString());
@@ -184,13 +282,19 @@ public class RequestFormController {
 
         return result;
     }
+
+    /**
+     * CLIENT의 usersIdx와 일치하는 모든 의뢰신청 내역 조회(의뢰신청날짜 오름차순)
+     * @param usersIdx
+     * @return
+     */
     @GetMapping("/selectAllRequestFormListByUsersIdxOrderByASC")
     public CustomResponseData selectAllRequestFormListByUsersIdxOrderByASC(
             @RequestParam("usersIdx") Long usersIdx
     ) {
 //        log.debug("usersIdx: {}", usersIdx);
         CustomResponseData result = new CustomResponseData();
-        List<SelectRequestFormList> list = requestFormService.selectAllRequestFormListByUsersIdxOrderByASC(usersIdx);
+        List<SelectRequestFormList> list = requestFormService.selectAllRequestFormListByUsersIdxOrderByRequestFormDateASC(usersIdx);
 
         if(list.size() != 0) {
             log.debug("Client List: {}", list.toString());

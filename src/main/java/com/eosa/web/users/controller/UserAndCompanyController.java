@@ -1,22 +1,32 @@
 package com.eosa.web.users.controller;
 
+import com.eosa.web.users.entity.UserLikeCompany;
 import com.eosa.web.users.entity.UserRecentCompany;
+import com.eosa.web.users.service.UserLikeCompanyService;
 import com.eosa.web.users.service.UserRecentCompanyService;
 import com.eosa.web.util.CustomResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 
 @RestController("/api/userAndCompany")
-public class UserAndCompany {
+public class UserAndCompanyController {
 
-    @Autowired
-    private UserRecentCompanyService userRecentCompanyService;
+    @Autowired private UserLikeCompanyService userLikeCompanyService;
+    @Autowired private UserRecentCompanyService userRecentCompanyService;
+
+    @PostMapping("/insertUserLikeCompany")
+    public CustomResponseData insertUserLikeCompany(@RequestBody UserLikeCompany param) {
+        CustomResponseData result = new CustomResponseData();
+
+        UserLikeCompany insertData = userLikeCompanyService.save(param);
+
+        return result;
+    }
 
     /**
      * 사용자가 최근에 조회한 업체를 24개까지 기록
