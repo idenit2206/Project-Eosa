@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+import com.eosa.web.companys.entity.CompanysPremium;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -73,6 +74,11 @@ public class CompanysService implements CompanysRepository {
 //    public SelectCompanyInfoByUsersIdx selectCompanyInfoByUsersIdx(Long usersIdx) {
 //        return companysRepository.selectCompanyInfoByUsersIdx(usersIdx);
 //    }
+
+    @Override
+    public Long selectCompanyIdxByComapnysNameAndCompanysCeoName(String companysName, String companysCeoName) {
+        return companysRepository.selectCompanyIdxByComapnysNameAndCompanysCeoName(companysName, companysCeoName);
+    }
 
     @Override
     public List<Companys> findAll() {

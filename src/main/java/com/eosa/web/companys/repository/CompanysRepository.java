@@ -107,6 +107,9 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
 
     @Query(value = "SELECT * FROM Companys WHERE companysCeoIdx = ?1", nativeQuery = true)
     Companys selectCompanyInfoByUsersIdx(Long companysCeoIdx);
+
+    @Query(value = "SELECT companysIdx FROM Companys WHERE companysName= ?1 AND companysCeoName= ?2", nativeQuery = true)
+    Long selectCompanyIdxByComapnysNameAndCompanysCeoName(String companysName, String companysCeoName);
 //    @Query(
 //        value="SELECT " +
 //        "Companys.companysIdx, Companys.companysName, " +

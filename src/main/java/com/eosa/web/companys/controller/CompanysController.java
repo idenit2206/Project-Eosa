@@ -12,48 +12,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.eosa.web.companys.service.CompanysMemberService;
+import com.eosa.web.companys.entity.*;
+import com.eosa.web.companys.service.*;
 import com.eosa.web.util.file.AwsS3Service;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.eosa.web.companys.entity.Companys;
-import com.eosa.web.companys.entity.CompanysActiveRegion;
-import com.eosa.web.companys.entity.CompanysCategory;
-import com.eosa.web.companys.entity.CompanysLicense;
-import com.eosa.web.companys.entity.CompanysMember;
-import com.eosa.web.companys.entity.SelectAllCompanysList;
-import com.eosa.web.companys.entity.SelectCompanyInfoByUsersIdx;
-import com.eosa.web.companys.repository.CompanysActiveRegionRepository;
-import com.eosa.web.companys.repository.CompanysCategoryRepository;
 import com.eosa.web.companys.repository.CompanysLicenseRepository;
-import com.eosa.web.companys.repository.CompanysMemberRepository;
-import com.eosa.web.companys.service.CompanysActiveRegionService;
-import com.eosa.web.companys.service.CompanysCategoryService;
-import com.eosa.web.companys.service.CompanysService;
 import com.eosa.web.users.entity.Users;
 import com.eosa.web.users.repository.UsersRepository;
 import com.eosa.web.util.CustomResponseData;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.nimbusds.jose.shaded.json.JSONArray;
 import com.nimbusds.oauth2.sdk.ParseException;
 
 import lombok.extern.slf4j.Slf4j;
-import springfox.documentation.spring.web.json.Json;
-
-import javax.swing.filechooser.FileSystemView;
 
 @Slf4j
 @RestController
@@ -61,7 +36,6 @@ import javax.swing.filechooser.FileSystemView;
 public class CompanysController {
 
     @Autowired private CompanysService companysService;
-    @Autowired private CompanysLicenseRepository companysLicenseRepository;
     @Autowired private CompanysCategoryService companysCategoryService;
     @Autowired private CompanysActiveRegionService companysActiveRegionService;
     @Autowired private CompanysMemberService companysMemberService;
@@ -352,7 +326,5 @@ public class CompanysController {
 
         return result;
     }
-
-
 
 }

@@ -24,8 +24,13 @@ public class UserLikeCompanyService implements UserLikeCompanyRepository {
     @Override
     public <S extends com.eosa.web.users.entity.UserLikeCompany> S save(S entity) {
         entity.setLikeDate(LocalDateTime.now());
-        log.debug("[save]: {}", entity.toString());
+//        log.debug("[save]: {}", entity.toString());
         return userLikeCompanyRepository.save(entity);
+    }
+
+    @Override
+    public int deleteByUsersAndCompanysIdx(Long usersIdx, Long companysIdx) {
+        return userLikeCompanyRepository.deleteByUsersAndCompanysIdx(usersIdx, companysIdx);
     }
 
     @Override
