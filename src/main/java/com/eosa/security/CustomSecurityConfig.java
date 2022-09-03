@@ -68,7 +68,7 @@ public class CustomSecurityConfig {
                     .failureForwardUrl("/api/user/sign/signIn.failure")            
         .and()
             .oauth2Login()
-                .loginPage("http://" + myDomain + "/user/signin")
+                .loginPage("http://" + myDomain + ":3000/user/signin")
                     .defaultSuccessUrl("/api/user/sign/oauth2SignIn.success")
                     .failureUrl("/api/user/sign/oauth2SignIn.failure")
                     

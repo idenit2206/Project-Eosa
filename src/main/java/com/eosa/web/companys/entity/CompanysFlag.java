@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -19,8 +20,8 @@ public class CompanysFlag {
     @Column(nullable = false) private LocalDateTime flagReqDate;
     @Column(nullable = false) private LocalDateTime flagStartDate;
 
-//    @Transient private String flagRegion1;
-//    @Transient private String flagRegion2;
+    @Transient private String flagRegion1;
+    @Transient private String flagRegion2;
 //    @Transient private String flagCategory;
 
     @Column(nullable = true) private Long flagPrice;
