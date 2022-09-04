@@ -105,19 +105,52 @@ public class DetectiveRequestFormController {
         return result;
     }
 
-//    /**
-//     * requestFormIdx가 일치하는 requestForm 상세보기
-//     * @param requestFormIdx
-//     * @return
-//     */
-//    @GetMapping
-//    public CustomResponseData selectDetectiveRequestFormInfo(
-//            @RequestParam("requestFormIdx") String requestFormIdx)
-//    {
-//        CustomResponseData result = new CustomResponseData();
-//        RequestForm entity = detectiveRequestFormService.selectDetectiveRequestFormInfo(Long.parseLong(requestFormIdx));
-//
-//        return result;
-//    }
+    /**
+     * requestFormIdx가 일치하는 requestForm 상세보기
+     * @param requestFormIdx
+     * @return
+     */
+    @GetMapping("/selectDetectiveRequestFormInfoByRequestFormIdx")
+    public CustomResponseData selectDetectiveRequestFormInfoByRequestFormIdx(
+            @RequestParam("requestFormIdx") Long requestFormIdx)
+    {
+        CustomResponseData result = new CustomResponseData();
+        RequestForm entity = detectiveRequestFormService.selectDetectiveRequestFormInfoByRequestFormIdx(requestFormIdx);
+
+        if(entity != null) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(entity);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
+
+    @PostMapping("/updateRequestFormStatusWhereRequestFormIdx")
+    public CustomResponseData updateRequestFormStatusWhereRequestFormIdx(
+            @RequestParam(name="requestFormIdx") Long requestFormIdx,
+            @RequestParam(name="requestFormStatus") String requestFormStatus) {
+        CustomResponseData result = new CustomResponseData();
+
+        int updateRows = detectiveRequestFormService.updateRequestFormStatusWhereRequestFormIdx(requestFormIdx, requestFormStatus);
+
+        if(updateRows == 1) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem("TRUE");
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem("FALSE");
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
 
 }

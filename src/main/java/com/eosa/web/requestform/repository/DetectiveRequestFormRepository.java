@@ -3,9 +3,12 @@ package com.eosa.web.requestform.repository;
 import com.eosa.web.requestform.entity.RequestForm;
 import com.eosa.web.requestform.entity.SelectRequestFormList;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -55,10 +58,21 @@ public interface DetectiveRequestFormRepository extends JpaRepository<RequestFor
     )
     List<SelectRequestFormList> selectAllDetectiveRequestFormListByCompanysIdxOrderByASC(Long companysIdx);
 
-//    @Query(value=
-//            "SELECT * FROM RequestForm " +
-//            ""
-//    )
-//    RequestForm selectDetectiveRequestFormInfo(Long.parseLong(requestFormIdx))
+    @Query(value=
+            "SELECT * FROM RequestForm " +
+            "WHERE requestFormIdx = ?1",
+            nativeQuery = true
+    )
+    RequestForm selectDetectiveRequestFormInfoByRequestFormIdx(Long requestFormIdx);
+
+    @Transactional
+    @Modifying
+    @Query(value=
+        "UPDATE RequestForm " +
+        "SET requestFormStatus = :requestFormStatus " +
+        "WHERE requestFormIdx = :requestFormIdx",
+         nativeQuery = true
+    )
+    int updateRequestFormStatusWhereRequestFormIdx(@Param("requestFormIdx") Long requestFormIdx, @Param("requestFormStatus") String requestFormStatus);
 
 }

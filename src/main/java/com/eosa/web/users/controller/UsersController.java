@@ -332,7 +332,7 @@ public class UsersController {
             Cookie cookieAccount = new Cookie("usersAccount", usersAccount);
             cookieAccount.setPath("/");
             response.addCookie(cookieAccount);
-            response.sendRedirect("http://" + myDomain + ":3000");
+            response.sendRedirect("http://" + myDomain + ":" + myUiPort + "/");
         }
         else {
             log.info("{}, {} 님은 신규회원 입니다. 회원가입 페이지로 이동합니다.", sns, usersAccount);

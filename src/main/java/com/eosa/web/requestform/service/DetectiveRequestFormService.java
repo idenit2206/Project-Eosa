@@ -36,6 +36,16 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
     }
 
     @Override
+    public RequestForm selectDetectiveRequestFormInfoByRequestFormIdx(Long requestFormIdx) {
+        return detectiveRequestFormRepository.selectDetectiveRequestFormInfoByRequestFormIdx(requestFormIdx);
+    }
+
+    @Override
+    public int updateRequestFormStatusWhereRequestFormIdx(Long requestFormIdx, String requestFormStatus) {
+        return detectiveRequestFormRepository.updateRequestFormStatusWhereRequestFormIdx(requestFormIdx, requestFormStatus);
+    }
+
+    @Override
     public List<RequestForm> findAll() {
         return null;
     }

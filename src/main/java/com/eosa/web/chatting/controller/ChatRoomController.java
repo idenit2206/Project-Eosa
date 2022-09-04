@@ -26,7 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping("/api/chat")
 public class ChatRoomController {
-
     @Autowired private ChatService chatService;
 
     // 채팅 리스트 화면
@@ -61,22 +60,11 @@ public class ChatRoomController {
     }
 
     /**
-     * roomId가 일치하는 채팅방 삭제 
+     * 채팅방 입장을 위한 메서드
      * @param roomId
+     * @param usersName
      * @return
-     */    
-
-    // // roomId에 해당하는 채팅방에 입장
-    // @GetMapping("/room/enter/{roomId}")
-    // public String roomDetail(Model model, 
-    //     @PathVariable String roomId,
-    //     @RequestParam(value="usersName") String usersName,
-    //     @RequestParam(value="messageType") String messageType
-    // ) {
-    //     model.addAttribute("roomId", roomId);
-    //     log.info("## User: {} get in RoomId: {}\n## T: {}", usersName, roomId, LocalDateTime.now());
-    //     return "/chat/roomdetail";
-    // }
+     */
     @GetMapping("/room/enter/{roomId}")
     @ResponseBody
     public ChatRoom roomDetailREST(
@@ -114,4 +102,22 @@ public class ChatRoomController {
         log.debug("서버에 존재하는 모든 채팅방을 삭제합니다. 삭제시간: {}", LocalDateTime.now());
         chatService.testAllFlush();
     }
+
+
+    // MVC
+    //  /**
+    //   * roomId에 일치하는 채팅방에 입장하는 메서드
+    //   */
+    // @GetMapping("/room/enter/{roomId}")
+    // public String roomDetail(Model model,
+    //     @PathVariable String roomId,
+    //     @RequestParam(value="usersName") String usersName,
+    //     @RequestParam(value="messageType") String messageType
+    // ) {
+    //     model.addAttribute("roomId", roomId);
+    //     log.info("## User: {} get in RoomId: {}\n## T: {}", usersName, roomId, LocalDateTime.now());
+    //     return "/chat/roomdetail";
+    // }
+
+
 }

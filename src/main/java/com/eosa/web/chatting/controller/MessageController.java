@@ -33,6 +33,8 @@ public class MessageController {
     
     @Autowired private ChatMessageService chatMessageService;
 
+    List<Object> messageList = new LinkedList<>();
+
     @MessageMapping("/chat/message")
     public void enter(ChatMessage message) {
         if((message.getMessageType()).equals(MessageType.ENTER)) {
@@ -61,7 +63,7 @@ public class MessageController {
     }
 
     @GetMapping("/chat/message/read")
-    public List<ChatMessage> readMessageList() {
+    public List<ChatMessage> readMessageList() {        
         return chatMessageService.readMessagesList();
     }
 
