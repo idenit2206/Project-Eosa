@@ -76,6 +76,27 @@ public class UsersController {
 
     private static Map<String, String> mobileCheckKeyList = new HashMap<>();
 
+    @PostMapping(value="/sign/sendPhoneCheckMessage")
+    public String sendOne(@RequestParam("usersPhone") String usersPhone) {
+        // Message message = new Message();
+        String passKey = "";
+        while(passKey.length() <= 5) {
+            passKey += String.valueOf((int) Math.floor(Math.random() * 9));
+        }
+        mobileCheckKeyList.put(usersPhone, passKey);
+
+        // 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
+        // message.setFrom("01071899972");
+        // message.setTo(usersPhone);
+        // message.setText("어사 회원가입 핸드폰 인증 단계입니다.\n다음의 번호를 입력해주세요.\n"+passKey);
+        log.debug("수신 번호: {}", usersPhone);
+        log.debug("어사 회원가입 핸드폰 인증 단계입니다.\n다음의 번호를 입력해주세요.\n{}", passKey);
+
+        passKey = "";
+
+        return passKey;
+    }
+
     // @PostMapping(value="/sign/sendPhoneCheckMessage")
     // public SingleMessageSentResponse sendOne(@RequestParam("usersPhone") String usersPhone) {
     //     Message message = new Message();
@@ -96,26 +117,6 @@ public class UsersController {
 
     //     return response;
     // }
-    @PostMapping(value="/sign/sendPhoneCheckMessage")
-    public String sendOne(@RequestParam("usersPhone") String usersPhone) {
-        // Message message = new Message();
-        String passKey = "";
-        while(passKey.length() <= 5) {
-            passKey += String.valueOf((int) Math.floor(Math.random() * 9));
-        }
-        mobileCheckKeyList.put(usersPhone, passKey);
-
-        // 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
-        // message.setFrom("01071899972");
-        // message.setTo(usersPhone);
-        // message.setText("어사 회원가입 핸드폰 인증 단계입니다.\n다음의 번호를 입력해주세요.\n"+passKey);
-        log.debug("수신 번호: {}", usersPhone);
-        log.debug("어사 회원가입 핸드폰 인증 단계입니다.\n다음의 번호를 입력해주세요.\n{}", passKey);
-        
-        passKey = "";
-
-        return passKey;
-    }
 
     @PostMapping(value="/sign/checkMyPhone")
     public CustomResponseData checkMyPhone(@RequestParam("passKey")String passKey) {
@@ -559,6 +560,5 @@ public class UsersController {
         // }
         return result;
     }
-
     
 }

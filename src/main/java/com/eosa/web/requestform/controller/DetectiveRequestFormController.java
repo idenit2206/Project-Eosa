@@ -4,7 +4,8 @@ import com.eosa.web.requestform.entity.RequestForm;
 import com.eosa.web.requestform.entity.SelectRequestFormList;
 import com.eosa.web.requestform.repository.RequestFormCategoryRepository;
 import com.eosa.web.requestform.service.DetectiveRequestFormService;
-import com.eosa.web.requestform.service.RequestFormService;
+import com.eosa.web.requestform.service.RequestFormCategoryService;
+import com.eosa.web.users.service.UsersService;
 import com.eosa.web.util.CustomResponseData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -20,7 +22,8 @@ import java.util.List;
 public class DetectiveRequestFormController {
 
     @Autowired private DetectiveRequestFormService detectiveRequestFormService;
-    @Autowired private RequestFormCategoryRepository requestFormCategoryRepository;
+    @Autowired private RequestFormCategoryService requestFormCategoryService;
+    @Autowired private UsersService usersService;
 
     /**
      * CompanysIdx가 일치하는 모든 RequestForm 조회
@@ -64,7 +67,6 @@ public class DetectiveRequestFormController {
         List<SelectRequestFormList> list = detectiveRequestFormService.selectAllDetectiveRequestFormListByCompanysIdxOrderByDESC(companysIdx);
 
         if(list.size() != 0) {
-            log.debug("Client List: {}", list.toString());
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem(list);
             result.setResponseDateTime(LocalDateTime.now());
@@ -133,11 +135,14 @@ public class DetectiveRequestFormController {
 
     @PostMapping("/updateRequestFormStatusWhereRequestFormIdx")
     public CustomResponseData updateRequestFormStatusWhereRequestFormIdx(
-            @RequestParam(name="requestFormIdx") Long requestFormIdx,
-            @RequestParam(name="requestFormStatus") String requestFormStatus) {
+        @RequestParam(name="requestFormIdx") Long requestFormIdx,
+        @RequestParam(name="requestFormStatus") String requestFormStatus,
+        @RequestParam(name="requestFormRejectMessage", required=false) String requestFormRejectMessage
+    ) {
         CustomResponseData result = new CustomResponseData();
+        log.debug("{}, {}, {}", requestFormIdx, requestFormStatus, requestFormRejectMessage);
 
-        int updateRows = detectiveRequestFormService.updateRequestFormStatusWhereRequestFormIdx(requestFormIdx, requestFormStatus);
+        int updateRows = detectiveRequestFormService.updateRequestFormStatusWhereRequestFormIdx(requestFormIdx, requestFormStatus, requestFormRejectMessage);
 
         if(updateRows == 1) {
             result.setStatusCode(HttpStatus.OK.value());

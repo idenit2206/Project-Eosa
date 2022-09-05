@@ -41,8 +41,8 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
     }
 
     @Override
-    public int updateRequestFormStatusWhereRequestFormIdx(Long requestFormIdx, String requestFormStatus) {
-        return detectiveRequestFormRepository.updateRequestFormStatusWhereRequestFormIdx(requestFormIdx, requestFormStatus);
+    public int updateRequestFormStatusWhereRequestFormIdx(Long requestFormIdx, String requestFormStatus, String requestFormRejectMessage) {
+        return detectiveRequestFormRepository.updateRequestFormStatusWhereRequestFormIdx(requestFormIdx, requestFormStatus, requestFormRejectMessage);
     }
 
     @Override

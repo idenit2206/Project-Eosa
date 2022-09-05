@@ -183,6 +183,10 @@ public class UsersService implements UsersRepository {
         return usersRepository.deleteUserInfo(usersIdx);
     }
 
+    public String selectUsersAccountByUsersIdx(Long usersIdx) {
+        return usersRepository.selectUsersAccountByUsersIdx(usersIdx);
+    }
+
     @Override
     public List<Users> findAll(Sort sort) {
         // TODO Auto-generated method stub

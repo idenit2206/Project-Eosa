@@ -16,12 +16,13 @@ public interface DetectiveRequestFormRepository extends JpaRepository<RequestFor
 
     @Query(
             value="SELECT " +
-                    "RequestForm.requestFormIdx, RequestForm.usersIdx, RequestForm.companysIdx, " +
+                    "RequestForm.requestFormIdx, RequestForm.usersIdx, Users.usersAccount, RequestForm.companysIdx, " +
                     "RequestForm.requestFormRegion1, RequestForm.requestFormRegion2, " +
                     "RequestForm.requestFormStatus, RequestForm.requestConsultDate, RequestForm.requestFormDate, " +
                     "RequestForm.requestFormAcceptDate, RequestForm.requestFormCompDate, RequestForm.requestFormRejectMessage, " +
                     "GROUP_CONCAT(RequestFormCategory.requestFormCategoryValue) AS requestFormCategory " +
                     "FROM RequestForm INNER JOIN RequestFormCategory ON RequestForm.requestFormIdx = RequestFormCategory.requestFormIdx " +
+                    "INNER JOIN Users ON RequestForm.usersIdx = Users.usersIdx " +
                     "WHERE RequestForm.companysIdx = ?1 " +
                     "GROUP BY RequestForm.RequestFormIdx",
             nativeQuery=true
@@ -30,12 +31,13 @@ public interface DetectiveRequestFormRepository extends JpaRepository<RequestFor
 
     @Query(
             value="SELECT " +
-                    "RequestForm.requestFormIdx, RequestForm.usersIdx, RequestForm.companysIdx, " +
+                    "RequestForm.requestFormIdx, RequestForm.usersIdx, Users.usersAccount, RequestForm.companysIdx, " +
                     "RequestForm.requestFormRegion1, RequestForm.requestFormRegion2, " +
                     "RequestForm.requestFormStatus, RequestForm.requestConsultDate, RequestForm.requestFormDate, " +
                     "RequestForm.requestFormAcceptDate, RequestForm.requestFormCompDate, RequestForm.requestFormRejectMessage, " +
                     "GROUP_CONCAT(RequestFormCategory.requestFormCategoryValue) AS requestFormCategory " +
                     "FROM RequestForm INNER JOIN RequestFormCategory ON RequestForm.requestFormIdx = RequestFormCategory.requestFormIdx " +
+                    "INNER JOIN Users ON RequestForm.usersIdx = Users.usersIdx " +
                     "WHERE RequestForm.companysIdx = ?1 " +
                     "GROUP BY RequestForm.RequestFormIdx " +
                     "ORDER BY RequestForm.requestFormDate DESC",
@@ -45,12 +47,13 @@ public interface DetectiveRequestFormRepository extends JpaRepository<RequestFor
 
     @Query(
             value="SELECT " +
-                    "RequestForm.requestFormIdx, RequestForm.usersIdx, RequestForm.companysIdx, " +
+                    "RequestForm.requestFormIdx, RequestForm.usersIdx, Users.usersAccount, RequestForm.companysIdx, " +
                     "RequestForm.requestFormRegion1, RequestForm.requestFormRegion2, " +
                     "RequestForm.requestFormStatus, RequestForm.requestConsultDate, RequestForm.requestFormDate, " +
                     "RequestForm.requestFormAcceptDate, RequestForm.requestFormCompDate, RequestForm.requestFormRejectMessage, " +
                     "GROUP_CONCAT(RequestFormCategory.requestFormCategoryValue) AS requestFormCategory " +
                     "FROM RequestForm INNER JOIN RequestFormCategory ON RequestForm.requestFormIdx = RequestFormCategory.requestFormIdx " +
+                    "INNER JOIN Users ON RequestForm.usersIdx = Users.usersIdx " +
                     "WHERE RequestForm.companysIdx = ?1 " +
                     "GROUP BY RequestForm.RequestFormIdx " +
                     "ORDER BY RequestForm.requestFormDate ASC",
@@ -69,10 +72,14 @@ public interface DetectiveRequestFormRepository extends JpaRepository<RequestFor
     @Modifying
     @Query(value=
         "UPDATE RequestForm " +
-        "SET requestFormStatus = :requestFormStatus " +
+        "SET requestFormStatus = :requestFormStatus, requestFormRejectMessage = :requestFormRejectMessage " +
         "WHERE requestFormIdx = :requestFormIdx",
          nativeQuery = true
     )
-    int updateRequestFormStatusWhereRequestFormIdx(@Param("requestFormIdx") Long requestFormIdx, @Param("requestFormStatus") String requestFormStatus);
+    int updateRequestFormStatusWhereRequestFormIdx(
+        @Param("requestFormIdx") Long requestFormIdx,
+        @Param("requestFormStatus") String requestFormStatus,
+        @Param("requestFormRejectMessage") String requestFormRejectMessage
+    );
 
 }
