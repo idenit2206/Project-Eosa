@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -72,12 +73,15 @@ public interface DetectiveRequestFormRepository extends JpaRepository<RequestFor
     @Modifying
     @Query(value=
         "UPDATE RequestForm " +
-        "SET requestFormStatus = :requestFormStatus, requestFormRejectMessage = :requestFormRejectMessage " +
+        "SET " +
+        "requestFormAcceptDate = :requestFormAcceptDate, " +
+        "requestFormStatus = :requestFormStatus, requestFormRejectMessage = :requestFormRejectMessage " +
         "WHERE requestFormIdx = :requestFormIdx",
          nativeQuery = true
     )
     int updateRequestFormStatusWhereRequestFormIdx(
         @Param("requestFormIdx") Long requestFormIdx,
+        @Param("requestFormAcceptDate") LocalDateTime requestFormAcceptDate,
         @Param("requestFormStatus") String requestFormStatus,
         @Param("requestFormRejectMessage") String requestFormRejectMessage
     );

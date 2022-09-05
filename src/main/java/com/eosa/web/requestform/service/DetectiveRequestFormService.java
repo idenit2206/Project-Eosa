@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -41,8 +42,8 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
     }
 
     @Override
-    public int updateRequestFormStatusWhereRequestFormIdx(Long requestFormIdx, String requestFormStatus, String requestFormRejectMessage) {
-        return detectiveRequestFormRepository.updateRequestFormStatusWhereRequestFormIdx(requestFormIdx, requestFormStatus, requestFormRejectMessage);
+    public int updateRequestFormStatusWhereRequestFormIdx(Long requestFormIdx, LocalDateTime requestFormAcceptDate, String requestFormStatus, String requestFormRejectMessage) {
+        return detectiveRequestFormRepository.updateRequestFormStatusWhereRequestFormIdx(requestFormIdx, requestFormAcceptDate, requestFormStatus, requestFormRejectMessage);
     }
 
     @Override

@@ -48,8 +48,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	implementation 'com.auth0:java-jwt:4.0.0'
 
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis:2.7.3'
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
-
 	implementation 'net.nurigo:sdk:4.2.4'
 
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'

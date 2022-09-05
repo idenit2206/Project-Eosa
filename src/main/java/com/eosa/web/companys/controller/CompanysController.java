@@ -164,6 +164,18 @@ public class CompanysController {
       CustomResponseData result = new CustomResponseData();
 
       List<String> items = companysService.selectAllCategory();
+      log.debug("[selectAllCategory] category: {}", items.toString());
+
+      if(items != null) {
+          result.setStatusCode(HttpStatus.OK.value());
+          result.setResultItem(items);
+          result.setResponseDateTime(LocalDateTime.now());
+      }
+      else {
+          result.setStatusCode(HttpStatus.OK.value());
+          result.setResultItem(null);
+          result.setResponseDateTime(LocalDateTime.now());
+      }
 
       return result;
     }
@@ -180,6 +192,55 @@ public class CompanysController {
       return result;
     }
 
+    /**
+     * 활동분야를 검색어로으 한 업체목록 조회
+     */
+    @GetMapping("/selectCompanysByCategory")
+    public CustomResponseData selectCompanysByCategory(@RequestParam("companysCategory") String keyword) {
+        CustomResponseData result = new CustomResponseData();
+        List<SelectAllCompanysList> list = companysService.selectCompanysByCategory(keyword);
+
+        if(list != null) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(list);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
+
+    /**
+     * Companys 소재지 시/도 기준으로 회사목록 검색
+     * @param companysCategory String
+     * @param companysRegion1 String
+     * @return
+     */
+    @GetMapping("/selectCompanysByCategoryAndRegion1")
+    public CustomResponseData selectCompanysByCategoryAndRegion1(
+        @RequestParam("companysCategory") String companysCategory,
+        @RequestParam("companysRegion1") String companysRegion1
+    ) {
+        CustomResponseData result = new CustomResponseData();
+        List<SelectAllCompanysList> list = companysService.selectCompanysByCategoryAndRegion1(companysCategory, companysRegion1);
+
+        if(list != null) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(list);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
     /**
      * usersIdx의 DETECTIVE가 소유한 업체정보를 조회
      * @param param

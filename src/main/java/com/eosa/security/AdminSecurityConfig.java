@@ -31,7 +31,7 @@ public class AdminSecurityConfig {
             .authorizeRequests()
                 .antMatchers(PERMIT_URL).permitAll()
                 .anyRequest().hasAnyAuthority("ADMIN", "SUPER_ADMIN")
-                // .anyRequest().permitAll()
+//                 .anyRequest().permitAll()
         .and()
             .formLogin()
                 .loginPage("/admin/sign/signIn")

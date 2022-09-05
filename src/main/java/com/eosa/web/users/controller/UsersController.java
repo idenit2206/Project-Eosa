@@ -5,6 +5,8 @@ import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.mail.internet.InternetAddress;
 import javax.servlet.ServletException;
@@ -12,12 +14,18 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.eosa.web.users.entity.*;
+import com.eosa.web.users.service.SmsCertificationService;
+import net.nurigo.sdk.message.model.Message;
+import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
+import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import org.apache.tomcat.util.json.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,10 +39,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.eosa.security.CustomPrincipalDetails;
-import com.eosa.web.users.entity.FindByUsersAccountEntity;
-import com.eosa.web.users.entity.GetUsersInfoByUsersAccountEntity;
-import com.eosa.web.users.entity.TerminateUser;
-import com.eosa.web.users.entity.Users;
 import com.eosa.web.users.service.TerminateUserService;
 import com.eosa.web.users.service.UsersService;
 import com.eosa.web.util.CustomResponseData;
@@ -55,12 +59,16 @@ public class UsersController {
  
     private NullCheck nullCheck = new NullCheck();
     private String myHostName = new InternetAddress().getAddress();
-    
+
+    @Value("${coolsms.api-key}") private String coolSmsApiKey;
+    @Value("${coolsms.api-secret-key}") private String coolSmsApiSecretKey;
     final DefaultMessageService messageService;
     public UsersController() {
         this.messageService = NurigoApp.INSTANCE.initialize("NCSVBBUZQHJ2IJW8", "SL2MVRXGWZB7KQODM6XHMLZSPMQFDWZP", "https://api.coolsms.co.kr");
     }
+    private static Map<String, Object> snsAuthKeyList = new HashMap<>();
 
+    @Autowired private SmsCertificationService smsCertificationService;
     @Autowired private UsersService usersService;
     @Autowired private TerminateUserService terminateUserService;
 
@@ -73,54 +81,42 @@ public class UsersController {
         // return hostAddress + "/api/user/test01";
         return myDomain; 
     }
-
-    private static Map<String, String> mobileCheckKeyList = new HashMap<>();
-
     @PostMapping(value="/sign/sendPhoneCheckMessage")
-    public String sendOne(@RequestParam("usersPhone") String usersPhone) {
-        // Message message = new Message();
-        String passKey = "";
-        while(passKey.length() <= 5) {
-            passKey += String.valueOf((int) Math.floor(Math.random() * 9));
-        }
-        mobileCheckKeyList.put(usersPhone, passKey);
+    public void sendOne(@RequestParam("usersPhone") String usersPhone) {
+        CustomResponseData result = new CustomResponseData();
+        String senderPhone = "01071899972";
 
-        // 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
-        // message.setFrom("01071899972");
-        // message.setTo(usersPhone);
-        // message.setText("어사 회원가입 핸드폰 인증 단계입니다.\n다음의 번호를 입력해주세요.\n"+passKey);
-        log.debug("수신 번호: {}", usersPhone);
-        log.debug("어사 회원가입 핸드폰 인증 단계입니다.\n다음의 번호를 입력해주세요.\n{}", passKey);
-
-        passKey = "";
-
-        return passKey;
+         Message message = new Message();
+         String authCode = smsCertificationService.createCertificationCode(usersPhone);
+//       //  발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
+         message.setFrom("01071899972"); // 발신번호
+         message.setTo(usersPhone);  // 수신번호
+         message.setText("어사 회원가입 핸드폰 인증 단계입니다.\n다음의 번호를 입력해주세요.\n"+authCode); // 발신내용
+        log.debug("[sendOne] authCode: {}", authCode);
+//         SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+//         smsCertificationService.savedAuthCode(usersPhone, authCode);
     }
 
-    // @PostMapping(value="/sign/sendPhoneCheckMessage")
-    // public SingleMessageSentResponse sendOne(@RequestParam("usersPhone") String usersPhone) {
-    //     Message message = new Message();
-    //     String passKey = "";
-    //     while(passKey.length() <= 5) {
-    //         passKey += String.valueOf((int) Math.floor(Math.random() * 9));
-    //     }
-    //     mobileCheckKeyList.put(usersPhone, passKey);
-
-    //     // 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
-    //     message.setFrom("01071899972");
-    //     message.setTo(usersPhone);
-    //     message.setText("어사 회원가입 핸드폰 인증 단계입니다.\n다음의 번호를 입력해주세요.\n"+passKey);
-
-    //     SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
-    //     System.out.println(response);
-    //     passKey = "";
-
-    //     return response;
-    // }
-
     @PostMapping(value="/sign/checkMyPhone")
-    public CustomResponseData checkMyPhone(@RequestParam("passKey")String passKey) {
+    public CustomResponseData checkMyPhone(
+        @RequestParam("usersPhone") String usersPhone,
+        @RequestParam("passKey")String passKey
+    ) {
         CustomResponseData result = new CustomResponseData();
+        String storedAuthKey = smsCertificationService.getAuthCode(usersPhone);
+        if(storedAuthKey.equals(passKey)) {
+            log.debug("authKey가 일치합니다.");
+            smsCertificationService.removeAuthCode(usersPhone);
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem("TRUE");
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            log.debug("authKey가 불일치합니다.");
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem("FALSE");
+            result.setResponseDateTime(LocalDateTime.now());
+        }
 
         return result;
     }
@@ -470,7 +466,7 @@ public class UsersController {
 
     /**
      * 회원정보를 수정하는 url입니다.
-     * @param Users param
+     * @param param Users
      * @return
      */
     @Operation(summary = "회원정보 수정", description = "회원이 스스로 회원정보를 수정할때 사용합니다.")
@@ -511,8 +507,8 @@ public class UsersController {
 
     /**
      * 회원 탈퇴를 요청하는 url입니다.
-     * @param Long usersIdx
-     * @param String terminateReason 
+     * @param usersIdx Long
+     * @param terminateReason String
      * @return
      */
     @Operation(summary="회원탈퇴", description="회원이 직접 서비스로부터 회원탈퇴를 신청합니다.")
