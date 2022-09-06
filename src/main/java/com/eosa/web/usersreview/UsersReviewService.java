@@ -47,6 +47,11 @@ public class UsersReviewService implements UsersReviewRepository{
     }
 
     @Override
+    public UsersReview selectOneUsersReviewByRequestFormIdx(Long requestFormIdx) {
+        return usersReviewRepository.selectOneUsersReviewByRequestFormIdx(requestFormIdx);
+    }
+
+    @Override
     public List<UsersReview> findAll() {
         // TODO Auto-generated method stub
         return null;
