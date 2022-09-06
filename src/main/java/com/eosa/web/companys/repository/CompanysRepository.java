@@ -98,14 +98,27 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         "Companys.companysPhone, Companys.companysComment, Companys.companysSpec, Companys.companysRegistDate, " +
         "Companys.companysRegion1, Companys.companysProfileImage, Companys.companysEnabled, " +
         "Companys.companysPremium, Companys.companysLocalPremium, " +
-        "UserLikeCompany.userLikeCompanyEnable, " +
         "(SELECT GROUP_CONCAT(CompanysCategory.companysCategoryValue) FROM CompanysCategory WHERE CompanysCategory.companysIdx = Companys.companysIdx) " +
-        "AS CompanysCategory FROM Companys " +
-        "INNER JOIN UserLikeCompany ON Companys.companysIdx = UserLikeCompany.companysIdx",
-        // value="SELECT * FROM Companys",
+        "AS CompanysCategory FROM Companys",
         nativeQuery = true
     )
     List<SelectAllCompanysList> selectAllCompanysList();
+
+    @Query(value=
+            "SELECT " +
+                    "Companys.companysIdx, Companys.companysName, Companys.companysCeoIdx, Companys.companysCeoName, " +
+                    "Companys.companysPhone, Companys.companysComment, Companys.companysSpec, Companys.companysRegistDate, " +
+                    "Companys.companysRegion1, Companys.companysProfileImage, Companys.companysEnabled, " +
+                    "Companys.companysPremium, Companys.companysLocalPremium, " +
+                    "(SELECT IF(userLikeCompanyEnable IS NULL, 0, 1) FROM UserLikeCompany WHERE UserLikeCompany.usersIdx=?1 AND UserLikeCompany.companysIdx=?2)\n" +
+                    "AS userLikeCompanysEnable," +
+                    "(SELECT GROUP_CONCAT(CompanysCategory.companysCategoryValue) FROM CompanysCategory WHERE CompanysCategory.companysIdx = Companys.companysIdx) " +
+                    "AS CompanysCategory FROM Companys " +
+                    "INNER JOIN UserLikeCompany ON Companys.companysIdx = UserLikeCompany.companysIdx",
+            // value="SELECT * FROM Companys",
+            nativeQuery = true
+    )
+    List<SelectAllCompanysList> selectAllCompanysListByUsersIdxAndCompanysIdx(Long usersIdx, Long companysIdx);
 
     @Query(value="SELECT companysIdx FROM CompanysCategory WHERE companysCategoryValue = ?1", nativeQuery = true)
     List<Long> selectCompanysIdxByCompanysCategory(String companysCategoryValue);
