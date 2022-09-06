@@ -20,4 +20,9 @@ public interface UserLikeCompanyRepository extends JpaRepository<UserLikeCompany
     )
     int deleteByUsersAndCompanysIdx(Long usersIdx, Long companysIdx);
 
+    @Query(
+        value="SELECT userLikeCompanyEnable FROM UserLikeCompany WHERE companysIdx = ?1", nativeQuery = true
+    )
+    int selectUserLikeCompanyEnableByCompanysIdx(Long companysIdx);
+
 }

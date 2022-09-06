@@ -65,6 +65,11 @@ public class RequestFormService implements RequestFormRepository {
     }
 
     @Override
+    public RequestForm selectOneRequestFormByRequsetFormIdx(Long requestFormIdx) {
+        return requestFormRepository.selectOneRequestFormByRequsetFormIdx(requestFormIdx);
+    }
+
+    @Override
     public List<RequestForm> findAll(Sort sort) {
         // TODO Auto-generated method stub
         return null;

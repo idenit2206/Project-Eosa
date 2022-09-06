@@ -1,5 +1,7 @@
 package com.eosa.web.users.controller;
 
+import com.eosa.web.companys.entity.SelectAllCompanysList;
+import com.eosa.web.companys.service.CompanysService;
 import com.eosa.web.users.entity.UserLikeCompany;
 import com.eosa.web.users.entity.UserRecentCompany;
 import com.eosa.web.users.service.UserLikeCompanyService;
@@ -11,8 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @RestController
@@ -21,6 +22,7 @@ public class UserAndCompanyController {
 
     @Autowired private UserLikeCompanyService userLikeCompanyService;
     @Autowired private UserRecentCompanyService userRecentCompanyService;
+    @Autowired private CompanysService companysService;
 
     /**
      * CLIENT 사용자의 업체에 대한 좋아요 활성화 버튼
@@ -108,16 +110,31 @@ public class UserAndCompanyController {
         return result;
     }
 
+    /**
+     * usersIdx의 최근 방문 업체를 목록을 출력합니다.
+     * @param usersIdx
+     * @return
+     */
     @GetMapping("/selectUserRecentCompanyByUsersIdx")
     public CustomResponseData selectUserRecentCompanyByUsersIdx(
         @RequestParam("usersIdx") Long usersIdx
     ) {
         CustomResponseData result = new CustomResponseData();
-        List<UserRecentCompany> items = userRecentCompanyService.findByUsersIdx(usersIdx);
+        Map<String, Object> items = new HashMap<>();
+        List<UserRecentCompany> userRecentCompanyList = userRecentCompanyService.findByUsersIdx(usersIdx);
+        List<SelectAllCompanysList> item1 = new ArrayList<>();
+        List<Integer> item2 = new ArrayList<>();
+
+        for(int i = 0; i < userRecentCompanyList.size(); i++) {
+            Long companysIdx = userRecentCompanyList.get(i).getCompanysIdx();
+            SelectAllCompanysList company = companysService.selectCompanysByCompanysIdx(companysIdx);
+            item1.add(company);
+        }
+
 
         if(items != null) {
             result.setStatusCode(HttpStatus.OK.value());
-            result.setResultItem(items);
+            result.setResultItem(item1);
             result.setResponseDateTime(LocalDateTime.now());
         }
         else {

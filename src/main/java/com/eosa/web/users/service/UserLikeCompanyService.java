@@ -34,6 +34,11 @@ public class UserLikeCompanyService implements UserLikeCompanyRepository {
     }
 
     @Override
+    public int selectUserLikeCompanyEnableByCompanysIdx(Long companysIdx) {
+        return userLikeCompanyRepository.selectUserLikeCompanyEnableByCompanysIdx(companysIdx);
+    }
+
+    @Override
     public List<com.eosa.web.users.entity.UserLikeCompany> findAll() {
         return null;
     }

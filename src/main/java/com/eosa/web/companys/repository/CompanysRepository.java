@@ -127,9 +127,12 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         "SELECT " +
         "Companys.companysIdx, Companys.companysName, Companys.companysCeoIdx, Companys.companysCeoName, " +
         "Companys.companysPhone, Companys.companysComment, Companys.companysSpec, Companys.companysRegistDate, " +
-        "Companys.companysRegion1, Companys.companysEnabled, Companys.companysPremium, Companys.companysLocalPremium, " +
-        "GROUP_CONCAT(CompanysCategory.companysCategoryValue) AS companysCategory " +
+        "Companys.companysRegion1, Companys.companysProfileImage, Companys.companysEnabled, " +
+        "Companys.companysPremium, Companys.companysLocalPremium, " +
+        "UserLikeCompany.userLikeCompanyEnable, " +
+        "GROUP_CONCAT(CompanysCategory.companysCategoryValue) AS companysCategor " +
         "FROM Companys INNER JOIN CompanysCategory ON Companys.companysIdx = CompanysCategory.companysIdx " +
+        "INNER JOIN UserLikeCompany ON Companys.companysIdx = UserLikeCompany.companysIdx " +
         "WHERE Companys.companysIdx = ?1 " +
         "GROUP BY Companys.companysIdx",
     nativeQuery = true)

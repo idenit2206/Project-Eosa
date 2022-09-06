@@ -99,4 +99,8 @@ public interface RequestFormRepository extends JpaRepository<RequestForm, Long> 
     )
     List<SelectRequestFormList> selectAllRequestFormListByUsersIdxOrderByRequestFormDateASC(Long usersIdx);
 
+
+    @Query(value = "SELECT * FROM RequestForm WHERE requestFormIdx = ?1", nativeQuery = true)
+    RequestForm selectOneRequestFormByRequsetFormIdx(Long requestFormIdx);
+
 }

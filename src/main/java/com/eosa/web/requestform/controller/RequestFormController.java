@@ -311,4 +311,24 @@ public class RequestFormController {
         return result;
     }
 
+    @GetMapping("/selectRequestFormByRequsetFormIdx")
+    public CustomResponseData selectRequestFormByRequsetFormIdx(@RequestParam("requestFormIdx") Long requestFormIdx) {
+        CustomResponseData result = new CustomResponseData();
+
+        RequestForm item = requestFormService.selectOneRequestFormByRequsetFormIdx(requestFormIdx);
+
+        if(item != null) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(item);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
+
 }

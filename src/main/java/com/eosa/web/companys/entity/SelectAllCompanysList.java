@@ -13,10 +13,12 @@ public interface SelectAllCompanysList {
     String getCompanysComment();
     String getCompanysSpec();
     LocalDateTime getCompanysRegistDate();
-    String getCompanysRegion1();    
+    String getCompanysRegion1();
+    String getCompanyProfileImage();
     int getCompanysEnabled();
     int getCompanysPremium();
     int getCompanysLocalPremium();
     List<String> getCompanysCategory();
+    int getUserLikeCompanyEnable();
 
 }
