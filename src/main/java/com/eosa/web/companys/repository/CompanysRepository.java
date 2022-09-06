@@ -105,19 +105,22 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
     )
     List<SelectAllCompanysList> selectAllCompanysList();
 
+    @Query(value="SELECT companysIdx FROM CompanysCategory WHERE companysCategoryValue = ?1", nativeQuery = true)
+    int selectCompanysIdxByCompanysCategory(String companysCategoryValue);
+
     @Query(
             value="SELECT " +
                     "Companys.companysIdx, Companys.companysName, Companys.companysCeoIdx, Companys.companysCeoName, " +
                     "Companys.companysPhone, Companys.companysComment, Companys.companysSpec, Companys.companysRegistDate, " +
                     "Companys.companysRegion1, Companys.companysEnabled, Companys.companysPremium, Companys.companysLocalPremium, " +
-                    "GROUP_CONCAT(CompanysCategory.companysCategoryValue) AS companysCategory " +
+                    "(SELECT GROUP_CONCAT(companysCategoryValue) FROM CompanysCategory WHERE companysIdx = ?1" +
+                    "GROUP BY companysIdx) AS companysCategory" +
                     "FROM Companys INNER JOIN CompanysCategory ON Companys.companysIdx = CompanysCategory.companysIdx " +
-                    "WHERE CompanysCategory.companysCategoryValue = ?1 " +
                     "GROUP BY Companys.companysIdx",
             // value="SELECT * FROM Companys",
             nativeQuery = true
     )
-    List<SelectAllCompanysList> selectCompanysByCategory(String keyword);
+    SelectAllCompanysList selectCompanysByCategory(Long companysIdx);
 
     @Query(
             value="SELECT " +
@@ -132,6 +135,20 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
             nativeQuery = true
     )
     List<SelectAllCompanysList> selectCompanysByCategoryAndRegion1(String companysCategory, String companysRegion1);
+
+    @Query(
+            value="SELECT " +
+                    "Companys.companysIdx, Companys.companysName, Companys.companysCeoIdx, Companys.companysCeoName, " +
+                    "Companys.companysPhone, Companys.companysComment, Companys.companysSpec, Companys.companysRegistDate, " +
+                    "Companys.companysRegion1, Companys.companysEnabled, Companys.companysPremium, Companys.companysLocalPremium, " +
+                    "GROUP_CONCAT(CompanysCategory.companysCategoryValue) AS companysCategory " +
+                    "FROM Companys INNER JOIN CompanysCategory ON Companys.companysIdx = CompanysCategory.companysIdx " +
+                    "WHERE Companys.companysRegion1 = ?1 " +
+                    "GROUP BY Companys.companysIdx",
+            // value="SELECT * FROM Companys",
+            nativeQuery = true
+    )
+    List<SelectAllCompanysList> selectCompanysByCompanysRegion1(String companysRegion1);
 
     @Query(value = "SELECT * FROM Companys WHERE companysCeoIdx = ?1", nativeQuery = true)
     Companys selectCompanyInfoByUsersIdx(Long companysCeoIdx);

@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserRecentCompanyRepository extends JpaRepository<UserRecentCompany, Long> {
@@ -22,4 +24,6 @@ public interface UserRecentCompanyRepository extends JpaRepository<UserRecentCom
     @Query(value="DELETE FROM UserRecentCompany WHERE idx = ?1", nativeQuery = true)
     void deleteOldestOne(Long idx);
 
+    @Query(value="SELECT * FROM UserRecentCompany WHERE usersIdx = ?1", nativeQuery = true)
+    List<UserRecentCompany> findByUsersIdx(Long usersIdx);
 }

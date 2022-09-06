@@ -7,10 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.eosa.web.companys.entity.*;
 import com.eosa.web.companys.service.*;
@@ -193,12 +190,28 @@ public class CompanysController {
     }
 
     /**
-     * 활동분야를 검색어로으 한 업체목록 조회
+     * 활동분야를 기준으로 한 업체목록 조회
      */
     @GetMapping("/selectCompanysByCategory")
-    public CustomResponseData selectCompanysByCategory(@RequestParam("companysCategory") String keyword) {
+    public CustomResponseData selectCompanysByCategory(
+            @RequestParam("companysCategoryValue") List<String> companysCategory
+    ) {
         CustomResponseData result = new CustomResponseData();
-        List<SelectAllCompanysList> list = companysService.selectCompanysByCategory(keyword);
+        List<SelectAllCompanysList> list = new LinkedList<>();
+        List<Integer> companysIdxList = new ArrayList<>();
+        for(int i = 0; i < companysCategory.size(); i++) {
+            log.debug("[selectCompanysByCategory] RequestParam companysCategory: {}", companysCategory.get(i).toString());
+//            int idx = companysService.selectCompanysIdxByCompanysCategory(companysCategory.get(i).toString());
+//            companysIdxList.add(idx);
+        }
+        log.debug(companysIdxList.toString());
+//        for(int i = 0; i < companysIdxList.size(); i++) {
+//            SelectAllCompanysList company = companysService.selectCompanysByCategory(companysIdxList.get(i));
+//            log.debug("[selectCompanysByCategory] companys: {}", company.toString());
+//            list.add(company);
+//        }
+//        log.debug("[selectCompanysByCategory] list: {}", list.toString());
+//        List<SelectAllCompanysList> list = companysService.selectCompanysByCategory(keyword);
 
         if(list != null) {
             result.setStatusCode(HttpStatus.OK.value());
@@ -215,7 +228,7 @@ public class CompanysController {
     }
 
     /**
-     * Companys 소재지 시/도 기준으로 회사목록 검색
+     * Companys 활동분야, 소재지 시/도 기준으로 회사목록 검색
      * @param companysCategory String
      * @param companysRegion1 String
      * @return
@@ -241,6 +254,28 @@ public class CompanysController {
 
         return result;
     }
+
+    @GetMapping("/selectCompanysByCompanysRegion1")
+    public CustomResponseData selectCompanysByCompanysRegion1(
+            @RequestParam("companysRegion1") String companysRegion1
+    ) {
+        CustomResponseData result = new CustomResponseData();
+        List<SelectAllCompanysList> items = companysService.selectCompanysByCompanysRegion1(companysRegion1);
+
+        if(items != null) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(items);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
+
     /**
      * usersIdx의 DETECTIVE가 소유한 업체정보를 조회
      * @param param
@@ -285,6 +320,15 @@ public class CompanysController {
     }
 
     /**
+     * 업체 등급별 검색 일반, 마패, 프리미엄, 전체
+     *
+     */
+//    @GetMapping("/selectCompanysByCompanysGrade")
+//    public CustomResponseData selectCompanysByCompanysGrade(
+//        @RequestParam("companysGrade") String companysGrade
+//    )
+
+    /**
      * usersIdx를 매개변수로 받아 해당하는 Companys의 companysIdx를 출력합니다.
      * @param usersIdx
      * @return
@@ -310,9 +354,22 @@ public class CompanysController {
         return result;
     }
 
+    /**
+     * 업체 정보 수정
+     * @param companyInfo Companys 타입
+     * @param companysCategory List(String)
+     * @param companysActiveRegions List(String)
+     * @param file1 MultipartFile
+     * @param file2 MultipartFile
+     * @param file3 MultipartFile
+     * @return
+     * @throws JSONException
+     * @throws ParseException
+     * @throws IOException
+     */
     @PutMapping("/updateCompanys")
     public CustomResponseData updateCompanys(
-            @RequestPart("companyInfo") Companys params,
+            @RequestPart("companyInfo") Companys companyInfo,
             @RequestPart("companysCategory") List<String> companysCategory,
             @RequestPart("companysActiveRegion") List<String> companysActiveRegions,
             @RequestPart(value = "companysRegistCerti", required = false) MultipartFile file1,
@@ -320,7 +377,7 @@ public class CompanysController {
             @RequestPart(value = "companysProfileImage", required = false) MultipartFile file3
     ) throws JSONException, ParseException, IOException {
         CustomResponseData result = new CustomResponseData();
-        log.debug("[updateCompanys] params: {}", params.getCompanysIdx());
+        log.debug("[updateCompanys] companyInfo: {}", companyInfo.getCompanysIdx());
         log.debug("[updateCompanys] {}, {}", companysCategory.toString(), companysActiveRegions.toString());
 
         Companys entity = new Companys();
@@ -341,16 +398,16 @@ public class CompanysController {
             entity.setCompanysProfileImage(file3URL);
         }
 
-        entity.setCompanysName(params.getCompanysName());
-        entity.setCompanysCeoName(params.getCompanysCeoName());
-        entity.setCompanysCeoIdx(params.getCompanysCeoIdx());
-        entity.setCompanysComment(params.getCompanysComment());
-        entity.setCompanysSpec(params.getCompanysSpec());
-        entity.setCompanysRegion1(params.getCompanysRegion1());
-        entity.setCompanysRegion2(params.getCompanysRegion2());
-        entity.setCompanysRegion3(params.getCompanysRegion3());
-        entity.setCompanysBankName(params.getCompanysBankName());
-        entity.setCompanysBankNumber(params.getCompanysBankNumber());
+        entity.setCompanysName(companyInfo.getCompanysName());
+        entity.setCompanysCeoName(companyInfo.getCompanysCeoName());
+        entity.setCompanysCeoIdx(companyInfo.getCompanysCeoIdx());
+        entity.setCompanysComment(companyInfo.getCompanysComment());
+        entity.setCompanysSpec(companyInfo.getCompanysSpec());
+        entity.setCompanysRegion1(companyInfo.getCompanysRegion1());
+        entity.setCompanysRegion2(companyInfo.getCompanysRegion2());
+        entity.setCompanysRegion3(companyInfo.getCompanysRegion3());
+        entity.setCompanysBankName(companyInfo.getCompanysBankName());
+        entity.setCompanysBankNumber(companyInfo.getCompanysBankNumber());
 
         Long companysIdx = entity.getCompanysIdx();
 //        log.debug("[updateCompanys] entity: {}", entity.toString());

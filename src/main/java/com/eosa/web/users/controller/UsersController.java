@@ -60,8 +60,8 @@ public class UsersController {
     private NullCheck nullCheck = new NullCheck();
     private String myHostName = new InternetAddress().getAddress();
 
-    @Value("${coolsms.api-key}") private String coolSmsApiKey;
-    @Value("${coolsms.api-secret-key}") private String coolSmsApiSecretKey;
+//    @Value("${coolsms.api.key}") private String coolSmsApiKey;
+//    @Value("${coolsms.api.secret.key}") private String coolSmsApiSecretKey;
     final DefaultMessageService messageService;
     public UsersController() {
         this.messageService = NurigoApp.INSTANCE.initialize("NCSVBBUZQHJ2IJW8", "SL2MVRXGWZB7KQODM6XHMLZSPMQFDWZP", "https://api.coolsms.co.kr");
@@ -194,18 +194,6 @@ public class UsersController {
 
         return result;
     }
-    // @GetMapping("/sign/dupliCheck")
-    // public CustomResponseData signUpDupliCheck(
-    //     @RequestParam("usersAccount") String usersAccount,
-    //     @RequestParam("usersEmail") String usersEmail
-    // ) {
-    //     CustomResponseData result = new CustomResponseData();
-
-    //     result.setStatusCode(HttpStatus.OK.value());
-    //     result.setResultItem(null);
-    //     result.setResponseDateTime(LocalDateTime.now());
-    //     return result;
-    // }
 
     @GetMapping("/sign/usersAccountDupliCheck")
     public CustomResponseData usersAccountDupliCheck(

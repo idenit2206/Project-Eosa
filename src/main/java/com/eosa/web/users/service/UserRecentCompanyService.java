@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -18,6 +19,12 @@ import java.util.function.Function;
 public class UserRecentCompanyService implements UserRecentCompanyRepository {
 
     @Autowired private UserRecentCompanyRepository userRecentCompanyRepository;
+
+    @Override
+    public <S extends UserRecentCompany> S save(S entity) {
+        entity.setBrowseDate(LocalDateTime.now());
+        return userRecentCompanyRepository.save(entity);
+    }
 
     @Override
     public int countByUsersIdx(Long usersIdx) {
@@ -32,6 +39,11 @@ public class UserRecentCompanyService implements UserRecentCompanyRepository {
     @Override
     public void deleteOldestOne(Long idx) {
         userRecentCompanyRepository.deleteOldestOne(idx);
+    }
+
+    @Override
+    public List<UserRecentCompany> findByUsersIdx(Long usersIdx) {
+        return userRecentCompanyRepository.findByUsersIdx(usersIdx);
     }
 
     @Override
@@ -82,11 +94,6 @@ public class UserRecentCompanyService implements UserRecentCompanyRepository {
     @Override
     public void deleteAll() {
 
-    }
-
-    @Override
-    public <S extends UserRecentCompany> S save(S entity) {
-        return null;
     }
 
     @Override

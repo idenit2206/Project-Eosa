@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -45,6 +47,12 @@ public class UserAndCompanyController {
         return result;
     }
 
+    /**
+     * 좋아요 취소
+     * @param usersIdx Long
+     * @param companysIdx Long
+     * @return
+     */
     @DeleteMapping("/deleteUserLikeCompany")
     public CustomResponseData deleteUserLikeCompany(
             @RequestParam("usersIdx") Long usersIdx,
@@ -94,6 +102,27 @@ public class UserAndCompanyController {
 
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem("FALSE");
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
+
+    @GetMapping("/selectUserRecentCompanyByUsersIdx")
+    public CustomResponseData selectUserRecentCompanyByUsersIdx(
+        @RequestParam("usersIdx") Long usersIdx
+    ) {
+        CustomResponseData result = new CustomResponseData();
+        List<UserRecentCompany> items = userRecentCompanyService.findByUsersIdx(usersIdx);
+
+        if(items != null) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(items);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(null);
             result.setResponseDateTime(LocalDateTime.now());
         }
 
