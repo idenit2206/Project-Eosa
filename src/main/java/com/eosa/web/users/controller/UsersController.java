@@ -5,8 +5,6 @@ import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.mail.internet.InternetAddress;
 import javax.servlet.ServletException;

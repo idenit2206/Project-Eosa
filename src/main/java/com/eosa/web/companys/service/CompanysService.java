@@ -66,6 +66,11 @@ public class CompanysService implements CompanysRepository {
     }
 
     @Override
+    public List<SelectAllCompanysList> selectAllCompanysListByUsersIdxAndCompanysIdx(Long usersIdx, Long companysIdx) {
+        return companysRepository.selectAllCompanysListByUsersIdxAndCompanysIdx(usersIdx, companysIdx);
+    }
+
+    @Override
     public List<Long> selectCompanysIdxByCompanysCategory(String companysCategoryValue) {
         return companysRepository.selectCompanysIdxByCompanysCategory(companysCategoryValue);
     }

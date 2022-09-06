@@ -28,9 +28,6 @@ public class CustomAdminAuthSuccessHandler implements AuthenticationSuccessHandl
         Authentication authentication)
     throws IOException, ServletException {
         log.info("Welcom Admin: {}", authentication.getName());
-        Users user = usersService.findByUsersAccount(authentication.getName());
-        log.info("user: {}", user.toString());
-        request.setAttribute("user", user);
         response.sendRedirect("/admin/");
     }    
 }
