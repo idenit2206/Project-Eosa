@@ -198,20 +198,19 @@ public class CompanysController {
     ) {
         CustomResponseData result = new CustomResponseData();
         List<SelectAllCompanysList> list = new LinkedList<>();
-        List<Integer> companysIdxList = new ArrayList<>();
+        List<Long> companysIdxList = new ArrayList<>();
         for(int i = 0; i < companysCategory.size(); i++) {
-            log.debug("[selectCompanysByCategory] RequestParam companysCategory: {}", companysCategory.get(i).toString());
-//            int idx = companysService.selectCompanysIdxByCompanysCategory(companysCategory.get(i).toString());
-//            companysIdxList.add(idx);
+            String keyword = companysCategory.get(i).trim();
+//            log.debug("[selectCompanysByCategory] RequestParam companysCategory: {}", keyword);
+            companysIdxList = companysService.selectCompanysIdxByCompanysCategory(keyword);
         }
-        log.debug(companysIdxList.toString());
-//        for(int i = 0; i < companysIdxList.size(); i++) {
-//            SelectAllCompanysList company = companysService.selectCompanysByCategory(companysIdxList.get(i));
-//            log.debug("[selectCompanysByCategory] companys: {}", company.toString());
-//            list.add(company);
-//        }
-//        log.debug("[selectCompanysByCategory] list: {}", list.toString());
-//        List<SelectAllCompanysList> list = companysService.selectCompanysByCategory(keyword);
+        log.debug("[selectCompanysByCategory] companysIdx: {}", companysIdxList.toString());
+        for(int i = 0; i < companysIdxList.size(); i++) {
+            Long companysIdx = companysIdxList.get(i);
+            SelectAllCompanysList query = companysService.selectCompanysByCompanysIdx(companysIdx);
+            list.add(query);
+        }
+        log.debug("[selectCompanysByCategory] list[0] companysName: {}", list.get(0).getCompanysName());
 
         if(list != null) {
             result.setStatusCode(HttpStatus.OK.value());
@@ -235,11 +234,25 @@ public class CompanysController {
      */
     @GetMapping("/selectCompanysByCategoryAndRegion1")
     public CustomResponseData selectCompanysByCategoryAndRegion1(
-        @RequestParam("companysCategory") String companysCategory,
-        @RequestParam("companysRegion1") String companysRegion1
+        @RequestParam("companysCategoryValue") List<String> companysCategory,
+        @RequestParam("companysRegion1") List<String> companysRegion1
     ) {
         CustomResponseData result = new CustomResponseData();
-        List<SelectAllCompanysList> list = companysService.selectCompanysByCategoryAndRegion1(companysCategory, companysRegion1);
+        List<SelectAllCompanysList> list = new LinkedList<>();
+        List<Long> companysIdxList = new ArrayList<>();
+        for(int i = 0; i < companysCategory.size(); i++) {
+            String keyword = companysCategory.get(i).trim();
+//            log.debug("[selectCompanysByCategory] RequestParam companysCategory: {}", keyword);
+            companysIdxList = companysService.selectCompanysIdxByCompanysCategory(keyword);
+        }
+        log.debug("[selectCompanysByCategoryAndRegion1] companysIdx: {}", companysIdxList.toString());
+        for(int i =0; i < companysRegion1.size(); i++) {
+            for(int j = 0; j < companysIdxList.size(); j++) {
+                Long companysIdx = companysIdxList.get(j);
+                SelectAllCompanysList query = companysService.selectCompanysByCompanysIdxAndCompanysRegion1(companysIdx, companysRegion1.get(i));
+                list.add(query);
+            }
+        }
 
         if(list != null) {
             result.setStatusCode(HttpStatus.OK.value());
@@ -257,14 +270,26 @@ public class CompanysController {
 
     @GetMapping("/selectCompanysByCompanysRegion1")
     public CustomResponseData selectCompanysByCompanysRegion1(
-            @RequestParam("companysRegion1") String companysRegion1
+            @RequestParam("companysRegion1") List<String> companysRegion1
     ) {
         CustomResponseData result = new CustomResponseData();
-        List<SelectAllCompanysList> items = companysService.selectCompanysByCompanysRegion1(companysRegion1);
+        List<SelectAllCompanysList> list = new LinkedList<>();
+        List<Long> companysIdxList = new LinkedList<>();
+        for(int i = 0; i < companysRegion1.size(); i++) {
+            String keyword = companysRegion1.get(i).trim();
+//            log.debug("[selectCompanysByCategory] RequestParam companysCategory: {}", keyword);
+            companysIdxList = companysService.selectCompanysIdxByRegion1(keyword);
+        }
+        log.debug("[selectCompanysByCompanysRegion1] companysIdx: {}", companysIdxList.toString());
+        for(int i = 0; i < companysIdxList.size(); i++) {
+            Long companysIdx = companysIdxList.get(i);
+            SelectAllCompanysList query = companysService.selectCompanysByCompanysIdx(companysIdx);
+            list.add(query);
+        }
 
-        if(items != null) {
+        if(list != null) {
             result.setStatusCode(HttpStatus.OK.value());
-            result.setResultItem(items);
+            result.setResultItem(list);
             result.setResponseDateTime(LocalDateTime.now());
         }
         else {

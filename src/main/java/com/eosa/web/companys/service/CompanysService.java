@@ -66,18 +66,27 @@ public class CompanysService implements CompanysRepository {
     }
 
     @Override
-    public int selectCompanysIdxByCompanysCategory(String companysCategoryValue) {
+    public List<Long> selectCompanysIdxByCompanysCategory(String companysCategoryValue) {
         return companysRepository.selectCompanysIdxByCompanysCategory(companysCategoryValue);
     }
 
     @Override
-    public SelectAllCompanysList selectCompanysByCategory(Long companysIdx) {
-        return companysRepository.selectCompanysByCategory(companysIdx);
+    public SelectAllCompanysList selectCompanysByCompanysIdx(Long companysIdx) {
+        return companysRepository.selectCompanysByCompanysIdx(companysIdx);
     }
 
     @Override
-    public List<SelectAllCompanysList> selectCompanysByCategoryAndRegion1(String companysCagegory, String companysRegion1) {
-        return companysRepository.selectCompanysByCategoryAndRegion1(companysCagegory, companysRegion1);
+    public SelectAllCompanysList selectCompanysByCompanysIdxAndCompanysRegion1(Long companysIdx, String companysRegion1) {
+        return companysRepository.selectCompanysByCompanysIdxAndCompanysRegion1(companysIdx, companysRegion1);
+    }
+
+    @Override
+    public List<SelectAllCompanysList> selectCompanysByCategory(Long companysIdx) {
+        return companysRepository.selectCompanysByCategory(companysIdx);
+    }
+
+    public List<Long> selectCompanysIdxByRegion1(String companysRegion1) {
+        return companysRepository.selectCompanysIdxByRegion1(companysRegion1);
     }
 
     @Override
