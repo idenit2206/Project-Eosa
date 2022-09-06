@@ -18,7 +18,8 @@ public interface SelectAllCompanysList {
     int getCompanysEnabled();
     int getCompanysPremium();
     int getCompanysLocalPremium();
-    List<String> getCompanysCategory();
     int getUserLikeCompanyEnable();
+    List<String> getCompanysCategory();
+
 
 }

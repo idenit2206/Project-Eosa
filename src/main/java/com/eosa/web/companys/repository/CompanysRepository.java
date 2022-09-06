@@ -92,14 +92,16 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
      * 모든 업체정보를 목록으로 출력
      * @return
      */
-    @Query(
-        value="SELECT " + 
+    @Query(value=
+        "SELECT " +
         "Companys.companysIdx, Companys.companysName, Companys.companysCeoIdx, Companys.companysCeoName, " +
-        "Companys.companysPhone, Companys.companysComment, Companys.companysSpec, Companys.companysRegistDate, " +        
-        "Companys.companysRegion1, Companys.companysEnabled, Companys.companysPremium, Companys.companysLocalPremium, " +
-        "GROUP_CONCAT(CompanysCategory.companysCategoryValue) AS companysCategory " +
-        "FROM Companys INNER JOIN CompanysCategory ON Companys.companysIdx = CompanysCategory.companysIdx " +
-        "GROUP BY Companys.companysIdx",
+        "Companys.companysPhone, Companys.companysComment, Companys.companysSpec, Companys.companysRegistDate, " +
+        "Companys.companysRegion1, Companys.companysProfileImage, Companys.companysEnabled, " +
+        "Companys.companysPremium, Companys.companysLocalPremium, " +
+        "UserLikeCompany.userLikeCompanyEnable, " +
+        "(SELECT GROUP_CONCAT(CompanysCategory.companysCategoryValue) FROM CompanysCategory WHERE CompanysCategory.companysIdx = Companys.companysIdx) " +
+        "AS CompanysCategory FROM Companys " +
+        "INNER JOIN UserLikeCompany ON Companys.companysIdx = UserLikeCompany.companysIdx",
         // value="SELECT * FROM Companys",
         nativeQuery = true
     )
@@ -130,24 +132,26 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         "Companys.companysRegion1, Companys.companysProfileImage, Companys.companysEnabled, " +
         "Companys.companysPremium, Companys.companysLocalPremium, " +
         "UserLikeCompany.userLikeCompanyEnable, " +
-        "GROUP_CONCAT(CompanysCategory.companysCategoryValue) AS companysCategor " +
-        "FROM Companys INNER JOIN CompanysCategory ON Companys.companysIdx = CompanysCategory.companysIdx " +
+        "(SELECT GROUP_CONCAT(CompanysCategory.companysCategoryValue) FROM CompanysCategory WHERE CompanysCategory.companysIdx = ?1) " +
+        "AS CompanysCategory FROM Companys " +
         "INNER JOIN UserLikeCompany ON Companys.companysIdx = UserLikeCompany.companysIdx " +
-        "WHERE Companys.companysIdx = ?1 " +
-        "GROUP BY Companys.companysIdx",
+        "WHERE Companys.companysIdx = ?1 ",
     nativeQuery = true)
     SelectAllCompanysList selectCompanysByCompanysIdx(Long companysIdx);
 
     @Query(
     value=
         "SELECT " +
-                "Companys.companysIdx, Companys.companysName, Companys.companysCeoIdx, Companys.companysCeoName, " +
-                "Companys.companysPhone, Companys.companysComment, Companys.companysSpec, Companys.companysRegistDate, " +
-                "Companys.companysRegion1, Companys.companysEnabled, Companys.companysPremium, Companys.companysLocalPremium, " +
-                "GROUP_CONCAT(CompanysCategory.companysCategoryValue) AS companysCategory " +
-                "FROM Companys INNER JOIN CompanysCategory ON Companys.companysIdx = CompanysCategory.companysIdx " +
-                "WHERE Companys.companysIdx = ?1 AND Companys.companysRegion1 = ?2 " +
-                "GROUP BY Companys.companysIdx",
+        "Companys.companysIdx, Companys.companysName, Companys.companysCeoIdx, Companys.companysCeoName, " +
+        "Companys.companysPhone, Companys.companysComment, Companys.companysSpec, Companys.companysRegistDate, " +
+        "Companys.companysRegion1, Companys.companysProfileImage, Companys.companysEnabled, " +
+        "Companys.companysPremium, Companys.companysLocalPremium, " +
+        "UserLikeCompany.userLikeCompanyEnable, " +
+        "(SELECT GROUP_CONCAT(CompanysCategory.companysCategoryValue) FROM CompanysCategory WHERE CompanysCategory.companysIdx = ?1) " +
+        "AS CompanysCategory FROM Companys " +
+        "INNER JOIN UserLikeCompany ON Companys.companysIdx = UserLikeCompany.companysIdx " +
+        "WHERE Companys.companysIdx = ?1 AND Companys.companysRegion1 = ?2 " +
+        "GROUP BY Companys.companysIdx",
     nativeQuery = true)
     SelectAllCompanysList selectCompanysByCompanysIdxAndCompanysRegion1(Long companysIdx, String companysRegion1);
 
