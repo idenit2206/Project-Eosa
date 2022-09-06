@@ -64,8 +64,8 @@
                             <td th:if="${companysList.companysCategory[0].length} < 5">[[${companysList.companysCategory[0]}]]</td>
                             <td th:unless="${companysList.companysCategory[0].length} < 5">[[${#strings.substring(companysList.companysCategory[0], 0, 5)}]]...</td>
                             <td>[[${companysList.companysRegion1}]]</td>
-                            <td th:if="${companysList.companysEnabled} == true">승인</td>
-                            <td th:unless="${companysList.companysEnabled} == true">미승인</td>
+                            <td th:if="${companysList.companysEnabled} == 1">승인</td>
+                            <td th:unless="${companysList.companysEnabled} == 1">미승인</td>
                             <td th:if="${companysList.companysPremium} == true">적용</td>
                             <td th:unless="${companysList.companysPremium} == true">미적용</td>
                             <td th:if="${companysList.companysLocalPremium} == true">적용</td>

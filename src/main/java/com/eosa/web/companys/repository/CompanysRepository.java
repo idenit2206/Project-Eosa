@@ -59,7 +59,7 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         "UPDATE Companys " +
         "SET companysName = :#{#Companys.companysName}, companysComment = :#{#Companys.companysComment}, " +
         "companysRegion1 = :#{#Companys.companysRegion1}, companysRegion2 = :#{#Companys.companysRegion2}, companysRegion3 = :#{#Companys.companysRegion3}, " +
-        "companysRegistCerti = :#{#Companys.companysRegistCerti}, companysProfileImage = :#{#Companys.companysProfileImage}, " +
+        "companysRegistCerti = :#{#Companys.companysRegistCerti}, companysProfileImage = :#{#Companys.companysProfileImage}, companysEnabled = :#{#Companys.companysEnabled}, " +
         "companysBankName = :#{#Companys.companysBankName}, companysBankNumber = :#{#Companys.companysBankNumber} " +
         "WHERE companysIdx = :#{#Companys.companysIdx} ",
         nativeQuery=true
@@ -137,20 +137,32 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
     )
     List<SelectAllCompanysList> selectCompanysByCategory(Long companysIdx);
 
-    @Query(
-    value=
-        "SELECT " +
-        "Companys.companysIdx, Companys.companysName, Companys.companysCeoIdx, Companys.companysCeoName, " +
-        "Companys.companysPhone, Companys.companysComment, Companys.companysSpec, Companys.companysRegistDate, " +
-        "Companys.companysRegion1, Companys.companysProfileImage, Companys.companysEnabled, " +
-        "Companys.companysPremium, Companys.companysLocalPremium, " +
-        "UserLikeCompany.userLikeCompanyEnable, " +
-        "(SELECT GROUP_CONCAT(CompanysCategory.companysCategoryValue) FROM CompanysCategory WHERE CompanysCategory.companysIdx = ?1) " +
-        "AS CompanysCategory FROM Companys " +
-        "INNER JOIN UserLikeCompany ON Companys.companysIdx = UserLikeCompany.companysIdx " +
-        "WHERE Companys.companysIdx = ?1 ",
-    nativeQuery = true)
-    SelectAllCompanysList selectCompanysByCompanysIdx(Long companysIdx);
+//     @Query(
+//     value=
+//         "SELECT " +
+//         "Companys.companysIdx, Companys.companysName, Companys.companysCeoIdx, Companys.companysCeoName, " +
+//         "Companys.companysPhone, Companys.companysComment, Companys.companysSpec, Companys.companysRegistDate, " +
+//         "Companys.companysRegion1, Companys.companysProfileImage, Companys.companysEnabled, " +
+//         "Companys.companysPremium, Companys.companysLocalPremium, " +
+//         "UserLikeCompany.userLikeCompanyEnable, " +
+//         "(SELECT GROUP_CONCAT(CompanysCategory.companysCategoryValue) FROM CompanysCategory WHERE CompanysCategory.companysIdx = ?1) " +
+//         "AS CompanysCategory FROM Companys " +
+//         "INNER JOIN UserLikeCompany ON Companys.companysIdx = UserLikeCompany.companysIdx " +
+//         "WHERE Companys.companysIdx = ?1 ",
+//     nativeQuery = true)
+//     SelectAllCompanysList selectCompanysByCompanysIdx(Long companysIdx);
+
+        @Query(
+            value=
+                "SELECT " +
+                "Companys.companysIdx, Companys.companysName, Companys.companysCeoIdx, Companys.companysCeoName, " +
+                "Companys.companysPhone, Companys.companysComment, Companys.companysSpec, Companys.companysRegistDate, " +
+                "Companys.companysRegion1, Companys.companysProfileImage, Companys.companysEnabled, " +
+                "Companys.companysPremium, Companys.companysLocalPremium, " +
+                "(SELECT GROUP_CONCAT(CompanysCategory.companysCategoryValue) FROM CompanysCategory WHERE CompanysCategory.companysIdx = ?1) " +
+                "AS CompanysCategory FROM Companys WHERE Companys.companysIdx = ?1 ",
+            nativeQuery = true)
+        SelectAllCompanysList selectCompanysByCompanysIdx(Long companysIdx);
 
     @Query(
     value=

@@ -1,13 +1,17 @@
 package com.eosa.admin.companysmanage.controller;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -19,7 +23,9 @@ import com.eosa.web.companys.entity.Companys;
 import com.eosa.web.companys.entity.CompanysActiveRegion;
 import com.eosa.web.companys.entity.CompanysCategory;
 import com.eosa.web.companys.entity.CompanysMember;
+import com.eosa.web.companys.entity.SelectAllCompanysList;
 import com.eosa.web.companys.service.CompanysMemberService;
+import com.eosa.web.companys.service.CompanysService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -32,6 +38,7 @@ public class CompanysManagerController {
 
     @Autowired private CompanysManagerService companysManagerService;
 	@Autowired private CompanysMemberService companysMemberService;
+	@Autowired private CompanysService companysService;
    
 	// @GetMapping(value="/tempAddCompanys")
 	// @RequestBody
@@ -169,17 +176,29 @@ public class CompanysManagerController {
 
 	@GetMapping("/companysInfo")
 	public String viewCompanysInfo(
-		@RequestParam(value="companysIdx") String companysIdx,
+		@RequestParam(value="companysIdx") Long companysIdx,
 	Model model
 	) {
 		log.info("CompanysIdx: {} 의 업체 정보를 불러옵니다.", companysIdx);
-		Long longCompanysIdx = Long.parseLong(companysIdx);
+		// Long longCompanysIdx = Long.parseLong(companysIdx);
 		// Companys company = companysManagerService.findByCompanysIdx(longCompanysIdx);
-		SelectCompanyInfo company = companysManagerService.selectCompanyInfoByCompanyIdx(longCompanysIdx);
-		log.debug("comapnyInfo: {}", company.getCompanysComment());
+		// SelectCompanyInfo company = companysManagerService.selectCompanyInfoByCompanyIdx(longCompanysIdx);
+		SelectAllCompanysList company = companysService.selectCompanysByCompanysIdx(companysIdx);
+		log.debug("comapnyInfo: {}", company.getCompanysCategory().toString());
 
 		model.addAttribute("Company", company);
 		return "admin/companysmanage/CompanysInfo";
+	}
+
+	@PostMapping("/updateCompanysInfo")
+	public void updateCompanysInfo(
+		HttpServletResponse response,
+		Companys companys
+	) throws IOException {
+		log.debug("[updateCompanysInfo] input companys: {}", companys.toString());
+		int updateQuery = companysService.updateCompanys(companys);
+		log.debug("[updateCompanysInfo] updateQuery result: {}", updateQuery);
+		response.sendRedirect("/admin");
 	}
 
 }

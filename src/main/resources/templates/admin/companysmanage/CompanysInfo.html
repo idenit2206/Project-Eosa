@@ -16,7 +16,7 @@
         <div class="col-10">
             <div class="userInfo-main w-100 m-auto">
                 <h3>탐정 상세정보</h3>
-                <form method="POST" th:action="@{#}" class="form needs-valdiation">
+                <form method="POST" th:action="@{/admin/companysManager/updateCompanysInfo}" class="form needs-valdiation">
                 <div class="row" th:if="${Company != null}">
                     <div class="col">
                         <label class="form-label" for="companysIdx">탐정넘버</label>
@@ -70,6 +70,12 @@
                     <div class="col">
                         <label class="form-label" for="companysSpec">업체 상세 소개</label>                       
                         <textarea class="form-control" id="companysSpec" name="companysSpec">[[${Company.companysSpec}]]</textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col" style="visibility: hidden">
+                        <label class="form-label" for="companysRegion1">소재지 주소1</label>                       
+                        <textarea class="form-control" id="companysRegion1" name="companysRegion1">[[${Company.companysRegion1}]]</textarea>
                     </div>
                 </div>
                 <div class="row">
