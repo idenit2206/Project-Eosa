@@ -78,9 +78,14 @@ public class ChatRoomService implements ChatRoomRepository {
     @Override
     public <S extends ChatRoom> S save(S entity) {
         entity.setRoomId(UUID.randomUUID().toString());
-        entity.setRoomName(String.valueOf(entity.getUsersIdx()) + "과 " + String.valueOf(entity.getCompanysIdx()) + " 의 대화방" + String.valueOf(LocalDateTime.now()));
+        entity.setRoomName(
+            "CLIENT " + String.valueOf(entity.getUsersIdx()) + " 과 " +
+            String.valueOf(entity.getCompanysIdx()) + " 의 대화방" +
+            String.valueOf(LocalDateTime.now())
+        );
         entity.setDataInfo("");
         entity.setCreatedDate(LocalDateTime.now());
+        entity.setUsable(1);
         chatRooms.put(entity.getRoomName(), entity);
         log.info("[save] insertRoomInfo: {}", entity.toString());
         return (S) chatRoomRepository.save(entity);
