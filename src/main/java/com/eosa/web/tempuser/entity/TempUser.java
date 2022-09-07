@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 public class TempUser {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long tempUserIdx;
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String tempUserIdx;
     @Column private String tempUserEmail;
     @Column private String tempUserPass;
     @Column private boolean tempUserGender;

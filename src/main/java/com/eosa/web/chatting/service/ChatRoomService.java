@@ -1,18 +1,12 @@
 package com.eosa.web.chatting.service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Function;
 
 import javax.annotation.PostConstruct;
 
+import com.eosa.web.chatting.repository.ChatRoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -21,14 +15,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.stereotype.Service;
 
-import com.eosa.web.chatting.model.ChatRoom;
-import com.eosa.web.chatting.repository.ChatRepository;
+import com.eosa.web.chatting.entity.ChatRoom;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class ChatService implements ChatRepository {    
+public class ChatRoomService implements ChatRoomRepository {
 
     private Map<String, ChatRoom> chatRooms;
         
@@ -42,7 +35,7 @@ public class ChatService implements ChatRepository {
     }
 
     @Autowired
-    private ChatRepository chatRepository;
+    private ChatRoomRepository chatRoomRepository;
 
     /**
      * 모든 채팅방 목록보기
@@ -77,37 +70,20 @@ public class ChatService implements ChatRepository {
     }
 
     /**
-     * 채팅방 생성하기
-     * @param roomName
-     * @param usersIdx
-     * @Param companysIdx
+     * 채팅방 생성하기2
+     * @param entity must not be {@literal null}.
      * @return
+     * @param <S>
      */
-    // public ChatRoom createChatRoom(String roomName, Long usersIdx, Long companysIdx) {
-    //     ChatRoom chatRoom = ChatRoom.create(roomName, usersIdx, companysIdx);
-    //     chatRooms.put(chatRoom.getRoomId(), chatRoom);
-    //     log.info("## UsersIdx: {} create ChatROOM RoomId: {}\n## T: {}", Long.toString(usersIdx), chatRoom.getRoomId(), LocalDateTime.now());
-    //     // chatRepository.createChatRoom(chatRoom);
-    //     return chatRoom;
-    // }
-    public ChatRoom createChatRoom(Long usersIdx, Long companysIdx) {
-        // List<ChatRoom> result = new ArrayList<>();
-        String roomName = String.valueOf(usersIdx) + "_" + String.valueOf(companysIdx);
-        ChatRoom chatRoom = ChatRoom.create(roomName, usersIdx, companysIdx);
-        chatRooms.put(chatRoom.getRoomId(), chatRoom);
-        log.info("## UsersIdx: {} create ChatROOM RoomId: {}\n## T: {}", Long.toString(usersIdx), chatRoom.getRoomId(), LocalDateTime.now());
-        // chatRepository.createChatRoom(chatRoom);
-
-        // Iterator<String> keys = chatRooms.keySet().iterator();
-        // while(keys.hasNext()) {
-        //     String key = keys.next();
-        //     ChatRoom c = chatRooms.get(key);
-        //     if(c.getUsersIdx() == usersIdx) {
-        //         result.add(c);
-        //     }
-        // }
-
-        return chatRoom;
+    @Override
+    public <S extends ChatRoom> S save(S entity) {
+        entity.setRoomId(UUID.randomUUID().toString());
+        entity.setRoomName(String.valueOf(entity.getUsersIdx()) + "과 " + String.valueOf(entity.getCompanysIdx()) + " 의 대화방" + String.valueOf(LocalDateTime.now()));
+        entity.setDataInfo("");
+        entity.setCreatedDate(LocalDateTime.now());
+        chatRooms.put(entity.getRoomName(), entity);
+        log.info("[save] insertRoomInfo: {}", entity.toString());
+        return (S) chatRoomRepository.save(entity);
     }
     
     public List<ChatRoom> deleteChatRoom(String roomId) {
@@ -214,12 +190,6 @@ public class ChatService implements ChatRepository {
     }
 
     @Override
-    public <S extends ChatRoom> S save(S entity) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public Optional<ChatRoom> findById(Long id) {
         // TODO Auto-generated method stub
         return Optional.empty();
@@ -297,11 +267,11 @@ public class ChatService implements ChatRepository {
         return null;
     }
 
-    @Override
-    public int createChatRoom(ChatRoom chatRoom) {
-        // TODO Auto-generated method stub
-        return 0;
-    }
+//    @Override
+//    public int createChatRoom(ChatRoom chatRoom) {
+//        // TODO Auto-generated method stub
+//        return 0;
+//    }
 
 
 }
