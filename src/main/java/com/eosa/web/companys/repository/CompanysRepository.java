@@ -102,7 +102,7 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         "AS CompanysCategory FROM Companys",
         nativeQuery = true
     )
-    List<SelectAllCompanysList> selectAllCompanysList();
+    List<SelectAllCompanysList> selectAllCompanys();
 
     @Query(value=
             "SELECT " +

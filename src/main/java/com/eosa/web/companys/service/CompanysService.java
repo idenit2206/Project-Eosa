@@ -61,8 +61,8 @@ public class CompanysService implements CompanysRepository {
     // }
 
     @Override
-    public List<SelectAllCompanysList> selectAllCompanysList() {
-        return companysRepository.selectAllCompanysList();
+    public List<SelectAllCompanysList> selectAllCompanys() {
+        return companysRepository.selectAllCompanys();
     }
 
     @Override

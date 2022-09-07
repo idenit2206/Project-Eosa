@@ -177,11 +177,12 @@ public class CompanysController {
       return result;
     }
 
-    @Secured({"CLIENT", "DETECTIVE"})
+//    @Secured({"CLIENT", "DETECTIVE"})
     @GetMapping("/selectAllCompanys")
     public CustomResponseData selectAllCompanys() {
+        log.debug("[selectAllCompanys] Requested...");
       CustomResponseData result = new CustomResponseData();
-      List<SelectAllCompanysList> list = companysService.selectAllCompanysList();
+      List<SelectAllCompanysList> list = companysService.selectAllCompanys();
 
       result.setStatusCode(HttpStatus.OK.value());
       result.setResultItem(list);
