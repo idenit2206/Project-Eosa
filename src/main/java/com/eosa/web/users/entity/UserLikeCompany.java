@@ -22,4 +22,8 @@ public class UserLikeCompany {
     @ManyToOne(targetEntity= Companys.class, fetch=FetchType.EAGER)
     private Companys companys;
 
+    @ManyToOne(targetEntity= Users.class, fetch=FetchType.EAGER)
+    private Users users;
+
+
 }

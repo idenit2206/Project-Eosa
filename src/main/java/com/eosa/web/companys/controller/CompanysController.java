@@ -179,15 +179,20 @@ public class CompanysController {
 
 //    @Secured({"CLIENT", "DETECTIVE"})
     @GetMapping("/selectAllCompanys")
-    public CustomResponseData selectAllCompanys() {
-        log.debug("[selectAllCompanys] Requested...");
-      CustomResponseData result = new CustomResponseData();
-      List<SelectAllCompanysList> list = companysService.selectAllCompanys();
+    public CustomResponseData selectAllCompanys(
+        @RequestParam(value = "usersIdx", required = false) Long usersIdx,
+        @RequestParam(value = "companysIdx", required = false) Long companysIdx
+    ) {
+        log.debug("[selectAllCompanys] usersIdx: {} Requested...", usersIdx);
+        CustomResponseData result = new CustomResponseData();
+        List<SelectAllCompanysList> list = companysService.selectAllCompanys(usersIdx);
 
-      result.setStatusCode(HttpStatus.OK.value());
-      result.setResultItem(list);
-      result.setResponseDateTime(LocalDateTime.now());
-      return result;
+        log.debug("[selectAllCompanys] list: {}", list.toString());
+
+        result.setStatusCode(HttpStatus.OK.value());
+        result.setResultItem(list);
+        result.setResponseDateTime(LocalDateTime.now());
+        return result;
     }
 
     /**

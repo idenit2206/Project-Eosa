@@ -98,11 +98,12 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         "Companys.companysPhone, Companys.companysComment, Companys.companysSpec, Companys.companysRegistDate, " +
         "Companys.companysRegion1, Companys.companysProfileImage, Companys.companysEnabled, " +
         "Companys.companysPremium, Companys.companysLocalPremium, " +
-        "(SELECT GROUP_CONCAT(CompanysCategory.companysCategoryValue) FROM CompanysCategory WHERE CompanysCategory.companysIdx = Companys.companysIdx) " +
+        "(SELECT GROUP_CONCAT(CompanysCategory.companysCategoryValue) FROM CompanysCategory WHERE CompanysCategory.companysIdx = Companys.companysIdx)" +
+//        "(SELECT IFNULL(a.idx, 0) AS UserLikeCompanyEnable FROM UserLikeCompany a RIGHT OUTER JOIN (SELECT '') AS b ON a.usersIdx=?1 AND a.companysIdx=Companys.companysIdx) " +
         "AS CompanysCategory FROM Companys",
         nativeQuery = true
     )
-    List<SelectAllCompanysList> selectAllCompanys();
+    List<SelectAllCompanysList> selectAllCompanys(Long usersIdx);
 
     @Query(value=
             "SELECT " +
