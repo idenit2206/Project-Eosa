@@ -3,6 +3,8 @@ package com.eosa.web.companys.repository;
 import java.util.List;
 
 import javax.transaction.Transactional;
+
+import com.eosa.web.companys.entity.SelectAllCompanysForNormal;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -98,7 +100,7 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         "Companys.companysPhone, Companys.companysComment, Companys.companysSpec, Companys.companysRegistDate, " +
         "Companys.companysRegion1, Companys.companysProfileImage, Companys.companysEnabled, " +
         "Companys.companysPremium, Companys.companysLocalPremium, " +
-        "(SELECT GROUP_CONCAT(CompanysCategory.companysCategoryValue) FROM CompanysCategory WHERE CompanysCategory.companysIdx = Companys.companysIdx)" +
+        "(SELECT GROUP_CONCAT(CompanysCategory.companysCategoryValue) FROM CompanysCategory WHERE CompanysCategory.companysIdx = Companys.companysIdx) " +
 //        "(SELECT IFNULL(a.idx, 0) AS UserLikeCompanyEnable FROM UserLikeCompany a RIGHT OUTER JOIN (SELECT '') AS b ON a.usersIdx=?1 AND a.companysIdx=Companys.companysIdx) " +
         "AS CompanysCategory FROM Companys",
         nativeQuery = true
@@ -200,6 +202,24 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
 
     @Query(value = "SELECT * FROM Companys WHERE companysCeoIdx = ?1", nativeQuery = true)
     Companys selectCompanyInfoByUsersIdx(Long companysCeoIdx);
+
+    @Query(
+        value="SELECT " +
+        "c.companysIdx, c.companysName, c.companysCeoIdx, c.companysCeoName, " +
+        "c.companysComment, c.companysSpec, c.companysPhone, " +
+        "c.companysRegion1, c.companysRegion2, c.companysRegion3, " +
+        "c.companysRegistCerti, c.companysLicense, c.companysProfileImage, " +
+        "c.companysBankName, c.companysBankNumber, c.companysPremium, c.companysLocalPremium, " +
+        "c.companysEnabled, c.companysDelete, " +
+        "c.companysRegistDate, " +
+        "GROUP_CONCAT(c2.companysCategoryValue) AS companysCategory " +
+        "FROM Companys c " +
+        "INNER JOIN CompanysCategory c2 ON c.companysIdx = c2.companysIdx " +
+        "WHERE c.companysIdx = ?1 " +
+        "GROUP BY c.companysIdx"
+        ,nativeQuery = true
+    )
+    SelectAllCompanysForNormal selectOneCompanyInfoByCompanysIdx(Long companysIdx);
 
     @Query(value = "SELECT companysIdx FROM Companys WHERE companysName= ?1 AND companysCeoName= ?2", nativeQuery = true)
     Long selectCompanyIdxByComapnysNameAndCompanysCeoName(String companysName, String companysCeoName);

@@ -4,13 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.ColumnDefault;
 
@@ -23,7 +17,6 @@ public class Companys {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="companysIdx")
     private Long companysIdx;
 
     @Column(nullable=false, length=100)
@@ -56,6 +49,9 @@ public class Companys {
     private String companysRegistCerti;
 
     @Column(nullable=true, length=255)
+    private String companysLicense;
+
+    @Column(nullable=true, length=255)
     private String companysProfileImage;
 
     @Column private String companysBankName;
@@ -83,7 +79,7 @@ public class Companys {
     // @JoinColumn(name="usersIdx")
     // private Users2 users;
 
-//    @OneToMany(mappedBy="companys")
+//    @OneToMany(mappedBy="companys", fetch=FetchType.LAZY)
 //    private List<CompanysCategory> companysCategory = new ArrayList<>();
 //
 //    @OneToMany(mappedBy="companys")

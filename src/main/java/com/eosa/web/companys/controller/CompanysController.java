@@ -187,7 +187,7 @@ public class CompanysController {
         CustomResponseData result = new CustomResponseData();
         List<SelectAllCompanysList> list = companysService.selectAllCompanys(usersIdx);
 
-        log.debug("[selectAllCompanys] list: {}", list.toString());
+        log.debug("[selectAllCompanys] list: {}", list.size());
 
         result.setStatusCode(HttpStatus.OK.value());
         result.setResultItem(list);
@@ -306,21 +306,35 @@ public class CompanysController {
 
         return result;
     }
+    @GetMapping("/selectOneCompanyInfoByCompanysIdx")
+    public CustomResponseData selectOneCompanyInfoByCompanysIdx(
+        @RequestParam("companysIdx") Long companysIdx
+    ) {
+        CustomResponseData result = new CustomResponseData();
+        SelectAllCompanysForNormal data = companysService.selectOneCompanyInfoByCompanysIdx(companysIdx);
+        log.debug("[selectCompanyInfoByCompanysIdx] data: {}", data.toString());
+
+        if(data != null) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(data);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
 
     /**
-     * usersIdx의 DETECTIVE가 소유한 업체정보를 조회
-     * @param param
+     * DETECTIVE 상세 조회
+     * @param usersIdx Long type
      * @return
      */
     @GetMapping("/selectCompanyInfoByUsersIdx")
     public CustomResponseData selectCompanyInfoByUsersIdx(
-      @RequestParam("usersIdx") String param
+      @RequestParam(name="usersIdx", required=false) Long usersIdx
     ){
       CustomResponseData result = new CustomResponseData();
       Map<String, Object> items = new HashMap<>();
-
-      Long usersIdx = Long.parseLong(param);
-      log.debug("usersIdx: {}의  Companys 정보를 조회합니다", usersIdx);
+      log.debug("companysIdx가 일치하는 Companys 정보를 조회합니다", usersIdx);
 
       Companys step1 = companysService.selectCompanyInfoByUsersIdx(usersIdx);
 

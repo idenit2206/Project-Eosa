@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import com.eosa.web.companys.entity.CompanysPremium;
+import com.eosa.web.companys.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -15,9 +15,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.stereotype.Service;
 
-import com.eosa.web.companys.entity.Companys;
-import com.eosa.web.companys.entity.SelectAllCompanysList;
-import com.eosa.web.companys.entity.SelectCompanyInfoByUsersIdx;
 import com.eosa.web.companys.repository.CompanysRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -104,10 +101,10 @@ public class CompanysService implements CompanysRepository {
         return companysRepository.selectCompanyInfoByUsersIdx(usersIdx);
     }
 
-//    @Override
-//    public SelectCompanyInfoByUsersIdx selectCompanyInfoByUsersIdx(Long usersIdx) {
-//        return companysRepository.selectCompanyInfoByUsersIdx(usersIdx);
-//    }
+    @Override
+    public SelectAllCompanysForNormal selectOneCompanyInfoByCompanysIdx(Long companysIdx) {
+        return companysRepository.selectOneCompanyInfoByCompanysIdx(companysIdx);
+    }
 
     @Override
     public Long selectCompanyIdxByComapnysNameAndCompanysCeoName(String companysName, String companysCeoName) {
@@ -190,7 +187,6 @@ public class CompanysService implements CompanysRepository {
 
     @Override
     public Companys getOne(Long id) {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -202,7 +198,6 @@ public class CompanysService implements CompanysRepository {
 
     @Override
     public Companys getReferenceById(Long id) {
-        // TODO Auto-generated method stub
         return null;
     }
 

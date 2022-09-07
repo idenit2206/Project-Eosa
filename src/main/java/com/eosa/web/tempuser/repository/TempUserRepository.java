@@ -1,6 +1,6 @@
-package com.eosa.web.users.repository;
+package com.eosa.web.tempuser.repository;
 
-import com.eosa.web.users.entity.TempUser;
+import com.eosa.web.tempuser.entity.TempUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

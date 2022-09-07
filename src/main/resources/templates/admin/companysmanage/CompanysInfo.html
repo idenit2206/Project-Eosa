@@ -75,28 +75,56 @@
                 <div class="row">
                     <div class="col" style="visibility: hidden">
                         <label class="form-label" for="companysRegion1">소재지 주소1</label>                       
-                        <textarea class="form-control" id="companysRegion1" name="companysRegion1">[[${Company.companysRegion1}]]</textarea>
+                        <input type="text" class="form-control" id="companysRegion1" name="companysRegion1" th:value="${Company.companysRegion1}"/>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col" id="companysCategoryCheckbox">
                         <label class="form-label" for="companysCategory">분야 선택</label>
                         <br/>
-                        
                     </div>
                 </div>
                 <div class="row">
                     <div class="col" id="companysActiveRegionCheckbox">
                         <label class="form-label" for="companysActiveRegion">활동 지역</label>
                         <br/>
-                        
                     </div>
-                </div>                   
+                </div>
                 <br/>
                 <div class="">
                     <input type="submit" class="btn btn-primary" value="수정"/>
                     <input type="reset" id="cancleBtn" class="btn btn-light" value="취소"/>
                 </div>
+                                    <div class="row">
+                                        <div class="col" style="visibility: hidden">
+                                            <label class="form-label" for="companysRegion2">소재지 주소2</label>
+                                            <input type="text" class="form-control" id="companysRegion2" name="companysRegion2" th:value="${Company.companysRegion2}"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col" style="visibility: hidden">
+                                            <label class="form-label" for="companysRegion3">소재지 주소3</label>
+                                            <input type="text" class="form-control" id="companysRegion3" name="companysRegion3" th:value="${Company.companysRegion3}"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col" style="visibility: hidden">
+                                            <label class="form-label" for="companysRegistCerti">사업자등록증</label>
+                                            <input type="text" class="form-control" id="companysRegistCerti" name="companysRegistCerti" th:value="${Company.companysRegistCerti}" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col" style="visibility: hidden">
+                                            <label class="form-label" for="companysLicense">자격증</label>
+                                            <input type="text" class="form-control" id="companysLicense" name="companysLicense" th:value="${Company.companysLicense}" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col" style="visibility: hidden">
+                                            <label class="form-label" for="companysProfileImage">프로필이미지</label>
+                                            <input type="text" class="form-control" id="companysProfileImage" name="companysProfileImage" th:value="${Company.companysProfileImage}" />
+                                        </div>
+                                    </div>
                 </form>
             </div>            
         </div>

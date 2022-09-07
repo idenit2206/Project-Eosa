@@ -1,13 +1,6 @@
 package com.eosa.web.companys.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.Data;
 
@@ -23,7 +16,12 @@ public class CompanysCategory {
     @Column private Long companysIdx;
     @Column private String companysCategoryValue;
 
-    @ManyToOne(targetEntity=Companys.class, fetch=FetchType.EAGER)
+//  version1
+//  @ManyToOne(targetEntity=Companys.class, fetch=FetchType.LAZY)
+
+//  version2
+    @ManyToOne
+    @JoinColumn(name="CompanysIdx")
     private Companys companys;
 
 }

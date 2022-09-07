@@ -1,7 +1,7 @@
-package com.eosa.web.users.service;
+package com.eosa.web.tempuser.service;
 
-import com.eosa.web.users.entity.TempUser;
-import com.eosa.web.users.repository.TempUserRepository;
+import com.eosa.web.tempuser.entity.TempUser;
+import com.eosa.web.tempuser.repository.TempUserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -20,14 +20,12 @@ import java.util.function.Function;
 @Slf4j
 @Service
 public class TempUserService implements TempUserRepository {
-
-    @Autowired private BCryptPasswordEncoder passwordEncoder;
+    @Autowired  private BCryptPasswordEncoder passwordEncoder;
     @Autowired private TempUserRepository tempUserRepository;
 
     @Override
     public <S extends TempUser> S save(S entity) {
-        String encodedPass = passwordEncoder.encode(entity.getTempUserPass());
-        entity.setTempUserPass(encodedPass);
+        entity.setTempUserPass(passwordEncoder.encode(entity.getTempUserPass()));
         entity.setTempUserRegistDate(LocalDateTime.now());
         return tempUserRepository.save(entity);
     }
@@ -176,4 +174,5 @@ public class TempUserService implements TempUserRepository {
     public <S extends TempUser, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return null;
     }
+
 }
