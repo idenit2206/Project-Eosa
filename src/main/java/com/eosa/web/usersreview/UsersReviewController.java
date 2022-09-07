@@ -40,6 +40,24 @@ public class UsersReviewController {
         return result;
     }
 
+    @GetMapping("/selectAllUsersReview")
+    public CustomResponseData selectAllUsersReview() {
+        CustomResponseData result = new CustomResponseData();
+        List<UsersReview> items = usersReviewService.findAll();
+
+        if(items != null) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(items);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        return result;
+    }
+
     /**
      * 특정 companysIdx를 갖는 리뷰를 전부 조회
      * @param companysIdx

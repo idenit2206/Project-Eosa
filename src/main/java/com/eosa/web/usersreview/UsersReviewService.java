@@ -53,8 +53,7 @@ public class UsersReviewService implements UsersReviewRepository{
 
     @Override
     public List<UsersReview> findAll() {
-        // TODO Auto-generated method stub
-        return null;
+        return usersReviewRepository.findAll();
     }
 
     @Override
