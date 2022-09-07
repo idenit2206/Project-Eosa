@@ -7,13 +7,13 @@
 </head>
 <head th:replace="admin/fragments/html-head.html :: html-head" />
 <body>
-<header th:replace="admin/fragments/html-header.html :: html-header" />
 <div class="container-fluid">	
     <div class="row">
         <div class="col-2">
             <nav th:replace="admin/fragments/html-sidebar.html :: html-sidebar" />
         </div>
         <div class="col-10">
+        <header th:replace="admin/fragments/html-header.html :: html-header" />
             <h3>리뷰 관리</h3>
             <form method="GET" action="/admin/usersManage/findByUsersAccount">
             <div class="input-group">            

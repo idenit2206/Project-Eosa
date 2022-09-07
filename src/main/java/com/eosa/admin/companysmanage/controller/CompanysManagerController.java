@@ -185,7 +185,6 @@ public class CompanysManagerController {
 		// SelectCompanyInfo company = companysManagerService.selectCompanyInfoByCompanyIdx(longCompanysIdx);
 		SelectAllCompanysList company = companysService.selectCompanysByCompanysIdx(companysIdx);
 		log.debug("comapnyInfo: {}", company.getCompanysCategory().toString());
-
 		model.addAttribute("Company", company);
 		return "admin/companysmanage/CompanysInfo";
 	}
