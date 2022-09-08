@@ -28,9 +28,6 @@ public class CustomWebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.setApplicationDestinationPrefixes("/app");
     }
 
-    /**
-     * From WebSocketmessageBrokerConfigurer
-     */
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry
@@ -39,9 +36,6 @@ public class CustomWebSocketConfig implements WebSocketMessageBrokerConfigurer {
             .withSockJS();
     }
 
-    /**
-     * 
-     */
     @Override
     public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
         // 전달되는 메시지 용량을 9MB로 제한한다.

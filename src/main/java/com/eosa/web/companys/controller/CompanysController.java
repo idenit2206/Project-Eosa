@@ -353,8 +353,11 @@ public class CompanysController {
           items.put("companysRegion2", step1.getCompanysRegion2());
           items.put("companysRegion3", step1.getCompanysRegion3());
           items.put("companysRegistCerti", step1.getCompanysRegistCerti());
-//          items.put("companyCerti", step1.getCompanysC)
+          items.put("companysRegistCertiName", step1.getCompanysRegistCertiName());
+          items.put("companysLicense", step1.getCompanysLicense());
+          items.put("companysLicenseName", step1.getCompanysLicenseName());
           items.put("companysProfileImage", step1.getCompanysProfileImage());
+          items.put("companysProfileImageName", step1.getCompanysProfileImageName());
           items.put("companysBankName", step1.getCompanysBankName());
           items.put("companysBankNumber", step1.getCompanysBankNumber());
           items.put("companysCategory", companysCategory);

@@ -58,7 +58,7 @@ public class Companys {
     @Column(nullable=true, length=255)
     private String companysProfileImage;
     @Column(nullable=true, length=255)
-    private String companysProfileName;
+    private String companysProfileImageName;
 
     @Column private String companysBankName;
     @Column private String companysBankNumber;
