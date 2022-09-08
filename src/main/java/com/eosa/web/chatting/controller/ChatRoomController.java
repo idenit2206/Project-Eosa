@@ -1,8 +1,12 @@
 package com.eosa.web.chatting.controller;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.eosa.web.chatting.entity.ChatMessage;
+import com.eosa.web.chatting.service.ChatMessageService;
 import com.eosa.web.util.CustomResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/chat")
 public class ChatRoomController {
     @Autowired private ChatRoomService chatRoomService;
+    @Autowired private ChatMessageService chatMessageService;
 
     // 채팅 리스트 화면
     @GetMapping("/room")
@@ -129,15 +134,29 @@ public class ChatRoomController {
         chatRoomService.testAllFlush();
     }
 
+    /**
+     * usersIdx가 참가한 모든 채팅방의 목록을 출력합니다.
+     * @param usersIdx
+     * @return
+     */
     @GetMapping("/selectChatRoomListByUsersIdx")
     @ResponseBody
     public CustomResponseData selectChatRoomListByUsersIdx(@RequestParam("usersIdx") Long usersIdx) {
+        log.debug("[selectChatRoomListByUsersIdx] usersIdx: {}가 채팅방 목록 조회를 요청합니다.", usersIdx);
         CustomResponseData result = new CustomResponseData();
+        Map<String, Object> items = new HashMap<>();
+
         List<ChatRoom> selectRows = chatRoomService.selectChatRoomListByUsersIdx(usersIdx);
+        for(int i = 0; i < selectRows.size(); i++) {
+            String roomId = selectRows.get(i).getRoomId();
+            ChatMessage selectRows2 = chatMessageService.selectOneRecentMessageByRoomIdAndUsersIdx(roomId, usersIdx);
+        }
+
+        items.put("ChatRoom", selectRows);
 
         if(selectRows != null) {
             result.setStatusCode(HttpStatus.OK.value());
-            result.setResultItem(selectRows);
+            result.setResultItem(items);
             result.setResponseDateTime(LocalDateTime.now());
         }
         else {

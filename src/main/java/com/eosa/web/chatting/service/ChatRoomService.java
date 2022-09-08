@@ -7,6 +7,9 @@ import java.util.function.Function;
 import javax.annotation.PostConstruct;
 
 import com.eosa.web.chatting.repository.ChatRoomRepository;
+import com.eosa.web.companys.entity.Companys;
+import com.eosa.web.companys.entity.SelectAllCompanysList;
+import com.eosa.web.companys.service.CompanysService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -34,8 +37,8 @@ public class ChatRoomService implements ChatRoomRepository {
         chatRooms.clear();
     }
 
-    @Autowired
-    private ChatRoomRepository chatRoomRepository;
+    @Autowired private ChatRoomRepository chatRoomRepository;
+    @Autowired private CompanysService companysService;
 
     /**
      * 모든 채팅방 목록보기
@@ -77,12 +80,12 @@ public class ChatRoomService implements ChatRoomRepository {
      */
     @Override
     public <S extends ChatRoom> S save(S entity) {
+        SelectAllCompanysList companys =  companysService.selectCompanysByCompanysIdx(entity.getCompanysIdx());
+//        log.debug("[save] companys: {}", companys.toString());
+        String companysName = companys.getCompanysName();
+
         entity.setRoomId(UUID.randomUUID().toString());
-        entity.setRoomName(
-            "CLIENT " + String.valueOf(entity.getUsersIdx()) + " 과 " +
-            String.valueOf(entity.getCompanysIdx()) + " 의 대화방" +
-            String.valueOf(LocalDateTime.now())
-        );
+        entity.setRoomName(companysName);
         entity.setDataInfo("");
         entity.setCreatedDate(LocalDateTime.now());
         entity.setUsable(1);
