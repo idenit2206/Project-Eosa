@@ -347,7 +347,19 @@ public class CompanysController {
           log.debug("step1_category: {}", companysCategory.toString());
           log.debug("step1_ActiveRegion: {}", companysActiveRegion.toString());
 
-          items.put("companys", step1);
+          items.put("companysName", step1.getCompanysName());
+          items.put("companysComment", step1.getCompanysComment());
+          items.put("companysRegion1", step1.getCompanysRegion1());
+          items.put("companysRegion2", step1.getCompanysRegion2());
+          items.put("companysRegion3", step1.getCompanysRegion3());
+          items.put("companysRegistCerti", step1.getCompanysRegistCerti());
+          items.put("companysRegistCertiName", step1.getCompanysRegistCertiName());
+          items.put("companysLicense", step1.getCompanysLicense());
+          items.put("companysLicenseName", step1.getCompanysLicenseName());
+          items.put("companysProfileImage", step1.getCompanysProfileImage());
+          items.put("companysProfileImageName", step1.getCompanysProfileImageName());
+          items.put("companysBankName", step1.getCompanysBankName());
+          items.put("companysBankNumber", step1.getCompanysBankNumber());
           items.put("companysCategory", companysCategory);
           items.put("companysActiveRegion", companysActiveRegion);
 

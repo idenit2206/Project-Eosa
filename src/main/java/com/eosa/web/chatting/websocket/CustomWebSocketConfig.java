@@ -1,28 +1,23 @@
 package com.eosa.web.chatting.websocket;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
-import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
-import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
-import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
-import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
-import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
-import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
+import org.springframework.web.socket.config.annotation.*;
 
+//@RequiredArgsConstructor
+//@EnableWebSocket
 @Configuration
 @EnableWebSocketMessageBroker
-public class CustomWebSocketConfig implements WebSocketConfigurer, WebSocketMessageBrokerConfigurer {
-
-    /**
-     * From WebSocketmessageBrokerConfigurer
-     */
-    @Override
-    public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry
-            .addEndpoint("/ws/chat")
-            .setAllowedOriginPatterns("*")
-            .withSockJS();
-    }
+public class CustomWebSocketConfig implements WebSocketMessageBrokerConfigurer {
+//    SockJS
+//    implements WebSocketConfigurer
+//    private final CustomWebSocketHandler customWebSocketHandler;
+//    @Override
+//    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+//        registry.addHandler(customWebSocketHandler, "/ws/chat").setAllowedOriginPatterns("*");
+////         registry.addHandler(new CustomUploadWSHandler(), "/binary");
+//    }
 
     /**
      * From WebSocketmessageBrokerConfigurer
@@ -33,18 +28,14 @@ public class CustomWebSocketConfig implements WebSocketConfigurer, WebSocketMess
         registry.setApplicationDestinationPrefixes("/app");
     }
 
-    /**
-     * From WebSocketConfigurer
-     * @param registry
-     */
     @Override
-    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        // registry.addHandler(new CustomUploadWSHandler(), "/binary");
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry
+            .addEndpoint("/ws/chat")
+            .setAllowedOriginPatterns("*")
+            .withSockJS();
     }
 
-    /**
-     * 
-     */
     @Override
     public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
         // 전달되는 메시지 용량을 9MB로 제한한다.

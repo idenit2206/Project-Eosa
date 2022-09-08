@@ -48,11 +48,11 @@ public class ChatRoomService implements ChatRoomRepository {
     }
 
     /**
-     * roomId를 갖는 채팅방 찾기
+     * ChatRoom 찾기 roomId 기준
      * @param roomId
      * @return
      */
-    public ChatRoom findById(String roomId) {
+    public ChatRoom findChatRoomByRoomId(String roomId) {
         return chatRooms.get(roomId);
     }
 
@@ -96,6 +96,11 @@ public class ChatRoomService implements ChatRoomRepository {
         List<ChatRoom> result = new ArrayList<>(chatRooms.values());
     
         return result;
+    }
+
+    @Override
+    public List<ChatRoom> selectChatRoomListByUsersIdx(Long usersIdx) {
+        return chatRoomRepository.selectChatRoomListByUsersIdx(usersIdx);
     }
 
     @Override

@@ -4,6 +4,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.eosa.web.chatting.service.ChatMessageService;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -33,10 +37,17 @@ public class ChatMessageController {
     List<Object> messageList = new LinkedList<>();
 
     @MessageMapping("/chat/message")
-    public void enter(ChatMessage message) {
+    public void sendMessage(ChatMessage message) {
+//        log.debug("[enter] message: {}", message);
+//        Gson gson = new Gson();
+//        gson.toJson(message);
+//        log.debug("[sendMessage] gson: {}", gson.toString());
+//        JsonObject jsonObject = new JsonObject();
+//        jsonObject = (JsonObject) JsonParser.parseString(message).getAsJsonObject();
         if((message.getMessageType()).equals(MessageType.ENTER)) {
             message.setMessage(message.getSender() + "님이 입장했습니다.");
-            chatMessageService.addMessage(message);
+            sendingOperations.convertAndSend("/queue/chat/room"+message.getRoomId());
+//            chatMessageService.addMessage(message);
         }
 
         if((message.getMessageType()).equals(MessageType.TALK)) {
