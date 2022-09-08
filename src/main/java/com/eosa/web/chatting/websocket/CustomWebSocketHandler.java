@@ -28,7 +28,7 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
 //        TextMessage tm = new TextMessage("Welcome Eosa chatting Server");
 //        session.sendMessage(tm);
         ChatMessage chatMessage = objectMapper.readValue(payload, ChatMessage.class);
-//        ChatRoom room = chatRoomService;
+        ChatRoom room = chatRoomService.findChatRoomByRoomId(chatMessage.getRoomId());
     }
 
 }

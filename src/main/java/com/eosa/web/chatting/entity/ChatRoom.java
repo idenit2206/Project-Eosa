@@ -1,16 +1,15 @@
 package com.eosa.web.chatting.entity;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import com.eosa.web.chatting.service.ChatRoomService;
 import lombok.Data;
+import org.springframework.web.socket.WebSocketSession;
 
 @Data
 @Entity
@@ -31,6 +30,7 @@ public class ChatRoom {
     // 채팅방이 생성된 타임스탬프
     @Column private LocalDateTime createdDate;
     @Column private int usable;
+
 
 //    public static ChatRoom create(String roomName, Long usersIdx, Long companysIdx) {
 //        ChatRoom room = new ChatRoom();
