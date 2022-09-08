@@ -1,17 +1,28 @@
 package com.eosa.web.chatting.websocket;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
-import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
-import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
-import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
-import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
-import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
-import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
+import org.springframework.web.socket.config.annotation.*;
 
+@RequiredArgsConstructor
 @Configuration
+@EnableWebSocket
 @EnableWebSocketMessageBroker
 public class CustomWebSocketConfig implements WebSocketConfigurer, WebSocketMessageBrokerConfigurer {
+
+    private final CustomWebSocketHandler customWebSocketHandler;
+
+    /**
+     *
+     * From WebSocketConfigurer
+     * @param registry
+     */
+    @Override
+    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+        registry.addHandler(customWebSocketHandler, "/ws/chat").setAllowedOriginPatterns("*");
+//         registry.addHandler(new CustomUploadWSHandler(), "/binary");
+    }
 
     /**
      * From WebSocketmessageBrokerConfigurer
@@ -31,15 +42,6 @@ public class CustomWebSocketConfig implements WebSocketConfigurer, WebSocketMess
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.enableSimpleBroker("/queue", "/topic");
         registry.setApplicationDestinationPrefixes("/app");
-    }
-
-    /**
-     * From WebSocketConfigurer
-     * @param registry
-     */
-    @Override
-    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        // registry.addHandler(new CustomUploadWSHandler(), "/binary");
     }
 
     /**

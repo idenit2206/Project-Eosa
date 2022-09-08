@@ -79,23 +79,35 @@ public class ChatRoomController {
      * @param usersName
      * @return
      */
+//    @GetMapping("/room/enter/{roomId}")
+//    @ResponseBody
+//    public ChatRoom roomDetailREST(
+//        @PathVariable String roomId,
+//        @RequestParam(value="usersIdx") String usersName
+//    ) {
+//        // model.addAttribute("roomId", roomId);
+//        log.info("사용자 '{}' 가 RoomId: {} 채팅방에 입장했습니다. 입장시간: {}", usersName, roomId, LocalDateTime.now());
+//        ChatRoom result = chatRoomService.findById(roomId);
+//        return result;
+//    }
     @GetMapping("/room/enter/{roomId}")
     @ResponseBody
     public ChatRoom roomDetailREST(
-        @PathVariable String roomId,
-        @RequestParam(value="usersIdx") String usersName
+            @PathVariable String roomId,
+            @RequestParam(value="usersIdx") String usersName
     ) {
         // model.addAttribute("roomId", roomId);
         log.info("사용자 '{}' 가 RoomId: {} 채팅방에 입장했습니다. 입장시간: {}", usersName, roomId, LocalDateTime.now());
-        ChatRoom result = chatRoomService.findById(roomId);
+        ChatRoom result = chatRoomService.findChatRoomByRoomId(roomId);
         return result;
     }
+
     // roomId에 해당하는 채팅방 조회
     @GetMapping("/room/{roomId}")
     @ResponseBody
     public ChatRoom roomInfo(@PathVariable String roomId, Model model) {
         
-        ChatRoom transaction = chatRoomService.findById(roomId);
+        ChatRoom transaction = chatRoomService.findChatRoomByRoomId(roomId);
         model.addAttribute("room", transaction);
 
         return transaction;
@@ -115,6 +127,26 @@ public class ChatRoomController {
     public void testAllFlush() {
         log.debug("서버에 존재하는 모든 채팅방을 삭제합니다. 삭제시간: {}", LocalDateTime.now());
         chatRoomService.testAllFlush();
+    }
+
+    @GetMapping("/selectChatRoomListByUsersIdx")
+    @ResponseBody
+    public CustomResponseData selectChatRoomListByUsersIdx(@RequestParam("usersIdx") Long usersIdx) {
+        CustomResponseData result = new CustomResponseData();
+        List<ChatRoom> selectRows = chatRoomService.selectChatRoomListByUsersIdx(usersIdx);
+
+        if(selectRows != null) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(selectRows);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
     }
 
 

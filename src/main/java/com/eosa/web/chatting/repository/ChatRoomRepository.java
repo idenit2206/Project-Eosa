@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import com.eosa.web.chatting.entity.ChatRoom;
 
+import java.util.List;
+
 @Repository
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
 
@@ -22,5 +24,11 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
 //        ,nativeQuery=true
 //    )
 //    public int createChatRoom(@Param("LiveChat") ChatRoom chatRoom);
+
+    @Query(
+        value="SELECT * FROM ChatRoom c WHERE c.usersIdx = ?1",
+        nativeQuery = true
+    )
+    List<ChatRoom> selectChatRoomListByUsersIdx(Long usersIdx);
 
 }
