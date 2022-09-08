@@ -38,12 +38,10 @@ public class ChatMessageController {
 
     @MessageMapping("/chat/message")
     public void sendMessage(ChatMessage message) {
-//        log.debug("[enter] message: {}", message);
-//        Gson gson = new Gson();
-//        gson.toJson(message);
-//        log.debug("[sendMessage] gson: {}", gson.toString());
-//        JsonObject jsonObject = new JsonObject();
-//        jsonObject = (JsonObject) JsonParser.parseString(message).getAsJsonObject();
+        log.debug("[enter] message: {}", message);
+        Gson gson = new Gson();
+        gson.toJson(message);
+        log.debug("[sendMessage] gson: {}", gson.toString());
         if((message.getMessageType()).equals(MessageType.ENTER)) {
             message.setMessage(message.getSender() + "님이 입장했습니다.");
             sendingOperations.convertAndSend("/queue/chat/room"+message.getRoomId());

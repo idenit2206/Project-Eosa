@@ -1,6 +1,7 @@
 package com.eosa.web.chatting.controller;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,13 +44,6 @@ public class ChatRoomController {
         return chatRoomService.findAllRoom();
     }
 
-    @GetMapping("/getChatRoomList")
-    @ResponseBody
-    public List<ChatRoom> getChatRoomListByUsersIdx(@RequestParam("usersIdx") String usersIdx) {
-        return chatRoomService.getChatRoomListByUsersIdx(Long.parseLong(usersIdx));
-    }
-
-
     // 채팅방 생성
     // @PostMapping("/room")
     @GetMapping("/createRoom")
@@ -75,6 +69,49 @@ public class ChatRoomController {
             result.setResultItem(null);
             result.setResponseDateTime(LocalDateTime.now());
         }
+        return result;
+    }
+
+
+//    @GetMapping("/getChatRoomList")
+//    @ResponseBody
+//    public List<ChatRoom> getChatRoomListByUsersIdx(@RequestParam("usersIdx") Long usersIdx) {
+//        return chatRoomService.getChatRoomListByUsersIdx(usersIdx);
+//    }
+    /**
+     * usersIdx가 참가한 모든 채팅방의 목록을 출력합니다.
+     * @param usersIdx
+     * @return
+     */
+    @GetMapping("/selectChatRoomListByUsersIdx")
+    @ResponseBody
+    public CustomResponseData selectChatRoomListByUsersIdx(@RequestParam("usersIdx") Long usersIdx) {
+        log.debug("[selectChatRoomListByUsersIdx] usersIdx: {}가 채팅방 목록 조회를 요청합니다.", usersIdx);
+        CustomResponseData result = new CustomResponseData();
+        Map<String, Object> items = new HashMap<>();
+
+        List<ChatRoom> selectRows = chatRoomService.selectChatRoomListByUsersIdx(usersIdx);
+        List<ChatMessage> selectRows2 = new ArrayList<>();
+        for(int i = 0; i < selectRows.size(); i++) {
+            String roomId = selectRows.get(i).getRoomId();
+            ChatMessage recentMessage = chatMessageService.selectOneRecentMessageByRoomIdAndUsersIdx(roomId, usersIdx);
+            selectRows2.add(recentMessage);
+        }
+
+        items.put("ChatRoom", selectRows);
+//        items.put("ChatRoomRecentMessage", selectRows2);
+
+        if(selectRows != null) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(selectRows);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
         return result;
     }
 
@@ -133,56 +170,5 @@ public class ChatRoomController {
         log.debug("서버에 존재하는 모든 채팅방을 삭제합니다. 삭제시간: {}", LocalDateTime.now());
         chatRoomService.testAllFlush();
     }
-
-    /**
-     * usersIdx가 참가한 모든 채팅방의 목록을 출력합니다.
-     * @param usersIdx
-     * @return
-     */
-    @GetMapping("/selectChatRoomListByUsersIdx")
-    @ResponseBody
-    public CustomResponseData selectChatRoomListByUsersIdx(@RequestParam("usersIdx") Long usersIdx) {
-        log.debug("[selectChatRoomListByUsersIdx] usersIdx: {}가 채팅방 목록 조회를 요청합니다.", usersIdx);
-        CustomResponseData result = new CustomResponseData();
-        Map<String, Object> items = new HashMap<>();
-
-        List<ChatRoom> selectRows = chatRoomService.selectChatRoomListByUsersIdx(usersIdx);
-        for(int i = 0; i < selectRows.size(); i++) {
-            String roomId = selectRows.get(i).getRoomId();
-            ChatMessage selectRows2 = chatMessageService.selectOneRecentMessageByRoomIdAndUsersIdx(roomId, usersIdx);
-        }
-
-        items.put("ChatRoom", selectRows);
-
-        if(selectRows != null) {
-            result.setStatusCode(HttpStatus.OK.value());
-            result.setResultItem(items);
-            result.setResponseDateTime(LocalDateTime.now());
-        }
-        else {
-            result.setStatusCode(HttpStatus.OK.value());
-            result.setResultItem(null);
-            result.setResponseDateTime(LocalDateTime.now());
-        }
-
-        return result;
-    }
-
-
-    // MVC
-    //  /**
-    //   * roomId에 일치하는 채팅방에 입장하는 메서드
-    //   */
-    // @GetMapping("/room/enter/{roomId}")
-    // public String roomDetail(Model model,
-    //     @PathVariable String roomId,
-    //     @RequestParam(value="usersName") String usersName,
-    //     @RequestParam(value="messageType") String messageType
-    // ) {
-    //     model.addAttribute("roomId", roomId);
-    //     log.info("## User: {} get in RoomId: {}\n## T: {}", usersName, roomId, LocalDateTime.now());
-    //     return "/chat/roomdetail";
-    // }
-
 
 }

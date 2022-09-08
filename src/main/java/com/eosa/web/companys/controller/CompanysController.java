@@ -93,19 +93,27 @@ public class CompanysController {
       Companys step1 = companysService.save(entity);
 
       if(file3 != null) {
-          String file1URL = awsS3Service.uploadSingleFile(file1,"registcerti", step1.getCompanysIdx());
-          String file3URL = awsS3Service.uploadSingleFile(file3, "profileimage", step1.getCompanysIdx());
-          int step1a = companysService.updateRegistCertiAndProfileImage(step1.getCompanysIdx(), file1URL, file3URL);
+          List<String> file1Object = awsS3Service.uploadSingleFile(file1,"registcerti", step1.getCompanysIdx());
+          List<String> file3Object = awsS3Service.uploadSingleFile(file3, "profileimage", step1.getCompanysIdx());
+          String file1URL = file1Object.get(1);
+          String file3URL = file3Object.get(1);
+          String file1Name = file1Object.get(0);
+          String file3Name = file3Object.get(0);
+          int step1a = companysService.updateRegistCertiAndProfileImage(step1.getCompanysIdx(), file1URL, file3URL, file1Name, file3Name);
       }
       if(file3 == null) {
           log.debug("{}, {}", file1.getOriginalFilename(), step1.getCompanysIdx());
-          String file1URL = awsS3Service.uploadSingleFile(file1,"registcerti", step1.getCompanysIdx());
-          int step1b = companysService.updateRegistCerti(step1.getCompanysIdx(), file1URL);
+          List<String> fileObject = awsS3Service.uploadSingleFile(file1,"registcerti", step1.getCompanysIdx());
+          String fileURL = fileObject.get(1);
+          String fileName = fileObject.get(0);
+          int step1b = companysService.updateRegistCerti(step1.getCompanysIdx(), fileURL, fileName);
       }
 
       if(file2 != null) {
-          String file2URL = awsS3Service.uploadSingleFile(file2, "license", step1.getCompanysIdx());
-          int step1c = companysService.updateLicense(step1.getCompanysIdx(), file2URL);
+          List<String> file2Object = awsS3Service.uploadSingleFile(file2, "license", step1.getCompanysIdx());
+          String file2URL = file2Object.get(1);
+          String file2NAME = file2Object.get(0);
+          int step1c = companysService.updateLicense(step1.getCompanysIdx(), file2URL, file2NAME);
       }
 
       CompanysCategory entity3 = new CompanysCategory();
@@ -411,95 +419,95 @@ public class CompanysController {
         return result;
     }
 
-    /**
-     * 업체 정보 수정
-     * @param companyInfo Companys 타입
-     * @param companysCategory List(String)
-     * @param companysActiveRegions List(String)
-     * @param file1 MultipartFile
-     * @param file2 MultipartFile
-     * @param file3 MultipartFile
-     * @return
-     * @throws JSONException
-     * @throws ParseException
-     * @throws IOException
-     */
-    @PutMapping("/updateCompanys")
-    public CustomResponseData updateCompanys(
-            @RequestPart("companyInfo") Companys companyInfo,
-            @RequestPart("companysCategory") List<String> companysCategory,
-            @RequestPart("companysActiveRegion") List<String> companysActiveRegions,
-            @RequestPart(value = "companysRegistCerti", required = false) MultipartFile file1,
-            @RequestPart(value = "companysLicense", required = false) MultipartFile file2,
-            @RequestPart(value = "companysProfileImage", required = false) MultipartFile file3
-    ) throws JSONException, ParseException, IOException {
-        CustomResponseData result = new CustomResponseData();
-        log.debug("[updateCompanys] companyInfo: {}", companyInfo.getCompanysIdx());
-        log.debug("[updateCompanys] {}, {}", companysCategory.toString(), companysActiveRegions.toString());
-
-        Companys entity = new Companys();
-        entity.setCompanysIdx(Long.parseLong("55"));
-
-        if(file1 != null) {
-            String file1URL = awsS3Service.uploadSingleFile(file1,"registcerti", entity.getCompanysIdx());
-            entity.setCompanysRegistCerti(file1URL);
-        }
-
-        if(file2 != null) {
-            String file2URL = awsS3Service.uploadSingleFile(file2,"license", entity.getCompanysIdx());
-            entity.setCompanysRegistCerti(file2URL);
-        }
-
-        if(file3 != null) {
-            String file3URL = awsS3Service.uploadSingleFile(file3, "license", entity.getCompanysIdx());
-            entity.setCompanysProfileImage(file3URL);
-        }
-
-        entity.setCompanysName(companyInfo.getCompanysName());
-        entity.setCompanysCeoName(companyInfo.getCompanysCeoName());
-        entity.setCompanysCeoIdx(companyInfo.getCompanysCeoIdx());
-        entity.setCompanysComment(companyInfo.getCompanysComment());
-        entity.setCompanysSpec(companyInfo.getCompanysSpec());
-        entity.setCompanysRegion1(companyInfo.getCompanysRegion1());
-        entity.setCompanysRegion2(companyInfo.getCompanysRegion2());
-        entity.setCompanysRegion3(companyInfo.getCompanysRegion3());
-        entity.setCompanysBankName(companyInfo.getCompanysBankName());
-        entity.setCompanysBankNumber(companyInfo.getCompanysBankNumber());
-
-        Long companysIdx = entity.getCompanysIdx();
-//        log.debug("[updateCompanys] entity: {}", entity.toString());
-
-        int step1 = companysService.updateCompanys(entity);
-
-        if(step1 != 0) {
-            int deletePrevCategory = companysCategoryService.deleteCategoryByCompanysIdx(companysIdx);
-            int deletePrevActiveRegion = companysActiveRegionService.deleteActiveRegionByCompanysIdx(companysIdx);
-
-            for(int i = 0; i < companysCategory.size(); i++) {
-                CompanysCategory entity2 = new CompanysCategory();
-                entity2.setCompanysIdx(companysIdx);
-                entity2.setCompanysCategoryValue(companysCategory.get(i));
-                companysCategoryService.insertCompanysCategory(entity2);
-            }
-
-            for(int i = 0; i < companysActiveRegions.size(); i++) {
-                CompanysActiveRegion entity3 = new CompanysActiveRegion();
-                entity3.setCompanysIdx(companysIdx);
-                entity3.setActiveRegion(companysActiveRegions.get(i));
-                companysActiveRegionService.insertCompanysActiveRegion(entity3);
-            }
-
-            result.setStatusCode(HttpStatus.OK.value());
-            result.setResultItem("SUCCESS");
-            result.setResponseDateTime(LocalDateTime.now());
-        }
-        else {
-            result.setStatusCode(HttpStatus.OK.value());
-            result.setResultItem("FAILURE");
-            result.setResponseDateTime(LocalDateTime.now());
-        }
-
-        return result;
-    }
+//    /**
+//     * 업체 정보 수정
+//     * @param companyInfo Companys 타입
+//     * @param companysCategory List(String)
+//     * @param companysActiveRegions List(String)
+//     * @param file1 MultipartFile
+//     * @param file2 MultipartFile
+//     * @param file3 MultipartFile
+//     * @return
+//     * @throws JSONException
+//     * @throws ParseException
+//     * @throws IOException
+//     */
+//    @PutMapping("/updateCompanys")
+//    public CustomResponseData updateCompanys(
+//            @RequestPart("companyInfo") Companys companyInfo,
+//            @RequestPart("companysCategory") List<String> companysCategory,
+//            @RequestPart("companysActiveRegion") List<String> companysActiveRegions,
+//            @RequestPart(value = "companysRegistCerti", required = false) MultipartFile file1,
+//            @RequestPart(value = "companysLicense", required = false) MultipartFile file2,
+//            @RequestPart(value = "companysProfileImage", required = false) MultipartFile file3
+//    ) throws JSONException, ParseException, IOException {
+//        CustomResponseData result = new CustomResponseData();
+//        log.debug("[updateCompanys] companyInfo: {}", companyInfo.getCompanysIdx());
+//        log.debug("[updateCompanys] {}, {}", companysCategory.toString(), companysActiveRegions.toString());
+//
+//        Companys entity = new Companys();
+//        entity.setCompanysIdx(Long.parseLong("55"));
+//
+//        if(file1 != null) {
+//            String file1URL = awsS3Service.uploadSingleFile(file1,"registcerti", entity.getCompanysIdx());
+//            entity.setCompanysRegistCerti(file1URL);
+//        }
+//
+//        if(file2 != null) {
+//            String file2URL = awsS3Service.uploadSingleFile(file2,"license", entity.getCompanysIdx());
+//            entity.setCompanysRegistCerti(file2URL);
+//        }
+//
+//        if(file3 != null) {
+//            String file3URL = awsS3Service.uploadSingleFile(file3, "license", entity.getCompanysIdx());
+//            entity.setCompanysProfileImage(file3URL);
+//        }
+//
+//        entity.setCompanysName(companyInfo.getCompanysName());
+//        entity.setCompanysCeoName(companyInfo.getCompanysCeoName());
+//        entity.setCompanysCeoIdx(companyInfo.getCompanysCeoIdx());
+//        entity.setCompanysComment(companyInfo.getCompanysComment());
+//        entity.setCompanysSpec(companyInfo.getCompanysSpec());
+//        entity.setCompanysRegion1(companyInfo.getCompanysRegion1());
+//        entity.setCompanysRegion2(companyInfo.getCompanysRegion2());
+//        entity.setCompanysRegion3(companyInfo.getCompanysRegion3());
+//        entity.setCompanysBankName(companyInfo.getCompanysBankName());
+//        entity.setCompanysBankNumber(companyInfo.getCompanysBankNumber());
+//
+//        Long companysIdx = entity.getCompanysIdx();
+////        log.debug("[updateCompanys] entity: {}", entity.toString());
+//
+//        int step1 = companysService.updateCompanys(entity);
+//
+//        if(step1 != 0) {
+//            int deletePrevCategory = companysCategoryService.deleteCategoryByCompanysIdx(companysIdx);
+//            int deletePrevActiveRegion = companysActiveRegionService.deleteActiveRegionByCompanysIdx(companysIdx);
+//
+//            for(int i = 0; i < companysCategory.size(); i++) {
+//                CompanysCategory entity2 = new CompanysCategory();
+//                entity2.setCompanysIdx(companysIdx);
+//                entity2.setCompanysCategoryValue(companysCategory.get(i));
+//                companysCategoryService.insertCompanysCategory(entity2);
+//            }
+//
+//            for(int i = 0; i < companysActiveRegions.size(); i++) {
+//                CompanysActiveRegion entity3 = new CompanysActiveRegion();
+//                entity3.setCompanysIdx(companysIdx);
+//                entity3.setActiveRegion(companysActiveRegions.get(i));
+//                companysActiveRegionService.insertCompanysActiveRegion(entity3);
+//            }
+//
+//            result.setStatusCode(HttpStatus.OK.value());
+//            result.setResultItem("SUCCESS");
+//            result.setResponseDateTime(LocalDateTime.now());
+//        }
+//        else {
+//            result.setStatusCode(HttpStatus.OK.value());
+//            result.setResultItem("FAILURE");
+//            result.setResponseDateTime(LocalDateTime.now());
+//        }
+//
+//        return result;
+//    }
 
 }

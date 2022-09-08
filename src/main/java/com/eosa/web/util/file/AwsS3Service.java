@@ -28,7 +28,28 @@ public class AwsS3Service {
     @Value("${cloud.aws.s3.bucket.url}") private String bucketURL;
     private final AmazonS3 amazonS3;
 
-    public String uploadSingleFile(MultipartFile file, String directoryName, Long companysIdx) {
+//    public String uploadSingleFile(MultipartFile file, String directoryName, Long companysIdx) {
+//        String fileName = directoryName + "_" +
+//                UUID.randomUUID().toString().substring(0,4) + "_" +
+//                String.valueOf(companysIdx);
+//        String fileURL = "";
+//
+//        ObjectMetadata objectMetadata = new ObjectMetadata();
+//        objectMetadata.setContentLength(file.getSize());
+//        objectMetadata.setContentType(file.getContentType());
+//
+//        try(InputStream inputStream = file.getInputStream()) {
+//            amazonS3.putObject(new PutObjectRequest(bucket+"/"+directoryName, fileName, inputStream, objectMetadata)
+//                    .withCannedAcl(CannedAccessControlList.PublicRead));
+//        } catch (IOException e) {
+//            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "S3에 registCerti 파일 업로드를 실패했습니다.");
+//        }
+//        fileURL = bucketURL+directoryName+"/"+fileName;
+//        return fileURL;
+//    }
+
+    public List<String> uploadSingleFile(MultipartFile file, String directoryName, Long companysIdx) {
+        List<String> result = new ArrayList<>();
         String fileName = directoryName + "_" +
                 UUID.randomUUID().toString().substring(0,4) + "_" +
                 String.valueOf(companysIdx);
@@ -45,7 +66,9 @@ public class AwsS3Service {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "S3에 registCerti 파일 업로드를 실패했습니다.");
         }
         fileURL = bucketURL+directoryName+"/"+fileName;
-        return fileURL;
+        result.add(fileName);
+        result.add(fileURL);
+        return result;
     }
 
     public List<String> uploadMultipleFile(List<MultipartFile> files, String directoryName, Long companysIdx) {

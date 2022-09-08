@@ -24,11 +24,11 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String payload = message.getPayload();
-        log.info("[handleTextMessage] payload: {}", payload);
-//        TextMessage tm = new TextMessage("Welcome Eosa chatting Server");
-//        session.sendMessage(tm);
-        ChatMessage chatMessage = objectMapper.readValue(payload, ChatMessage.class);
-        ChatRoom room = chatRoomService.findChatRoomByRoomId(chatMessage.getRoomId());
+//        log.info("[handleTextMessage] payload: {}", payload);
+////        TextMessage tm = new TextMessage("Welcome Eosa chatting Server");
+////        session.sendMessage(tm);
+//        ChatMessage chatMessage = objectMapper.readValue(payload, ChatMessage.class);
+//        ChatRoom room = chatRoomService.findChatRoomByRoomId(chatMessage.getRoomId());
     }
 
 }

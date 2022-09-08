@@ -36,6 +36,10 @@ public class ChatMessageService implements ChatMessageRepository {
         return chatMessagesList;
     }
 
+    public ChatMessage selectOneRecentMessageByRoomIdAndUsersIdx(String roomId, Long usersIdx) {
+        return chatMessageRepository.selectOneRecentMessageByRoomIdAndUsersIdx(roomId, usersIdx);
+    }
+
     @Override
     public List<ChatMessage> findAll() {
         return null;

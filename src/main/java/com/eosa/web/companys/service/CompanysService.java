@@ -33,18 +33,18 @@ public class CompanysService implements CompanysRepository {
     }
 
     @Override
-    public int updateRegistCertiAndProfileImage(Long companysIdx, String file1Name, String file3Name) {
-        return companysRepository.updateRegistCertiAndProfileImage(companysIdx, file1Name, file3Name);
+    public int updateRegistCertiAndProfileImage(Long companysIdx, String file1URL, String file3URL, String file1Name, String file3Name) {
+        return companysRepository.updateRegistCertiAndProfileImage(companysIdx, file1URL, file3URL, file1Name, file3Name);
     }
 
     @Override
-    public int updateRegistCerti(Long companysIdx, String file1Name) {
-        return companysRepository.updateRegistCerti(companysIdx, file1Name);
+    public int updateRegistCerti(Long companysIdx, String file1URL, String file1Name) {
+        return companysRepository.updateRegistCerti(companysIdx, file1URL, file1Name);
     }
 
     @Override
-    public int updateLicense(Long companysIdx, String file2URL) {
-        return companysRepository.updateLicense(companysIdx, file2URL);
+    public int updateLicense(Long companysIdx, String file2URL, String file2Name) {
+        return companysRepository.updateLicense(companysIdx, file2URL, file2Name);
     }
 
     @Override

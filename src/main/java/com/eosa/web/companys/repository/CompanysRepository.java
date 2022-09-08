@@ -22,31 +22,36 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
     @Modifying
     @Query(value=
             "UPDATE Companys " +
-                    "SET companysRegistCerti = :file1URL " +
+                    "SET companysRegistCerti = :file1URL, companysRegistCertiName = :file1Name " +
                     "WHERE companysIdx = :companysIdx",
             nativeQuery = true
     )
-    int updateRegistCerti(@Param("companysIdx") Long companysIdx, @Param("file1URL") String file1URL);
+    int updateRegistCerti(@Param("companysIdx") Long companysIdx, @Param("file1URL") String file1URL, @Param("file1Name") String file1Name);
 
     @Transactional
     @Modifying
     @Query(value=
             "UPDATE Companys " +
-                    "SET companysLicense = :file2URL " +
+                    "SET companysLicense = :file2URL, companysLicenseName = :file2Name " +
                     "WHERE companysIdx = :companysIdx",
             nativeQuery = true
     )
-    int updateLicense(@Param("companysIdx") Long companysIdx, @Param("file2URL") String file2URL);
+    int updateLicense(@Param("companysIdx") Long companysIdx, @Param("file2URL") String file2URL, @Param("file2Name") String file2Name);
 
     @Transactional
     @Modifying
     @Query(value=
         "UPDATE Companys " +
-        "SET companysRegistCerti = :file1Name, companysProfileImage = :file3Name " +
+        "SET companysRegistCerti = :file1URL, companysProfileImage = :file3URL, " +
+        "SET companysRegistCertiName = :file1Name, companysProfileImageName = :file3Name " +
         "WHERE companysIdx = :companysIdx",
         nativeQuery = true
     )
-    int updateRegistCertiAndProfileImage(@Param("companysIdx") Long companysIdx, @Param("file1Name") String file1Name, @Param("file3Name") String file3Name);
+    int updateRegistCertiAndProfileImage(
+        @Param("companysIdx") Long companysIdx,
+        @Param("file1URL") String file1URL, @Param("file3URL") String file3URL,
+        @Param("file1Name") String file1Name, @Param("file3Name") String file3Name
+    );
 
     @Query(value=
             "SELECT Companys.companysIdx FROM Companys " +
