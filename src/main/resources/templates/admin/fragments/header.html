@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<header class="header" th:fragment="headerFragment">
+    <h1 class="header__logo">선천성 심장병 홈모니터링</h1>
+    <span class="header__user">관리자</span>
+    <nav class="header__nav js-dropdown">
+        <button class="js-dropdown__btn"></button>
+        <ul class="js-dropdown__cont">
+            <li><a th:href="@{/admin/manage/info}">비밀번호 변경</a></li>
+            <li><a th:href="@{/logout}">로그아웃</a></li>
+        </ul>
+    </nav>
+</header>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<aside class="aside" th:fragment="asideFragment">
+    <button class="aside__btn"></button>
+    <nav class="aside__nav nav">
+        <ul class="nav-main">
+            <li class="js-dropdown">
+                <a href="#none" class="js-dropdown__btn" role="button" data-category="users">회원 관리</a>
+                <ul class="nav-sub js-dropdown__cont">
+                    <li class=""><a th:href="@{/admin/manage/member/list}" data-category="list">회원 목록</a></li>
+                    <li class=""><a th:href="@{/admin/manage/member/withdrawal/list}" data-category="withdrawal">탈퇴 목록</a></li>
+                    <li class=""><a th:href="@{/admin/manage/member/register}" data-category="register">회원 등록</a></li>
+                </ul>
+            </li>
+
+            <li><a th:href="@{/admin/manage/hospital/list}" data-category="hospital">종합병원 관리</a></li>
+
+            <li><a th:href="@{/admin/manage/policy}" data-category="policy">정책 관리</a></li>
+        </ul>
+    </nav>
+</aside>
+</html>

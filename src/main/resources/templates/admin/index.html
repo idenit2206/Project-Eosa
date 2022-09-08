@@ -1,163 +1,32 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-	<link rel="stylesheet" href="/assets/css/index.css" />
-</head>
-<head th:replace="admin/fragments/html-head.html :: html-head"/>
-<body>
-<div class="container-fluid">	
-	<div class="row">
-		<div class="col-2">
-			<nav th:replace="admin/fragments/html-sidebar.html :: html-sidebar" />
-		</div>
-		<div class="col-10">
-			<header th:replace="admin/fragments/html-header.html :: html-header" />
-			<div class="index-main container text-center">
-				<h3 class="h3 admin-h3-title">관리자 페이지</h3>
-				<div th:if="${user} != null">				
-				<form class="form" method="POST" th:action="@{/admin/adminUpdate}">
-				<div class="row invisible-row">
-					<div class="col-3 text-start label">
-						<label for="usersIdx">회원번호</label>						
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{admin/fragments/layout}">
+
+<th:block layout:fragment="content">
+	<main id="main">
+		<section class="section section-signin">
+			<div class="signin">
+				<h2 class="signin__title">관리자 로그인</h2>
+				<form class="form" th:action="@{/login/proc}" method="post">
+					<fieldset class="fieldset">
+						<input class="input" name="username" type="text" placeholder="아이디">
+						<input class="input" name="password" type="password" placeholder="비밀번호">
+					</fieldset>
+					<div class="form__action">
+						<button type="submit" class="btn-prime btn-full">로그인</button>
 					</div>
-					<div class="col-9 text-start">
-						<input type="text" size="30" id="usersIdx" name="usersIdx" th:value="${user.usersIdx}" readonly/>
-					</div>				
-				</div>
-				<div class="row">
-					<div class="col-3 text-start label">
-						<label for="usersAccount">아이디</label>						
-					</div>
-					<div class="col-9 text-start">
-						<input type="text" size="30" id="usersAccount" name="usersAccount" th:value="${user.usersAccount}"/>
-					</div>				
-				</div>
-				<div class="row">
-					<div class="col-3 text-start label">
-						<label for="usersPass">새 비밀번호</label>
-					</div>
-					<div class="col-9 text-start">
-						<input type="password" size="30" id="usersPass" name="usersPass" value="" />
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-3 text-start label">
-						<label for="usersPassCheck ">비밀번호 확인</label>
-					</div>
-					<div class="col-9 text-start">
-						<input type="password" size="30" id="usersPassCheck" name="usersPassCheck" value="" />
-					</div>					
-				</div>
-				<div class="row">
-					<div class="col-3 text-start label">
-						<label for="usersName">이름</label>
-					</div>
-					<div class="col-9 text-start">
-						<input type="text" size="30" id="usersName" name="usersName" th:value="${user.usersName}" />
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-3 text-start label">
-						<label for="usersPhone">연락처</label>
-					</div>
-					<div class="col-9 text-start">
-						<input type="text" size="30" id="usersPhone" name="usersPhone" th:value="${user.usersPhone}" />
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-3 text-start label">
-						<label for="usersEmail">이메일</label>
-					</div>
-					<div class="col-9 text-start">
-						<input type="text" size="30" id="usersEmail" name="usersEmail" th:value="${user.usersEmail}" />
-					</div>
-				</div>
-				<br/>
-				<br/>
-				<div class="row">
-					<div class="col text-end">
-						<input type="submit" class="btn btn-primary" value="수정" />
-					</div>
-					<div class="col text-start">
-						<input type="reset" id="cancleBtn" class="btn" value="취소" />
-					</div>
-				</div>
 				</form>
-				</div>
-				<div th:unless="${user} != null">
-					<form class="form" method="POST" th:action="@{/admin/adminUpdate}">
-						<div class="row invisible-row">
-							<!-- <div class="col-3 text-start">
-								<label for="usersIdx">회원번호</label>						
-							</div>
-							<div class="col-9 text-start">
-								<input type="text" size="30" id="usersIdx" name="usersIdx" readonly/>
-							</div>				 -->
-						</div>
-						<div class="row">
-							<div class="col-3 text-start label">
-								<label for="usersAccount">아이디</label>						
-							</div>
-							<div class="col-9 text-start">
-								<input type="text" size="30" id="usersAccount" name="usersAccount" readonly/>
-							</div>				
-						</div>
-						<div class="row">
-							<div class="col-3 text-start label">
-								<label for="usersPass">새 비밀번호</label>
-							</div>
-							<div class="col-9 text-start">
-								<input type="password" size="30" id="usersPass" name="usersPass" value="" />
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-3 text-start label">
-								<label for="usersPassCheck">비밀번호 확인</label>
-							</div>
-							<div class="col-9 text-start">
-								<input type="password" size="30" id="usersPassCheck" name="usersPassCheck" value="" />
-							</div>					
-						</div>
-						<div class="row">
-							<div class="col-3 text-start label">
-								<label for="usersName">이름</label>
-							</div>
-							<div class="col-9 text-start">
-								<input type="text" size="30" id="usersName" name="usersName" />
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-3 text-start label">
-								<label for="usersPhone">연락처</label>
-							</div>
-							<div class="col-9 text-start">
-								<input type="text" size="30" id="usersPhone" name="usersPhone"  />
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-3 text-start label">
-								<label for="usersEmail">이메일</label>
-							</div>
-							<div class="col-9 text-start">
-								<input type="text" size="30" id="usersEmail" name="usersEmail"  />
-							</div>
-						</div>
-						<br/>
-						<br/>
-						<div class="row">
-							<div class="col text-end">
-								<input type="submit" class="btn btn-primary" value="수정" />
-							</div>
-							<div class="col text-start">
-								<input type="reset" id="cancleBtn" class="btn" value="취소" />
-							</div>
-						</div>
-						</form>
-				</div>
 			</div>
-		</div>
-	</div>
-</div>
-</body>
-<script type="text/javascript" src="/assets/js/admin/CancleBtn.js"></script>
+		</section>
+	</main>
+</th:block>
+<th:block layout:fragment="script">
+	<script>
+		window.addEventListener('load', function () {
+			const error = [[${error}]];
+			if (error) alert('아이디와 비밀번호를 다시 확인해 주세요.');
+		});
+	</script>
+</th:block>
 </html>
