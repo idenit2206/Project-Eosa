@@ -58,8 +58,6 @@ public class UsersController {
     private NullCheck nullCheck = new NullCheck();
     private String myHostName = new InternetAddress().getAddress();
 
-//    @Value("${coolsms.api.key}") private String coolSmsApiKey;
-//    @Value("${coolsms.api.secret.key}") private String coolSmsApiSecretKey;
     final DefaultMessageService messageService;
     public UsersController() {
         this.messageService = NurigoApp.INSTANCE.initialize("NCSVBBUZQHJ2IJW8", "SL2MVRXGWZB7KQODM6XHMLZSPMQFDWZP", "https://api.coolsms.co.kr");
@@ -91,8 +89,8 @@ public class UsersController {
          message.setTo(usersPhone);  // 수신번호
          message.setText("어사 회원가입 핸드폰 인증 단계입니다.\n다음의 번호를 입력해주세요.\n"+authCode); // 발신내용
         log.debug("[sendOne] authCode: {}", authCode);
-//         SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
-//         smsCertificationService.savedAuthCode(usersPhone, authCode);
+         SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+//       //  smsCertificationService.savedAuthCode(usersPhone, authCode);
     }
 
     @PostMapping(value="/sign/checkMyPhone")

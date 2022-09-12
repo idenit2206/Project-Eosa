@@ -144,7 +144,12 @@ public class ChatRoomController {
         return result;
     }
 
-    // roomId에 해당하는 채팅방 조회
+    /**
+     * 채팅방에 접속한 후 채팅룸 내부에서 접속을 갱신하는 메서드
+     * @param roomId
+     * @param model
+     * @return
+     */
     @GetMapping("/room/{roomId}")
     @ResponseBody
     public ChatRoom roomInfo(@PathVariable String roomId, Model model) {
