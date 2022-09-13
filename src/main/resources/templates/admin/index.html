@@ -8,10 +8,10 @@
 		<section class="section section-signin">
 			<div class="signin">
 				<h2 class="signin__title">관리자 로그인</h2>
-				<form class="form" th:action="@{/login/proc}" method="post">
+				<form class="form" th:action="@{/admin/sign/signIn.do}" method="post">
 					<fieldset class="fieldset">
-						<input class="input" name="username" type="text" placeholder="아이디">
-						<input class="input" name="password" type="password" placeholder="비밀번호">
+						<input class="input" name="usersAccount" type="text" placeholder="아이디">
+						<input class="input" name="usersPass" type="password" placeholder="비밀번호">
 					</fieldset>
 					<div class="form__action">
 						<button type="submit" class="btn-prime btn-full">로그인</button>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/fragments/layout}">
+
+<th:block layout:fragment="content">
+
+    <th:block th:replace="admin/fragments/aside :: asideFragment"></th:block>
+
+    <main id="main">
+        <section class="section section-users">
+            <h2 class="section_title">관리자 등록</h2>
+
+            <div class="form form--sm form-register">
+
+                <fieldset class="fieldset">
+
+                    <div class="input-wrap">
+                        <label class="label">아이디<i class="required">*</i></label>
+                        <input type="text" id="userId" class="input" spellcheck="false" maxlength="20" placeholder="아이디 입력">
+                    </div>
+
+                    <div class="input-wrap">
+                        <label class="label">비밀번호<i class="required">*</i></label>
+                        <input type="password" id="userPwd01" class="input js-pwd01" maxlength="16" placeholder="비밀번호">
+                    </div>
+
+                    <div class="input-wrap">
+                        <label class="label">비밀번호 확인<i class="required">*</i></label>
+                        <input type="password" id="userPwd02" class="input js-pwd02" maxlength="16" placeholder="비밀번호 확인">
+                    </div>
+
+                    <div class="input-wrap">
+                        <label class="label">이름<i class="required">*</i></label>
+                        <input type="text" class="input user-name" maxlength="10" spellcheck="false" placeholder="이름 입력">
+                    </div>
+
+                    <div class="input-wrap">
+                        <label class="label">연락처<i class="required">*</i></label>
+                        <input type="text" class="input onlyNum user-tel" maxlength="11" spellcheck="false" placeholder="연락처 입력">
+                    </div>
+
+                    <div class="input-wrap">
+                        <label class="label">이메일<i class="required">*</i></label>
+                        <input type="email" class="input user-email" spellcheck="false" placeholder="이메일 입력">
+                    </div>
+
+                </fieldset>
+
+                <div class="form__action bottom">
+                    <a class="btn-return" th:href="@{/admin/manage/list}">돌아가기</a>
+                    <button type="button" class="btn-register">등록하기</button>
+                </div>
+
+            </div>
+
+        </section>
+    </main>
+
+</th:block>
+
+<th:block layout:fragment="script">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            onlyNum();
+            new PwdValidation();
+
+            // 관리자 등록
+            const registerBtn = document.querySelector('.btn-register');
+            registerBtn.addEventListener('click', insertAdmin);
+        });
+    </script>
+</th:block>
+
+</html>

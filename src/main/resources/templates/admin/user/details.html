@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/fragments/layout}">
+
+<th:block layout:fragment="content">
+
+    <th:block th:replace="admin/fragments/aside :: asideFragment"></th:block>
+
+    <main id="main" data-category="users">
+        <section class="section section-users">
+            <div class="form form--xxl form-profile">
+                <div class="profile-wrap">
+                    <img class="profile-img" th:src="@{/assets/images/basic-profile.svg}">
+                </div>
+                <span class="profile-name" th:text="${details.usersName}"></span>
+                <i class="profile-id">/</i>
+                <span class="profile-id" th:text="${details.usersAccount}"></span>
+            </div>
+            <div class="form form--xxl">
+                <div class="tab_cont">
+                    <fieldset class="fieldset">
+                        <table class="dt-table">
+                            <tbody>
+                                <tr>
+                                    <th>회원번호<i class="required">*</i></th>
+                                    <td class="memberId" th:text="${details.usersIdx}"></td>
+                                    <th>유형</th>
+                                    <td th:text="${details.usersRole} eq 'CLIENT' ? '의뢰인' : '탐정'"></td>
+                                </tr>
+                                <tr>
+                                    <th>아이디<i class="required">*</i></th>
+                                    <td class="memberAccount" th:text="${details.usersAccount}"></td>
+                                    <th>비밀번호</th>
+                                    <td>
+                                        <button type="button" class="btn-reset">비밀번호 초기화</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>이름<i class="required">*</i></th>
+                                    <td>
+                                        <div class="input-wrap">
+                                            <input type="text" spellcheck="false" class="input patientName" th:value="${details.usersName}">
+                                        </div>
+                                    </td>
+                                    <th>닉네임<i class="required">*</i></th>
+                                    <td class="birth-td">
+                                        <div class="input-wrap">
+                                            <input type="text" spellcheck="false" class="input patientName" th:value="${details.usersNick}">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>전화번호<i class="required">*</i></th>
+                                    <td>
+                                        <div class="input-wrap">
+                                            <input type="text" spellcheck="false" class="input onlyNum memberContact" maxlength="11" th:value="${details.usersPhone}">
+                                        </div>
+                                    </td>
+                                    <th>이메일</th>
+                                    <td>
+                                        <div class="input-wrap">
+                                            <input type="text" spellcheck="false" class="input" maxlength="11" th:value="${details.usersEmail}">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>연령<i class="required">*</i></th>
+                                    <td>
+                                        <select class="select">
+                                            <option value="10" th:selected="${details.usersAge} eq 10">10대</option>
+                                            <option value="20" th:selected="${details.usersAge} eq 20">20대</option>
+                                            <option value="30" th:selected="${details.usersAge} eq 30">30대</option>
+                                            <option value="40" th:selected="${details.usersAge} eq 40">40대</option>
+                                            <option value="50" th:selected="${details.usersAge} eq 50">50대</option>
+                                            <option value="60" th:selected="${details.usersAge} eq 60">60대</option>
+                                            <option value="70" th:selected="${details.usersAge} eq 70">70대</option>
+                                            <option value="80" th:selected="${details.usersAge} eq 80">80대</option>
+                                        </select>
+                                    </td>
+                                    <th>성별<i class="required">*</i></th>
+                                    <td>
+                                        <div class="type-wrap">
+                                            <div class="check-box">
+                                                <input type="radio" id="Gender01" name="gender" class="input" value="0" th:checked="${details.usersGender} eq 0">
+                                                <label for="Gender01" class="label">남성</label>
+                                            </div>
+                                            <div class="check-box">
+                                                <input type="radio" id="Gender02" name="gender" class="input" value="1" th:checked="${details.usersGender} eq 1">
+                                                <label for="Gender02" class="label">여성</label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </fieldset>
+                    <div class="form__action bottom">
+                        <a th:href="@{/admin/manage/user/list}" class="btn-normal">목록가기</a>
+                        <button type="button" class="btn-prime">수정하기</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+</th:block>
+
+<th:block layout:fragment="script">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script>
+        window.addEventListener('load', function () {
+            highlightMenu('list');
+            onlyNum();
+        });
+    </script>
+</th:block>
+
+</html>

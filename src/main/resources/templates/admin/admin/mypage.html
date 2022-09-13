@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/fragments/layout}">
+
+<th:block layout:fragment="content">
+
+    <th:block th:replace="admin/fragments/aside :: asideFragment"></th:block>
+
+    <main id="main">
+        <section class="section">
+            <h2 class="section_title">마이페이지</h2>
+            <div class="form form--sm form-register">
+                <fieldset class="fieldset">
+
+                    <div class="input-wrap">
+                        <label for="adminAccount" class="label">아이디</label>
+                        <input type="text" id="adminAccount" class="input" value="admin" readonly>
+                    </div>
+
+                    <div class="input-wrap">
+                        <label for="nowPwd" class="label">현재 비밀번호</label>
+                        <input type="password" id="nowPwd" class="input" placeholder="현재 비밀번호">
+                    </div>
+
+                    <div class="input-wrap">
+                        <label for="adminPwd01" class="label">새 비밀번호</label>
+                        <input type="password" id="adminPwd01" class="input js-pwd01" placeholder="새 비밀번호">
+                    </div>
+
+                    <div class="input-wrap">
+                        <label for="adminPwd02" class="label">비밀번호 확인</label>
+                        <input type="password" id="adminPwd02" class="input js-pwd02" placeholder="새 비밀번호 확인">
+                    </div>
+
+                    <div class="input-wrap">
+                        <label for="adminName" class="label">이름</label>
+                        <input type="text" spellcheck="false" id="adminName" class="input" value="아무개">
+                    </div>
+
+                    <div class="input-wrap">
+                        <label for="adminContact" class="label">연락처</label>
+                        <input type="text" spellcheck="false" id="adminContact" class="input onlyNum" value="01012345678">
+                    </div>
+
+                    <div class="input-wrap">
+                        <label for="adminEmail" class="label">이메일</label>
+                        <input type="email" spellcheck="false" id="adminEmail" class="input" value="eosa@eosa.com">
+                    </div>
+
+                </fieldset>
+
+                <div class="form__action bottom">
+                    <a th:href="@{/admin/manage/member/list}" class="btn-normal">취소</a>
+                    <button type="button" class="btn-prime pwd-modify-btn">수정 하기</button>
+                </div>
+            </div>
+        </section>
+    </main>
+</th:block>
+
+<th:block layout:fragment="script">
+    <script>
+        window.addEventListener('load', function () {
+            new PwdValidation();
+            onlyNum();
+        });
+    </script>
+</th:block>
+
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/fragments/layout}">
+
+<th:block layout:fragment="content">
+
+    <th:block th:replace="admin/fragments/aside :: asideFragment"></th:block>
+
+    <main id="main" class="main-list">
+        <section class="section section-users">
+            <h2 class="section_title">관리자 목록</h2>
+            <div class="table">
+                <div class="table__top">
+                    <div class="header-wrap">
+                        <span class="table__count">전체<i class="value" th:text="${count}"></i></span>
+                        <a class="btn-normal" th:href="@{/admin/manage/register}">관리자 등록</a>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th class="sorting">번호</th>
+                        <th>아이디</th>
+                        <th>이름</th>
+                        <th>연락처</th>
+                        <th>이메일</th>
+                        <th>가입일</th>
+                    </tr>
+                    </thead>
+
+                    <tbody th:if="${count} eq 0">
+                    <tr>
+                        <td colspan="6">
+                            <span>등록된 관리자가 없습니다.</span>
+                        </td>
+                    </tr>
+                    </tbody>
+
+                    <tbody th:if="${count} ne 0">
+                    <tr th:each="list : ${adminList}" th:onclick="|linkTo(event,'/admin/manage/details?usersIdx=${list.usersIdx}')|">
+                        <td><span th:text="${list.usersIdx}"></span></td>
+                        <td>
+                            <span th:text="${list.usersAccount}"></span>
+                        </td>
+                        <td>
+                            <span th:text="${list.usersName}"></span>
+                        </td>
+                        <td>
+                            <span class="contact" th:text="${list.usersPhone}"></span>
+                        </td>
+                        <td>
+                            <span th:text="${list.usersEmail}"></span>
+                        </td>
+                        <td>
+                            <span th:text="${#dates.format(list.usersJoinDate, 'yyyy-MM-dd')}"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="table__paging">
+                    <ul>
+                        <li><a class="first" th:href="@{/admin/manage/list(page=1)}"></a></li>
+                        <li><a class="prev" th:href="@{/admin/manage/list(page=${pagination.prevBlock})}"></a></li>
+
+                        <th:block th:with="start = ${pagination.startPage}, end = ${pagination.endPage}">
+                            <li th:each="pageButton : ${#numbers.sequence(start, end)}"><a class="pageNum" th:href="@{/admin/manage/list(page=${pageButton})}" th:text="${pageButton}"></a></li>
+                        </th:block>
+
+                        <li><a class="next" th:href="@{/admin/manage/list(page=${pagination.nextBlock})}"></a></li>
+                        <li><a class="last" th:href="@{/admin/manage/list(page=${pagination.totalPageCnt eq 0 ? 1 : pagination.totalPageCnt})}"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+</th:block>
+
+<th:block layout:fragment="script">
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            pageOn();
+            telFormat();
+            new Table(document.querySelector('#main table'));
+        });
+    </script>
+</th:block>
+
+</html>
