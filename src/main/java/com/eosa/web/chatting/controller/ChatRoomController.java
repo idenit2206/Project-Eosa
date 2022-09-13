@@ -96,6 +96,35 @@ public class ChatRoomController {
     }
 
     /**
+     * CompanysIdx가 일치하는 채팅방을 조회합니다.
+     * @param companysIdx
+     * @return
+     */
+    @GetMapping("/selectChatRoomListByCompanysIdx")
+    @ResponseBody
+    public CustomResponseData selectChatRoomListByCompanysIdx(@RequestParam("companysIdx") Long companysIdx) {
+        log.debug("[selectChatRoomListByCompanysIdx] companysIdx: {}가 일치하는 채팅방 목록 조회를 요청합니다.", companysIdx);
+        CustomResponseData result = new CustomResponseData();
+        Map<String, Object> items = new HashMap<>();
+
+        List<ChatRoom> selectRows = chatRoomService.selectChatRoomListByCompanysIdx(companysIdx);
+        items.put("ChatRoom", selectRows);
+
+        if(selectRows != null) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(selectRows);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
+
+    /**
      * 채팅방 입장을 위한 메서드
      * @param roomId
      * @param usersName
