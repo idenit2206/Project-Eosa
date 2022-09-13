@@ -107,6 +107,7 @@ public class UsersReviewController {
 
     @GetMapping("/selectOneUsersReviewByRequestFormIdx")
     public CustomResponseData selectOneUsersReviewByRequestFormIdx(@RequestParam("requestFormIdx") Long requestFormIdx) {
+        log.debug("[selectOneUsersReviewByRequestFormIdx] Start");
         CustomResponseData result = new CustomResponseData();
         SelectReviewEntity item = usersReviewService.selectOneUsersReviewByRequestFormIdx(requestFormIdx);
 

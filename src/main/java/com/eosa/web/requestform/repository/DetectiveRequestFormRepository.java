@@ -74,16 +74,47 @@ public interface DetectiveRequestFormRepository extends JpaRepository<RequestFor
     @Query(value=
         "UPDATE RequestForm " +
         "SET " +
-        "requestFormAcceptDate = :requestFormAcceptDate, " +
         "requestFormStatus = :requestFormStatus, requestFormRejectMessage = :requestFormRejectMessage " +
         "WHERE requestFormIdx = :requestFormIdx",
          nativeQuery = true
     )
-    int updateRequestFormStatusWhereRequestFormIdx(
+    int updateRequestFormStatusByRequestFormIdx(
         @Param("requestFormIdx") Long requestFormIdx,
-        @Param("requestFormAcceptDate") LocalDateTime requestFormAcceptDate,
         @Param("requestFormStatus") String requestFormStatus,
         @Param("requestFormRejectMessage") String requestFormRejectMessage
     );
 
+    @Transactional
+    @Modifying
+    @Query(value=
+        "UPDATE RequestForm " +
+        "SET " +
+        "requestConsultDate = :requestFormAcceptDate, " +
+        "requestFormStatus = :requestFormStatus, requestFormRejectMessage = :requestFormRejectMessage " +
+        "WHERE requestFormIdx = :requestFormIdx",
+        nativeQuery = true
+    )
+    int updateRequestFormStatusByRequestFormIdxCaseConsultComplete(
+            @Param("requestFormIdx") Long requestFormIdx,
+            @Param("requestFormAcceptDate") LocalDateTime requestFormAcceptDate,
+            @Param("requestFormStatus") String requestFormStatus,
+            @Param("requestFormRejectMessage") String requestFormRejectMessage
+    );
+
+    @Transactional
+    @Modifying
+    @Query(value=
+            "UPDATE RequestForm " +
+                    "SET " +
+                    "requestFormCompDate = :requestFormAcceptDate, " +
+                    "requestFormStatus = :requestFormStatus, requestFormRejectMessage = :requestFormRejectMessage " +
+                    "WHERE requestFormIdx = :requestFormIdx",
+            nativeQuery = true
+    )
+    int updateRequestFormStatusByRequestFormIdxCaseMissionComplete(
+            @Param("requestFormIdx") Long requestFormIdx,
+            @Param("requestFormAcceptDate") LocalDateTime requestCompAcceptDate,
+            @Param("requestFormStatus") String requestFormStatus,
+            @Param("requestFormRejectMessage") String requestFormRejectMessage
+    );
 }

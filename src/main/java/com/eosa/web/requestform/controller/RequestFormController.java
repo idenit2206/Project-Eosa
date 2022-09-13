@@ -48,8 +48,8 @@ public class RequestFormController {
           @RequestPart("RequestFormCategory") List<String> requestFormCategory
     )throws JSONException, ParseException {
         CustomResponseData result = new CustomResponseData();
-        log.debug(param.toString());
-        log.debug(requestFormCategory.toString());
+        log.debug("[requestFormRegister] {}", param.toString());
+        log.debug("[requestFormRegister] {}", requestFormCategory.toString());
 
         RequestForm entity = new RequestForm();
             entity.setUsersIdx(param.getUsersIdx());
@@ -60,7 +60,7 @@ public class RequestFormController {
             entity.setRequestFormStatus("상담대기");
             entity.setRequestFormDate(LocalDateTime.now());
         RequestForm step1 = requestFormService.save(entity);
-        log.debug("step1: {}", step1.toString());
+        log.debug("[requestFormRegister] step1: {}", step1.toString());
 
         if(step1 != null) {
             Long requestFormIdx = step1.getRequestFormIdx();
@@ -312,11 +312,15 @@ public class RequestFormController {
     }
 
     @GetMapping("/selectRequestFormByRequsetFormIdx")
-    public CustomResponseData selectRequestFormByRequsetFormIdx(@RequestParam("requestFormIdx") Long requestFormIdx) {
+    public CustomResponseData selectRequestFormByRequsetFormIdx(
+        @RequestParam("requestFormIdx") Long requestFormIdx
+    ) {
+        log.debug("[selectRequestFormByRequestFormIdx] 시작");
+        log.debug("[selectRequestFormByRequestFormIdx] formIdx: {}", String.valueOf(requestFormIdx));
         CustomResponseData result = new CustomResponseData();
 
-        RequestForm item = requestFormService.selectOneRequestFormByRequsetFormIdx(requestFormIdx);
-
+//        RequestForm item = requestFormService.selectOneRequestFormByRequsetFormIdx(requestFormIdx);
+        Object item = null;
         if(item != null) {
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem(item);
