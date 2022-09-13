@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.eosa.web.usersreview.entity.SelectReviewEntity;
-import org.hibernate.sql.Select;
+import com.eosa.web.usersreview.entity.UsersReview;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import com.eosa.web.util.CustomResponseData;
 
 import lombok.extern.slf4j.Slf4j;
-
-import javax.validation.constraints.Null;
 
 @Slf4j
 @RestController
@@ -24,6 +22,7 @@ public class UsersReviewController {
 
     @PostMapping("/insertUsersReview")
     public CustomResponseData insertUsersReview(UsersReview param) {
+        log.debug("[insertUsersReview] 작동시작");
         CustomResponseData result = new CustomResponseData();
         int transaction = usersReviewService.insertUsersReview(param);
         log.debug("[insertUsersReview]: {}", String.valueOf(transaction));

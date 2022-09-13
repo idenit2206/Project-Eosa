@@ -1,4 +1,4 @@
-package com.eosa.web.usersreview;
+package com.eosa.web.usersreview.entity;
 
 import java.time.LocalDateTime;
 

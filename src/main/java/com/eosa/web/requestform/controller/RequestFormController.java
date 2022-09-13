@@ -39,7 +39,7 @@ public class RequestFormController {
 
     /**
      * CLIENT회원의 의뢰하기 버튼을 통한 의뢰 신청
-     * @param RequestFrom param
+     * @param param RequestForm
      * @return
      */
     @PostMapping("/requestFormRegister")

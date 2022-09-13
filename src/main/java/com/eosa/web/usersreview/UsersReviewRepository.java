@@ -3,6 +3,7 @@ package com.eosa.web.usersreview;
 import javax.transaction.Transactional;
 
 import com.eosa.web.usersreview.entity.SelectReviewEntity;
+import com.eosa.web.usersreview.entity.UsersReview;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -18,10 +19,10 @@ public interface UsersReviewRepository extends JpaRepository<UsersReview, Long>{
     @Transactional
     @Query(
         value="INSERT INTO UsersReview(" +
-        "usersIdx, companysIdx, requestFormIdx, " +
+        "reviewUsersIdx, reviewCompanysIdx, reviewRequestFormIdx, " +
         "resultScore, communicationScore, processScore, specialityScore, " +
         "reviewDetail, reviewDate) " +
-        "VALUES(:#{#UsersReview.usersIdx}, :#{#UsersReview.companysIdx}, :#{#UsersReview.requestFormIdx}, " +
+        "VALUES(:#{#UsersReview.reviewUsersIdx}, :#{#UsersReview.reviewCompanysIdx}, :#{#UsersReview.reviewRequestFormIdx}, " +
         ":#{#UsersReview.resultScore}, :#{#UsersReview.communicationScore}, :#{#UsersReview.processScore}, :#{#UsersReview.specialityScore}, " +
         ":#{#UsersReview.reviewDetail}, :#{#UsersReview.reviewDate})"
         ,nativeQuery=true
