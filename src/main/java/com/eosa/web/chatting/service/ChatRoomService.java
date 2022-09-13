@@ -107,6 +107,11 @@ public class ChatRoomService implements ChatRoomRepository {
     }
 
     @Override
+    public List<ChatRoom> selectChatRoomListByCompanysIdx(Long companysIdx) {
+        return chatRoomRepository.selectChatRoomListByCompanysIdx(companysIdx);
+    }
+
+    @Override
     public List<ChatRoom> findAll() {
         // TODO Auto-generated method stub
         return null;

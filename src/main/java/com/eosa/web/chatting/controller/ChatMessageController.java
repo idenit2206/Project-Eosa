@@ -11,15 +11,14 @@ import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.eosa.web.chatting.entity.ChatMessage;
 import com.eosa.web.chatting.entity.MessageType;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -40,27 +39,27 @@ public class ChatMessageController {
     @MessageMapping("/chat/message")
     public void sendMessage(ChatMessage message) {
         if((message.getMessageType()).equals(MessageType.ENTER)) {
+            log.debug("sendMessage [ENTER]: {}", message.toString());
             message.setMessage(message.getSender() + "님이 입장했습니다.");
-            sendingOperations.convertAndSend("/queue/chat/room"+message.getRoomId());
             chatMessageService.addMessage(message);
             chatMessageService.save(message);
         }
 
         if((message.getMessageType()).equals(MessageType.TALK)) {
-            log.info("[발신인]: {} / [내용]: {} / [시간]: {}", message.getSender(), message.getMessage(), message.getSendDate());
+            log.debug("sendMessage [TALK]: {}", message.toString());
             chatMessageService.addMessage(message);
             chatMessageService.save(message);
         }
 
         if((message.getMessageType()).equals(MessageType.FILE)) {
-            log.info("## {} : {} - Room: {} _ Time: {}", message.getSender(), message.getMessage(), message.getRoomId(), message.getSendDate());
+            log.debug("sendMessage [FILE]: {}", message.toString());
             chatMessageService.addMessage(message);
             chatMessageService.save(message);
         }
 
         if((message.getMessageType()).equals(MessageType.LEAVE)) {
             message.setMessage(message.getSender() + "님이 퇴장했습니다.");
-            log.info("## User: {} has left RoomId: {}", message.getSender(), message.getRoomId());
+            log.debug("sendMessage [LEAVE]: {}", message.toString());
             chatMessageService.addMessage(message);
             chatMessageService.save(message);
         }    
@@ -73,11 +72,13 @@ public class ChatMessageController {
         return chatMessageService.readMessagesList();
     }
 
-    @GetMapping("/chat/message/selectChatMessageByRoomId/{roomId}")
-    public List<ChatMessage> selectChatMessageByByRoomId(@PathVariable String roomId) {
-        return chatMessageService.selectChatMessageByByRoomId(roomId);
+//    @GetMapping("/chat/message/selectChatMessageByRoomId/{roomId}")
+//    public List<ChatMessage> selectChatMessageByRoomId(@PathVariable String roomId) {
+//        return chatMessageService.selectChatMessageByByRoomId(roomId);
+//    }
+    @GetMapping("/api/chat/message/selectChatMessageByRoomId")
+    public List<ChatMessage> selectChatMessageByRoomId(@RequestParam("roomId") String roomId) {
+        return chatMessageService.selectChatMessageByRoomId(roomId);
     }
-
-
 
 }

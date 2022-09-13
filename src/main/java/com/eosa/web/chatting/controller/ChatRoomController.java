@@ -37,12 +37,6 @@ public class ChatRoomController {
     public String room(Model model) {
         return "service/chatting/room";
     }
-    // 모든 채팅방 목록 반환
-    @GetMapping("/rooms")
-    @ResponseBody
-    public List<ChatRoom> rooms() {
-        return chatRoomService.findAllRoom();
-    }
 
     // 채팅방 생성
     // @PostMapping("/room")
@@ -72,12 +66,6 @@ public class ChatRoomController {
         return result;
     }
 
-
-//    @GetMapping("/getChatRoomList")
-//    @ResponseBody
-//    public List<ChatRoom> getChatRoomListByUsersIdx(@RequestParam("usersIdx") Long usersIdx) {
-//        return chatRoomService.getChatRoomListByUsersIdx(usersIdx);
-//    }
     /**
      * usersIdx가 참가한 모든 채팅방의 목록을 출력합니다.
      * @param usersIdx
@@ -91,15 +79,36 @@ public class ChatRoomController {
         Map<String, Object> items = new HashMap<>();
 
         List<ChatRoom> selectRows = chatRoomService.selectChatRoomListByUsersIdx(usersIdx);
-        List<ChatMessage> selectRows2 = new ArrayList<>();
-        for(int i = 0; i < selectRows.size(); i++) {
-            String roomId = selectRows.get(i).getRoomId();
-            ChatMessage recentMessage = chatMessageService.selectOneRecentMessageByRoomIdAndUsersIdx(roomId, usersIdx);
-            selectRows2.add(recentMessage);
+        items.put("ChatRoom", selectRows);
+
+        if(selectRows != null) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(selectRows);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
         }
 
+        return result;
+    }
+
+    /**
+     * CompanysIdx가 일치하는 채팅방을 조회합니다.
+     * @param companysIdx
+     * @return
+     */
+    @GetMapping("/selectChatRoomListByCompanysIdx")
+    @ResponseBody
+    public CustomResponseData selectChatRoomListByCompanysIdx(@RequestParam("companysIdx") Long companysIdx) {
+        log.debug("[selectChatRoomListByCompanysIdx] companysIdx: {}가 일치하는 채팅방 목록 조회를 요청합니다.", companysIdx);
+        CustomResponseData result = new CustomResponseData();
+        Map<String, Object> items = new HashMap<>();
+
+        List<ChatRoom> selectRows = chatRoomService.selectChatRoomListByCompanysIdx(companysIdx);
         items.put("ChatRoom", selectRows);
-//        items.put("ChatRoomRecentMessage", selectRows2);
 
         if(selectRows != null) {
             result.setStatusCode(HttpStatus.OK.value());
@@ -176,4 +185,10 @@ public class ChatRoomController {
         chatRoomService.testAllFlush();
     }
 
+    //    // TestMethod 모든 채팅방 목록 반환
+//    @GetMapping("/rooms")
+//    @ResponseBody
+//    public List<ChatRoom> rooms() {
+//        return chatRoomService.findAllRoom();
+//    }
 }

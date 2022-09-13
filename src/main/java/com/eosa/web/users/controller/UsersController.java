@@ -89,7 +89,7 @@ public class UsersController {
          message.setTo(usersPhone);  // 수신번호
          message.setText("어사 회원가입 핸드폰 인증 단계입니다.\n다음의 번호를 입력해주세요.\n"+authCode); // 발신내용
         log.debug("[sendOne] authCode: {}", authCode);
-         SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+//         SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
 //       //  smsCertificationService.savedAuthCode(usersPhone, authCode);
     }
 
@@ -134,7 +134,7 @@ public class UsersController {
         String requester = req.getLocalAddr();       
         JsonObject jsonObject = (JsonObject) JsonParser.parseString(param).getAsJsonObject();
         // log.info("{}", jsonObject.toString());
-        log.info("[REQUEST] doSignUp from {}, usersAccount: {}", requester, jsonObject.get("usersAccount").getAsString());
+        log.info("[doSignUp] jsonObject: {}", jsonObject.toString());
         Users paramUsers = new Users();
             paramUsers.setUsersAccount(jsonObject.get("usersAccount").getAsString().toLowerCase());
             paramUsers.setUsersPass(jsonObject.get("usersPass").getAsString());
@@ -159,6 +159,8 @@ public class UsersController {
             } else {
                 paramUsers.setUsersNotice(0);
             }
+            paramUsers.setProvider(jsonObject.get("provider").getAsString());
+            paramUsers.setUsersProfile(jsonObject.get("picture").getAsString());
             // paramUsers.setUsersNotice(element.get("usersNotice").getAsInt());
         // log.debug("paramUsers: {}", paramUsers.toString());
 
@@ -305,7 +307,8 @@ public class UsersController {
         String sns = principalUserDetails.getProvider();
         String usersAccount = principalUserDetails.getUsername();
         String usersEmail = principalUserDetails.getUsers().getUsersEmail();
-        String usersRole = principalUserDetails.getUsers().getUsersRole(); 
+        String usersRole = principalUserDetails.getUsers().getUsersRole();
+        String picture = "";
         // log.debug("# sns:{}, usersEmail: {}, usersRole: {}",sns, usersEmail, usersRole);
 
         Users user = usersService.selectByUsersEmail(usersEmail);
@@ -317,10 +320,15 @@ public class UsersController {
         }
         else {
             log.info("{}, {} 님은 신규회원 입니다. 회원가입 페이지로 이동합니다.", sns, usersAccount);
-            redirectAttributes.addFlashAttribute("info","info");
-            // Cookie cookieProvider = new Cookie("provider", sns);
-            // cookieProvider.setPath("/");
-            // response.addCookie(cookieProvider);
+//            log.info("프로필 이미지 정보: {}", );
+//            redirectAttributes.addFlashAttribute("info","info");
+             Cookie cookieProvider = new Cookie("provider", sns+"/"+usersEmail+"/"+picture);
+//             Cookie cookieUsersEmail = new Cookie("usersEmail", usersEmail);
+//             Cookie cookiePicture = new Cookie("picture", "");
+             cookieProvider.setPath("/");
+             response.addCookie(cookieProvider);
+//             response.addCookie(cookieUsersEmail);
+//             response.addCookie(cookiePicture);
             response.sendRedirect("http://" + myDomain + ":" + myUiPort + "/user/register");
             response.flushBuffer();
         }

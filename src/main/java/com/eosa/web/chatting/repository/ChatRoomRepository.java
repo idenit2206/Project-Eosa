@@ -31,4 +31,10 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
     )
     List<ChatRoom> selectChatRoomListByUsersIdx(Long usersIdx);
 
+    @Query(
+        value="SELECT * FROM ChatRoom c WHERE c.companysIdx =?1"
+        ,nativeQuery = true
+    )
+    List<ChatRoom> selectChatRoomListByCompanysIdx(Long companysIdx);
+
 }

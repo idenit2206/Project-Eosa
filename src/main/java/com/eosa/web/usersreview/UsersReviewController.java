@@ -3,6 +3,8 @@ package com.eosa.web.usersreview;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.eosa.web.usersreview.entity.SelectReviewEntity;
+import org.hibernate.sql.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -43,7 +45,7 @@ public class UsersReviewController {
     @GetMapping("/selectAllUsersReview")
     public CustomResponseData selectAllUsersReview() {
         CustomResponseData result = new CustomResponseData();
-        List<UsersReview> items = usersReviewService.findAll();
+        List<SelectReviewEntity> items = usersReviewService.selectAllUsersReview();
 
         if(items != null) {
             result.setStatusCode(HttpStatus.OK.value());
@@ -66,7 +68,7 @@ public class UsersReviewController {
     @GetMapping("/selectUsersReviewByCompanysIdx")
     public CustomResponseData selectUsersReviewByCompanysIdx(@RequestParam("companysIdx") Long companysIdx) {
         CustomResponseData result = new CustomResponseData();
-        List<UsersReview> items = usersReviewService.selectUsersReviewByCompanysIdx(companysIdx);
+        List<SelectReviewEntity> items = usersReviewService.selectUsersReviewByCompanysIdx(companysIdx);
 
         if(items != null) {
             result.setStatusCode(HttpStatus.OK.value());
@@ -89,7 +91,7 @@ public class UsersReviewController {
     @GetMapping("/selectUsersReviewByUsersIdx")
     public CustomResponseData selectUsersReviewByUsersIdx(@RequestParam("usersIdx") Long usersIdx) {
         CustomResponseData result = new CustomResponseData();
-        List<UsersReview> items = usersReviewService.selectUsersReviewByUsersIdx(usersIdx);
+        List<SelectReviewEntity> items = usersReviewService.selectUsersReviewByUsersIdx(usersIdx);
 
         if(items != null) {
             result.setStatusCode(HttpStatus.OK.value());
@@ -107,7 +109,7 @@ public class UsersReviewController {
     @GetMapping("/selectOneUsersReviewByRequestFormIdx")
     public CustomResponseData selectOneUsersReviewByRequestFormIdx(@RequestParam("requestFormIdx") Long requestFormIdx) {
         CustomResponseData result = new CustomResponseData();
-        UsersReview item = usersReviewService.selectOneUsersReviewByRequestFormIdx(requestFormIdx);
+        SelectReviewEntity item = usersReviewService.selectOneUsersReviewByRequestFormIdx(requestFormIdx);
 
         if(item != null) {
             result.setStatusCode(HttpStatus.OK.value());

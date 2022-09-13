@@ -23,10 +23,10 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     @Query(
         value="INSERT INTO Users(usersAccount, usersPass, usersName, usersNick," +
         "usersPhone, usersEmail, usersRole, usersAge," + 
-        "usersRegion1, usersRegion2, usersGender, usersJoinDate, usersNotice, usersEnabled)" +
+        "usersRegion1, usersRegion2, provider, usersProfile, usersGender, usersJoinDate, usersNotice, usersEnabled)" +
         "VALUES(:#{#Users.usersAccount}, :#{#Users.usersPass}, :#{#Users.usersName}, :#{#Users.usersNick}," +
         ":#{#Users.usersPhone}, :#{#Users.usersEmail}, :#{#Users.usersRole}, :#{#Users.usersAge}," +
-        ":#{#Users.usersRegion1}, :#{#Users.usersRegion2}, :#{#Users.usersGender}, :#{#Users.usersJoinDate}," +
+        ":#{#Users.usersRegion1}, :#{#Users.usersRegion2}, :#{#Users.provider}, :#{#Users.usersProfile}, :#{#Users.usersGender}, :#{#Users.usersJoinDate}," +
         ":#{#Users.usersNotice}, :#{#Users.usersEnabled})"
     ,nativeQuery=true)
     int userSave(@Param("Users") Users user);    
