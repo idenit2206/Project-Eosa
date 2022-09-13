@@ -306,7 +306,7 @@ public class UsersController {
         String usersAccount = principalUserDetails.getUsername();
         String usersEmail = principalUserDetails.getUsers().getUsersEmail();
         String usersRole = principalUserDetails.getUsers().getUsersRole();
-//        String picture = principalUserDetails.getUsers().getPicture();
+        String picture = "";
         // log.debug("# sns:{}, usersEmail: {}, usersRole: {}",sns, usersEmail, usersRole);
 
         Users user = usersService.selectByUsersEmail(usersEmail);
@@ -320,13 +320,13 @@ public class UsersController {
             log.info("{}, {} 님은 신규회원 입니다. 회원가입 페이지로 이동합니다.", sns, usersAccount);
 //            log.info("프로필 이미지 정보: {}", );
 //            redirectAttributes.addFlashAttribute("info","info");
-             Cookie cookieProvider = new Cookie("provider", sns);
-             Cookie cookieUsersEmail = new Cookie("usersEmail", usersEmail);
-             Cookie cookiePicture = new Cookie("picture", "");
+             Cookie cookieProvider = new Cookie("provider", sns+"/"+usersEmail+"/"+picture);
+//             Cookie cookieUsersEmail = new Cookie("usersEmail", usersEmail);
+//             Cookie cookiePicture = new Cookie("picture", "");
              cookieProvider.setPath("/");
              response.addCookie(cookieProvider);
-             response.addCookie(cookieUsersEmail);
-             response.addCookie(cookiePicture);
+//             response.addCookie(cookieUsersEmail);
+//             response.addCookie(cookiePicture);
             response.sendRedirect("http://" + myDomain + ":" + myUiPort + "/user/register");
             response.flushBuffer();
         }
