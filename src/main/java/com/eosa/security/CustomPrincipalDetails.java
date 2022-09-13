@@ -26,6 +26,7 @@ public class CustomPrincipalDetails implements UserDetails, OAuth2User {
     private Users users;
     private Map<String, Object> attributes;
     private String provider;
+    private String picture;
     private UserDetails userDetails;
     
     // UserDetails와 연동 FormLogin() 작동시 사용
