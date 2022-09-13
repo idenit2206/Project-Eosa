@@ -40,8 +40,8 @@ public class ChatMessageController {
     @MessageMapping("/chat/message")
     public void sendMessage(ChatMessage message) {
         if((message.getMessageType()).equals(MessageType.ENTER)) {
+            log.debug("sendMessage: {}", message.toString());
             message.setMessage(message.getSender() + "님이 입장했습니다.");
-            sendingOperations.convertAndSend("/queue/chat/room"+message.getRoomId());
             chatMessageService.addMessage(message);
             chatMessageService.save(message);
         }

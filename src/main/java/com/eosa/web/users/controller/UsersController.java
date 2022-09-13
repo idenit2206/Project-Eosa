@@ -89,7 +89,7 @@ public class UsersController {
          message.setTo(usersPhone);  // 수신번호
          message.setText("어사 회원가입 핸드폰 인증 단계입니다.\n다음의 번호를 입력해주세요.\n"+authCode); // 발신내용
         log.debug("[sendOne] authCode: {}", authCode);
-         SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+//         SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
 //       //  smsCertificationService.savedAuthCode(usersPhone, authCode);
     }
 
@@ -134,7 +134,7 @@ public class UsersController {
         String requester = req.getLocalAddr();       
         JsonObject jsonObject = (JsonObject) JsonParser.parseString(param).getAsJsonObject();
         // log.info("{}", jsonObject.toString());
-        log.info("[REQUEST] doSignUp from {}, usersAccount: {}", requester, jsonObject.get("usersAccount").getAsString());
+        log.info("[doSignUp] jsonObject: {}", jsonObject.toString());
         Users paramUsers = new Users();
             paramUsers.setUsersAccount(jsonObject.get("usersAccount").getAsString().toLowerCase());
             paramUsers.setUsersPass(jsonObject.get("usersPass").getAsString());

@@ -246,7 +246,7 @@ public class CompanysController {
      * @param companysRegion1 String
      * @return
      */
-    @GetMapping("/selectCompanysByCategoryAndRegion1")
+    @GetMapping("/selectCompanysByCategoryRegion1")
     public CustomResponseData selectCompanysByCategoryAndRegion1(
         @RequestParam("companysCategoryValue") List<String> companysCategory,
         @RequestParam("companysRegion1") List<String> companysRegion1
@@ -259,7 +259,7 @@ public class CompanysController {
 //            log.debug("[selectCompanysByCategory] RequestParam companysCategory: {}", keyword);
             companysIdxList = companysService.selectCompanysIdxByCompanysCategory(keyword);
         }
-        log.debug("[selectCompanysByCategoryAndRegion1] companysIdx: {}", companysIdxList.toString());
+        log.debug("[selectCompanysByCategoryRegion1] companysIdx: {}", companysIdxList.toString());
         for(int i =0; i < companysRegion1.size(); i++) {
             for(int j = 0; j < companysIdxList.size(); j++) {
                 Long companysIdx = companysIdxList.get(j);

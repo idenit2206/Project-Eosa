@@ -37,12 +37,6 @@ public class ChatRoomController {
     public String room(Model model) {
         return "service/chatting/room";
     }
-    // 모든 채팅방 목록 반환
-    @GetMapping("/rooms")
-    @ResponseBody
-    public List<ChatRoom> rooms() {
-        return chatRoomService.findAllRoom();
-    }
 
     // 채팅방 생성
     // @PostMapping("/room")
@@ -72,12 +66,6 @@ public class ChatRoomController {
         return result;
     }
 
-
-//    @GetMapping("/getChatRoomList")
-//    @ResponseBody
-//    public List<ChatRoom> getChatRoomListByUsersIdx(@RequestParam("usersIdx") Long usersIdx) {
-//        return chatRoomService.getChatRoomListByUsersIdx(usersIdx);
-//    }
     /**
      * usersIdx가 참가한 모든 채팅방의 목록을 출력합니다.
      * @param usersIdx
@@ -176,4 +164,10 @@ public class ChatRoomController {
         chatRoomService.testAllFlush();
     }
 
+    //    // TestMethod 모든 채팅방 목록 반환
+//    @GetMapping("/rooms")
+//    @ResponseBody
+//    public List<ChatRoom> rooms() {
+//        return chatRoomService.findAllRoom();
+//    }
 }
