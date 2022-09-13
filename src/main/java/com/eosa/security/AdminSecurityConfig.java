@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.eosa.security.handler.adminsite.CustomAdminAuthFailureHandler;
@@ -11,6 +12,7 @@ import com.eosa.security.handler.adminsite.CustomAdminAuthSuccessHandler;
 import com.eosa.security.handler.adminsite.CustomAdminLogoutSuccessHandler;
 
 @Configuration
+@EnableWebSecurity
 public class AdminSecurityConfig {
 
     @Autowired private CustomAdminLogoutSuccessHandler customAdminLogoutSuccessHandler;
@@ -21,22 +23,23 @@ public class AdminSecurityConfig {
         "/assets/**", "/js/**", "/css/**", "/webjars/**",
         "/admin/sign/**"
     };
-    
+
     @Bean
     public SecurityFilterChain adminFilterChain(HttpSecurity http) throws Exception {
+
+        http.csrf().disable();
+
         http
-            .cors().disable()
-            .csrf().disable()
-            .antMatcher("/admin/**")
+            .antMatcher("/ad/**")
             .authorizeRequests()
                 .antMatchers(PERMIT_URL).permitAll()
                  .anyRequest().hasAnyAuthority("ADMIN", "SUPER_ADMIN")
 //                .anyRequest().permitAll()
         .and()
             .formLogin()
-                .loginPage("/admin/sign/signIn")
+                .loginPage("/admin")
                     .usernameParameter("usersAccount").passwordParameter("usersPass")
-                    .loginProcessingUrl("/admin/sign/signIn.do")                        
+                    .loginProcessingUrl("/admin/sign/signIn.do")
                     // .defaultSuccessUrl("/admin/sign/signIn.success")
                     .successHandler(customAdminAuthSuccessHandler)
                     .failureHandler(customAdminAuthFailureHandler)

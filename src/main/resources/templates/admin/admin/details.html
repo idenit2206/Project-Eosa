@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/fragments/layout}">
+
+<th:block layout:fragment="content">
+
+    <th:block th:replace="admin/fragments/aside :: asideFragment"></th:block>
+
+    <main id="main">
+        <section class="section section-users">
+            <h2 class="section_title">관리자 정보</h2>
+
+            <div class="form form--sm form-register">
+
+                <fieldset class="fieldset">
+
+                    <input type="hidden" class="usersIdx" th:value="${details.usersIdx}">
+
+                    <div class="input-wrap">
+                        <label class="label">아이디<i class="required">*</i></label>
+                        <input type="text" class="input user-account" th:value="${details.usersAccount}" readonly>
+                    </div>
+
+                    <div class="input-wrap">
+                        <label class="label">비밀번호<i class="required">*</i></label>
+                        <button type="button" class="btn-reset">비밀번호 초기화</button>
+                    </div>
+
+                    <div class="input-wrap">
+                        <label class="label">이름<i class="required">*</i></label>
+                        <input type="text" spellcheck="false" class="input user-name" th:value="${details.usersName}" maxlength="10" placeholder="이름 입력">
+                    </div>
+
+                    <div class="input-wrap">
+                        <label class="label">연락처<i class="required">*</i></label>
+                        <input type="text" spellcheck="false" class="input onlyNum user-tel" th:value="${details.usersPhone}" maxlength="11" placeholder="연락처 입력">
+                    </div>
+
+                    <div class="input-wrap">
+                        <label class="label">이메일<i class="required">*</i></label>
+                        <input type="email" spellcheck="false" class="input user-email" th:value="${details.usersEmail}" placeholder="이메일 입력">
+                    </div>
+
+                    <div class="input-wrap">
+                        <label class="label">등록일</label>
+                        <span class="spanDate" th:text="${#dates.format(details.usersJoinDate, 'yyyy-MM-dd HH:mm')}"></span>
+                    </div>
+
+                </fieldset>
+
+                <div class="form__action bottom">
+                    <a class="btn-normal" th:href="@{/admin/manage/list}">돌아가기</a>
+                    <button type="button" class="btn-prime btn-update">수정하기</button>
+                </div>
+
+            </div>
+
+        </section>
+    </main>
+
+</th:block>
+
+<th:block layout:fragment="script">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            onlyNum();
+
+            // 비밀번호 초기화
+            const resetBtn = document.querySelector('.btn-reset');
+            resetBtn.addEventListener('click', resetPwd);
+
+            // 수정
+            const updateBtn = document.querySelector('.btn-update');
+            updateBtn.addEventListener('click', updateAdmin);
+        });
+    </script>
+</th:block>
+
+</html>
