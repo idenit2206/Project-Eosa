@@ -159,6 +159,8 @@ public class UsersController {
             } else {
                 paramUsers.setUsersNotice(0);
             }
+            paramUsers.setProvider(jsonObject.get("provider").getAsString());
+            paramUsers.setUsersProfile(jsonObject.get("picture").getAsString());
             // paramUsers.setUsersNotice(element.get("usersNotice").getAsInt());
         // log.debug("paramUsers: {}", paramUsers.toString());
 

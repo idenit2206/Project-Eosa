@@ -78,16 +78,13 @@ public class Users {
     private int usersNotice;
 
     // OAuth2를 이용하는 경우 활용하는 플랫폼 이름(google, kakao, naver, ...)
-    @Column
-    private String provider;
+    @Column private String provider;
 
     // OAuth2를 이용할 경우 플랫폼에서의 사용자 아이디
-    @Column
-    private String providerId;
+    @Column private String providerId;
 
     // OAuth2를 이용할 경우 프로필 이미지 파일 링크(사용하지 않음)
-    @Column
-    private String picture;
+    @Column private String usersProfile;
 
     @Column(nullable=false)
     @ColumnDefault("1") // Table을 ddl을 통해 새로 생성할때만 작동

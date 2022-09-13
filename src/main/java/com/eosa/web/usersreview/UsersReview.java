@@ -2,13 +2,9 @@ package com.eosa.web.usersreview;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import com.eosa.web.users.entity.Users;
 import lombok.Data;
 
 @Data
@@ -21,13 +17,13 @@ public class UsersReview {
     private Long idx;
 
     @Column(nullable=false)
-    private Long usersIdx;
+    private Long reviewUsersIdx;
 
     @Column(nullable=false)
-    private Long companysIdx;
+    private Long reviewCompanysIdx;
 
     @Column(nullable=false)
-    private Long requestFormIdx;
+    private Long reviewRequestFormIdx;
 
     @Column(nullable=false)
     private int resultScore;

@@ -2,6 +2,7 @@ package com.eosa.web.usersreview;
 
 import javax.transaction.Transactional;
 
+import com.eosa.web.usersreview.entity.SelectReviewEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -28,19 +29,26 @@ public interface UsersReviewRepository extends JpaRepository<UsersReview, Long>{
     int insertUsersReview(@Param("UsersReview") UsersReview param);
 
     @Query(
-            value="SELECT * FROM UsersReview " +
-            "WHERE companysIdx = ?1",
-            nativeQuery = true
-    )
-    List<UsersReview> selectUsersReviewByCompanysIdx(Long comapnysIdx);
+    value="SELECT * " +
+          "FROM UsersReview as ur LEFT JOIN Users as u ON u.usersIdx=ur.reviewUsersIdx " +
+          "LEFT JOIN Companys as c ON c.companysIdx=ur.reviewCompanysIdx"
+    , nativeQuery = true)
+    List<SelectReviewEntity> selectAllUsersReview();
 
     @Query(
             value="SELECT * FROM UsersReview " +
-                    "WHERE usersIdx = ?1",
+            "WHERE reviewCompanysIdx = ?1",
             nativeQuery = true
     )
-    List<UsersReview> selectUsersReviewByUsersIdx(Long usersIdx);
+    List<SelectReviewEntity> selectUsersReviewByCompanysIdx(Long comapnysIdx);
+
+    @Query(
+            value="SELECT * FROM UsersReview " +
+                    "WHERE reviewUsersIdx = ?1",
+            nativeQuery = true
+    )
+    List<SelectReviewEntity> selectUsersReviewByUsersIdx(Long usersIdx);
 
     @Query(value="SELECT * FROM UsersReview WHERE requestFormIdx = ?1", nativeQuery = true)
-    UsersReview selectOneUsersReviewByRequestFormIdx(Long requestFormIdx);
+    SelectReviewEntity selectOneUsersReviewByRequestFormIdx(Long requestFormIdx);
 }

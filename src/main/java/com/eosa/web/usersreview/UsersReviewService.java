@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+import com.eosa.web.usersreview.entity.SelectReviewEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -37,23 +38,28 @@ public class UsersReviewService implements UsersReviewRepository{
     }
 
     @Override
-    public List<UsersReview> selectUsersReviewByCompanysIdx(Long comapnysIdx) {
+    public List<SelectReviewEntity> selectAllUsersReview() {
+        return usersReviewRepository.selectAllUsersReview();
+    }
+
+    @Override
+    public List<SelectReviewEntity> selectUsersReviewByCompanysIdx(Long comapnysIdx) {
         return usersReviewRepository.selectUsersReviewByCompanysIdx(comapnysIdx);
     }
 
     @Override
-    public List<UsersReview> selectUsersReviewByUsersIdx(Long usersIdx) {
+    public List<SelectReviewEntity> selectUsersReviewByUsersIdx(Long usersIdx) {
         return usersReviewRepository.selectUsersReviewByUsersIdx(usersIdx);
     }
 
     @Override
-    public UsersReview selectOneUsersReviewByRequestFormIdx(Long requestFormIdx) {
+    public SelectReviewEntity selectOneUsersReviewByRequestFormIdx(Long requestFormIdx) {
         return usersReviewRepository.selectOneUsersReviewByRequestFormIdx(requestFormIdx);
     }
 
     @Override
     public List<UsersReview> findAll() {
-        return usersReviewRepository.findAll();
+        return null;
     }
 
     @Override
