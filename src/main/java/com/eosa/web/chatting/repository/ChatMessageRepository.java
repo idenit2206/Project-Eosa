@@ -17,6 +17,6 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> 
     ChatMessage selectOneRecentMessageByRoomIdAndUsersIdx(String roomId, Long usersIdx);
 
     @Query(value="SELECT * FROM ChatMessage c WHERE c.roomId = ?1 ORDER BY c.sendDate ASC", nativeQuery = true)
-    public List<ChatMessage> selectChatMessageByByRoomId(String roomId);
+    public List<ChatMessage> selectChatMessageByRoomId(String roomId);
 
 }

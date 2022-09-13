@@ -36,13 +36,18 @@ public class ChatMessageService implements ChatMessageRepository {
         return chatMessagesList;
     }
 
+    @Override
+    public <S extends ChatMessage> S save(S entity) {
+        return chatMessageRepository.save(entity);
+    }
+
     public ChatMessage selectOneRecentMessageByRoomIdAndUsersIdx(String roomId, Long usersIdx) {
         return chatMessageRepository.selectOneRecentMessageByRoomIdAndUsersIdx(roomId, usersIdx);
     }
 
     @Override
-    public List<ChatMessage> selectChatMessageByByRoomId(String roomId) {
-        return chatMessageRepository.selectChatMessageByByRoomId(roomId);
+    public List<ChatMessage> selectChatMessageByRoomId(String roomId) {
+        return chatMessageRepository.selectChatMessageByRoomId(roomId);
     }
 
     @Override
@@ -93,11 +98,6 @@ public class ChatMessageService implements ChatMessageRepository {
     @Override
     public void deleteAll() {
 
-    }
-
-    @Override
-    public <S extends ChatMessage> S save(S entity) {
-        return null;
     }
 
     @Override

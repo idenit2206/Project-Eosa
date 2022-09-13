@@ -79,15 +79,7 @@ public class ChatRoomController {
         Map<String, Object> items = new HashMap<>();
 
         List<ChatRoom> selectRows = chatRoomService.selectChatRoomListByUsersIdx(usersIdx);
-        List<ChatMessage> selectRows2 = new ArrayList<>();
-        for(int i = 0; i < selectRows.size(); i++) {
-            String roomId = selectRows.get(i).getRoomId();
-            ChatMessage recentMessage = chatMessageService.selectOneRecentMessageByRoomIdAndUsersIdx(roomId, usersIdx);
-            selectRows2.add(recentMessage);
-        }
-
         items.put("ChatRoom", selectRows);
-//        items.put("ChatRoomRecentMessage", selectRows2);
 
         if(selectRows != null) {
             result.setStatusCode(HttpStatus.OK.value());
