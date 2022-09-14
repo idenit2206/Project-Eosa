@@ -44,12 +44,14 @@ public interface RequestFormRepository extends JpaRepository<RequestForm, Long> 
 
     @Query(
         value="SELECT " + 
-        "RequestForm.requestFormIdx, RequestForm.usersIdx, RequestForm.companysIdx, " +
+        "RequestForm.requestFormIdx, RequestForm.usersIdx, " +
+        "U.usersAge, U.usersGender, RequestForm.companysIdx, " +
         "RequestForm.requestFormRegion1, RequestForm.requestFormRegion2, " +
         "RequestForm.requestFormStatus, RequestForm.requestConsultDate, RequestForm.requestFormDate, " +
         "RequestForm.requestFormAcceptDate, RequestForm.requestFormCompDate, RequestForm.requestFormRejectMessage, " +
         "GROUP_CONCAT(RequestFormCategory.requestFormCategoryValue) AS requestFormCategory " +
         "FROM RequestForm INNER JOIN RequestFormCategory ON RequestForm.requestFormIdx = RequestFormCategory.requestFormIdx " +
+        "LEFT OUTER JOIN Users U ON U.usersIdx = RequestForm.usersIdx " +
         "GROUP BY RequestForm.RequestFormIdx",
         nativeQuery=true
     )

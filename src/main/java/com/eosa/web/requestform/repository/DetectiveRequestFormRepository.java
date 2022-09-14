@@ -32,7 +32,7 @@ public interface DetectiveRequestFormRepository extends JpaRepository<RequestFor
 
     @Query(
             value="SELECT " +
-                    "RequestForm.requestFormIdx, RequestForm.usersIdx, Users.usersAccount, Users.usersAge, RequestForm.companysIdx, " +
+                    "RequestForm.requestFormIdx, RequestForm.usersIdx, Users.usersAccount, Users.usersAge, Users.usersGender, RequestForm.companysIdx, " +
                     "RequestForm.requestFormRegion1, RequestForm.requestFormRegion2, " +
                     "RequestForm.requestFormStatus, RequestForm.requestConsultDate, RequestForm.requestFormDate, " +
                     "RequestForm.requestFormAcceptDate, RequestForm.requestFormCompDate, RequestForm.requestFormRejectMessage, " +
@@ -48,7 +48,7 @@ public interface DetectiveRequestFormRepository extends JpaRepository<RequestFor
 
     @Query(
             value="SELECT " +
-                    "RequestForm.requestFormIdx, RequestForm.usersIdx, Users.usersAccount, Users.usersAge, RequestForm.companysIdx, " +
+                    "RequestForm.requestFormIdx, RequestForm.usersIdx, Users.usersAccount, Users.usersAge, Users.usersGender, RequestForm.companysIdx, " +
                     "RequestForm.requestFormRegion1, RequestForm.requestFormRegion2, " +
                     "RequestForm.requestFormStatus, RequestForm.requestConsultDate, RequestForm.requestFormDate, " +
                     "RequestForm.requestFormAcceptDate, RequestForm.requestFormCompDate, RequestForm.requestFormRejectMessage, " +
