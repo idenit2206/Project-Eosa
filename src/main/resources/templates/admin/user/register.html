@@ -7,13 +7,27 @@
 
     <th:block th:replace="admin/fragments/aside :: asideFragment"></th:block>
 
-    <main id="main">
+    <main id="main" data-category="users">
         <section class="section section-users">
             <h2 class="section_title">관리자 등록</h2>
 
             <div class="form form--sm form-register">
 
                 <fieldset class="fieldset">
+
+                    <div class="input-wrap">
+                        <label class="label">유형<i class="required">*</i></label>
+                        <div class="type-wrap register-type-wrap">
+                            <div class="check-box">
+                                <input type="radio" id="role01" name="role" class="input" value="DETECTIVE" checked>
+                                <label for="role01" class="label register-check">탐정</label>
+                            </div>
+                            <div class="check-box">
+                                <input type="radio" id="role02" name="role" class="input" value="CLIENT">
+                                <label for="role02" class="label register-check">의뢰인</label>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="input-wrap">
                         <label class="label">아이디<i class="required">*</i></label>
@@ -63,6 +77,7 @@
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script>
         window.addEventListener('DOMContentLoaded', () => {
+            highlightMenu('register');
             onlyNum();
             new PwdValidation();
 
@@ -73,10 +88,6 @@
             // 연락처 중복확인
             const tel = document.querySelector('.user-tel');
             tel.addEventListener('change', phoneCheck);
-
-            // 관리자 등록
-            const registerBtn = document.querySelector('.btn-register');
-            registerBtn.addEventListener('click', insertAdmin);
         });
     </script>
 </th:block>

@@ -12,6 +12,8 @@
                            usersEmail,
                            usersRole,
                            usersAge,
+                           usersRegion1,
+                           usersRegion2,
                            usersGender,
                            usersJoinDate,
                            usersNotice,
@@ -25,6 +27,8 @@
                 #{usersEmail},
                 'ADMIN',
                 10,
+                NULL,
+                NULL,
                 0,
                 NOW(),
                 0,
@@ -79,5 +83,19 @@
             usersEmail = #{usersEmail}
         WHERE usersIdx = #{usersIdx}
     </update>
+
+    <!-- 아이디 중복검사 -->
+    <select id="countAccount" resultType="int">
+        SELECT COUNT(*)
+        FROM Users
+        WHERE usersAccount = #{usersAccount}
+    </select>
+
+    <!-- 연락처 중복검사 -->
+    <select id="countPhone" resultType="int">
+        SELECT COUNT(*)
+        FROM Users
+        WHERE usersPhone = #{usersPhone}
+    </select>
 
 </mapper>

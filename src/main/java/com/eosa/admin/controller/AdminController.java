@@ -124,4 +124,30 @@ public class AdminController {
         return adminService.updateAdmin(usersDTO);
     }
 
+    /**
+     * 아이디 중복검사 컨트롤러
+     *
+     * @param usersAccount
+     * @return int
+     */
+    @ResponseBody
+    @PostMapping("/manage/account/check")
+    public int accountCheck(@RequestParam String usersAccount) {
+
+        return adminService.accountCheck(usersAccount);
+    }
+
+    /**
+     * 연락처 중복검사 컨트롤러
+     *
+     * @param usersPhone
+     * @return int
+     */
+    @ResponseBody
+    @PostMapping("/manage/phone/check")
+    public int phoneCheck(@RequestParam String usersPhone) {
+
+        return adminService.phoneCheck(usersPhone);
+    }
+
 }

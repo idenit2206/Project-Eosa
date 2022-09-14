@@ -1,7 +1,6 @@
 package com.eosa.admin.mapper;
 
 import com.eosa.admin.dto.UsersDTO;
-import org.apache.catalina.User;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -67,5 +66,21 @@ public interface AdminMapper {
      * @return int
      */
     int updateAdmin(UsersDTO usersDTO);
+
+    /**
+     * 아이디 중복검사 매퍼
+     *
+     * @param usersAccount
+     * @return int
+     */
+    int countAccount(String usersAccount);
+
+    /**
+     * 연락처 중복검사 매퍼
+     *
+     * @param usersPhone
+     * @return int
+     */
+    int countPhone(String usersPhone);
 
 }

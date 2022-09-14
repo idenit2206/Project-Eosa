@@ -150,4 +150,26 @@ public class AdminService {
         return adminMapper.updateAdmin(usersDTO);
     }
 
+    /**
+     * 아이디 중복검사 서비스
+     *
+     * @param usersAccount
+     * @return int
+     */
+    public int accountCheck(String usersAccount) {
+
+        return adminMapper.countAccount(usersAccount);
+    }
+
+    /**
+     * 아이디 중복검사 서비스
+     *
+     * @param usersPhone
+     * @return int
+     */
+    public int phoneCheck(String usersPhone) {
+
+        return adminMapper.countPhone(usersPhone);
+    }
+
 }
