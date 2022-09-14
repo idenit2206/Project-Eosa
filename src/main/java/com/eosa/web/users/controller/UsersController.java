@@ -419,42 +419,6 @@ public class UsersController {
 
         return result;
     }
-    // @Operation(summary="회원정보 조회 (마이페이지 전용)")
-    // @GetMapping(value="/getUsersInfo")
-    // public CustomResponseData getUsersInfoByUsersAccount(
-    //     @RequestParam(value="usersAccount") String usersAccount
-    // ) {
-    //     log.info("## Someone request {} 's information", usersAccount);
-    //     CustomResponseData result = new CustomResponseData();
-
-    //     Map<String, Object> item = new HashMap<>();
-    //     LocalDateTime currentTime = LocalDateTime.now();
-        
-    //     boolean nc = nullCheck.StringNullCheck(usersAccount);       
-
-    //     if(nc == false) {
-    //         FindByUsersAccount transaction = usersService.selectByUsersAccount(usersAccount);
-    //         if(transaction == null) {
-    //             result.setStatusCode(HttpStatus.BAD_REQUEST.value());
-    //             item.put("item", transaction);
-    //             result.setResultItem(item);
-    //             result.setResponseDateTime(currentTime);
-    //         }
-    //         else {
-    //             result.setStatusCode(HttpStatus.OK.value());
-    //             item.put("item", transaction);
-    //             result.setResultItem(item);
-    //             result.setResponseDateTime(currentTime);
-    //         }
-    //     }        
-    //     else {
-    //         result.setStatusCode(HttpStatus.BAD_REQUEST.value());
-    //         item.put("result", "FAILURE cause parameter(usersAccount) Null");
-    //         result.setResultItem(item);
-    //         result.setResponseDateTime(currentTime);
-    //     }
-    //     return result;
-    // }
 
     /**
      * 회원정보를 수정하는 url입니다.

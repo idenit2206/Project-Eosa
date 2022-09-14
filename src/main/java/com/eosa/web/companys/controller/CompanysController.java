@@ -193,9 +193,7 @@ public class CompanysController {
     ) {
         log.debug("[selectAllCompanys] usersIdx: {} Requested...", usersIdx);
         CustomResponseData result = new CustomResponseData();
-        List<SelectAllCompanysList> list = companysService.selectAllCompanys(usersIdx);
-
-        log.debug("[selectAllCompanys] list: {}", list.size());
+        List<SelectCompanys> list = companysService.selectAllCompanys(usersIdx);
 
         result.setStatusCode(HttpStatus.OK.value());
         result.setResultItem(list);
@@ -509,5 +507,22 @@ public class CompanysController {
 //
 //        return result;
 //    }
+    @GetMapping("/selectOneCompanysByCompanysIdxTest")
+    public CustomResponseData selectOneCompanysByCompanysIdxTest(@RequestParam("companysIdx") Long companysIdx) {
+        CustomResponseData result = new CustomResponseData();
+        SelectCompanys item = companysService.selectOneCompanysByCompanysIdxTest(companysIdx);
+
+        result.setResultItem(item);
+
+        return result;
+    }
+
+    @GetMapping("/selectOneCompanysUserLikeCompanyEnableByCompanysIdxUsersIdx")
+    public CustomResponseData selectOneCompanysUserLikeCompanyEnableByCompanysIdxUsersIdxTest(@RequestParam("companysIdx") Long companysIdx, @RequestParam("usersIdx") Long usersIdx) {
+        CustomResponseData result = new CustomResponseData();
+        SelectCompanysUserLikeCompanyEnable item = companysService.selectOneCompanysUserLikeCompanyEnableByCompanysIdxUsersIdx(companysIdx, usersIdx);
+        result.setResultItem(item);
+        return result;
+    }
 
 }

@@ -26,6 +26,16 @@ public class CompanysService implements CompanysRepository {
     private CompanysRepository companysRepository;
 
     @Override
+    public SelectCompanys selectOneCompanysByCompanysIdxTest(Long companysIdx) {
+        return companysRepository.selectOneCompanysByCompanysIdxTest(companysIdx);
+    }
+
+    @Override
+    public SelectCompanysUserLikeCompanyEnable selectOneCompanysUserLikeCompanyEnableByCompanysIdxUsersIdx(Long companysIdx, Long usersIdx) {
+        return companysRepository.selectOneCompanysUserLikeCompanyEnableByCompanysIdxUsersIdx(companysIdx, usersIdx);
+    }
+
+    @Override
     public <S extends Companys> S save(S entity) {
         LocalDateTime currentTime = LocalDateTime.now();
         entity.setCompanysRegistDate(currentTime);
@@ -58,7 +68,7 @@ public class CompanysService implements CompanysRepository {
     // }
 
     @Override
-    public List<SelectAllCompanysList> selectAllCompanys(Long usersIdx) {
+    public List<SelectCompanys> selectAllCompanys(Long usersIdx) {
         return companysRepository.selectAllCompanys(usersIdx);
     }
 

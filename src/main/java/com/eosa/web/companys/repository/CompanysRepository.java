@@ -1,22 +1,66 @@
 package com.eosa.web.companys.repository;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import com.eosa.web.companys.entity.SelectAllCompanysForNormal;
+import com.eosa.web.companys.entity.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.eosa.web.companys.entity.Companys;
-import com.eosa.web.companys.entity.SelectAllCompanysList;
-import com.eosa.web.companys.entity.SelectCompanyInfoByUsersIdx;
-
 @Repository
 public interface CompanysRepository extends JpaRepository<Companys, Long> {
+
+    @Query(value=
+        "SELECT " +
+        "C.companysIdx, C.companysName, C.companysCeoIdx, C.companysCeoName, " +
+        "C.companysComment, C.companysSpec, C.companysPhone, " +
+        "C.companysRegion1, C.companysRegion2, C.companysRegion3, " +
+        "C.companysRegistCerti, C.companysRegistCertiName, " +
+        "C.companysLicense, C.companysLicenseName, " +
+        "C.companysProfileImage, C.companysProfileImageName, " +
+        "C.companysBankName, C.companysBankNumber, C.companysRegistDate, " +
+        "C.companysPremium, C.companysLocalPremium, " +
+        "C.companysEnabled, C.companysDelete, " +
+        "GROUP_CONCAT(DISTINCT CAR.activeRegion) AS activeRegion, " +
+        "GROUP_CONCAT(DISTINCT CC.companysCategoryValue) AS companysCategoryValue " +
+        "FROM Companys C " +
+        "LEFT JOIN CompanysActiveRegion CAR on C.companysIdx = CAR.companysIdx " +
+        "LEFT JOIN CompanysCategory CC on C.companysIdx = CC.companysIdx " +
+        "WHERE C.companysIdx=?1 " +
+        "GROUP BY C.companysIdx"
+        ,nativeQuery = true
+    )
+    SelectCompanys selectOneCompanysByCompanysIdxTest(Long companysIdx);
+
+    @Query(value=
+        "SELECT " +
+        "C.companysIdx, C.companysName, C.companysCeoIdx, C.companysCeoName, " +
+        "C.companysComment, C.companysSpec, C.companysPhone, " +
+        "C.companysRegion1, C.companysRegion2, C.companysRegion3, " +
+        "C.companysRegistCerti, C.companysRegistCertiName, " +
+        "C.companysLicense, C.companysLicenseName, " +
+        "C.companysProfileImage, C.companysProfileImageName, " +
+        "C.companysBankName, C.companysBankNumber, C.companysRegistDate, " +
+        "C.companysPremium, C.companysLocalPremium, " +
+        "C.companysEnabled, C.companysDelete, " +
+        "GROUP_CONCAT(DISTINCT CAR.activeRegion) AS activeRegion, " +
+        "GROUP_CONCAT(DISTINCT CC.companysCategoryValue) AS companysCategoryValue, " +
+        "(SELECT IFNULL(ULC.userLikeCompanyEnable, '0') FROM UserLikeCompany ULC " +
+        "RIGHT OUTER JOIN (SELECT '') AS n ON ULC.usersIdx=:usersIdx AND ULC.companysIdx=C.companysIdx) AS UserLikeCompanyEnable " +
+        "FROM Companys C " +
+        "LEFT JOIN CompanysActiveRegion CAR on C.companysIdx = CAR.companysIdx " +
+        "LEFT JOIN CompanysCategory CC on C.companysIdx = CC.companysIdx " +
+        "WHERE C.companysIdx=:companysIdx " +
+        "GROUP BY C.companysIdx"
+        ,nativeQuery = true
+    )
+    SelectCompanysUserLikeCompanyEnable selectOneCompanysUserLikeCompanyEnableByCompanysIdxUsersIdx(@Param("companysIdx") Long companysIdx, @Param("usersIdx") Long usersIdx);
 
     @Transactional
     @Modifying
@@ -110,7 +154,7 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         "AS CompanysCategory FROM Companys",
         nativeQuery = true
     )
-    List<SelectAllCompanysList> selectAllCompanys(Long usersIdx);
+    List<SelectCompanys> selectAllCompanys(Long usersIdx);
 
     @Query(value=
             "SELECT " +

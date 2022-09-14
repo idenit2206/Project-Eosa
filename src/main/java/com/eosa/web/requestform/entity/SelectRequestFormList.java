@@ -6,7 +6,8 @@ import java.util.List;
 public interface SelectRequestFormList {
     Long getRequestFormIdx();
     Long getUsersIdx();
-    String getUsersAccount();
+//    String getUsersAccount();
+    int getUsersAge();
     Long getCompanysIdx();
     String getRequestFormRegion1();
     String getRequestFormRegion2();
