@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/fragments/layout}">
+
+<th:block layout:fragment="content">
+
+    <th:block th:replace="admin/fragments/aside :: asideFragment"></th:block>
+
+    <main id="main" class="main-list" data-category="users">
+        <section class="section section-users">
+            <h2 class="section_title">비회원 목록</h2>
+            <div class="table">
+                <div class="table__top">
+                    <div class="top-wrap">
+                        <div class="header-wrap">
+                            <span class="table__count">전체<i class="value" th:text="${count}"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th class="check"><input type="checkbox" name="checkAll" id="checkAll"></th>
+                        <th class="sorting">번호</th>
+                        <th>이메일</th>
+                        <th>연령</th>
+                        <th>성별</th>
+                        <th>지역</th>
+                        <th>가입일</th>
+                    </tr>
+                    </thead>
+
+                    <tbody th:if="${count} eq 0">
+                    <tr>
+                        <td colspan="7">
+                            <span>등록된 비회원이 없습니다.</span>
+                        </td>
+                    </tr>
+                    </tbody>
+
+                    <tbody th:if="${count} ne 0">
+                    <tr th:each="list : ${tempList}">
+                        <td class="check"><input type="checkbox" name="listCheck"></td>
+                        <td><span th:text="${list.num}"></span></td>
+                        <td>
+                            <input type="hidden" class="tempUserIdx" th:value="${list.tempUserIdx}">
+                            <span th:text="${list.tempUserEmail}"></span>
+                        </td>
+                        <td>
+                            <span th:text="|${list.tempUserAge}대|"></span>
+                        </td>
+                        <td>
+                            <span th:text="${list.tempUserGender} eq 0 ? '남성' : '여성'"></span>
+                        </td>
+                        <td>
+                            <span th:text="|${list.tempUserRegion1} ${list.tempUserRegion2}|"></span>
+                        </td>
+                        <td>
+                            <span th:text="${#dates.format(list.tempUserRegistDate, 'yyyy-MM-dd')}"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="table__action">
+                    <button type="button" class="btn-normal btn-delete">삭제</button>
+                </div>
+
+                <div class="table__paging">
+                    <ul>
+                        <li><a class="first" th:href="@{/admin/manage/user/temp/list(page=1)}"></a></li>
+                        <li><a class="prev" th:href="@{/admin/manage/user/temp/list(page=${pagination.prevBlock})}"></a></li>
+
+                        <th:block th:with="start = ${pagination.startPage}, end = ${pagination.endPage}">
+                            <li th:each="pageButton : ${#numbers.sequence(start, end)}"><a class="pageNum" th:href="@{/admin/manage/user/temp/list(page=${pageButton})}" th:text="${pageButton}"></a></li>
+                        </th:block>
+
+                        <li><a class="next" th:href="@{/admin/manage/user/temp/list(page=${pagination.nextBlock})}"></a></li>
+                        <li><a class="last" th:href="@{/admin/manage/user/temp/list(page=${pagination.totalPageCnt eq 0 ? 1 : pagination.totalPageCnt})}"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+</th:block>
+
+<th:block layout:fragment="script">
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            highlightMenu('temp');
+            pageOn();
+            listCheck();
+            new Table(document.querySelector('#main table'));
+
+            // 비회원 삭제
+            const deleteBtn = document.querySelector('.btn-delete');
+            deleteBtn.addEventListener('click', deleteTemp);
+        });
+    </script>
+</th:block>
+
+</html>

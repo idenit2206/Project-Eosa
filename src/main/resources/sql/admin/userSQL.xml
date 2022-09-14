@@ -48,7 +48,7 @@
     </select>
 
     <!-- 회원 상세 조회 -->
-    <select id="selectUsersDetails" resultType="UsersDTO">
+    <select id="selectUsersDetails" resultType="UsersTerminateDTO">
         SELECT U.usersIdx,
                U.usersAccount,
                U.usersName,
@@ -61,9 +61,154 @@
                U.usersRegion2,
                U.usersGender,
                U.usersJoinDate,
-               U.usersNotice
+               U.usersNotice,
+               U.usersDelete,
+               T.terminateReason,
+               T.terminateRequestDate,
+               DATE_ADD(T.terminateRequestDate, INTERVAL -30 DAY) terminateCreateDate
         FROM Users U
-        WHERE usersIdx = #{usersIdx}
+                 LEFT OUTER JOIN TerminateUser T on U.usersIdx = T.usersIdx
+        WHERE U.usersIdx = #{usersIdx}
     </select>
+
+    <!-- 회원 수정 -->
+    <update id="updateUsers" parameterType="UsersDTO">
+        UPDATE Users
+        SET usersName    = #{usersName},
+            usersNick    = #{usersNick},
+            usersPhone   = #{usersPhone},
+            usersEmail   = #{usersEmail},
+            usersAge     = #{usersAge},
+            usersRegion1 = #{usersRegion1},
+            <if test="usersRegion2 == null">
+                usersRegion2 = NULL,
+            </if>
+            <if test="usersRegion2 != null">
+                usersRegion2 = #{usersRegion2},
+            </if>
+            usersGender  = #{usersGender}
+        WHERE usersIdx = #{usersIdx}
+    </update>
+
+    <!-- 탈퇴 회원 목록 개수 조회 -->
+    <select id="countTerminateList" resultType="int" parameterType="hashmap">
+        SELECT COUNT(*)
+        FROM Users U
+        WHERE U.usersDelete = 1
+        AND U.usersRole != 'ADMIN'
+        <if test="id != null">
+            AND CONCAT(U.usersAccount) REGEXP #{search}
+        </if>
+        <if test="name != null">
+            AND CONCAT(U.usersName) REGEXP #{search}
+        </if>
+        <if test="phone != null">
+            AND CONCAT(U.usersPhone) REGEXP #{search}
+        </if>
+    </select>
+
+    <!-- 탈퇴 회원 목록 조회 -->
+    <select id="selectTerminateList" resultType="UsersTerminateDTO" parameterType="hashmap">
+        SELECT U.usersIdx,
+               U.usersAccount,
+               U.usersName,
+               U.usersNick,
+               U.usersPhone,
+               U.usersEmail,
+               U.usersRole,
+               U.usersAge,
+               U.usersRegion1,
+               U.usersRegion2,
+               U.usersGender,
+               U.usersJoinDate,
+               T.terminateRequestDate,
+               DATE_ADD(T.terminateRequestDate, INTERVAL -30 DAY) terminateCreateDate
+        FROM Users U
+                JOIN TerminateUser T ON U.usersIdx = T.usersIdx
+        WHERE U.usersDelete = 1
+        AND U.usersRole != 'ADMIN'
+        <if test="id != null">
+            AND CONCAT(U.usersAccount) REGEXP #{search}
+        </if>
+        <if test="name != null">
+            AND CONCAT(U.usersName) REGEXP #{search}
+        </if>
+        <if test="phone != null">
+            AND CONCAT(U.usersPhone) REGEXP #{search}
+        </if>
+        ORDER BY T.terminateRequestDate DESC LIMIT #{startIndex}, #{pageSize}
+    </select>
+
+    <!-- 회원 탈퇴 상태 변경 -->
+    <update id="updateUsersTerminate" parameterType="UsersDTO">
+        UPDATE Users
+        SET usersEnabled = #{usersEnabled},
+            usersDelete = #{usersDelete}
+        WHERE usersIdx = #{usersIdx}
+    </update>
+
+    <!-- 회원 탈퇴 -->
+    <insert id="insertTerminate" parameterType="UsersTerminateDTO">
+        INSERT INTO TerminateUser (usersIdx,
+                                   terminateReason,
+                                   terminateRequestDate)
+        VALUES (#{usersIdx},
+                #{terminateReason},
+                (DATE_FORMAT(NOW(), '%Y-%m-%d') + INTERVAL 30 DAY))
+    </insert>
+
+    <!-- 회원 탈퇴 취소 -->
+    <delete id="deleteTerminate" parameterType="long">
+        DELETE
+        FROM TerminateUser
+        WHERE usersIdx = #{usersIdx}
+    </delete>
+
+    <!-- 회원 삭제 -->
+    <delete id="deleteUsers" parameterType="long">
+        DELETE
+        FROM Users
+        WHERE usersIdx = #{usersIdx}
+    </delete>
+
+    <!-- 비회원 목록 개수 조회 -->
+    <select id="countTempList" resultType="int">
+        SELECT COUNT(*)
+        FROM TempUser T
+    </select>
+
+    <!-- 비회원 목록 조회 -->
+    <select id="selectTempList" resultType="TempUserDTO" parameterType="hashmap">
+        SELECT A.num,
+               A.tempUserIdx,
+               A.tempUserEmail,
+               A.tempUserGender,
+               A.tempUserAge,
+               A.tempUserRegion1,
+               A.tempUserRegion2,
+               A.tempUserRegistDate
+        FROM (SELECT @ROWNUM := @ROWNUM + 1 NUM,
+             T.tempUserIdx,
+             T.tempUserEmail,
+             T.tempUserGender,
+             T.tempUserAge,
+             T.tempUserRegion1,
+             T.tempUserRegion2,
+             T.tempUserRegistDate
+              FROM TempUser T,
+                  (SELECT @ROWNUM := 0) R
+              ORDER BY T.tempUserRegistDate ASC) A
+        ORDER BY A.NUM DESC LIMIT #{startIndex}, #{pageSize}
+    </select>
+
+    <!-- 비회원 삭제 -->
+    <delete id="deleteTemp">
+        DELETE
+        FROM TempUser
+        WHERE tempUserIdx IN
+        <foreach collection="array" item="arr" index="i" open="(" separator="," close=")">
+            #{arr}
+        </foreach>
+    </delete>
 
 </mapper>

@@ -17,20 +17,24 @@
                 <i class="profile-id">/</i>
                 <span class="profile-id" th:text="${details.usersAccount}"></span>
             </div>
+
+            <input type="hidden" class="usersIdx" th:value="${details.usersIdx}">
+            <input type="hidden" class="user-account" th:value="${details.usersAccount}">
+
             <div class="form form--xxl">
                 <div class="tab_cont">
                     <fieldset class="fieldset">
                         <table class="dt-table">
                             <tbody>
                                 <tr>
-                                    <th>회원번호<i class="required">*</i></th>
-                                    <td class="memberId" th:text="${details.usersIdx}"></td>
+                                    <th>회원번호</th>
+                                    <td th:text="${details.usersIdx}"></td>
                                     <th>유형</th>
                                     <td th:text="${details.usersRole} eq 'CLIENT' ? '의뢰인' : '탐정'"></td>
                                 </tr>
                                 <tr>
-                                    <th>아이디<i class="required">*</i></th>
-                                    <td class="memberAccount" th:text="${details.usersAccount}"></td>
+                                    <th>아이디</th>
+                                    <td th:text="${details.usersAccount}"></td>
                                     <th>비밀번호</th>
                                     <td>
                                         <button type="button" class="btn-reset">비밀번호 초기화</button>
@@ -40,13 +44,13 @@
                                     <th>이름<i class="required">*</i></th>
                                     <td>
                                         <div class="input-wrap">
-                                            <input type="text" spellcheck="false" class="input patientName" th:value="${details.usersName}">
+                                            <input type="text" spellcheck="false" class="input user-name" th:value="${details.usersName}">
                                         </div>
                                     </td>
                                     <th>닉네임<i class="required">*</i></th>
-                                    <td class="birth-td">
+                                    <td>
                                         <div class="input-wrap">
-                                            <input type="text" spellcheck="false" class="input patientName" th:value="${details.usersNick}">
+                                            <input type="text" spellcheck="false" class="input user-nick" th:value="${details.usersNick}">
                                         </div>
                                     </td>
                                 </tr>
@@ -54,30 +58,55 @@
                                     <th>전화번호<i class="required">*</i></th>
                                     <td>
                                         <div class="input-wrap">
-                                            <input type="text" spellcheck="false" class="input onlyNum memberContact" maxlength="11" th:value="${details.usersPhone}">
+                                            <input type="text" spellcheck="false" class="input onlyNum user-tel" maxlength="11" th:value="${details.usersPhone}">
                                         </div>
                                     </td>
-                                    <th>이메일</th>
+                                    <th>이메일<i class="required">*</i></th>
                                     <td>
                                         <div class="input-wrap">
-                                            <input type="text" spellcheck="false" class="input" maxlength="11" th:value="${details.usersEmail}">
+                                            <input type="text" spellcheck="false" class="input user-email" th:value="${details.usersEmail}">
                                         </div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>연령<i class="required">*</i></th>
                                     <td>
-                                        <select class="select">
-                                            <option value="10" th:selected="${details.usersAge} eq 10">10대</option>
-                                            <option value="20" th:selected="${details.usersAge} eq 20">20대</option>
-                                            <option value="30" th:selected="${details.usersAge} eq 30">30대</option>
-                                            <option value="40" th:selected="${details.usersAge} eq 40">40대</option>
-                                            <option value="50" th:selected="${details.usersAge} eq 50">50대</option>
-                                            <option value="60" th:selected="${details.usersAge} eq 60">60대</option>
-                                            <option value="70" th:selected="${details.usersAge} eq 70">70대</option>
-                                            <option value="80" th:selected="${details.usersAge} eq 80">80대</option>
+                                        <select class="select user-age">
+                                            <option th:each="i : ${#numbers.sequence(1, 8)}" th:value="${i * 10}" th:text="|${i * 10}대|" th:selected="${details.usersAge} eq ${i * 10}"></option>
                                         </select>
                                     </td>
+                                    <th>주소<i class="required">*</i></th>
+                                    <td>
+                                        <div class="select-wrap">
+                                            <select class="select" id="region01">
+                                                <option value="서울" th:selected="${details.usersRegion1} eq '서울'">서울</option>
+                                                <option value="경기" th:selected="${details.usersRegion1} eq '경기'">경기</option>
+                                                <option value="대전/충남/세종" th:selected="${details.usersRegion1} eq '대전/충남/세종'">대전/충남/세종</option>
+                                                <option value="인천/부천" th:selected="${details.usersRegion1} eq '인천/부천'">인천/부천</option>
+                                                <option value="강원" th:selected="${details.usersRegion1} eq '강원'">강원</option>
+                                                <option value="전주/전북" th:selected="${details.usersRegion1} eq '전주/전북'">전주/전북</option>
+                                                <option value="청주/충북" th:selected="${details.usersRegion1} eq '청주/충북'">청주/충북</option>
+                                                <option value="대구/경북" th:selected="${details.usersRegion1} eq '대구/경북'">대구/경북</option>
+                                                <option value="부산/울산/경남" th:selected="${details.usersRegion1} eq '부산/울산/경남'">부산/울산/경남</option>
+                                                <option value="광주/전남" th:selected="${details.usersRegion1} eq '광주/전남'">광주/전남</option>
+                                                <option value="제주" th:selected="${details.usersRegion1} eq '제주'">제주</option>
+                                            </select>
+                                            <select class="select" id="region02" th:disabled="${details.usersRegion1} ne '서울'">
+                                                <option value="" disabled>선택</option>
+                                                <option value="서초" th:selected="${details.usersRegion2} eq '서초'">서초</option>
+                                                <option value="강남" th:selected="${details.usersRegion2} eq '강남'">강남</option>
+                                                <option value="강동/송파" th:selected="${details.usersRegion2} eq '강동/송파'">강동/송파</option>
+                                                <option value="강서/양천/영등포/구로" th:selected="${details.usersRegion2} eq '강서/양천/영등포/구로'">강서/양천/영등포/구로</option>
+                                                <option value="도봉/강북/성북/노원" th:selected="${details.usersRegion2} eq '도봉/강북/성북/노원'">도봉/강북/성북/노원</option>
+                                                <option value="동대문/성동/광진/중랑" th:selected="${details.usersRegion2} eq '동대문/성동/광진/중랑'">동대문/성동/광진/중랑</option>
+                                                <option value="종로/중구/용산" th:selected="${details.usersRegion2} eq '종로/중구/용산'">종로/중구/용산</option>
+                                                <option value="서대문/마포/은평" th:selected="${details.usersRegion2} eq '서대문/마포/은평'">서대문/마포/은평</option>
+                                                <option value="동작/관악/금천" th:selected="${details.usersRegion2} eq '동작/관악/금천'">동작/관악/금천</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <th>성별<i class="required">*</i></th>
                                     <td>
                                         <div class="type-wrap">
@@ -91,18 +120,116 @@
                                             </div>
                                         </div>
                                     </td>
+                                    <th>상태</th>
+                                    <td>
+                                        <input type="hidden" class="usersDelete" th:value="${details.usersDelete}">
+
+                                        <div class="input-wrap approval-wrap">
+                                            <select class="select" disabled>
+                                                <option th:if="${details.usersDelete} eq 0" selected>이용가능</option>
+                                                <option th:if="${details.usersDelete} eq 1" selected>탈퇴</option>
+                                            </select>
+                                            <button type="button" th:if="${details.usersDelete} eq 0" class="btn-terminate js-modalShow" data-modal="terminate">회원탈퇴</button>
+                                            <button type="button" th:if="${details.usersDelete} eq 1" class="btn-terminate js-modalShow" data-modal="reason">탈퇴사유</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>가입일</th>
+                                    <td th:text="${#dates.format(details.usersJoinDate, 'yyyy-MM-dd')}"></td>
+                                    <th></th>
+                                    <td></td>
                                 </tr>
                             </tbody>
                         </table>
                     </fieldset>
                     <div class="form__action bottom">
-                        <a th:href="@{/admin/manage/user/list}" class="btn-normal">목록가기</a>
-                        <button type="button" class="btn-prime">수정하기</button>
+                        <a th:if="${details.usersDelete} eq 0" th:href="@{/admin/manage/user/list}" class="btn-normal">목록가기</a>
+                        <a th:if="${details.usersDelete} eq 1" th:href="@{/admin/manage/user/terminate/list}" class="btn-normal">목록가기</a>
+                        <button type="button" class="btn-prime btn-update">수정하기</button>
                     </div>
                 </div>
             </div>
         </section>
     </main>
+
+    <div class="modal modal-memo modal-terminate" data-modal="terminate">
+        <div class="modal__inner">
+            <div class="modal-head">
+                <span class="modal__title">회원탈퇴</span>
+                <a class="modal-cross js-modalClose"></a>
+            </div>
+            <div class="details">
+                <div class="details-body">
+                    <div class="table">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td class="modal-th">탈퇴일</td>
+                                <td class="modal-td" th:text="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}"></td>
+                            </tr>
+                            <tr>
+                                <td class="modal-th">탈퇴예정일</td>
+                                <td class="modal-td" th:text="${#dates.format(#dates.create(#dates.year(#dates.createNow()) ,#dates.month(#dates.createNow()), #dates.day(#dates.createNow()) + 30), 'yyyy-MM-dd')}"></td>
+                            </tr>
+                            <tr>
+                                <td class="modal-th">탈퇴사유</td>
+                                <td>
+                                    <div class="input-wrap">
+                                        <textarea spellcheck="false" class="terminate-reason"></textarea>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="form__action bottom">
+                        <a class="btn-normal js-modalClose">닫기</a>
+                        <button class="btn-del user-terminate">탈퇴</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal modal-memo modal-reason" data-modal="reason">
+        <div class="modal__inner">
+            <div class="modal-head">
+                <span class="modal__title">탈퇴 사유</span>
+                <a class="modal-cross js-modalClose"></a>
+            </div>
+            <div class="details">
+                <div class="details-body">
+                    <div class="table">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td class="modal-th">탈퇴일</td>
+                                <td class="modal-td" th:text="${#dates.format(details.terminateCreateDate, 'yyyy-MM-dd')}"></td>
+                            </tr>
+                            <tr>
+                                <td class="modal-th">탈퇴예정일</td>
+                                <td class="modal-td" th:text="${#dates.format(details.terminateRequestDate, 'yyyy-MM-dd')}"></td>
+                            </tr>
+                            <tr>
+                                <td class="modal-th">탈퇴사유</td>
+                                <td>
+                                    <div class="input-wrap">
+                                        <textarea th:text="${details.terminateReason}" readonly></textarea>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="form__action bottom">
+                        <a class="btn-normal delete-terminate">탈퇴취소</a>
+                        <button class="btn-del delete-now">즉시삭제</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </th:block>
 
@@ -110,8 +237,46 @@
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script>
         window.addEventListener('load', function () {
-            highlightMenu('list');
+            const page = document.querySelector('.usersDelete').value == 0 ? 'list' : 'terminate';
+            highlightMenu(page);
             onlyNum();
+            regionSelect();
+            new Modal({modal: '.modal-terminate', name: 'terminate'});
+            new Modal({modal: '.modal-reason', name: 'reason'});
+
+            // 연락처 중복확인
+            const tel = document.querySelector('.user-tel');
+            const telValue = tel.value;
+            tel.addEventListener('change', e => {
+                if(telValue != tel.value) {
+                    phoneCheck();
+                } else {
+                    const wrap = tel.parentNode;
+                    if (wrap.querySelector('.warning') != null) {
+                        wrap.removeChild(wrap.lastChild);
+                    }
+                }
+            });
+
+            // 비밀번호 초기화
+            const resetBtn = document.querySelector('.btn-reset');
+            resetBtn.addEventListener('click', resetPwd);
+
+            // 회원 수정
+            const updateBtn = document.querySelector('.btn-update');
+            updateBtn.addEventListener('click', updateUser);
+
+            // 회원 탈퇴
+            const terminateBtn = document.querySelector('.user-terminate');
+            terminateBtn.addEventListener('click', terminateUser);
+
+            // 회원 탈퇴 취소
+            const cancelBtn = document.querySelector('.delete-terminate');
+            cancelBtn.addEventListener('click', cancelTerminate);
+
+            // 회원 삭제
+            const deleteBtn = document.querySelector('.delete-now');
+            deleteBtn.addEventListener('click', deleteUser);
         });
     </script>
 </th:block>

@@ -67,6 +67,20 @@
         window.addEventListener('DOMContentLoaded', () => {
             onlyNum();
 
+            // 연락처 중복확인
+            const tel = document.querySelector('.user-tel');
+            const telValue = tel.value;
+            tel.addEventListener('change', e => {
+                if(telValue != tel.value) {
+                    phoneCheck();
+                } else {
+                    const wrap = tel.parentNode;
+                    if (wrap.querySelector('.warning') != null) {
+                        wrap.removeChild(wrap.lastChild);
+                    }
+                }
+            });
+
             // 비밀번호 초기화
             const resetBtn = document.querySelector('.btn-reset');
             resetBtn.addEventListener('click', resetPwd);
