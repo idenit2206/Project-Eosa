@@ -308,7 +308,7 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         "C.companysEnabled, C.companysDelete, " +
         "GROUP_CONCAT(DISTINCT CAR.activeRegion) AS activeRegion, " +
         "GROUP_CONCAT(DISTINCT CC.companysCategoryValue) AS companysCategoryValue " +
-        "FROM Companys " +
+        "FROM Companys C " +
         "LEFT JOIN CompanysCategory CC on C.companysIdx = CC.companysIdx " +
         "LEFT JOIN CompanysActiveRegion CAR on C.companysIdx = CAR.companysIdx " +
         "WHERE " +

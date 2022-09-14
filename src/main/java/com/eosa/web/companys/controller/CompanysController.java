@@ -217,7 +217,16 @@ public class CompanysController {
 
         List<SelectCompanys> selectQuery = companysService.selectCompanysByFilter(companysPremium, companysLocalPremium, companysCategory.get(0), companysRegion1, companysRegion2);
 
-        result.setResultItem(selectQuery);
+        if(selectQuery != null) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(selectQuery);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
 
         return result;
     }
