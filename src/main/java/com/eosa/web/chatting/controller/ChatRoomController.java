@@ -157,16 +157,12 @@ public class ChatRoomController {
     /**
      * 채팅방에 접속한 후 채팅룸 내부에서 접속을 갱신하는 메서드
      * @param roomId
-     * @param model
      * @return
      */
     @GetMapping("/room/{roomId}")
     @ResponseBody
-    public ChatRoom roomInfo(@PathVariable String roomId, Model model) {
-        
+    public ChatRoom roomInfo(@PathVariable String roomId) {
         ChatRoom transaction = chatRoomService.findChatRoomByRoomId(roomId);
-        model.addAttribute("room", transaction);
-
         return transaction;
     }
 

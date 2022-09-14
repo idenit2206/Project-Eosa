@@ -368,7 +368,7 @@ public class CompanysController {
       Companys step1 = companysService.selectCompanyInfoByUsersIdx(usersIdx);
 
       if(step1 != null) {
-          log.debug("step1: {}", step1.toString());
+          log.debug("[selectCompanyInfoByUsersIdx] step1: {}", step1.toString());
           Long companysIdx = step1.getCompanysIdx();
           List<String> companysCategory = companysCategoryService.selectByCompanysIdx(companysIdx);
           List<String> companysActiveRegion = companysActiveRegionService.selectByCompanysIdx(companysIdx);
@@ -376,6 +376,7 @@ public class CompanysController {
           log.debug("step1_category: {}", companysCategory.toString());
           log.debug("step1_ActiveRegion: {}", companysActiveRegion.toString());
 
+          items.put("companysIdx", step1.getCompanysIdx());
           items.put("companysName", step1.getCompanysName());
           items.put("companysPhone", step1.getCompanysPhone());
           items.put("companysComment", step1.getCompanysComment());
@@ -441,96 +442,102 @@ public class CompanysController {
         return result;
     }
 
-//    /**
-//     * 업체 정보 수정
-//     * @param companyInfo Companys 타입
-//     * @param companysCategory List(String)
-//     * @param companysActiveRegions List(String)
-//     * @param file1 MultipartFile
-//     * @param file2 MultipartFile
-//     * @param file3 MultipartFile
-//     * @return
-//     * @throws JSONException
-//     * @throws ParseException
-//     * @throws IOException
-//     */
-//    @PutMapping("/updateCompanys")
-//    public CustomResponseData updateCompanys(
-//            @RequestPart("companyInfo") Companys companyInfo,
-//            @RequestPart("companysCategory") List<String> companysCategory,
-//            @RequestPart("companysActiveRegion") List<String> companysActiveRegions,
-//            @RequestPart(value = "companysRegistCerti", required = false) MultipartFile file1,
-//            @RequestPart(value = "companysLicense", required = false) MultipartFile file2,
-//            @RequestPart(value = "companysProfileImage", required = false) MultipartFile file3
-//    ) throws JSONException, ParseException, IOException {
-//        CustomResponseData result = new CustomResponseData();
-//        log.debug("[updateCompanys] companyInfo: {}", companyInfo.getCompanysIdx());
-//        log.debug("[updateCompanys] {}, {}", companysCategory.toString(), companysActiveRegions.toString());
-//
-//        Companys entity = new Companys();
-//        entity.setCompanysIdx(Long.parseLong("55"));
-//
-//        if(file1 != null) {
-//            String file1URL = awsS3Service.uploadSingleFile(file1,"registcerti", entity.getCompanysIdx());
-//            entity.setCompanysRegistCerti(file1URL);
-//        }
-//
-//        if(file2 != null) {
-//            String file2URL = awsS3Service.uploadSingleFile(file2,"license", entity.getCompanysIdx());
-//            entity.setCompanysRegistCerti(file2URL);
-//        }
-//
-//        if(file3 != null) {
-//            String file3URL = awsS3Service.uploadSingleFile(file3, "license", entity.getCompanysIdx());
-//            entity.setCompanysProfileImage(file3URL);
-//        }
-//
-//        entity.setCompanysName(companyInfo.getCompanysName());
-//        entity.setCompanysCeoName(companyInfo.getCompanysCeoName());
-//        entity.setCompanysCeoIdx(companyInfo.getCompanysCeoIdx());
-//        entity.setCompanysComment(companyInfo.getCompanysComment());
-//        entity.setCompanysSpec(companyInfo.getCompanysSpec());
-//        entity.setCompanysRegion1(companyInfo.getCompanysRegion1());
-//        entity.setCompanysRegion2(companyInfo.getCompanysRegion2());
-//        entity.setCompanysRegion3(companyInfo.getCompanysRegion3());
-//        entity.setCompanysBankName(companyInfo.getCompanysBankName());
-//        entity.setCompanysBankNumber(companyInfo.getCompanysBankNumber());
-//
-//        Long companysIdx = entity.getCompanysIdx();
-////        log.debug("[updateCompanys] entity: {}", entity.toString());
-//
-//        int step1 = companysService.updateCompanys(entity);
-//
-//        if(step1 != 0) {
-//            int deletePrevCategory = companysCategoryService.deleteCategoryByCompanysIdx(companysIdx);
-//            int deletePrevActiveRegion = companysActiveRegionService.deleteActiveRegionByCompanysIdx(companysIdx);
-//
-//            for(int i = 0; i < companysCategory.size(); i++) {
-//                CompanysCategory entity2 = new CompanysCategory();
-//                entity2.setCompanysIdx(companysIdx);
-//                entity2.setCompanysCategoryValue(companysCategory.get(i));
-//                companysCategoryService.insertCompanysCategory(entity2);
-//            }
-//
-//            for(int i = 0; i < companysActiveRegions.size(); i++) {
-//                CompanysActiveRegion entity3 = new CompanysActiveRegion();
-//                entity3.setCompanysIdx(companysIdx);
-//                entity3.setActiveRegion(companysActiveRegions.get(i));
-//                companysActiveRegionService.insertCompanysActiveRegion(entity3);
-//            }
-//
-//            result.setStatusCode(HttpStatus.OK.value());
-//            result.setResultItem("SUCCESS");
-//            result.setResponseDateTime(LocalDateTime.now());
-//        }
-//        else {
-//            result.setStatusCode(HttpStatus.OK.value());
-//            result.setResultItem("FAILURE");
-//            result.setResponseDateTime(LocalDateTime.now());
-//        }
-//
-//        return result;
-//    }
+    /**
+     * 업체 정보 수정
+     * @param companyInfo Companys 타입
+     * @param companysCategory List(String)
+     * @param companysActiveRegions List(String)
+     * @param file1 MultipartFile
+     * @param file2 MultipartFile
+     * @param file3 MultipartFile
+     * @return
+     * @throws JSONException
+     * @throws ParseException
+     * @throws IOException
+     */
+    @PutMapping("/updateCompanys")
+    public CustomResponseData updateCompanys(
+            @RequestPart("companyInfo") Companys companyInfo,
+            @RequestPart("companysCategory") List<String> companysCategory,
+            @RequestPart("companysActiveRegion") List<String> companysActiveRegions,
+            @RequestPart(value = "companysRegistCerti", required = false) MultipartFile file1,
+            @RequestPart(value = "companysLicense", required = false) MultipartFile file2,
+            @RequestPart(value = "companysProfileImage", required = false) MultipartFile file3
+    ) throws JSONException, ParseException, IOException {
+        CustomResponseData result = new CustomResponseData();
+        log.debug("[updateCompanys] companyInfo: {}", companyInfo.toString());
+        log.debug("[updateCompanys] {}, {}", companysCategory.toString(), companysActiveRegions.toString());
+
+        Companys entity = new Companys();
+        entity.setCompanysIdx(companyInfo.getCompanysIdx());
+
+        if(file1 != null) {
+            List<String> file1URL = awsS3Service.uploadSingleFile(file1, "registcerti", entity.getCompanysIdx());
+            entity.setCompanysRegistCerti(file1URL.get(1));
+            entity.setCompanysRegistCertiName(file1URL.get(0));
+        } else {
+            entity.setCompanysRegistCerti(entity.getCompanysRegistCerti());
+            entity.setCompanysRegistCertiName(entity.getCompanysRegistCertiName());
+        }
+
+        if(file2 != null) {
+            List<String> file2URL = awsS3Service.uploadSingleFile(file2,"license", entity.getCompanysIdx());
+            entity.setCompanysLicense(file2URL.get(1));
+            entity.setCompanysLicenseName(file2URL.get(0));
+        }
+
+        if(file3 != null) {
+            List<String> file3URL = awsS3Service.uploadSingleFile(file3, "license", entity.getCompanysIdx());
+            entity.setCompanysProfileImage(file3URL.get(1));
+            entity.setCompanysProfileImageName(file3URL.get(0));
+        }
+
+        entity.setCompanysName(companyInfo.getCompanysName());
+        entity.setCompanysCeoName(companyInfo.getCompanysCeoName());
+        entity.setCompanysCeoIdx(companyInfo.getCompanysCeoIdx());
+        entity.setCompanysComment(companyInfo.getCompanysComment());
+        entity.setCompanysSpec(companyInfo.getCompanysSpec());
+        entity.setCompanysRegion1(companyInfo.getCompanysRegion1());
+        entity.setCompanysRegion2(companyInfo.getCompanysRegion2());
+        entity.setCompanysRegion3(companyInfo.getCompanysRegion3());
+        entity.setCompanysBankName(companyInfo.getCompanysBankName());
+        entity.setCompanysBankNumber(companyInfo.getCompanysBankNumber());
+
+        Long companysIdx = entity.getCompanysIdx();
+//        log.debug("[updateCompanys] entity: {}", entity.toString());
+
+        int step1 = companysService.updateCompanys(entity);
+
+        if(step1 != 0) {
+            int deletePrevCategory = companysCategoryService.deleteCategoryByCompanysIdx(companysIdx);
+            int deletePrevActiveRegion = companysActiveRegionService.deleteActiveRegionByCompanysIdx(companysIdx);
+
+            for(int i = 0; i < companysCategory.size(); i++) {
+                CompanysCategory entity2 = new CompanysCategory();
+                entity2.setCompanysIdx(companysIdx);
+                entity2.setCompanysCategoryValue(companysCategory.get(i));
+                companysCategoryService.insertCompanysCategory(entity2);
+            }
+
+            for(int i = 0; i < companysActiveRegions.size(); i++) {
+                CompanysActiveRegion entity3 = new CompanysActiveRegion();
+                entity3.setCompanysIdx(companysIdx);
+                entity3.setActiveRegion(companysActiveRegions.get(i));
+                companysActiveRegionService.insertCompanysActiveRegion(entity3);
+            }
+
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem("SUCCESS");
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem("FAILURE");
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
 
     @GetMapping("/selectOneCompanysByCompanysIdxTest")
     public CustomResponseData selectOneCompanysByCompanysIdxTest(@RequestParam("companysIdx") Long companysIdx) {

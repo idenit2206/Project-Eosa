@@ -52,10 +52,12 @@ public class AwsS3Service {
 
     public List<String> uploadSingleFile(MultipartFile file, String directoryName, Long companysIdx) {
 //        log.debug("[uploadSingleFile] contentType: {}", file.getContentType());
-        String fileNameLast = file.getOriginalFilename().split(".")[1].toString();
+        String fileNameOrigin = file.getOriginalFilename();
+        log.debug("[uploadSingleFile] originalFileName: {}",fileNameOrigin);
         List<String> result = new ArrayList<>();
         String fileName = directoryName + "_" +
-                String.valueOf(companysIdx);
+                String.valueOf(companysIdx) + "_" +
+                fileNameOrigin;
         String fileURL = "";
 
         ObjectMetadata objectMetadata = new ObjectMetadata();
@@ -69,7 +71,7 @@ public class AwsS3Service {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "S3에 registCerti 파일 업로드를 실패했습니다.");
         }
         fileURL = bucketURL+directoryName+"/"+fileName;
-        result.add(fileName+"."+fileNameLast);
+        result.add(fileName);
         result.add(fileURL);
         return result;
     }
@@ -77,9 +79,12 @@ public class AwsS3Service {
     public List<String> uploadMultipleFile(List<MultipartFile> files, String directoryName, Long companysIdx) {
         List<String> fileURLList = new ArrayList<>();
 
+
         files.forEach(file -> {
+            String fileNameOrigin = file.getOriginalFilename();
             String fileName = directoryName + "_" +
-                    String.valueOf(companysIdx);
+                    String.valueOf(companysIdx) + "_" +
+                    fileNameOrigin;
             String fileURL = "";
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentLength(file.getSize());
