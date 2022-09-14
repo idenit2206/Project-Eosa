@@ -516,12 +516,33 @@ public class CompanysController {
 
         return result;
     }
-
     @GetMapping("/selectOneCompanysUserLikeCompanyEnableByCompanysIdxUsersIdx")
     public CustomResponseData selectOneCompanysUserLikeCompanyEnableByCompanysIdxUsersIdxTest(@RequestParam("companysIdx") Long companysIdx, @RequestParam("usersIdx") Long usersIdx) {
         CustomResponseData result = new CustomResponseData();
         SelectCompanysUserLikeCompanyEnable item = companysService.selectOneCompanysUserLikeCompanyEnableByCompanysIdxUsersIdx(companysIdx, usersIdx);
         result.setResultItem(item);
+        return result;
+    }
+
+    @GetMapping("/selectCompanysPremiumEnabled")
+    public CustomResponseData selectCompanysPremiumEnabled(@RequestParam("usersIdx") Long usersIdx) {
+        CustomResponseData result = new CustomResponseData();
+        Map<String, Object> item = new HashMap<>();
+        Companys selectItem = companysService.selectCompanysPremiumEnabled(usersIdx);
+
+        if(selectItem != null) {
+            item.put("companysPremium", selectItem.isCompanysPremium() ? 1 : 0);
+            item.put("companysLocalPremium", selectItem.isCompanysLocalPremium() ? 1 : 0);
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(item);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
         return result;
     }
 
