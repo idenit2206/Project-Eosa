@@ -193,7 +193,7 @@ public class CompanysController {
     ) {
         log.debug("[selectAllCompanys] usersIdx: {} Requested...", usersIdx);
         CustomResponseData result = new CustomResponseData();
-        List<SelectCompanys> list = companysService.selectAllCompanys(usersIdx);
+        List<SelectCompanys> list = companysService.selectAllCompanys();
 
         result.setStatusCode(HttpStatus.OK.value());
         result.setResultItem(list);
@@ -201,117 +201,139 @@ public class CompanysController {
         return result;
     }
 
-    /**
-     * 활동분야를 기준으로 한 업체목록 조회
-     */
-    @GetMapping("/selectCompanysByCategory")
-    public CustomResponseData selectCompanysByCategory(
-            @RequestParam("companysCategoryValue") List<String> companysCategory
+    @GetMapping("/selectCompanysByFilter")
+    public CustomResponseData selectCompanysByFilter(
+        @RequestParam(value="companysPremium", required = false) boolean companysPremium,
+        @RequestParam(value="companysLocalPremium", required = false) boolean companysLocalPremium,
+        @RequestParam(value="companysCategory", required = false) List<String> companysCategory,
+        @RequestParam(value="companysRegion1", required = false) String companysRegion1,
+        @RequestParam(value="companysRegion2", required = false) String companysRegion2
     ) {
         CustomResponseData result = new CustomResponseData();
-        List<SelectAllCompanysList> list = new LinkedList<>();
-        List<Long> companysIdxList = new ArrayList<>();
-        for(int i = 0; i < companysCategory.size(); i++) {
-            String keyword = companysCategory.get(i).trim();
-//            log.debug("[selectCompanysByCategory] RequestParam companysCategory: {}", keyword);
-            companysIdxList = companysService.selectCompanysIdxByCompanysCategory(keyword);
-        }
-        log.debug("[selectCompanysByCategory] companysIdx: {}", companysIdxList.toString());
-        for(int i = 0; i < companysIdxList.size(); i++) {
-            Long companysIdx = companysIdxList.get(i);
-            SelectAllCompanysList query = companysService.selectCompanysByCompanysIdx(companysIdx);
-            list.add(query);
-        }
-        log.debug("[selectCompanysByCategory] list[0] companysName: {}", list.get(0).getCompanysName());
+        List<SelectCompanys> itemList = new ArrayList<>();
 
-        if(list != null) {
-            result.setStatusCode(HttpStatus.OK.value());
-            result.setResultItem(list);
-            result.setResponseDateTime(LocalDateTime.now());
-        }
-        else {
-            result.setStatusCode(HttpStatus.OK.value());
-            result.setResultItem(null);
-            result.setResponseDateTime(LocalDateTime.now());
-        }
+        log.debug("[selectCompanysByFilter] parameter Test: {}, {}, {}, {}, {}", companysPremium, companysLocalPremium, companysCategory.toString(), companysRegion1, companysRegion2);
+        log.debug("[selectCompanysByFilter] parameter Test Category size: {}, content: {}", companysCategory.size(), companysCategory.toString());
+
+        List<SelectCompanys> selectQuery = companysService.selectCompanysByFilter(companysPremium, companysLocalPremium, companysCategory.get(0), companysRegion1, companysRegion2);
+
+        result.setResultItem(selectQuery);
 
         return result;
     }
 
-    /**
-     * Companys 활동분야, 소재지 시/도 기준으로 회사목록 검색
-     * @param companysCategory String
-     * @param companysRegion1 String
-     * @return
-     */
-    @GetMapping("/selectCompanysByCategoryRegion1")
-    public CustomResponseData selectCompanysByCategoryAndRegion1(
-        @RequestParam("companysCategoryValue") List<String> companysCategory,
-        @RequestParam("companysRegion1") List<String> companysRegion1
-    ) {
-        CustomResponseData result = new CustomResponseData();
-        List<SelectAllCompanysList> list = new LinkedList<>();
-        List<Long> companysIdxList = new ArrayList<>();
-        for(int i = 0; i < companysCategory.size(); i++) {
-            String keyword = companysCategory.get(i).trim();
-//            log.debug("[selectCompanysByCategory] RequestParam companysCategory: {}", keyword);
-            companysIdxList = companysService.selectCompanysIdxByCompanysCategory(keyword);
-        }
-        log.debug("[selectCompanysByCategoryRegion1] companysIdx: {}", companysIdxList.toString());
-        for(int i =0; i < companysRegion1.size(); i++) {
-            for(int j = 0; j < companysIdxList.size(); j++) {
-                Long companysIdx = companysIdxList.get(j);
-                SelectAllCompanysList query = companysService.selectCompanysByCompanysIdxAndCompanysRegion1(companysIdx, companysRegion1.get(i));
-                list.add(query);
-            }
-        }
+//    /**
+//     * 활동분야를 기준으로 한 업체목록 조회
+//     */
+//    @GetMapping("/selectCompanysByCategory")
+//    public CustomResponseData selectCompanysByCategory(
+//            @RequestParam("companysCategoryValue") List<String> companysCategory
+//    ) {
+//        CustomResponseData result = new CustomResponseData();
+//        List<SelectAllCompanysList> list = new LinkedList<>();
+//        List<Long> companysIdxList = new ArrayList<>();
+//        for(int i = 0; i < companysCategory.size(); i++) {
+//            String keyword = companysCategory.get(i).trim();
+////            log.debug("[selectCompanysByCategory] RequestParam companysCategory: {}", keyword);
+//            companysIdxList = companysService.selectCompanysIdxByCompanysCategory(keyword);
+//        }
+//        log.debug("[selectCompanysByCategory] companysIdx: {}", companysIdxList.toString());
+//        for(int i = 0; i < companysIdxList.size(); i++) {
+//            Long companysIdx = companysIdxList.get(i);
+//            SelectAllCompanysList query = companysService.selectCompanysByCompanysIdx(companysIdx);
+//            list.add(query);
+//        }
+//        log.debug("[selectCompanysByCategory] list[0] companysName: {}", list.get(0).getCompanysName());
+//
+//        if(list != null) {
+//            result.setStatusCode(HttpStatus.OK.value());
+//            result.setResultItem(list);
+//            result.setResponseDateTime(LocalDateTime.now());
+//        }
+//        else {
+//            result.setStatusCode(HttpStatus.OK.value());
+//            result.setResultItem(null);
+//            result.setResponseDateTime(LocalDateTime.now());
+//        }
+//
+//        return result;
+//    }
+//
+//    /**
+//     * Companys 활동분야, 소재지 시/도 기준으로 회사목록 검색
+//     * @param companysCategory String
+//     * @param companysRegion1 String
+//     * @return
+//     */
+//    @GetMapping("/selectCompanysByCategoryRegion1")
+//    public CustomResponseData selectCompanysByCategoryAndRegion1(
+//        @RequestParam("companysCategoryValue") List<String> companysCategory,
+//        @RequestParam("companysRegion1") List<String> companysRegion1
+//    ) {
+//        CustomResponseData result = new CustomResponseData();
+//        List<SelectAllCompanysList> list = new LinkedList<>();
+//        List<Long> companysIdxList = new ArrayList<>();
+//        for(int i = 0; i < companysCategory.size(); i++) {
+//            String keyword = companysCategory.get(i).trim();
+////            log.debug("[selectCompanysByCategory] RequestParam companysCategory: {}", keyword);
+//            companysIdxList = companysService.selectCompanysIdxByCompanysCategory(keyword);
+//        }
+//        log.debug("[selectCompanysByCategoryRegion1] companysIdx: {}", companysIdxList.toString());
+//        for(int i =0; i < companysRegion1.size(); i++) {
+//            for(int j = 0; j < companysIdxList.size(); j++) {
+//                Long companysIdx = companysIdxList.get(j);
+//                SelectAllCompanysList query = companysService.selectCompanysByCompanysIdxAndCompanysRegion1(companysIdx, companysRegion1.get(i));
+//                list.add(query);
+//            }
+//        }
+//
+//        if(list != null) {
+//            result.setStatusCode(HttpStatus.OK.value());
+//            result.setResultItem(list);
+//            result.setResponseDateTime(LocalDateTime.now());
+//        }
+//        else {
+//            result.setStatusCode(HttpStatus.OK.value());
+//            result.setResultItem(null);
+//            result.setResponseDateTime(LocalDateTime.now());
+//        }
+//
+//        return result;
+//    }
+//
+//    @GetMapping("/selectCompanysByCompanysRegion1")
+//    public CustomResponseData selectCompanysByCompanysRegion1(
+//            @RequestParam("companysRegion1") List<String> companysRegion1
+//    ) {
+//        CustomResponseData result = new CustomResponseData();
+//        List<SelectAllCompanysList> list = new LinkedList<>();
+//        List<Long> companysIdxList = new LinkedList<>();
+//        for(int i = 0; i < companysRegion1.size(); i++) {
+//            String keyword = companysRegion1.get(i).trim();
+////            log.debug("[selectCompanysByCategory] RequestParam companysCategory: {}", keyword);
+//            companysIdxList = companysService.selectCompanysIdxByRegion1(keyword);
+//        }
+//        log.debug("[selectCompanysByCompanysRegion1] companysIdx: {}", companysIdxList.toString());
+//        for(int i = 0; i < companysIdxList.size(); i++) {
+//            Long companysIdx = companysIdxList.get(i);
+//            SelectAllCompanysList query = companysService.selectCompanysByCompanysIdx(companysIdx);
+//            list.add(query);
+//        }
+//
+//        if(list != null) {
+//            result.setStatusCode(HttpStatus.OK.value());
+//            result.setResultItem(list);
+//            result.setResponseDateTime(LocalDateTime.now());
+//        }
+//        else {
+//            result.setStatusCode(HttpStatus.OK.value());
+//            result.setResultItem(null);
+//            result.setResponseDateTime(LocalDateTime.now());
+//        }
+//
+//        return result;
+//    }
 
-        if(list != null) {
-            result.setStatusCode(HttpStatus.OK.value());
-            result.setResultItem(list);
-            result.setResponseDateTime(LocalDateTime.now());
-        }
-        else {
-            result.setStatusCode(HttpStatus.OK.value());
-            result.setResultItem(null);
-            result.setResponseDateTime(LocalDateTime.now());
-        }
-
-        return result;
-    }
-
-    @GetMapping("/selectCompanysByCompanysRegion1")
-    public CustomResponseData selectCompanysByCompanysRegion1(
-            @RequestParam("companysRegion1") List<String> companysRegion1
-    ) {
-        CustomResponseData result = new CustomResponseData();
-        List<SelectAllCompanysList> list = new LinkedList<>();
-        List<Long> companysIdxList = new LinkedList<>();
-        for(int i = 0; i < companysRegion1.size(); i++) {
-            String keyword = companysRegion1.get(i).trim();
-//            log.debug("[selectCompanysByCategory] RequestParam companysCategory: {}", keyword);
-            companysIdxList = companysService.selectCompanysIdxByRegion1(keyword);
-        }
-        log.debug("[selectCompanysByCompanysRegion1] companysIdx: {}", companysIdxList.toString());
-        for(int i = 0; i < companysIdxList.size(); i++) {
-            Long companysIdx = companysIdxList.get(i);
-            SelectAllCompanysList query = companysService.selectCompanysByCompanysIdx(companysIdx);
-            list.add(query);
-        }
-
-        if(list != null) {
-            result.setStatusCode(HttpStatus.OK.value());
-            result.setResultItem(list);
-            result.setResponseDateTime(LocalDateTime.now());
-        }
-        else {
-            result.setStatusCode(HttpStatus.OK.value());
-            result.setResultItem(null);
-            result.setResponseDateTime(LocalDateTime.now());
-        }
-
-        return result;
-    }
     @GetMapping("/selectOneCompanyInfoByCompanysIdx")
     public CustomResponseData selectOneCompanyInfoByCompanysIdx(
         @RequestParam("companysIdx") Long companysIdx
