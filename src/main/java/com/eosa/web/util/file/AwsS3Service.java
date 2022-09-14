@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.method.P;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AwsS3Service {
@@ -49,9 +51,10 @@ public class AwsS3Service {
 //    }
 
     public List<String> uploadSingleFile(MultipartFile file, String directoryName, Long companysIdx) {
+//        log.debug("[uploadSingleFile] contentType: {}", file.getContentType());
+        String fileNameLast = file.getOriginalFilename().split(".")[1].toString();
         List<String> result = new ArrayList<>();
         String fileName = directoryName + "_" +
-                UUID.randomUUID().toString().substring(0,4) + "_" +
                 String.valueOf(companysIdx);
         String fileURL = "";
 
@@ -66,7 +69,7 @@ public class AwsS3Service {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "S3에 registCerti 파일 업로드를 실패했습니다.");
         }
         fileURL = bucketURL+directoryName+"/"+fileName;
-        result.add(fileName);
+        result.add(fileName+"."+fileNameLast);
         result.add(fileURL);
         return result;
     }
@@ -76,7 +79,6 @@ public class AwsS3Service {
 
         files.forEach(file -> {
             String fileName = directoryName + "_" +
-                    UUID.randomUUID().toString().substring(0,4) + "_" +
                     String.valueOf(companysIdx);
             String fileURL = "";
             ObjectMetadata objectMetadata = new ObjectMetadata();

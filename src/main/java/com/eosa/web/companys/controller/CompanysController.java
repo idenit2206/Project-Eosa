@@ -79,6 +79,7 @@ public class CompanysController {
 //        log.debug("companyProfileImage: {}", jsonObject.get("companyProfileImage").getAsJsonObject().toString());
 
             entity.setCompanysName(params.getCompanysName());
+            entity.setCompanysPhone(params.getCompanysPhone());
             entity.setCompanysCeoName(params.getCompanysCeoName());
             entity.setCompanysCeoIdx(params.getCompanysCeoIdx());
             entity.setCompanysComment(params.getCompanysComment());
@@ -152,16 +153,6 @@ public class CompanysController {
         result.setResponseDateTime(LocalDateTime.now());
       }
       return result;
-    }
-
-    @GetMapping("/testInsert")
-    public String testInsert() {
-      List<Users> usersLists = usersRepository.selectAllDetective();
-      List<Users> answer = new ArrayList<>();
-      for (Users users : usersLists) {
-        log.debug("{} : {}", users.getUsersIdx(), users.getUsersName());
-      }
-      return "";
     }
 
     @GetMapping("/selectAllCategory")
@@ -386,6 +377,7 @@ public class CompanysController {
           log.debug("step1_ActiveRegion: {}", companysActiveRegion.toString());
 
           items.put("companysName", step1.getCompanysName());
+          items.put("companysPhone", step1.getCompanysPhone());
           items.put("companysComment", step1.getCompanysComment());
           items.put("companysRegion1", step1.getCompanysRegion1());
           items.put("companysRegion2", step1.getCompanysRegion2());
@@ -539,6 +531,7 @@ public class CompanysController {
 //
 //        return result;
 //    }
+
     @GetMapping("/selectOneCompanysByCompanysIdxTest")
     public CustomResponseData selectOneCompanysByCompanysIdxTest(@RequestParam("companysIdx") Long companysIdx) {
         CustomResponseData result = new CustomResponseData();

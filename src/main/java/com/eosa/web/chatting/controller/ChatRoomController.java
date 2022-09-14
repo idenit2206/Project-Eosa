@@ -143,13 +143,14 @@ public class ChatRoomController {
 //    }
     @GetMapping("/room/enter/{roomId}")
     @ResponseBody
-    public ChatRoom roomDetailREST(
+    public ChatRoom roomEnterRoomId(
             @PathVariable String roomId,
             @RequestParam(value="usersIdx") String usersName
     ) {
         // model.addAttribute("roomId", roomId);
         log.info("사용자 '{}' 가 RoomId: {} 채팅방에 입장했습니다. 입장시간: {}", usersName, roomId, LocalDateTime.now());
         ChatRoom result = chatRoomService.findChatRoomByRoomId(roomId);
+        log.info("[roomEnterRoomId] result: {}", result.toString());
         return result;
     }
 
@@ -167,6 +168,12 @@ public class ChatRoomController {
         model.addAttribute("room", transaction);
 
         return transaction;
+    }
+
+    @GetMapping("/room/currentChatRoomList")
+    @ResponseBody
+    public List<ChatRoom> currentChatRoomList() {
+        return chatRoomService.findAllRoom();
     }
 
     @PutMapping("/room")

@@ -103,12 +103,20 @@ public class ChatRoomService implements ChatRoomRepository {
 
     @Override
     public List<ChatRoom> selectChatRoomListByUsersIdx(Long usersIdx) {
-        return chatRoomRepository.selectChatRoomListByUsersIdx(usersIdx);
+        List<ChatRoom> result = chatRoomRepository.selectChatRoomListByUsersIdx(usersIdx);
+        for(int i = 0; i < result.size(); i++) {
+            chatRooms.put(result.get(i).getRoomId(), result.get(i));
+        }
+        return result;
     }
 
     @Override
     public List<ChatRoom> selectChatRoomListByCompanysIdx(Long companysIdx) {
-        return chatRoomRepository.selectChatRoomListByCompanysIdx(companysIdx);
+        List<ChatRoom> result = chatRoomRepository.selectChatRoomListByCompanysIdx(companysIdx);
+        for(int i = 0; i < result.size(); i++) {
+            chatRooms.put(result.get(i).getRoomId(), result.get(i));
+        }
+        return result;
     }
 
     @Override
