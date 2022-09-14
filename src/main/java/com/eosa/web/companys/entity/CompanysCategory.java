@@ -16,12 +16,7 @@ public class CompanysCategory {
     @Column private Long companysIdx;
     @Column private String companysCategoryValue;
 
-//  version1
-//  @ManyToOne(targetEntity=Companys.class, fetch=FetchType.LAZY)
-
-//  version2
-    @ManyToOne
-    @JoinColumn(name="CompanysIdx")
+    @ManyToOne(targetEntity = Companys.class, fetch = FetchType.LAZY)
     private Companys companys;
 
 }

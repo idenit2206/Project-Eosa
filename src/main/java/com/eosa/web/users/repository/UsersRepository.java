@@ -4,16 +4,12 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.eosa.web.users.entity.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import com.eosa.web.users.entity.FindByUsersAccountEntity;
-import com.eosa.web.users.entity.GetUsersInfoByUsersAccountEntity;
-import com.eosa.web.users.entity.TerminateUser;
-import com.eosa.web.users.entity.Users;
 
 @Repository
 public interface UsersRepository extends JpaRepository<Users, Long> {
@@ -210,4 +206,5 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
         nativeQuery = true
     )
     String selectUsersAccountByUsersIdx(Long usersIdx);
+    
 }

@@ -15,15 +15,12 @@ import javax.servlet.http.HttpServletResponse;
 import com.eosa.web.users.entity.*;
 import com.eosa.web.users.service.SmsCertificationService;
 import net.nurigo.sdk.message.model.Message;
-import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
-import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import org.apache.tomcat.util.json.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -419,42 +416,6 @@ public class UsersController {
 
         return result;
     }
-    // @Operation(summary="회원정보 조회 (마이페이지 전용)")
-    // @GetMapping(value="/getUsersInfo")
-    // public CustomResponseData getUsersInfoByUsersAccount(
-    //     @RequestParam(value="usersAccount") String usersAccount
-    // ) {
-    //     log.info("## Someone request {} 's information", usersAccount);
-    //     CustomResponseData result = new CustomResponseData();
-
-    //     Map<String, Object> item = new HashMap<>();
-    //     LocalDateTime currentTime = LocalDateTime.now();
-        
-    //     boolean nc = nullCheck.StringNullCheck(usersAccount);       
-
-    //     if(nc == false) {
-    //         FindByUsersAccount transaction = usersService.selectByUsersAccount(usersAccount);
-    //         if(transaction == null) {
-    //             result.setStatusCode(HttpStatus.BAD_REQUEST.value());
-    //             item.put("item", transaction);
-    //             result.setResultItem(item);
-    //             result.setResponseDateTime(currentTime);
-    //         }
-    //         else {
-    //             result.setStatusCode(HttpStatus.OK.value());
-    //             item.put("item", transaction);
-    //             result.setResultItem(item);
-    //             result.setResponseDateTime(currentTime);
-    //         }
-    //     }        
-    //     else {
-    //         result.setStatusCode(HttpStatus.BAD_REQUEST.value());
-    //         item.put("result", "FAILURE cause parameter(usersAccount) Null");
-    //         result.setResultItem(item);
-    //         result.setResponseDateTime(currentTime);
-    //     }
-    //     return result;
-    // }
 
     /**
      * 회원정보를 수정하는 url입니다.
@@ -548,5 +509,5 @@ public class UsersController {
         // }
         return result;
     }
-    
+
 }

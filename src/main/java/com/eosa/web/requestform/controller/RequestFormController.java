@@ -264,9 +264,10 @@ public class RequestFormController {
     public CustomResponseData selectAllRequestFormListByUsersIdxOrderByDESC(
             @RequestParam("usersIdx") Long usersIdx
     ) {
-        log.debug("usersIdx: {}", usersIdx);
+        log.debug("[selectAllRequestFormListByUsersIdxOrderByDESC] usersIdx: {}", usersIdx);
         CustomResponseData result = new CustomResponseData();
         List<SelectRequestFormList> list = requestFormService.selectAllRequestFormListByUsersIdxOrderByRequestFormDateDESC(usersIdx);
+        log.debug("[selectAllRequestFormListByUsersIdxOrderByDESC] list: {}", list.toString());
 
         if(list.size() != 0) {
 //            log.debug("Client List: {}", list.toString());

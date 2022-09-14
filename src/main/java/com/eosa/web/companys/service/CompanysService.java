@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import com.eosa.web.companys.repository.CompanysRepository;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
 public class CompanysService implements CompanysRepository {
@@ -58,8 +59,8 @@ public class CompanysService implements CompanysRepository {
     // }
 
     @Override
-    public List<SelectAllCompanysList> selectAllCompanys(Long usersIdx) {
-        return companysRepository.selectAllCompanys(usersIdx);
+    public List<SelectCompanys> selectAllCompanys() {
+        return companysRepository.selectAllCompanys();
     }
 
     @Override
@@ -109,6 +110,29 @@ public class CompanysService implements CompanysRepository {
     @Override
     public Long selectCompanyIdxByComapnysNameAndCompanysCeoName(String companysName, String companysCeoName) {
         return companysRepository.selectCompanyIdxByComapnysNameAndCompanysCeoName(companysName, companysCeoName);
+    }
+
+    @Override
+    public SelectCompanys selectOneCompanysByCompanysIdxTest(Long companysIdx) {
+        return companysRepository.selectOneCompanysByCompanysIdxTest(companysIdx);
+    }
+
+    @Override
+    public SelectCompanysUserLikeCompanyEnable selectOneCompanysUserLikeCompanyEnableByCompanysIdxUsersIdx(Long companysIdx, Long usersIdx) {
+        return companysRepository.selectOneCompanysUserLikeCompanyEnableByCompanysIdxUsersIdx(companysIdx, usersIdx);
+    }
+
+    @Override
+    public Companys selectCompanysPremiumEnabled(Long usersIdx) {
+        return companysRepository.selectCompanysPremiumEnabled(usersIdx);
+    }
+
+    @Override
+    public List<SelectCompanys> selectCompanysByFilter(
+        boolean companysPremium, boolean companysLocalPremium, String companysCategory,
+        String companysRegion1, String companysRegion2
+    ) {
+        return companysRepository.selectCompanysByFilter(companysPremium, companysLocalPremium, companysCategory, companysRegion1, companysRegion2);
     }
 
     @Override

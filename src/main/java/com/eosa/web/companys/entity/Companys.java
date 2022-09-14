@@ -19,8 +19,7 @@ public class Companys {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long companysIdx;
 
-    @Column(nullable=false, length=100)
-    private String companysName;
+    @Column(nullable=false, length=100) private String companysName;
 
     @Column(nullable=false)
     private Long companysCeoIdx;
@@ -80,21 +79,5 @@ public class Companys {
     @Column(nullable=false)
     @ColumnDefault("0")
     private boolean companysDelete;
-
-    // @ManyToOne(targetEntity=Users2.class, fetch=FetchType.LAZY)
-    // @JoinColumn(name="usersIdx")
-    // private Users2 users;
-
-//    @OneToMany(mappedBy="companys", fetch=FetchType.LAZY)
-//    private List<CompanysCategory> companysCategory = new ArrayList<>();
-//
-//    @OneToMany(mappedBy="companys")
-//    private List<CompanysActiveRegion> companysActiveRegion = new ArrayList<>();
-//
-//    @OneToMany(mappedBy="companys")
-//    private List<CompanysLicense> companysLicense = new ArrayList<>();
-//
-//    @OneToMany(mappedBy="companys")
-//    private List<CompanysMember> companysMembers = new ArrayList<>();
 
 }

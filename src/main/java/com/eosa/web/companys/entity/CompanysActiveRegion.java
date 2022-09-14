@@ -24,7 +24,7 @@ public class CompanysActiveRegion {
     @Column private Long companysIdx;
     @Column private String activeRegion;
 
-    @ManyToOne(targetEntity=Companys.class, fetch=FetchType.EAGER)
+    @ManyToOne(targetEntity = Companys.class, fetch = FetchType.LAZY)
     private Companys companys;
 
 }
