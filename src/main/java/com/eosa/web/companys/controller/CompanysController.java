@@ -207,7 +207,7 @@ public class CompanysController {
         @RequestParam(value="companysLocalPremium", required = false) boolean companysLocalPremium,
         @RequestParam(value="companysCategory", required = false) List<String> companysCategory,
         @RequestParam(value="companysRegion1", required = false) List<String> companysRegion1,
-        @RequestParam(value="companysRegion2", required = false) String companysRegion2
+        @RequestParam(value="companysRegion2", required = false) List<String> companysRegion2
     ) {
         CustomResponseData result = new CustomResponseData();
         List<SelectCompanys> itemList = new ArrayList<>();
@@ -215,7 +215,7 @@ public class CompanysController {
         log.debug("[selectCompanysByFilter] parameter Test: {}, {}, {}, {}, {}", companysPremium, companysLocalPremium, companysCategory.toString(), companysRegion1, companysRegion2);
         log.debug("[selectCompanysByFilter] parameter Test Category size: {}, content: {}", companysCategory.size(), companysCategory.toString());
 
-        List<SelectCompanys> selectQuery = companysService.selectCompanysByFilter(companysPremium, companysLocalPremium, companysCategory.get(0), companysRegion1.get(0), companysRegion2);
+        List<SelectCompanys> selectQuery = companysService.selectCompanysByFilter(companysPremium, companysLocalPremium, companysCategory.get(0), companysRegion1.get(0), companysRegion2.get(0));
 
         if(selectQuery != null) {
             result.setStatusCode(HttpStatus.OK.value());
