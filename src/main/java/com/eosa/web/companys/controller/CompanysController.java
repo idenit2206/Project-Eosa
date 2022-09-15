@@ -396,7 +396,7 @@ public class CompanysController {
           items.put("companysCategory", companysCategory);
           items.put("companysActiveRegion", companysActiveRegion);
 
-          log.debug("[selectCompanyInfoByUsersIdx]399 items: {}", items.toString());
+          log.debug("[selectCompanyInfoByUsersIdx]399lines prepare result items: {}", items.toString());
 
           result.setStatusCode(HttpStatus.OK.value());
           result.setResultItem(items);
@@ -469,11 +469,25 @@ public class CompanysController {
             @RequestPart(value = "companysProfileImage", required = false) MultipartFile file3
     ) throws JSONException, ParseException, IOException {
         CustomResponseData result = new CustomResponseData();
-        log.debug("[updateCompanys] companyInfo: {}", companyInfo.toString());
-        log.debug("[updateCompanys] companysCategory: {}, companysActiveRegion: {}", companysCategory.toString(), companysActiveRegions.toString());
-        if(file1 != null) { log.debug("[updateCompanys] file1: {}", file1.getOriginalFilename()); }
-        if(file2 != null) { log.debug("[updateCompanys] file2: {}", file2.getOriginalFilename()); }
-        if(file3 != null) { log.debug("[updateCompanys] file3: {}", file3.getOriginalFilename()); }
+        log.debug("[updateCompanys] parameter companyInfo: {}", companyInfo.toString());
+        log.debug("[updateCompanys] parameter companysCategory: {}, companysActiveRegion: {}", companysCategory.toString(), companysActiveRegions.toString());
+        if(file1 != null) {
+            log.debug("[updateCompanys] 새로운 사업자등록증: {}", file1.getOriginalFilename());
+        } else {
+            log.debug("[updateCompanys] 기존의 사업자 등록증: {}", companyInfo.getCompanysRegistCerti());
+        }
+
+        if(file2 != null) {
+            log.debug("[updateCompanys] 새로운 라이센스: {}", file2.getOriginalFilename());
+        } else {
+            log.debug("[updateCompanys] 기존의 라이센스: {}", companyInfo.getCompanysLicense());
+        }
+
+        if(file3 != null) {
+            log.debug("[updateCompanys] 새로운 프로필이미지: {}", file3.getOriginalFilename());
+        } else {
+            log.debug("[updateCompanys] 기존의 프로필이미지: {}", companyInfo.getCompanysProfileImage());
+        }
 
         Companys entity = new Companys();
         entity.setCompanysIdx(companyInfo.getCompanysIdx());
@@ -492,11 +506,12 @@ public class CompanysController {
             entity.setCompanysLicense(file2URL.get(1));
             entity.setCompanysLicenseName(file2URL.get(0));
         } else {
-            entity.setCompanysLicense(companyInfo.getCompanysRegistCerti());
-            entity.setCompanysLicenseName(companyInfo.getCompanysRegistCertiName());
+            entity.setCompanysLicense(companyInfo.getCompanysLicense());
+            entity.setCompanysLicenseName(companyInfo.getCompanysLicenseName());
         }
 
         if(file3 != null) {
+            log.info("[updateCompanys] new file3: {}", file3.getOriginalFilename());
             List<String> file3URL = awsS3Service.uploadSingleFile(file3, "license", entity.getCompanysIdx());
             entity.setCompanysProfileImage(file3URL.get(1));
             entity.setCompanysProfileImageName(file3URL.get(0));

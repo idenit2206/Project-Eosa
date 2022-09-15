@@ -25,18 +25,14 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
         ":#{#Users.usersRegion1}, :#{#Users.usersRegion2}, :#{#Users.provider}, :#{#Users.usersProfile}, :#{#Users.usersGender}, :#{#Users.usersJoinDate}," +
         ":#{#Users.usersNotice}, :#{#Users.usersEnabled})"
     ,nativeQuery=true)
-    int userSave(@Param("Users") Users user);    
+    int userSave(@Param("Users") Users user);
 
-    // /**
-    //  * 회원가입시 계정, 이메일 중복 체크
-    //  * @param usersAccount, @param usersEmail
-    //  * @return
-    //  */
-    // @Query(
-    //     value="SELECT usersAccount, usersEmail FROM Users WHERE usersAccount=?1 AND usersEmail=?2",
-    //     nativeQuery=true
-    // )
-    // DuplicateAccountAndEmail dupliCheck(String usersAccount, String usersEmail);
+    /**
+     * 회원가입시 핸드폰 인증 코드를 발송하기전
+     * 핸드폰번호가 기존의 사용중이 번호인지 검사합니다.
+     */
+    @Query(value="SELECT * FROM Users WHERE usersPhone = ?1", nativeQuery = true)
+    Users selectUsersPhoneCheckByUsersPhone(String usersPhone);
 
     /**
      * 회원가입을 할 때 아이디가 중복인지 검사하기 위한 메서드
@@ -49,16 +45,16 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     )
     Users usersAccountDupliCheck(String usersAccount);
 
-    /**
-     * 회원가입을 할 때 이메일이 중복인지 검사하기 위한 메서드
-     * @param usersEmail
-     * @return 0 | null
-     */
-    @Query(
-        value="SELECT * FROM Users WHERE usersEmail=?1",
-        nativeQuery=true
-    )
-    Users usersEmailDupliCheck(String usersEmail);
+//    /**
+//     * 회원가입을 할 때 이메일이 중복인지 검사하기 위한 메서드
+//     * @param usersEmail
+//     * @return 0 | null
+//     */
+//    @Query(
+//        value="SELECT * FROM Users WHERE usersEmail=?1",
+//        nativeQuery=true
+//    )
+//    Users usersEmailDupliCheck(String usersEmail);
 
     /**
      * Spring Security formLogin()에서 인증을 성공했을 때
