@@ -211,4 +211,38 @@
         </foreach>
     </delete>
 
+    <!-- 회원 등록 -->
+    <insert id="insertUsers" parameterType="UsersDTO">
+        INSERT INTO Users (usersAccount,
+                           usersPass,
+                           usersName,
+                           usersNick,
+                           usersPhone,
+                           usersEmail,
+                           usersRole,
+                           usersAge,
+                           usersRegion1,
+                           usersRegion2,
+                           usersGender,
+                           usersJoinDate,
+                           usersNotice,
+                           usersEnabled,
+                           usersDelete)
+        VALUES (#{usersAccount},
+                #{usersPass},
+                #{usersName},
+                #{usersNick},
+                #{usersPhone},
+                #{usersEmail},
+                #{usersRole},
+                #{usersAge},
+                #{usersRegion1},
+                #{usersRegion2},
+                #{usersGender},
+                NOW(),
+                0,
+                1,
+                0)
+    </insert>
+
 </mapper>

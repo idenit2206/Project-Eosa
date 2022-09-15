@@ -6,6 +6,7 @@ import com.eosa.admin.dto.UsersTerminateDTO;
 import com.eosa.admin.mapper.UserMapper;
 import com.eosa.admin.pagination.Pagination;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -29,6 +30,9 @@ public class UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     /**
      * 회원 목록 조회 서비스
@@ -247,9 +251,30 @@ public class UserService {
         return userMapper.deleteTemp(arr);
     }
 
+    /**
+     * 회원 등록 폼 서비스
+     *
+     * @return String
+     */
     public String registerUser() {
 
         return "admin/user/register";
+    }
+
+    /**
+     * 회원 등록 서비스
+     *
+     * @param usersDTO
+     * @return int
+     */
+    public int insertUsers(UsersDTO usersDTO) {
+
+        // 비밀번호 인코딩
+        String rawPassword = usersDTO.getUsersPass();
+        String encPassword = bCryptPasswordEncoder.encode(rawPassword);
+        usersDTO.setUsersPass(encPassword);
+
+        return userMapper.insertUsers(usersDTO);
     }
 
 }

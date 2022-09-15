@@ -20,6 +20,7 @@
                         <div class="header-wrap">
                             <span class="table__count">전체<i class="value" th:text="${count}"></i></span>
                             <form class="table__search">
+                                <input type="hidden" name="role" th:value="${role}">
                                 <select class="select" name="sort">
                                     <option value="id" th:selected="${sort} eq 'id'">아이디</option>
                                     <option value="name" th:selected="${sort} eq 'name'">이름</option>
@@ -110,7 +111,7 @@
     <script>
         window.addEventListener('DOMContentLoaded', () => {
             highlightMenu('list');
-            tabOn();
+            userTab();
             pageOn();
             telFormat();
             new Table(document.querySelector('#main table'));

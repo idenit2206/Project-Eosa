@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/fragments/layout}">
+
+<th:block layout:fragment="content">
+
+    <th:block th:replace="admin/fragments/aside :: asideFragment"></th:block>
+
+    <main id="main" class="main-list" data-category="company">
+        <section class="section section-users">
+            <h2 class="section_title">업체 목록</h2>
+            <div class="table">
+                <div class="table__top">
+                    <div class="top-wrap">
+                        <div class="form-tab">
+                            <button class="btn tab-menu enabled1" th:onclick="|goTo('/admin/manage/company/list?enabled=1')|">승인</button>
+                            <button class="btn tab-menu enabled0" th:onclick="|goTo('/admin/manage/company/list?enabled=0')|">대기</button>
+                            <button class="btn tab-menu enabled-1" th:onclick="|goTo('/admin/manage/company/list?enabled=-1')|">반려</button>
+                        </div>
+                        <div class="header-wrap">
+                            <span class="table__count">전체<i class="value" th:text="${count}"></i></span>
+                            <form class="table__search">
+                                <input type="hidden" name="enabled" th:value="${enabled}">
+                                <select class="select" name="sort">
+                                    <option value="name" th:selected="${sort} eq 'name'">업체명</option>
+                                    <option value="ceo" th:selected="${sort} eq 'ceo'">대표명</option>
+                                    <option value="phone" th:selected="${sort} eq 'phone'">연락처</option>
+                                </select>
+                                <input class="input" name="search" type="text" th:value="${search}" placeholder="검색어 입력">
+                                <button type="submit" class="btn-prime">검색</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th class="check"><input type="checkbox" name="checkAll" id="checkAll"></th>
+                        <th class="sorting">번호</th>
+                        <th>업체명</th>
+                        <th>대표명</th>
+                        <th>연락처</th>
+                        <th th:if="${enabled} eq 1">안심번호</th>
+                        <th class="width-250">분야</th>
+                        <th>지역</th>
+                        <th th:if="${enabled} eq 1" class="width-90">프리미엄</th>
+                        <th th:if="${enabled} eq 1" class="width-90">마패</th>
+                        <th>등록일</th>
+                    </tr>
+                    </thead>
+
+                    <tbody th:if="${count} eq 0">
+                    <tr>
+                        <td colspan="11">
+                            <span>등록된 업체가 없습니다.</span>
+                        </td>
+                    </tr>
+                    </tbody>
+
+                    <tbody th:if="${count} ne 0">
+                    <tr th:each="list : ${companyList}" th:onclick="|linkTo(event,'/admin/manage/company/details?companysIdx=${list.companysIdx}')|">
+                        <td class="check"><input type="checkbox" name="listCheck"></td>
+                        <td><span th:text="${list.companysIdx}"></span></td>
+                        <td>
+                            <span th:text="${list.companysName}"></span>
+                        </td>
+                        <td>
+                            <span th:text="${list.companysCeoName}"></span>
+                        </td>
+                        <td>
+                            <span th:text="${list.companysPhone}" class="contact"></span>
+                        </td>
+                        <td th:if="${enabled} eq 1">
+                            <span th:text="${list.companysPhone}" class="contact"></span>
+                        </td>
+                        <td>
+                            <span th:text="${#strings.replace(list.companysCategoryValue, '|', ', ')}" class="table-overflow"></span>
+                        </td>
+                        <td>
+                            <span th:text="|${list.companysRegion1}, ${list.companysRegion2}, ${list.companysRegion3}|"></span>
+                        </td>
+                        <td th:if="${enabled} eq 1">
+                            <div class="icon-wrap">
+                                <img class="stat" th:if="${list.companysPremium} eq 1" th:src="@{/assets/images/ico/ico-crown.svg}">
+                            </div>
+                        </td>
+                        <td th:if="${enabled} eq 1">
+                            <div class="icon-wrap">
+                                <img class="stat" th:if="${list.companysLocalPremium} eq 1" th:src="@{/assets/images/ico/ico-mape.svg}">
+                            </div>
+                        </td>
+                        <td>
+                            <span th:text="${#dates.format(list.companysRegistDate, 'yyyy-MM-dd')}"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="table__action">
+                    <button type="button" class="btn-normal btn-delete">삭제</button>
+                </div>
+
+                <div class="table__paging">
+                    <ul>
+                        <li><a class="first" th:href="@{/admin/manage/company/list(enabled=${enabled}, sort=${sort}, search=${search}, page=1)}"></a></li>
+                        <li><a class="prev" th:href="@{/admin/manage/company/list(enabled=${enabled}, sort=${sort}, search=${search}, page=${pagination.prevBlock})}"></a></li>
+
+                        <th:block th:with="start = ${pagination.startPage}, end = ${pagination.endPage}">
+                            <li th:each="pageButton : ${#numbers.sequence(start, end)}"><a class="pageNum" th:href="@{/admin/manage/company/list(enabled=${enabled}, sort=${sort}, search=${search}, page=${pageButton})}" th:text="${pageButton}"></a></li>
+                        </th:block>
+
+                        <li><a class="next" th:href="@{/admin/manage/company/list(enabled=${enabled}, sort=${sort}, search=${search}, page=${pagination.nextBlock})}"></a></li>
+                        <li><a class="last" th:href="@{/admin/manage/company/list(enabled=${enabled}, sort=${sort}, search=${search}, page=${pagination.totalPageCnt eq 0 ? 1 : pagination.totalPageCnt})}"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+</th:block>
+
+<th:block layout:fragment="script">
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            highlightMenu('list');
+            companyTab();
+            pageOn();
+            listCheck();
+            telFormat();
+            new Table(document.querySelector('#main table'));
+        });
+    </script>
+</th:block>
+
+</html>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eosa.admin.mapper.CompanyMapper">
+
+    <!-- 업체 목록 개수 조회 -->
+    <select id="countCompanyList" resultType="int" parameterType="hashmap">
+        SELECT COUNT(*)
+        FROM Companys C
+        WHERE C.companysEnabled = #{companysEnabled}
+        <if test="name != null">
+            AND CONCAT(C.companysName) REGEXP #{search}
+        </if>
+        <if test="ceo != null">
+            AND CONCAT(C.companysCeoName) REGEXP #{search}
+        </if>
+        <if test="phone != null">
+            AND CONCAT(C.companysPhone) REGEXP #{search}
+        </if>
+    </select>
+
+    <!-- 업체 목록 조회 -->
+    <select id="selectCompanyList" resultType="CompanysDTO" parameterType="hashmap">
+        SELECT C.companysIdx,
+               C.companysName,
+               C.companysCeoName,
+               C.companysPhone,
+               C.companysRegion1,
+               C.companysRegion2,
+               C.companysRegion3,
+               C.companysRegistDate,
+               C.companysPremium,
+               C.companysLocalPremium,
+               C.companysEnabled,
+               C.companysDelete,
+               T.companysCategoryValue
+        FROM Companys C
+                JOIN (SELECT CT.companysIdx,
+                             GROUP_CONCAT(CT.companysCategoryValue SEPARATOR '|') companysCategoryValue
+                      FROM CompanysCategory CT
+                      GROUP BY CT.companysIdx) T ON C.companysIdx = T.companysIdx
+        WHERE C.companysEnabled = #{companysEnabled}
+        <if test="name != null">
+            AND CONCAT(C.companysName) REGEXP #{search}
+        </if>
+        <if test="ceo != null">
+            AND CONCAT(C.companysCeoName) REGEXP #{search}
+        </if>
+        <if test="phone != null">
+            AND CONCAT(C.companysPhone) REGEXP #{search}
+        </if>
+        ORDER BY C.companysRegistDate DESC LIMIT #{startIndex}, #{pageSize}
+    </select>
+
+    <!-- 업체 상세 조회 -->
+    <select id="selectCompanyDetails" resultType="CompanysDTO">
+        SELECT C.companysIdx,
+               C.companysName,
+               C.companysCeoName,
+               C.companysComment,
+               C.companysSpec,
+               C.companysPhone,
+               C.companysRegion1,
+               C.companysRegion2,
+               C.companysRegion3,
+               C.companysRegistCerti,
+               C.companysRegistCertiName,
+               C.companysLicense,
+               C.companysLicenseName,
+               C.companysProfileImage,
+               C.companysProfileImageName,
+               C.companysBankName,
+               C.companysBankNumber,
+               C.companysRegistDate,
+               C.companysPremium,
+               C.companysLocalPremium,
+               C.companysEnabled,
+               C.companysDelete,
+               C.companysDummyPhone,
+               C.companysMemo,
+               A.activeRegion,
+               T.companysCategoryValue,
+               P.idx,
+               P.premiumReqDate,
+               P.premiumStartDate,
+               P.premiumEndDate,
+               P.companysPremiumEnabled,
+               B.companysFlagIdx,
+               B.flagReqDate,
+               B.flagStartDate,
+               B.flagEndDate,
+               B.companysFlagEnabled,
+               B.companysFlagRegion1,
+               B.companysFlagRegion2,
+               B.companysFlagCategory
+        FROM Companys C
+                 JOIN (SELECT AR.companysIdx,
+                              GROUP_CONCAT(AR.activeRegion SEPARATOR '|') activeRegion
+                       FROM CompanysActiveRegion AR
+                       GROUP BY AR.companysIdx) A ON C.companysIdx = A.companysIdx
+                 JOIN (SELECT CT.companysIdx,
+                              GROUP_CONCAT(CT.companysCategoryValue SEPARATOR '|') companysCategoryValue
+                       FROM CompanysCategory CT
+                       GROUP BY CT.companysIdx) T ON C.companysIdx = T.companysIdx
+                 LEFT OUTER JOIN CompanysPremium P ON C.companysIdx = P.companysIdx
+                 LEFT OUTER JOIN (SELECT F.companysFlagIdx,
+                                         F.companysName,
+                                         F.flagReqDate,
+                                         F.flagStartDate,
+                                         F.flagEndDate,
+                                         F.companysFlagEnabled,
+                                         CR.companysFlagRegion1,
+                                         CR.companysFlagRegion2,
+                                         FCT.companysFlagCategory
+                                  FROM CompanysFlag F
+                                           JOIN CompanysFlagRegion CR on F.companysFlagIdx = CR.companysFlagIdx
+                                           JOIN (SELECT FT.companysFlagIdx,
+                                                        GROUP_CONCAT(FT.companysFlagCategory SEPARATOR '|') companysFlagCategory
+                                                 FROM CompanysFlagCategory FT
+                                                 GROUP BY FT.companysFlagIdx) FCT ON F.companysFlagIdx = FCT.companysFlagIdx) B
+                                 ON C.companysName = B.companysName
+        WHERE C.companysIdx = #{companysIdx}
+    </select>
+
+</mapper>
