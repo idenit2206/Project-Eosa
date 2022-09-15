@@ -56,22 +56,16 @@ public class UsersService implements UsersRepository {
         return result;
     }
 
-    // @Override
-    // public DuplicateAccountAndEmail dupliCheck(String usersAccount, String usersEmail) {
-    //     return usersRepository.dupliCheck(usersAccount, usersEmail);
-    // }
-    
     @Override
-    public Users usersAccountDupliCheck(String usersAccount) {
-        Users result = usersRepository.usersAccountDupliCheck(usersAccount);
-        return result;
+    public Users selectUsersPhoneCheckByUsersPhone(String usersPhone) {
+        return usersRepository.selectUsersPhoneCheckByUsersPhone(usersPhone);
     }
 
     @Override
-    public Users usersEmailDupliCheck(String usersEmail) {
-        Users result = usersRepository.usersEmailDupliCheck(usersEmail);       
-        return result;
+    public Users usersAccountDupliCheck(String usersAccount) {
+        return usersRepository.usersAccountDupliCheck(usersAccount);
     }
+
 
     /**
      * 로그인 할 때 활용하는 메서드(Spring Security formLogin()을 통해 로그인을 할때 사용하는 메서드)

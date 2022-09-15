@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.eosa.web.users.entity.*;
 import com.eosa.web.users.service.SmsCertificationService;
 import net.nurigo.sdk.message.model.Message;
+import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
+import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import org.apache.tomcat.util.json.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -79,15 +81,21 @@ public class UsersController {
         CustomResponseData result = new CustomResponseData();
         String senderPhone = "01071899972";
 
-         Message message = new Message();
-         String authCode = smsCertificationService.createCertificationCode(usersPhone);
-//       //  발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
-         message.setFrom("01071899972"); // 발신번호
-         message.setTo(usersPhone);  // 수신번호
-         message.setText("어사 회원가입 핸드폰 인증 단계입니다.\n다음의 번호를 입력해주세요.\n"+authCode); // 발신내용
-        log.debug("[sendOne] authCode: {}", authCode);
-//         SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
-//       //  smsCertificationService.savedAuthCode(usersPhone, authCode);
+        String usersPhoneFromDB = usersService.selectUsersPhoneCheckByUsersPhone(usersPhone).getUsersPhone();
+        if(usersPhoneFromDB != null) {
+            Message message = new Message();
+            String authCode = smsCertificationService.createCertificationCode(usersPhone);
+            /* 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다. */
+            message.setFrom("01071899972"); // 발신번호
+            message.setTo(usersPhone);  // 수신번호
+            message.setText("어사 회원가입 핸드폰 인증 단계입니다.\n다음의 번호를 입력해주세요.\n"+authCode); // 발신내용
+            log.info("[sendOne] usersPhone: {} 의 SMS 인증코드: {}",usersPhone, authCode);
+//          SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+//          smsCertificationService.savedAuthCode(usersPhone, authCode);
+        }
+//        else {
+//        }
+
     }
 
     @PostMapping(value="/sign/checkMyPhone")
@@ -201,23 +209,6 @@ public class UsersController {
             item = usersAccount;
         }
         
-        result.setStatusCode(HttpStatus.OK.value());
-        result.setResultItem(item);
-        result.setResponseDateTime(LocalDateTime.now());
-        return result;
-    }
-
-    @GetMapping("/sign/usersEmailDupliCheck")
-    public CustomResponseData usersEmailDupliCheck(
-        @RequestParam("usersEmail") String usersEmail
-    ) {
-        CustomResponseData result = new CustomResponseData();
-        String item = "";
-        Users entity = usersService.usersEmailDupliCheck(usersEmail);
-        if(entity == null) {
-            item = usersEmail;
-        }
-
         result.setStatusCode(HttpStatus.OK.value());
         result.setResultItem(item);
         result.setResponseDateTime(LocalDateTime.now());
@@ -509,5 +500,8 @@ public class UsersController {
         // }
         return result;
     }
+
+    // Apple SignIn
+    // Server to Server Notification Endpoint: https://dowajo.co.kr/api/user/apple/SignIn
 
 }

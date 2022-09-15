@@ -53,9 +53,11 @@ public class CompanysController {
 //    JsonObject jsonObject = (JsonObject) JsonParser.parseString(param).getAsJsonObject();
 //    log.debug("param: {}", param.toString());
 //    log.debug("jsonObject: {}", jsonObject.toString());
-      log.debug("params: {}", params.toString());
-      log.debug("{}, {}", companysCategory.toString(), companysActiveRegions.toString());
-      log.debug("file1: {}", file1.getOriginalFilename());
+      log.debug("[insertCompanys] parameter companysInfo: {}", params.toString());
+      log.debug("[insertCompanys] parameter companysCategory: {}, comapnysActiveRegion: {}", companysCategory.toString(), companysActiveRegions.toString());
+      log.debug("[insertCompanys] parameter companysRegistCerti: {}", file1.getOriginalFilename());
+      if(file2 != null) { log.debug("[insertCompanys] parameter companysLicense: {}", file2.getOriginalFilename()); }
+      if(file3 != null) { log.debug("[insertCompanys] parameter companysProfileImage: {}", file3.getOriginalFilename()); }
 
       Companys entity = new Companys();
 //        // @RequestBody String param JSON으로 받는 방식 파일처리 하는방법을 못 찾아서 이 방식은 보류
@@ -89,7 +91,7 @@ public class CompanysController {
             entity.setCompanysRegion3(params.getCompanysRegion3());
             entity.setCompanysBankName(params.getCompanysBankName());
             entity.setCompanysBankNumber(params.getCompanysBankNumber());
-            log.debug("entity: {}", entity.toString());
+            log.debug("[insertCompanys] Companys entity: {}", entity.toString());
 
       Companys step1 = companysService.save(entity);
 
@@ -103,7 +105,7 @@ public class CompanysController {
           int step1a = companysService.updateRegistCertiAndProfileImage(step1.getCompanysIdx(), file1URL, file3URL, file1Name, file3Name);
       }
       if(file3 == null) {
-          log.debug("{}, {}", file1.getOriginalFilename(), step1.getCompanysIdx());
+          log.debug("[insertCompanys] file1 Name: {},  companysIdx: {}", file1.getOriginalFilename(), step1.getCompanysIdx());
           List<String> fileObject = awsS3Service.uploadSingleFile(file1,"registcerti", step1.getCompanysIdx());
           String fileURL = fileObject.get(1);
           String fileName = fileObject.get(0);
@@ -120,12 +122,12 @@ public class CompanysController {
       CompanysCategory entity3 = new CompanysCategory();
       CompanysActiveRegion entity4 = new CompanysActiveRegion();
       CompanysMember entity5 = new CompanysMember();
-      log.debug("step1: {}", step1.toString());
+      log.debug("[insertCompanys] New Companys Save step1: {}", step1.toString());
 
       if(step1 != null) {
         Long companysIdx = step1.getCompanysIdx();
 
-        log.debug("companysIdx {} 의 활동 분야 {}",companysIdx, companysCategory.toString());
+        log.debug("[insertCompanys] companysIdx {} 의 활동 분야 {}",companysIdx, companysCategory.toString());
         for(int i = 0; i < companysCategory.size(); i++) {
           String companysCategoryValue = companysCategory.get(i);
           // log.debug("companysIdx: {} 의 활동 분야 {}", companysIdx, companysCategoryValue);
@@ -134,7 +136,7 @@ public class CompanysController {
           // log.debug("entity3: {}", entity3.toString());
           companysCategoryService.insertCompanysCategory(entity3);
         }
-        log.debug("companysIdx {} 의 활동 지역 {}",companysIdx, companysActiveRegions.toString());
+        log.debug("[insertCompanys] companysIdx {} 의 활동 지역 {}",companysIdx, companysActiveRegions.toString());
         for(int i = 0; i < companysActiveRegions.size(); i++) {
           String companysActiveRegion = companysActiveRegions.get(i);
           entity4.setCompanysIdx(companysIdx);
@@ -363,7 +365,7 @@ public class CompanysController {
     ){
       CustomResponseData result = new CustomResponseData();
       Map<String, Object> items = new HashMap<>();
-      log.debug("companysIdx가 일치하는 Companys 정보를 조회합니다", usersIdx);
+      log.debug("[selectCompanyInfoByUsersIdx] companysIdx가 일치하는 Companys 정보를 조회합니다", usersIdx);
 
       Companys step1 = companysService.selectCompanyInfoByUsersIdx(usersIdx);
 
@@ -373,8 +375,8 @@ public class CompanysController {
           List<String> companysCategory = companysCategoryService.selectByCompanysIdx(companysIdx);
           List<String> companysActiveRegion = companysActiveRegionService.selectByCompanysIdx(companysIdx);
 
-          log.debug("step1_category: {}", companysCategory.toString());
-          log.debug("step1_ActiveRegion: {}", companysActiveRegion.toString());
+          log.debug("[selectCompanyInfoByUsersIdx] companysCategory: {}", companysCategory.toString());
+          log.debug("[selectCompanyInfoByUsersIdx] companysActiveRegion: {}", companysActiveRegion.toString());
 
           items.put("companysIdx", step1.getCompanysIdx());
           items.put("companysName", step1.getCompanysName());
@@ -394,11 +396,13 @@ public class CompanysController {
           items.put("companysCategory", companysCategory);
           items.put("companysActiveRegion", companysActiveRegion);
 
+          log.debug("[selectCompanyInfoByUsersIdx]399lines prepare result items: {}", items.toString());
+
           result.setStatusCode(HttpStatus.OK.value());
           result.setResultItem(items);
           result.setResponseDateTime(LocalDateTime.now());
       } else {
-          log.debug("step1: Companys is Null");
+          log.debug("[selectCompanyInfoByUsersIdx] entity Companys is Null");
           result.setStatusCode(HttpStatus.OK.value());
           result.setResultItem(null);
           result.setResponseDateTime(LocalDateTime.now());
@@ -465,8 +469,25 @@ public class CompanysController {
             @RequestPart(value = "companysProfileImage", required = false) MultipartFile file3
     ) throws JSONException, ParseException, IOException {
         CustomResponseData result = new CustomResponseData();
-        log.debug("[updateCompanys] companyInfo: {}", companyInfo.toString());
-        log.debug("[updateCompanys] {}, {}", companysCategory.toString(), companysActiveRegions.toString());
+        log.debug("[updateCompanys] parameter companyInfo: {}", companyInfo.toString());
+        log.debug("[updateCompanys] parameter companysCategory: {}, companysActiveRegion: {}", companysCategory.toString(), companysActiveRegions.toString());
+        if(file1 != null) {
+            log.debug("[updateCompanys] 새로운 사업자등록증: {}", file1.getOriginalFilename());
+        } else {
+            log.debug("[updateCompanys] 기존의 사업자 등록증: {}", companyInfo.getCompanysRegistCerti());
+        }
+
+        if(file2 != null) {
+            log.debug("[updateCompanys] 새로운 라이센스: {}", file2.getOriginalFilename());
+        } else {
+            log.debug("[updateCompanys] 기존의 라이센스: {}", companyInfo.getCompanysLicense());
+        }
+
+        if(file3 != null) {
+            log.debug("[updateCompanys] 새로운 프로필이미지: {}", file3.getOriginalFilename());
+        } else {
+            log.debug("[updateCompanys] 기존의 프로필이미지: {}", companyInfo.getCompanysProfileImage());
+        }
 
         Companys entity = new Companys();
         entity.setCompanysIdx(companyInfo.getCompanysIdx());
@@ -476,20 +497,27 @@ public class CompanysController {
             entity.setCompanysRegistCerti(file1URL.get(1));
             entity.setCompanysRegistCertiName(file1URL.get(0));
         } else {
-            entity.setCompanysRegistCerti(entity.getCompanysRegistCerti());
-            entity.setCompanysRegistCertiName(entity.getCompanysRegistCertiName());
+            entity.setCompanysRegistCerti(companyInfo.getCompanysRegistCerti());
+            entity.setCompanysRegistCertiName(companyInfo.getCompanysRegistCertiName());
         }
 
         if(file2 != null) {
-            List<String> file2URL = awsS3Service.uploadSingleFile(file2,"license", entity.getCompanysIdx());
+            List<String> file2URL = awsS3Service.uploadSingleFile(file2, "license", entity.getCompanysIdx());
             entity.setCompanysLicense(file2URL.get(1));
             entity.setCompanysLicenseName(file2URL.get(0));
+        } else {
+            entity.setCompanysLicense(companyInfo.getCompanysLicense());
+            entity.setCompanysLicenseName(companyInfo.getCompanysLicenseName());
         }
 
         if(file3 != null) {
-            List<String> file3URL = awsS3Service.uploadSingleFile(file3, "license", entity.getCompanysIdx());
+            log.info("[updateCompanys] new file3: {}", file3.getOriginalFilename());
+            List<String> file3URL = awsS3Service.uploadSingleFile(file3, "profileimage", entity.getCompanysIdx());
             entity.setCompanysProfileImage(file3URL.get(1));
             entity.setCompanysProfileImageName(file3URL.get(0));
+        } else {
+            entity.setCompanysProfileImage(companyInfo.getCompanysProfileImage());
+            entity.setCompanysProfileImageName(companyInfo.getCompanysProfileImageName());
         }
 
         entity.setCompanysName(companyInfo.getCompanysName());
@@ -504,7 +532,7 @@ public class CompanysController {
         entity.setCompanysBankNumber(companyInfo.getCompanysBankNumber());
 
         Long companysIdx = entity.getCompanysIdx();
-//        log.debug("[updateCompanys] entity: {}", entity.toString());
+        log.debug("[updateCompanys] update wait entity: {}", entity.toString());
 
         int step1 = companysService.updateCompanys(entity);
 
@@ -526,11 +554,13 @@ public class CompanysController {
                 companysActiveRegionService.insertCompanysActiveRegion(entity3);
             }
 
+            log.debug("[updateCompanys] line542 update Done");
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem("SUCCESS");
             result.setResponseDateTime(LocalDateTime.now());
         }
         else {
+            log.debug("[updateCompanys] line542 update FAIL");
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem("FAILURE");
             result.setResponseDateTime(LocalDateTime.now());
@@ -538,6 +568,7 @@ public class CompanysController {
 
         return result;
     }
+
 
     @GetMapping("/selectOneCompanysByCompanysIdxTest")
     public CustomResponseData selectOneCompanysByCompanysIdxTest(@RequestParam("companysIdx") Long companysIdx) {

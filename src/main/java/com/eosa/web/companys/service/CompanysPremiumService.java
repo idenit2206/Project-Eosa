@@ -1,6 +1,7 @@
 package com.eosa.web.companys.service;
 
 import com.eosa.web.companys.entity.CompanysPremium;
+import com.eosa.web.companys.entity.SelectCompanys;
 import com.eosa.web.companys.repository.CompanysPremiumRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,11 @@ public class CompanysPremiumService implements CompanysPremiumRepository {
         entity.setPremiumReqDate(LocalDateTime.now());
         entity.setCompanysPremiumEnabled(0);
         return companysPremiumRepository.save(entity);
+    }
+
+    @Override
+    public List<SelectCompanys> selectAllCompanysPremium() {
+        return companysPremiumRepository.selectAllCompanysPremium();
     }
 
     @Override

@@ -1,8 +1,10 @@
 package com.eosa.web.companys.service;
 
 import com.eosa.web.companys.entity.CompanysFlag;
+import com.eosa.web.companys.entity.SelectCompanys;
 import com.eosa.web.companys.repository.CompanysFlagRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.sql.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -28,6 +30,11 @@ public class CompanysFlagService implements CompanysFlagRepository {
         entity.setCompanysFlagEnabled(0);
         log.debug("[save] entity: {}", entity.toString());
         return companysFlagRepository.save(entity);
+    }
+
+    @Override
+    public List<SelectCompanys> selectAllCompanysFlag() {
+        return companysFlagRepository.selectAllCompanysFlag();
     }
 
     @Override
