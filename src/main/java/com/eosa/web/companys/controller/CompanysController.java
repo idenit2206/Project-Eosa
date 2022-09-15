@@ -512,7 +512,7 @@ public class CompanysController {
 
         if(file3 != null) {
             log.info("[updateCompanys] new file3: {}", file3.getOriginalFilename());
-            List<String> file3URL = awsS3Service.uploadSingleFile(file3, "license", entity.getCompanysIdx());
+            List<String> file3URL = awsS3Service.uploadSingleFile(file3, "profileimage", entity.getCompanysIdx());
             entity.setCompanysProfileImage(file3URL.get(1));
             entity.setCompanysProfileImageName(file3URL.get(0));
         } else {
