@@ -3,6 +3,7 @@ package com.eosa.web.companys.controller;
 import com.eosa.web.companys.entity.CompanysFlag;
 import com.eosa.web.companys.entity.CompanysFlagCategory;
 import com.eosa.web.companys.entity.CompanysFlagRegion;
+import com.eosa.web.companys.entity.SelectCompanys;
 import com.eosa.web.companys.repository.CompanysFlagRegionRepository;
 import com.eosa.web.companys.service.CompanysFlagCategoryService;
 import com.eosa.web.companys.service.CompanysFlagRegionService;
@@ -106,6 +107,25 @@ public class CompanysFlagController {
         else {
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem("FALSE");
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
+
+    @GetMapping("/selectAllCompanysFlag")
+    public CustomResponseData selectAllCompanysFlag() {
+        CustomResponseData result = new CustomResponseData();
+        List<SelectCompanys> items = companysFlagService.selectAllCompanysFlag();
+
+        if(items != null) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(items);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(null);
             result.setResponseDateTime(LocalDateTime.now());
         }
 
