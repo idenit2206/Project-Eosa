@@ -510,4 +510,7 @@ public class UsersController {
         return result;
     }
 
+    // Apple SignIn
+    // Server to Server Notification Endpoint: https://dowajo.co.kr/api/user/apple/SignIn
+
 }

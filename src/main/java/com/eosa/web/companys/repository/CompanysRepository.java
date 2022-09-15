@@ -86,8 +86,8 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
     @Modifying
     @Query(value=
         "UPDATE Companys " +
-        "SET companysRegistCerti = :file1URL, companysProfileImage = :file3URL, " +
-        "SET companysRegistCertiName = :file1Name, companysProfileImageName = :file3Name " +
+        "SET companysRegistCerti = :file1URL, companysRegistCertiName = :file1Name, " +
+        "companysProfileImage = :file3URL, companysProfileImageName = :file3Name " +
         "WHERE companysIdx = :companysIdx",
         nativeQuery = true
     )

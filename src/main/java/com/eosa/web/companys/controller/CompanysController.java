@@ -53,9 +53,11 @@ public class CompanysController {
 //    JsonObject jsonObject = (JsonObject) JsonParser.parseString(param).getAsJsonObject();
 //    log.debug("param: {}", param.toString());
 //    log.debug("jsonObject: {}", jsonObject.toString());
-      log.debug("params: {}", params.toString());
-      log.debug("{}, {}", companysCategory.toString(), companysActiveRegions.toString());
-      log.debug("file1: {}", file1.getOriginalFilename());
+      log.debug("[insertCompanys] parameter companysInfo: {}", params.toString());
+      log.debug("[insertCompanys] parameter companysCategory: {}, comapnysActiveRegion: {}", companysCategory.toString(), companysActiveRegions.toString());
+      log.debug("[insertCompanys] parameter companysRegistCerti: {}", file1.getOriginalFilename());
+      if(file2 != null) { log.debug("[insertCompanys] parameter companysLicense: {}", file2.getOriginalFilename()); }
+      if(file3 != null) { log.debug("[insertCompanys] parameter companysProfileImage: {}", file3.getOriginalFilename()); }
 
       Companys entity = new Companys();
 //        // @RequestBody String param JSON으로 받는 방식 파일처리 하는방법을 못 찾아서 이 방식은 보류
@@ -89,7 +91,7 @@ public class CompanysController {
             entity.setCompanysRegion3(params.getCompanysRegion3());
             entity.setCompanysBankName(params.getCompanysBankName());
             entity.setCompanysBankNumber(params.getCompanysBankNumber());
-            log.debug("entity: {}", entity.toString());
+            log.debug("[insertCompanys] Companys entity: {}", entity.toString());
 
       Companys step1 = companysService.save(entity);
 
@@ -103,7 +105,7 @@ public class CompanysController {
           int step1a = companysService.updateRegistCertiAndProfileImage(step1.getCompanysIdx(), file1URL, file3URL, file1Name, file3Name);
       }
       if(file3 == null) {
-          log.debug("{}, {}", file1.getOriginalFilename(), step1.getCompanysIdx());
+          log.debug("[insertCompanys] file1 Name: {},  companysIdx: {}", file1.getOriginalFilename(), step1.getCompanysIdx());
           List<String> fileObject = awsS3Service.uploadSingleFile(file1,"registcerti", step1.getCompanysIdx());
           String fileURL = fileObject.get(1);
           String fileName = fileObject.get(0);
@@ -120,12 +122,12 @@ public class CompanysController {
       CompanysCategory entity3 = new CompanysCategory();
       CompanysActiveRegion entity4 = new CompanysActiveRegion();
       CompanysMember entity5 = new CompanysMember();
-      log.debug("step1: {}", step1.toString());
+      log.debug("[insertCompanys] New Companys Save step1: {}", step1.toString());
 
       if(step1 != null) {
         Long companysIdx = step1.getCompanysIdx();
 
-        log.debug("companysIdx {} 의 활동 분야 {}",companysIdx, companysCategory.toString());
+        log.debug("[insertCompanys] companysIdx {} 의 활동 분야 {}",companysIdx, companysCategory.toString());
         for(int i = 0; i < companysCategory.size(); i++) {
           String companysCategoryValue = companysCategory.get(i);
           // log.debug("companysIdx: {} 의 활동 분야 {}", companysIdx, companysCategoryValue);
@@ -134,7 +136,7 @@ public class CompanysController {
           // log.debug("entity3: {}", entity3.toString());
           companysCategoryService.insertCompanysCategory(entity3);
         }
-        log.debug("companysIdx {} 의 활동 지역 {}",companysIdx, companysActiveRegions.toString());
+        log.debug("[insertCompanys] companysIdx {} 의 활동 지역 {}",companysIdx, companysActiveRegions.toString());
         for(int i = 0; i < companysActiveRegions.size(); i++) {
           String companysActiveRegion = companysActiveRegions.get(i);
           entity4.setCompanysIdx(companysIdx);
