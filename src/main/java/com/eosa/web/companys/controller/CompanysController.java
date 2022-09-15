@@ -365,7 +365,7 @@ public class CompanysController {
     ){
       CustomResponseData result = new CustomResponseData();
       Map<String, Object> items = new HashMap<>();
-      log.debug("companysIdx가 일치하는 Companys 정보를 조회합니다", usersIdx);
+      log.debug("[selectCompanyInfoByUsersIdx] companysIdx가 일치하는 Companys 정보를 조회합니다", usersIdx);
 
       Companys step1 = companysService.selectCompanyInfoByUsersIdx(usersIdx);
 
@@ -375,8 +375,8 @@ public class CompanysController {
           List<String> companysCategory = companysCategoryService.selectByCompanysIdx(companysIdx);
           List<String> companysActiveRegion = companysActiveRegionService.selectByCompanysIdx(companysIdx);
 
-          log.debug("step1_category: {}", companysCategory.toString());
-          log.debug("step1_ActiveRegion: {}", companysActiveRegion.toString());
+          log.debug("[selectCompanyInfoByUsersIdx] companysCategory: {}", companysCategory.toString());
+          log.debug("[selectCompanyInfoByUsersIdx] companysActiveRegion: {}", companysActiveRegion.toString());
 
           items.put("companysIdx", step1.getCompanysIdx());
           items.put("companysName", step1.getCompanysName());
@@ -396,11 +396,13 @@ public class CompanysController {
           items.put("companysCategory", companysCategory);
           items.put("companysActiveRegion", companysActiveRegion);
 
+          log.debug("[selectCompanyInfoByUsersIdx]399 items: {}", items.toString());
+
           result.setStatusCode(HttpStatus.OK.value());
           result.setResultItem(items);
           result.setResponseDateTime(LocalDateTime.now());
       } else {
-          log.debug("step1: Companys is Null");
+          log.debug("[selectCompanyInfoByUsersIdx] entity Companys is Null");
           result.setStatusCode(HttpStatus.OK.value());
           result.setResultItem(null);
           result.setResponseDateTime(LocalDateTime.now());
@@ -468,7 +470,10 @@ public class CompanysController {
     ) throws JSONException, ParseException, IOException {
         CustomResponseData result = new CustomResponseData();
         log.debug("[updateCompanys] companyInfo: {}", companyInfo.toString());
-        log.debug("[updateCompanys] {}, {}", companysCategory.toString(), companysActiveRegions.toString());
+        log.debug("[updateCompanys] companysCategory: {}, companysActiveRegion: {}", companysCategory.toString(), companysActiveRegions.toString());
+        if(file1 != null) { log.debug("[updateCompanys] file1: {}", file1.getOriginalFilename()); }
+        if(file2 != null) { log.debug("[updateCompanys] file2: {}", file2.getOriginalFilename()); }
+        if(file3 != null) { log.debug("[updateCompanys] file3: {}", file3.getOriginalFilename()); }
 
         Companys entity = new Companys();
         entity.setCompanysIdx(companyInfo.getCompanysIdx());
@@ -478,20 +483,26 @@ public class CompanysController {
             entity.setCompanysRegistCerti(file1URL.get(1));
             entity.setCompanysRegistCertiName(file1URL.get(0));
         } else {
-            entity.setCompanysRegistCerti(entity.getCompanysRegistCerti());
-            entity.setCompanysRegistCertiName(entity.getCompanysRegistCertiName());
+            entity.setCompanysRegistCerti(companyInfo.getCompanysRegistCerti());
+            entity.setCompanysRegistCertiName(companyInfo.getCompanysRegistCertiName());
         }
 
         if(file2 != null) {
-            List<String> file2URL = awsS3Service.uploadSingleFile(file2,"license", entity.getCompanysIdx());
+            List<String> file2URL = awsS3Service.uploadSingleFile(file2, "license", entity.getCompanysIdx());
             entity.setCompanysLicense(file2URL.get(1));
             entity.setCompanysLicenseName(file2URL.get(0));
+        } else {
+            entity.setCompanysLicense(companyInfo.getCompanysRegistCerti());
+            entity.setCompanysLicenseName(companyInfo.getCompanysRegistCertiName());
         }
 
         if(file3 != null) {
             List<String> file3URL = awsS3Service.uploadSingleFile(file3, "license", entity.getCompanysIdx());
             entity.setCompanysProfileImage(file3URL.get(1));
             entity.setCompanysProfileImageName(file3URL.get(0));
+        } else {
+            entity.setCompanysProfileImage(companyInfo.getCompanysProfileImage());
+            entity.setCompanysProfileImageName(companyInfo.getCompanysProfileImageName());
         }
 
         entity.setCompanysName(companyInfo.getCompanysName());
@@ -506,7 +517,7 @@ public class CompanysController {
         entity.setCompanysBankNumber(companyInfo.getCompanysBankNumber());
 
         Long companysIdx = entity.getCompanysIdx();
-//        log.debug("[updateCompanys] entity: {}", entity.toString());
+        log.debug("[updateCompanys] update wait entity: {}", entity.toString());
 
         int step1 = companysService.updateCompanys(entity);
 
@@ -528,11 +539,13 @@ public class CompanysController {
                 companysActiveRegionService.insertCompanysActiveRegion(entity3);
             }
 
+            log.debug("[updateCompanys] line542 update Done");
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem("SUCCESS");
             result.setResponseDateTime(LocalDateTime.now());
         }
         else {
+            log.debug("[updateCompanys] line542 update FAIL");
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem("FAILURE");
             result.setResponseDateTime(LocalDateTime.now());
@@ -540,6 +553,7 @@ public class CompanysController {
 
         return result;
     }
+
 
     @GetMapping("/selectOneCompanysByCompanysIdxTest")
     public CustomResponseData selectOneCompanysByCompanysIdxTest(@RequestParam("companysIdx") Long companysIdx) {

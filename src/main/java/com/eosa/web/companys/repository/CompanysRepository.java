@@ -110,10 +110,10 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         "UPDATE Companys " +
         "SET companysName = :#{#Companys.companysName}, companysComment = :#{#Companys.companysComment}, " +
         "companysRegion1 = :#{#Companys.companysRegion1}, companysRegion2 = :#{#Companys.companysRegion2}, companysRegion3 = :#{#Companys.companysRegion3}, " +
-        "companysRegistCerti = :#{#Companys.companysRegistCerti}, companysProfileImage = :#{#Companys.companysProfileImage}, companysEnabled = :#{#Companys.companysEnabled}, " +
+        "companysRegistCerti = :#{#Companys.companysRegistCerti}, companysLicense = :#{#Companys.companysLicense}, companysProfileImage = :#{#Companys.companysProfileImage}, " +
+        "companysRegistCertiName = :#{#Companys.companysRegistCertiName}, companysLicenseName = :#{#Companys.companysLicenseName}, companysProfileImageName = :#{#Companys.companysProfileImageName}, " +
         "companysBankName = :#{#Companys.companysBankName}, companysBankNumber = :#{#Companys.companysBankNumber} " +
-        "WHERE companysIdx = :#{#Companys.companysIdx} ",
-        nativeQuery=true
+        "WHERE companysIdx = :#{#Companys.companysIdx} ", nativeQuery=true
     )
     int updateCompanys(@Param("Companys") Companys entity);
 
