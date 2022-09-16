@@ -407,6 +407,7 @@ async function updateCompany() {
                     .catch(err => console.log(err));
 
                 formData.set('companysDummyPhone', vn);
+                formData.set('tkGbn', 1);
 
                 fetch('/admin/manage/company/safety/mapping', {
                     method: 'post',
@@ -418,17 +419,35 @@ async function updateCompany() {
                     })
                     .catch(err => console.log(err));
             } else if (safety.value != '') {
-                formData.set('companysDummyPhone', safety.value);
+                if (enabled.value == 1) {
+                    formData.set('companysDummyPhone', safety.value);
+                    formData.set('tkGbn', 1);
 
-                fetch('/admin/manage/company/safety/mapping', {
-                    method: 'post',
-                    body: formData,
-                })
-                    .then(res => res.json())
-                    .then(data => {
-                        console.log(data);
+                    fetch('/admin/manage/company/safety/mapping', {
+                        method: 'post',
+                        body: formData,
                     })
-                    .catch(err => console.log(err));
+                        .then(res => res.json())
+                        .then(data => {
+                            console.log(data);
+                        })
+                        .catch(err => console.log(err));
+                } else if (enabled.value != 1) {
+                    formData.set('companysDummyPhone', safety.value);
+                    formData.set('tkGbn', 2);
+
+                    fetch('/admin/manage/company/safety/mapping', {
+                        method: 'post',
+                        body: formData,
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            console.log(data);
+                        })
+                        .catch(err => console.log(err));
+
+                    formData.set('companysDummyPhone', '');
+                }
             }
 
             for (let i = 0; i < activeRegion.length; i++) {

@@ -97,7 +97,7 @@ public class CompanyController {
     }
 
     /**
-     * 안심번호 등록 컨트롤러
+     * 안심번호 등록/삭제 컨트롤러
      *
      * @param companysDTO
      * @return int
