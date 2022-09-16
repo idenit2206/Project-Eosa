@@ -152,20 +152,20 @@ public class CompanyService {
     /**
      * 안심번호 등록 서비스
      *
-     * @param phoneNumber
-     * @param safetyNumber
+     * @param companysDTO
      * @return int
      * @throws NoSuchAlgorithmException
      */
-    public int safetyMapping(String phoneNumber, String safetyNumber) throws NoSuchAlgorithmException {
+    public int safetyMapping(CompanysDTO companysDTO) throws NoSuchAlgorithmException {
 
         Safety safety = new Safety();
 
         Map<String, String> map = safety.safetyEncode();
 
-        String result = safety.safetyAPI("https://bizapi.callmix.co.kr/biz050/BZV210?secureCode=" + map.get("secureCode") + "&bizId=" + map.get("id") + "&monthDay=" + map.get("monthDay") + "&tkGbn=1&rn=" + phoneNumber + "&vn=" + safetyNumber);
+        String result = safety.safetyAPI("https://bizapi.callmix.co.kr/biz050/BZV210?secureCode=" + map.get("secureCode") + "&bizId=" + map.get("id") + "&monthDay=" + map.get("monthDay") + "&tkGbn=1&rn=" + companysDTO.getCompanysPhone() + "&vn=" + companysDTO.getCompanysDummyPhone());
 
         JSONObject json = new JSONObject(result);
+
         int num = json.getString("resCd").equals("SUCCESS") ? 1 : 0;
 
         return num;

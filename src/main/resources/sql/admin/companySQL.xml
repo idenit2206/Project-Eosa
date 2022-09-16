@@ -128,12 +128,16 @@
         SET companysName       = #{companysName},
             companysComment    = #{companysComment},
             companysSpec       = #{companysSpec},
+            companysPhone      = #{companysPhone},
             companysRegion1    = #{companysRegion1},
             companysRegion2    = #{companysRegion2},
             companysRegion3    = #{companysRegion3},
             companysBankName   = #{companysBankName},
             companysBankNumber = #{companysBankNumber},
             companysEnabled    = #{companysEnabled},
+            <if test="companysDummyPhone != null">
+                companysDummyPhone = #{companysDummyPhone},
+            </if>
             companysMemo       = #{companysMemo}
         WHERE companysIdx = #{companysIdx}
     </update>

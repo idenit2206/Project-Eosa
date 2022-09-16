@@ -369,12 +369,16 @@ function insertUser() {
 /**
  * 업체 수정
  */
-function updateCompany() {
+async function updateCompany() {
 
     const name = document.querySelector('.c-name');
     const region01 = document.querySelector('#region01');
     const activeRegion = document.querySelectorAll('input[name=area]:checked');
     const category = document.querySelectorAll('input[name=category]:checked');
+    const enabled = document.querySelector('.c-enabled');
+
+    const phone = document.querySelector('.c-phone');
+    const safety = document.querySelector('.c-safety');
 
     const formData = new FormData();
 
@@ -386,7 +390,47 @@ function updateCompany() {
         alert('분야를 선택해 주세요.');
     } else {
         const msg = confirm('수정하시겠습니까?');
+
+        formData.set('companysPhone', phone.value);
+
         if (msg) {
+            // 최초 승인 시 안심번호 등록
+            if (safety.value == '' && enabled.value == 1) {
+
+                const vn = await fetch('/admin/manage/company/safety', {
+                    method: 'post',
+                })
+                    .then(res => res.text())
+                    .then(data => {
+                        return data;
+                    })
+                    .catch(err => console.log(err));
+
+                formData.set('companysDummyPhone', vn);
+
+                fetch('/admin/manage/company/safety/mapping', {
+                    method: 'post',
+                    body: formData,
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data);
+                    })
+                    .catch(err => console.log(err));
+            } else if (safety.value != '') {
+                formData.set('companysDummyPhone', safety.value);
+
+                fetch('/admin/manage/company/safety/mapping', {
+                    method: 'post',
+                    body: formData,
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data);
+                    })
+                    .catch(err => console.log(err));
+            }
+
             for (let i = 0; i < activeRegion.length; i++) {
                 formData.append('activeRegion', activeRegion[i].value);
             }
@@ -403,7 +447,7 @@ function updateCompany() {
             formData.set('companysRegion3', document.querySelector('.c-region3').value);
             formData.set('companysBankName', document.querySelector('.c-bank').value);
             formData.set('companysBankNumber', document.querySelector('.c-bank-num').value);
-            formData.set('companysEnabled', document.querySelector('.c-enabled').value);
+            formData.set('companysEnabled', enabled.value);
             formData.set('companysMemo', document.querySelector('.c-memo').value);
 
             fetchApi('/admin/manage/company/update', 'post', formData, '수정되었습니다.');
