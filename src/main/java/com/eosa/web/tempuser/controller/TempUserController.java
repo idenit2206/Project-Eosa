@@ -46,12 +46,14 @@ public class TempUserController {
         @RequestParam("usersAccount") String usersEmail,
         @RequestParam("usersPass") String usersPass
     ) {
+        log.info("[signIn] 비회원 usersEmail: {} 님이 로그인을 요청합니다.", usersEmail);
         CustomResponseData result = new CustomResponseData();
         Map<String, Object> items = new HashMap<>();
 
         Users selectRows = tempUserService.signIn(usersEmail, usersPass);
 
         if(selectRows != null) {
+            log.info("[signIn]로그인에 성공했습니다.");
             items.put("usersIdx", selectRows.getUsersIdx());
             items.put("usersEmail", selectRows.getUsersEmail());
             items.put("usersName", "TempUser"+selectRows.getUsersIdx());
@@ -62,6 +64,8 @@ public class TempUserController {
             result.setResponseDateTime(LocalDateTime.now());
         }
         else {
+            log.error("[signIn]로그인에 실패했습니다.");
+//            log.debug("[signIn]")
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem(null);
             result.setResponseDateTime(LocalDateTime.now());

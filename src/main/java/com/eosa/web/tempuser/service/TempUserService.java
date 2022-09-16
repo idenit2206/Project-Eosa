@@ -26,16 +26,15 @@ public class TempUserService implements TempUserRepository {
 
     @Override
     public <S extends Users> S save(S entity) {
-        entity.setUsersPass(passwordEncoder.encode(entity.getUsersPass()));
         entity.setUsersRole("TEMP");
         entity.setUsersJoinDate(LocalDateTime.now());
+        entity.setUsersEnabled(1);
         return tempUserRepository.save(entity);
     }
 
     @Override
     public Users signIn(String usersEmail, String usersPass) {
-        String encodeUsersPass = passwordEncoder.encode(usersPass);
-        return tempUserRepository.signIn(usersEmail, encodeUsersPass);
+        return tempUserRepository.signIn(usersEmail, usersPass);
     }
 
 
