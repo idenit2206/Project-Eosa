@@ -74,6 +74,8 @@ dependencies {
 	// 타임리프 레이아웃
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+	// json
+	implementation 'org.json:json:20220320'
 
 }
 

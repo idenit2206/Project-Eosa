@@ -50,6 +50,11 @@
                     </div>
 
                     <div class="input-wrap">
+                        <label class="label">닉네임<i class="required">*</i></label>
+                        <input type="text" class="input user-nick" maxlength="10" spellcheck="false" placeholder="닉네임 입력">
+                    </div>
+
+                    <div class="input-wrap">
                         <label class="label">연락처<i class="required">*</i></label>
                         <input type="text" class="input onlyNum user-tel" maxlength="11" spellcheck="false" placeholder="연락처 입력">
                     </div>
@@ -57,6 +62,62 @@
                     <div class="input-wrap">
                         <label class="label">이메일<i class="required">*</i></label>
                         <input type="email" class="input user-email" spellcheck="false" placeholder="이메일 입력">
+                    </div>
+
+                    <div class="input-wrap">
+                        <label class="label">성별<i class="required">*</i></label>
+                        <div class="type-wrap register-type-wrap">
+                            <div class="check-box">
+                                <input type="radio" id="Gender01" name="gender" class="input" value="0" checked>
+                                <label for="Gender01" class="label register-check">남성</label>
+                            </div>
+                            <div class="check-box">
+                                <input type="radio" id="Gender02" name="gender" class="input" value="1">
+                                <label for="Gender02" class="label register-check">여성</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-wrap">
+                        <label class="label">연령<i class="required">*</i></label>
+                        <div class="register-select">
+                            <select class="select user-age">
+                                <option value="" selected disabled>선택</option>
+                                <option th:each="i : ${#numbers.sequence(1, 8)}" th:value="${i * 10}" th:text="|${i * 10}대|"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="input-wrap">
+                        <label class="label">지역<i class="required">*</i></label>
+                        <div class="register-select">
+                            <select class="select" id="region01">
+                                <option value="" selected disabled>시/도</option>
+                                <option value="서울">서울</option>
+                                <option value="경기">경기</option>
+                                <option value="대전/충남/세종">대전/충남/세종</option>
+                                <option value="인천/부천">인천/부천</option>
+                                <option value="강원">강원</option>
+                                <option value="전주/전북">전주/전북</option>
+                                <option value="청주/충북">청주/충북</option>
+                                <option value="대구/경북">대구/경북</option>
+                                <option value="부산/울산/경남">부산/울산/경남</option>
+                                <option value="광주/전남">광주/전남</option>
+                                <option value="제주">제주</option>
+                            </select>
+                            <select class="select" id="region02">
+                                <option value="" selected disabled>구/군</option>
+                                <option value="서초">서초</option>
+                                <option value="강남">강남</option>
+                                <option value="강동/송파">강동/송파</option>
+                                <option value="강서/양천/영등포/구로">강서/양천/영등포/구로</option>
+                                <option value="도봉/강북/성북/노원">도봉/강북/성북/노원</option>
+                                <option value="동대문/성동/광진/중랑">동대문/성동/광진/중랑</option>
+                                <option value="종로/중구/용산">종로/중구/용산</option>
+                                <option value="서대문/마포/은평">서대문/마포/은평</option>
+                                <option value="동작/관악/금천">동작/관악/금천</option>
+                            </select>
+                        </div>
                     </div>
 
                 </fieldset>
@@ -74,11 +135,11 @@
 </th:block>
 
 <th:block layout:fragment="script">
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script>
         window.addEventListener('DOMContentLoaded', () => {
             highlightMenu('register');
             onlyNum();
+            regionSelect();
             new PwdValidation();
 
             // 아이디 중복확인
@@ -88,6 +149,10 @@
             // 연락처 중복확인
             const tel = document.querySelector('.user-tel');
             tel.addEventListener('change', phoneCheck);
+
+            // 회원 등록
+            const registerBtn = document.querySelector('.btn-register');
+            registerBtn.addEventListener('click', insertUser);
         });
     </script>
 </th:block>

@@ -6,6 +6,7 @@ import com.eosa.admin.dto.UsersTerminateDTO;
 import com.eosa.admin.mapper.UserMapper;
 import com.eosa.admin.pagination.Pagination;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -30,6 +31,9 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     /**
      * 회원 목록 조회 서비스
      *
@@ -42,29 +46,23 @@ public class UserService {
      */
     public String userList(Model model, String role, String sort, String search, int page) {
 
-        Map<String, Object> cntMap = new HashMap<>();
         Map<String, Object> map = new HashMap<>();
 
-        cntMap.put("usersRole", role);
         map.put("usersRole", role);
 
         // 필터 검색 조건
         if (search != "" && !search.equals("")) {
             if (sort.equals("id")) {
-                cntMap.put("id", sort);
                 map.put("id", sort);
             } else if (sort.equals("name")) {
-                cntMap.put("name", sort);
                 map.put("name", sort);
             } else if (sort.equals("phone")) {
-                cntMap.put("phone", sort);
                 map.put("phone", sort);
             }
-            cntMap.put("search", search);
             map.put("search", search);
         }
 
-        int count = userMapper.countUsersList(cntMap);
+        int count = userMapper.countUsersList(map);
 
         Pagination pagination = new Pagination(count, page);
 
@@ -121,26 +119,21 @@ public class UserService {
      */
     public String terminateList(Model model, String sort, String search, int page) {
 
-        Map<String, Object> cntMap = new HashMap<>();
         Map<String, Object> map = new HashMap<>();
 
         // 필터 검색 조건
         if (search != "" && !search.equals("")) {
             if (sort.equals("id")) {
-                cntMap.put("id", sort);
                 map.put("id", sort);
             } else if (sort.equals("name")) {
-                cntMap.put("name", sort);
                 map.put("name", sort);
             } else if (sort.equals("phone")) {
-                cntMap.put("phone", sort);
                 map.put("phone", sort);
             }
-            cntMap.put("search", search);
             map.put("search", search);
         }
 
-        int count = userMapper.countTerminateList(cntMap);
+        int count = userMapper.countTerminateList(map);
 
         Pagination pagination = new Pagination(count, page);
 
@@ -247,9 +240,30 @@ public class UserService {
         return userMapper.deleteTemp(arr);
     }
 
+    /**
+     * 회원 등록 폼 서비스
+     *
+     * @return String
+     */
     public String registerUser() {
 
         return "admin/user/register";
+    }
+
+    /**
+     * 회원 등록 서비스
+     *
+     * @param usersDTO
+     * @return int
+     */
+    public int insertUsers(UsersDTO usersDTO) {
+
+        // 비밀번호 인코딩
+        String rawPassword = usersDTO.getUsersPass();
+        String encPassword = bCryptPasswordEncoder.encode(rawPassword);
+        usersDTO.setUsersPass(encPassword);
+
+        return userMapper.insertUsers(usersDTO);
     }
 
 }

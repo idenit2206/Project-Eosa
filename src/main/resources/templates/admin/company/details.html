@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/fragments/layout}">
+
+<th:block layout:fragment="content">
+
+    <th:block th:replace="admin/fragments/aside :: asideFragment"></th:block>
+
+    <main id="main" data-category="company">
+        <section class="section section-users">
+
+            <div class="form form--xxl">
+                <div class="tab_cont">
+                    <fieldset class="fieldset">
+                        <table class="dt-table">
+                            <tbody>
+                                <tr>
+                                    <td colspan="4">
+                                        <input type="hidden" class="companysIdx" th:value="${details.companysIdx}">
+                                        <div class="company-profile-wrap">
+                                            <img th:if="${details.companysProfileImage} eq null" class="company-profile-img" th:src="@{/assets/images/ico/ico-mape.svg}">
+                                            <img th:if="${details.companysProfileImage} ne null" class="company-profile-img" th:src="@{${details.companysProfileImage}}">
+                                            <div class="company-description-wrap">
+                                                <div class="input-wrap">
+                                                    <input type="text" spellcheck="false" class="input c-comment" th:value="${details.companysComment}">
+                                                </div>
+                                                <div class="text-wrap">
+                                                    <textarea class="textarea c-spec" spellcheck="false" th:text="${details.companysSpec}"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>업체번호</th>
+                                    <td th:text="${details.companysIdx}"></td>
+                                    <th>상태</th>
+                                    <td>
+                                        <div class="input-wrap approval-wrap">
+                                            <select class="select width-100-per c-enabled">
+                                                <option value="1" th:selected="${details.companysEnabled} eq 1">승인</option>
+                                                <option value="0" th:selected="${details.companysEnabled} eq 0">대기</option>
+                                                <option value="-1" th:selected="${details.companysEnabled} eq -1">반려</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>업체명<i class="required">*</i></th>
+                                    <td>
+                                        <div class="input-wrap">
+                                            <input type="text" spellcheck="false" class="input c-name" th:value="${details.companysName}">
+                                        </div>
+                                    </td>
+                                    <th>대표</th>
+                                    <td th:text="${details.companysCeoName}"></td>
+                                </tr>
+                                <tr>
+                                    <th>주소<i class="required">*</i></th>
+                                    <td>
+                                        <div class="td-flex-wrap">
+                                            <div class="select-wrap">
+                                                <select class="select select-sm" id="region01">
+                                                    <option value="서울" th:selected="${details.companysRegion1} eq '서울'">서울</option>
+                                                    <option value="경기" th:selected="${details.companysRegion1} eq '경기'">경기</option>
+                                                    <option value="대전/충남/세종" th:selected="${details.companysRegion1} eq '대전/충남/세종'">대전/충남/세종</option>
+                                                    <option value="인천/부천" th:selected="${details.companysRegion1} eq '인천/부천'">인천/부천</option>
+                                                    <option value="강원" th:selected="${details.companysRegion1} eq '강원'">강원</option>
+                                                    <option value="전주/전북" th:selected="${details.companysRegion1} eq '전주/전북'">전주/전북</option>
+                                                    <option value="청주/충북" th:selected="${details.companysRegion1} eq '청주/충북'">청주/충북</option>
+                                                    <option value="대구/경북" th:selected="${details.companysRegion1} eq '대구/경북'">대구/경북</option>
+                                                    <option value="부산/울산/경남" th:selected="${details.companysRegion1} eq '부산/울산/경남'">부산/울산/경남</option>
+                                                    <option value="광주/전남" th:selected="${details.companysRegion1} eq '광주/전남'">광주/전남</option>
+                                                    <option value="제주" th:selected="${details.companysRegion1} eq '제주'">제주</option>
+                                                </select>
+                                                <select class="select select-sm" id="region02" th:disabled="${details.companysRegion1} ne '서울'">
+                                                    <option value="" disabled>선택</option>
+                                                    <option value="서초" th:selected="${details.companysRegion2} eq '서초'">서초</option>
+                                                    <option value="강남" th:selected="${details.companysRegion2} eq '강남'">강남</option>
+                                                    <option value="강동/송파" th:selected="${details.companysRegion2} eq '강동/송파'">강동/송파</option>
+                                                    <option value="강서/양천/영등포/구로" th:selected="${details.companysRegion2} eq '강서/양천/영등포/구로'">강서/양천/영등포/구로</option>
+                                                    <option value="도봉/강북/성북/노원" th:selected="${details.companysRegion2} eq '도봉/강북/성북/노원'">도봉/강북/성북/노원</option>
+                                                    <option value="동대문/성동/광진/중랑" th:selected="${details.companysRegion2} eq '동대문/성동/광진/중랑'">동대문/성동/광진/중랑</option>
+                                                    <option value="종로/중구/용산" th:selected="${details.companysRegion2} eq '종로/중구/용산'">종로/중구/용산</option>
+                                                    <option value="서대문/마포/은평" th:selected="${details.companysRegion2} eq '서대문/마포/은평'">서대문/마포/은평</option>
+                                                    <option value="동작/관악/금천" th:selected="${details.companysRegion2} eq '동작/관악/금천'">동작/관악/금천</option>
+                                                </select>
+                                            </div>
+                                            <div class="input-wrap">
+                                                <input type="text" spellcheck="false" class="input c-region3" th:value="${details.companysRegion3}">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <th>연락처<i class="required">*</i></th>
+                                    <td>
+                                        <div class="td-flex-wrap">
+                                            <div class="input-wrap margin-0">
+                                                <input type="text" spellcheck="false" class="input onlyNum user-tel" maxlength="11" th:value="${details.companysPhone}" disabled>
+                                            </div>
+                                            <div class="input-wrap">
+                                                <input type="text" spellcheck="false" class="input onlyNum" maxlength="11" th:value="${details.companysDummyPhone}" disabled>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>은행</th>
+                                    <td>
+                                        <div class="input-wrap">
+                                            <input type="text" spellcheck="false" class="input c-bank" th:value="${details.companysBankName}">
+                                        </div>
+                                    </td>
+                                    <th>계좌번호</th>
+                                    <td>
+                                        <div class="input-wrap">
+                                            <input type="text" spellcheck="false" class="input onlyNum c-bank-num" th:value="${details.companysBankNumber}">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>분야</th>
+                                    <td>
+                                        <div class="checkbox-wrap">
+                                            <div class="dt-check-wrap">
+                                                <input type="checkbox" id="category1" name="category" value="가정문제" th:checked="${#strings.contains(details.companysCategoryValue, '가정문제')}">
+                                                <label for="category1">가정문제</label>
+                                            </div>
+                                            <div class="dt-check-wrap">
+                                                <input type="checkbox" id="category2" name="category" value="기업문제" th:checked="${#strings.contains(details.companysCategoryValue, '기업문제')}">
+                                                <label for="category2">기업문제</label>
+                                            </div>
+                                            <div class="dt-check-wrap">
+                                                <input type="checkbox" id="category3" name="category" value="안전분야 조사" th:checked="${#strings.contains(details.companysCategoryValue, '안전분야 조사')}">
+                                                <label for="category3">안전분야 조사</label>
+                                            </div>
+                                            <div class="dt-check-wrap">
+                                                <input type="checkbox" id="category4" name="category" value="사기/분쟁" th:checked="${#strings.contains(details.companysCategoryValue, '사기/분쟁')}">
+                                                <label for="category4">사기/분쟁</label>
+                                            </div>
+                                            <div class="dt-check-wrap">
+                                                <input type="checkbox" id="category5" name="category" value="스토킹" th:checked="${#strings.contains(details.companysCategoryValue, '스토킹')}">
+                                                <label for="category5">스토킹</label>
+                                            </div>
+                                            <div class="dt-check-wrap">
+                                                <input type="checkbox" id="category6" name="category" value="의료/보험" th:checked="${#strings.contains(details.companysCategoryValue, '의료/보험')}">
+                                                <label for="category6">의료/보험</label>
+                                            </div>
+                                            <div class="dt-check-wrap">
+                                                <input type="checkbox" id="category7" name="category" value="부동산" th:checked="${#strings.contains(details.companysCategoryValue, '부동산')}">
+                                                <label for="category7">부동산</label>
+                                            </div>
+                                            <div class="dt-check-wrap">
+                                                <input type="checkbox" id="category8" name="category" value="금융/사이버" th:checked="${#strings.contains(details.companysCategoryValue, '금융/사이버')}">
+                                                <label for="category8">금융/사이버</label>
+                                            </div>
+                                            <div class="dt-check-wrap">
+                                                <input type="checkbox" id="category9" name="category" value="민원대행" th:checked="${#strings.contains(details.companysCategoryValue, '민원대행')}">
+                                                <label for="category9">민원대행</label>
+                                            </div>
+                                            <div class="dt-check-wrap">
+                                                <input type="checkbox" id="category10" name="category" value="불법기기탐지" th:checked="${#strings.contains(details.companysCategoryValue, '불법기기탐지')}">
+                                                <label for="category10">불법기기탐지</label>
+                                            </div>
+                                            <div class="dt-check-wrap">
+                                                <input type="checkbox" id="category11" name="category" value="경호/경비" th:checked="${#strings.contains(details.companysCategoryValue, '경호/경비')}">
+                                                <label for="category11">경호/경비</label>
+                                            </div>
+                                            <div class="dt-check-wrap">
+                                                <input type="checkbox" id="category12" name="category" value="일반조사" th:checked="${#strings.contains(details.companysCategoryValue, '일반조사')}">
+                                                <label for="category12">일반조사</label>
+                                            </div>
+                                            <div class="dt-check-wrap">
+                                                <input type="checkbox" id="category13" name="category" value="해외조사" th:checked="${#strings.contains(details.companysCategoryValue, '해외조사')}">
+                                                <label for="category13">해외조사</label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <th>활동지역</th>
+                                    <td class="vertical-top">
+                                        <div class="checkbox-wrap">
+                                            <div class="dt-check-wrap">
+                                                <input type="checkbox" id="area1" name="area" value="서울" th:checked="${#strings.contains(details.activeRegion, '서울')}">
+                                                <label for="area1">서울</label>
+                                            </div>
+                                            <div class="dt-check-wrap">
+                                                <input type="checkbox" id="area2" name="area" value="경기" th:checked="${#strings.contains(details.activeRegion, '경기')}">
+                                                <label for="area2">경기</label>
+                                            </div>
+                                            <div class="dt-check-wrap">
+                                                <input type="checkbox" id="area3" name="area" value="대전/충남/세종" th:checked="${#strings.contains(details.activeRegion, '대전/충남/세종')}">
+                                                <label for="area3">대전/충남/세종</label>
+                                            </div>
+                                            <div class="dt-check-wrap">
+                                                <input type="checkbox" id="area4" name="area" value="인천/부천" th:checked="${#strings.contains(details.activeRegion, '인천/부천')}">
+                                                <label for="area4">인천/부천</label>
+                                            </div>
+                                            <div class="dt-check-wrap">
+                                                <input type="checkbox" id="area5" name="area" value="강원" th:checked="${#strings.contains(details.activeRegion, '강원')}">
+                                                <label for="area5">강원</label>
+                                            </div>
+                                            <div class="dt-check-wrap">
+                                                <input type="checkbox" id="area6" name="area" value="전주/전북" th:checked="${#strings.contains(details.activeRegion, '전주/전북')}">
+                                                <label for="area6">전주/전북</label>
+                                            </div>
+                                            <div class="dt-check-wrap">
+                                                <input type="checkbox" id="area7" name="area" value="청주/충북" th:checked="${#strings.contains(details.activeRegion, '청주/충북')}">
+                                                <label for="area7">청주/충북</label>
+                                            </div>
+                                            <div class="dt-check-wrap">
+                                                <input type="checkbox" id="area8" name="area" value="대구/경북" th:checked="${#strings.contains(details.activeRegion, '대구/경북')}">
+                                                <label for="area8">대구/경북</label>
+                                            </div>
+                                            <div class="dt-check-wrap">
+                                                <input type="checkbox" id="area9" name="area" value="부산/울산/경남" th:checked="${#strings.contains(details.activeRegion, '부산/울산/경남')}">
+                                                <label for="area9">부산/울산/경남</label>
+                                            </div>
+                                            <div class="dt-check-wrap">
+                                                <input type="checkbox" id="area10" name="area" value="광주/전남" th:checked="${#strings.contains(details.activeRegion, '광주/전남')}">
+                                                <label for="area10">광주/전남</label>
+                                            </div>
+                                            <div class="dt-check-wrap">
+                                                <input type="checkbox" id="area11" name="area" value="제주" th:checked="${#strings.contains(details.activeRegion, '제주')}">
+                                                <label for="area11">제주</label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>삭제</th>
+                                    <td></td>
+                                    <th>등록일</th>
+                                    <td th:text="${#dates.format(details.companysRegistDate, 'yyyy-MM-dd')}"></td>
+                                </tr>
+                                <tr>
+                                    <th>메모</th>
+                                    <td colspan="3">
+                                        <div class="text-wrap">
+                                            <textarea class="textarea c-memo" spellcheck="false" th:text="${details.companysMemo}"></textarea>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </fieldset>
+                    <input type="hidden" class="companysFlagIdx" th:value="${details.companysFlagIdx}">
+                    <hr class="fieldset__hr">
+                    <fieldset class="fieldset">
+                        <table class="dt-table">
+                            <thead>
+                            <tr>
+                                <th class="text-center">프리미엄</th>
+                                <th class="text-center">마패</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <div class="input-wrap center-wrap">
+                                        <button type="button" th:if="${details.idx} eq 0" class="btn-normal btn-green-lt">프리미엄 등록</button>
+                                        <select class="select width-100-per" th:if="${details.idx} ne 0">
+                                            <option value="1" th:selected="${details.companysPremium} eq 1">적용</option>
+                                            <option value="0" th:selected="${details.companysPremium} eq 0">미적용</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-wrap center-wrap">
+                                        <button type="button" th:if="${details.companysFlagIdx} eq 0" class="btn-normal btn-green-lt">마패 등록</button>
+                                        <div class="mape-wrap" th:if="${details.companysFlagIdx} ne 0">
+                                            <select class="select width-100-per">
+                                                <option value="1" th:selected="${details.companysLocalPremium} eq 1">적용</option>
+                                                <option value="0" th:selected="${details.companysLocalPremium} eq 0">미적용</option>
+                                            </select>
+                                            <button type="button" class="btn-normal btn-green-lt js-modalShow" data-modal="request">신청서</button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="input-wrap center-wrap">
+                                        <div class="date-wrap datepicker">
+                                            <label for="date01">시작일</label>
+                                            <input type="date" id="date01" class="input" data-placeholder="시작일">
+                                        </div>
+                                        <span class="between">~</span>
+                                        <div class="date-wrap datepicker">
+                                            <label for="date02">종료일</label>
+                                            <input type="date" id="date02" class="input" data-placeholder="종료일">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-wrap center-wrap">
+                                        <div class="date-wrap datepicker">
+                                            <label for="date03">시작일</label>
+                                            <input type="date" id="date03" class="input" data-placeholder="시작일">
+                                        </div>
+                                        <span class="between">~</span>
+                                        <div class="date-wrap datepicker">
+                                            <label for="date04">종료일</label>
+                                            <input type="date" id="date04" class="input" data-placeholder="종료일">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="input-wrap center-wrap">
+                                        <button type="button" th:if="${details.idx} ne 0" class="btn-normal btn-green">등록</button>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-wrap center-wrap">
+                                        <button type="button" th:if="${details.companysFlagIdx} ne 0" class="btn-normal btn-green">등록</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </fieldset>
+                    <div class="form__action bottom">
+                        <a th:href="@{/admin/manage/company/list(enabled=${details.companysEnabled})}" class="btn-normal">목록가기</a>
+                        <button type="button" class="btn-prime btn-update">수정하기</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="modal modal-request" data-modal="request" th:if="${details.companysFlagIdx} ne 0">
+        <div class="modal__inner">
+            <div class="modal-head">
+                <span class="modal__title">마패 신청서</span>
+                <a class="modal-cross js-modalClose"></a>
+            </div>
+            <div class="details">
+                <div class="details-body">
+                    <div class="table">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td class="modal-th">업체명</td>
+                                <td class="modal-td" th:text="${details.companysName}"></td>
+                            </tr>
+                            <tr>
+                                <td class="modal-th">대표</td>
+                                <td class="modal-td" th:text="${details.companysCeoName}"></td>
+                            </tr>
+                            <tr>
+                                <td class="modal-th">광고 지역</td>
+                                <td class="modal-td">
+                                    <div class="select-wrap">
+                                        <select class="select select-sm" id="region03">
+                                            <option value="서울" th:selected="${details.companysFlagRegion1} eq '서울'">서울</option>
+                                            <option value="경기" th:selected="${details.companysFlagRegion1} eq '경기'">경기</option>
+                                            <option value="대전/충남/세종" th:selected="${details.companysFlagRegion1} eq '대전/충남/세종'">대전/충남/세종</option>
+                                            <option value="인천/부천" th:selected="${details.companysFlagRegion1} eq '인천/부천'">인천/부천</option>
+                                            <option value="강원" th:selected="${details.companysFlagRegion1} eq '강원'">강원</option>
+                                            <option value="전주/전북" th:selected="${details.companysFlagRegion1} eq '전주/전북'">전주/전북</option>
+                                            <option value="청주/충북" th:selected="${details.companysFlagRegion1} eq '청주/충북'">청주/충북</option>
+                                            <option value="대구/경북" th:selected="${details.companysFlagRegion1} eq '대구/경북'">대구/경북</option>
+                                            <option value="부산/울산/경남" th:selected="${details.companysFlagRegion1} eq '부산/울산/경남'">부산/울산/경남</option>
+                                            <option value="광주/전남" th:selected="${details.companysFlagRegion1} eq '광주/전남'">광주/전남</option>
+                                            <option value="제주" th:selected="${details.companysFlagRegion1} eq '제주'">제주</option>
+                                        </select>
+                                        <select class="select select-sm" id="region04" th:disabled="${details.companysFlagRegion1} ne '서울'">
+                                            <option value="" disabled>선택</option>
+                                            <option value="서초" th:selected="${details.companysFlagRegion2} eq '서초'">서초</option>
+                                            <option value="강남" th:selected="${details.companysFlagRegion2} eq '강남'">강남</option>
+                                            <option value="강동/송파" th:selected="${details.companysFlagRegion2} eq '강동/송파'">강동/송파</option>
+                                            <option value="강서/양천/영등포/구로" th:selected="${details.companysFlagRegion2} eq '강서/양천/영등포/구로'">강서/양천/영등포/구로</option>
+                                            <option value="도봉/강북/성북/노원" th:selected="${details.companysFlagRegion2} eq '도봉/강북/성북/노원'">도봉/강북/성북/노원</option>
+                                            <option value="동대문/성동/광진/중랑" th:selected="${details.companysFlagRegion2} eq '동대문/성동/광진/중랑'">동대문/성동/광진/중랑</option>
+                                            <option value="종로/중구/용산" th:selected="${details.companysFlagRegion2} eq '종로/중구/용산'">종로/중구/용산</option>
+                                            <option value="서대문/마포/은평" th:selected="${details.companysFlagRegion2} eq '서대문/마포/은평'">서대문/마포/은평</option>
+                                            <option value="동작/관악/금천" th:selected="${details.companysFlagRegion2} eq '동작/관악/금천'">동작/관악/금천</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="modal-th">광고 분야</td>
+                                <td class="modal-td">
+                                    <div class="checkbox-wrap">
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="m-category1" name="m-category" value="가정문제" th:checked="${#strings.contains(details.companysFlagCategory, '가정문제')}">
+                                            <label for="m-category1">가정문제</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="m-category2" name="m-category" value="기업문제" th:checked="${#strings.contains(details.companysFlagCategory, '기업문제')}">
+                                            <label for="m-category2">기업문제</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="m-category3" name="m-category" value="안전분야 조사" th:checked="${#strings.contains(details.companysFlagCategory, '안전분야 조사')}">
+                                            <label for="m-category3">안전분야 조사</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="m-category4" name="m-category" value="사기/분쟁" th:checked="${#strings.contains(details.companysFlagCategory, '사기/분쟁')}">
+                                            <label for="m-category4">사기/분쟁</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="m-category5" name="m-category" value="스토킹" th:checked="${#strings.contains(details.companysFlagCategory, '스토킹')}">
+                                            <label for="m-category5">스토킹</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="m-category6" name="m-category" value="의료/보험" th:checked="${#strings.contains(details.companysFlagCategory, '의료/보험')}">
+                                            <label for="m-category6">의료/보험</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="m-category7" name="m-category" value="부동산" th:checked="${#strings.contains(details.companysFlagCategory, '부동산')}">
+                                            <label for="m-category7">부동산</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="m-category8" name="m-category" value="금융/사이버" th:checked="${#strings.contains(details.companysFlagCategory, '금융/사이버')}">
+                                            <label for="m-category8">금융/사이버</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="m-category9" name="m-category" value="민원대행" th:checked="${#strings.contains(details.companysFlagCategory, '민원대행')}">
+                                            <label for="m-category9">민원대행</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="m-category10" name="m-category" value="불법기기탐지" th:checked="${#strings.contains(details.companysFlagCategory, '불법기기탐지')}">
+                                            <label for="m-category10">불법기기탐지</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="m-category11" name="m-category" value="경호/경비" th:checked="${#strings.contains(details.companysFlagCategory, '경호/경비')}">
+                                            <label for="m-category11">경호/경비</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="m-category12" name="m-category" value="일반조사" th:checked="${#strings.contains(details.companysFlagCategory, '일반조사')}">
+                                            <label for="m-category12">일반조사</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="m-category13" name="m-category" value="해외조사" th:checked="${#strings.contains(details.companysFlagCategory, '해외조사')}">
+                                            <label for="m-category13">해외조사</label>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="modal-th">계좌번호</td>
+                                <td th:text="|(${details.companysBankName}) ${details.companysBankNumber}|"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+
+<th:block layout:fragment="script">
+    <script>
+        window.addEventListener('load', function () {
+            highlightMenu('list');
+            onlyNum();
+            regionSelect();
+            modalRegionSelect();
+
+            // 신청서 모달
+            const flagIdx = document.querySelector('.companysFlagIdx');
+            if (flagIdx.value != 0) new Modal({modal: '.modal-request', name: 'request'});
+
+            // 달력, 시간
+            const datePickers = document.querySelectorAll('.datepicker');
+            for(let datepicker of datePickers) new DatePicker(datepicker);
+
+            // 업체 수정
+            const updateBtn = document.querySelector('.btn-update');
+            updateBtn.addEventListener('click', updateCompany);
+        });
+    </script>
+</th:block>
+
+</html>

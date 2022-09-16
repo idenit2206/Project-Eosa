@@ -155,10 +155,28 @@ public class UserController {
         return userService.deleteTemp(tempUserIdx);
     }
 
+    /**
+     * 회원 등록 폼 컨트롤러
+     *
+     * @return String
+     */
     @GetMapping("/register")
     public String registerUser() {
 
         return userService.registerUser();
+    }
+
+    /**
+     * 회원 등록 컨트롤러
+     *
+     * @param usersDTO
+     * @return int
+     */
+    @ResponseBody
+    @PostMapping("/insert")
+    public int insertUsers(UsersDTO usersDTO) {
+
+        return userService.insertUsers(usersDTO);
     }
 
 }

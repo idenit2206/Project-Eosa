@@ -125,4 +125,12 @@ public interface UserMapper {
      */
     int deleteTemp(String[] arr);
 
+    /**
+     * 회원 등록 매퍼
+     *
+     * @param usersDTO
+     * @return int
+     */
+    int insertUsers(UsersDTO usersDTO);
+
 }
