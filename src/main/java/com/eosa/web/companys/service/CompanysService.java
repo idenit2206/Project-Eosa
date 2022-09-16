@@ -136,6 +136,16 @@ public class CompanysService implements CompanysRepository {
     }
 
     @Override
+    public List<Long> selectCompanysByCompanysCategoryCompanysRegion1CompanysRegion2(String companysCategoryValue, String companysRegion1, String companysRegion2) {
+        return companysRepository.selectCompanysByCompanysCategoryCompanysRegion1CompanysRegion2(companysCategoryValue, companysRegion1, companysRegion2);
+    }
+
+    @Override
+    public List<Long> selectCompanysByCompanysCategoryCompanysRegion1(String companysCategoryValue, String companysRegion1) {
+        return companysRepository.selectCompanysByCompanysCategoryCompanysRegion1(companysCategoryValue, companysRegion1);
+    }
+
+    @Override
     public List<Companys> findAll() {
         // TODO Auto-generated method stub
         return null;

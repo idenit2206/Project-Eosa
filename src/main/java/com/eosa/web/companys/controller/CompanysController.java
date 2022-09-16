@@ -191,30 +191,42 @@ public class CompanysController {
 
     @GetMapping("/selectCompanysByFilter")
     public CustomResponseData selectCompanysByFilter(
-        @RequestParam(value="companysNormal", required = false, defaultValue = "false") boolean companysNormal,
-        @RequestParam(value="companysPremium", required = false, defaultValue = "false") boolean companysPremium,
-        @RequestParam(value="companysLocalPremium", required = false, defaultValue = "false") boolean companysLocalPremium,
-        @RequestParam(value="companysCategory", required = false, defaultValue = " ") List<String> companysCategory,
-        @RequestParam(value="companysRegion1", required = false, defaultValue = " ") List<String> companysRegion1,
-        @RequestParam(value="companysRegion2", required = false, defaultValue = " ") List<String> companysRegion2
+//        @RequestParam(value="companysNormal", required = false, defaultValue = "false") boolean companysNormal,
+//        @RequestParam(value="companysPremium", required = false, defaultValue = "false") boolean companysPremium,
+//        @RequestParam(value="companysLocalPremium", required = false, defaultValue = "false") boolean companysLocalPremium,
+        @RequestParam(value="companysCategory", required = false, defaultValue = "") List<String> companysCategory,
+        @RequestParam(value="companysRegion1", required = false, defaultValue = "") List<String> companysRegion1,
+        @RequestParam(value="companysRegion2", required = false, defaultValue = "") List<String> companysRegion2
     ) {
         CustomResponseData result = new CustomResponseData();
+        Set<Long> companysIdxSet = new HashSet<>();
+        List<Long> companysIdxList = new ArrayList<>();
+
         List<SelectCompanys> itemList = new ArrayList<>();
 
 //        log.debug("[selectCompanysByFilter] parameter Test: {}, {}, {}, {}, {}", companysPremium, companysLocalPremium, companysCategory.toString(), companysRegion1, companysRegion2);
 //        log.debug("[selectCompanysByFilter] parameter Test Category size: {}, content: {}", companysCategory.size(), companysCategory.toString());
+//        List<SelectCompanys> selectQuery = companysService.selectCompanysByFilter(companysPremium, companysLocalPremium, companysCategory.get(0), companysRegion1.get(0), companysRegion2.get(0));
 
-        List<SelectCompanys> selectQuery = companysService.selectCompanysByFilter(companysPremium, companysLocalPremium, companysCategory.get(0), companysRegion1.get(0), companysRegion2.get(0));
-
-        if(selectQuery != null) {
-            result.setStatusCode(HttpStatus.OK.value());
-            result.setResultItem(selectQuery);
-            result.setResponseDateTime(LocalDateTime.now());
+        if(companysRegion2 != null) {
+            for (int i = 0; i < companysCategory.size(); i++) {
+                for (int j = 0; j < companysRegion1.size(); j++) {
+                    for(int k = 0; k < companysRegion2.size(); k++) {
+                        List<Long> list = companysService.selectCompanysByCompanysCategoryCompanysRegion1CompanysRegion2(companysCategory.get(i), companysRegion1.get(j), companysRegion2.get(k));
+                    }
+                }
+            }
         }
-        else {
-            result.setStatusCode(HttpStatus.OK.value());
-            result.setResultItem(null);
-            result.setResponseDateTime(LocalDateTime.now());
+
+        if(companysRegion2 == null) {
+            for (int i = 0; i < companysCategory.size(); i++) {
+                for (int j = 0; j < companysRegion1.size(); j++) {
+                    List<Long> list = companysService.selectCompanysByCompanysCategoryCompanysRegion1(companysCategory.get(i), companysRegion1.get(j));
+                    for (int k = 0; k < list.size(); k++) {
+                        companysIdxSet.add(list.get(k));
+                    }
+                }
+            }
         }
 
         return result;
