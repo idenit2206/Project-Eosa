@@ -80,4 +80,7 @@ public class Companys {
     @ColumnDefault("0")
     private boolean companysDelete;
 
+    @Column private String companysDummyPhone;
+    @Column private String companysMemo;
+
 }

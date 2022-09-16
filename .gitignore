@@ -77,3 +77,4 @@ yarn-error.log*
 package-lock.json
 
 .p8
+src/main/resources/static/apple/AuthKey_C7XF458F79.p8

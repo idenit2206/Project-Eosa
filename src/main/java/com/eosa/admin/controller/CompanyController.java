@@ -106,7 +106,8 @@ public class CompanyController {
      */
     @ResponseBody
     @PostMapping("/safety/mapping")
-    public int safetyMapping(String phoneNumber, String safetyNumber) throws NoSuchAlgorithmException {
+    public int safetyMapping(@RequestParam String phoneNumber, @RequestParam
+    String safetyNumber) throws NoSuchAlgorithmException {
 
         return companyService.safetyMapping(phoneNumber, safetyNumber);
     }

@@ -34,7 +34,7 @@ public class UsersService implements UsersRepository {
     
     /**
      * 사용자 정보 DB저장 (회원가입) - JPA INSERT test용
-     * @param <Users>entity
+     * @param Users
      * @return 1 | 0
     */
     public int userSave(Users param) {
@@ -64,6 +64,11 @@ public class UsersService implements UsersRepository {
     @Override
     public Users usersAccountDupliCheck(String usersAccount) {
         return usersRepository.usersAccountDupliCheck(usersAccount);
+    }
+
+    @Override
+    public Users selectUsersByUsersEmail(String usersEmail) {
+        return usersRepository.selectUsersByUsersEmail(usersEmail);
     }
 
 

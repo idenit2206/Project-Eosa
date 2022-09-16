@@ -55,7 +55,7 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
         value="SELECT * FROM Users WHERE usersEmail=?1",
         nativeQuery=true
     )
-    Users usersEmailDupliCheck(String usersEmail);
+    Users selectUsersByUsersEmail(String usersEmail);
 
     /**
      * Spring Security formLogin()에서 인증을 성공했을 때
