@@ -15,6 +15,7 @@ public class CompanysFlag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long companysFlagIdx;
+    @Column(nullable = false) private Long companysIdx;
     @Column(nullable = false) private String companysName;
     @Column(nullable = false) private String companysCeoName;
     @Column(nullable = false) private LocalDateTime flagReqDate;

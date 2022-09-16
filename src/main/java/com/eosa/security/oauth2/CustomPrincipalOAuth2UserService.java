@@ -49,7 +49,7 @@ public class CustomPrincipalOAuth2UserService extends DefaultOAuth2UserService {
             customOAuth2UserInfo = new KakaoUserInfo(oAuth2User.getAttributes());
             platform = customOAuth2UserInfo.getProvider();
             usersEmail = customOAuth2UserInfo.getEmail();
-            log.debug("CustomPrincipalOAuth2UserService.class [kakao]: {}", customOAuth2UserInfo.getProviderId());
+            log.debug("[loadUser] kakao 이메일: {}", customOAuth2UserInfo.getEmail());
         }
         else if(provider.equals("google")) {
 //            log.debug("google_userInfo: {}", oAuth2User.toString());
@@ -59,18 +59,17 @@ public class CustomPrincipalOAuth2UserService extends DefaultOAuth2UserService {
             // log.debug("#[Google] providerId: {}", providerId);
             // log.debug("#[Google] oAuth2Email: {}", usersEmail);
             customOAuth2UserInfo = new GoogleUserInfo(oAuth2User.getAttributes());
-            // log.debug("# customOAuth2UserInfo[google]: {}", customOAuth2UserInfo);
+            log.debug("[loadUser] google 이메일: {}", customOAuth2UserInfo.getEmail());
         }
         else if(provider.equals("naver")) {
-//            log.debug("naver_userInfo: {}", oAuth2User.toString());
             Map<String, Object> response = oAuth2User.getAttribute("response");
-            log.debug(response.toString());
             platform = provider;
             providerId = oAuth2User.getAttribute("sub");
             usersEmail = response.get("email").toString();
+            log.debug("[loadUser] naver 이메일: {}", usersEmail);
         }
        
-        log.debug("platform: {}, email: {}", platform, usersEmail);
+        log.debug("[loadUser] SNS 서비스: {}, 이메일: {}", platform, usersEmail);
 
         // DB에 기존유저로써 존재하는지 검사
         user = (Users) usersRepository.selectByUsersEmail(usersEmail);
@@ -80,7 +79,7 @@ public class CustomPrincipalOAuth2UserService extends DefaultOAuth2UserService {
         if(user != null) {
             // DB에 데이터가 존재하는 경우(기존회원)
             result = new CustomPrincipalDetails(user, oAuth2User.getAttributes(), provider);
-            // log.debug("[PrincipalOAuth2UserService] 사용자 DB체크 결과: {}", user.toString());
+            log.info("[loadUser] 사용자 {} 가 {} 을 활용해 로그인 합니다.", user.getUsersAccount(), provider);
         }
         else {
             // DB에 데이터가 존재하지않는 경우(신규회원)
@@ -88,7 +87,7 @@ public class CustomPrincipalOAuth2UserService extends DefaultOAuth2UserService {
             String tempAccount = usersEmail.substring(0, tempIndex);  
             user = new Users(tempAccount, usersEmail);          
             result = new CustomPrincipalDetails(user, oAuth2User.getAttributes(), provider);
-            log.debug("사용자 DB체크 결과: {} 사용자는 신규회원입니다.", usersEmail);
+            log.info("[loadUser] 사용자 DB체크 결과: {} 사용자는 신규회원입니다.", usersEmail);
            
         }
         return result;

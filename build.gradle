@@ -1,3 +1,10 @@
+def getDate() {
+//	def date = new Date()
+//	def formattedDate = date.format("yyyyMMddHHmmss")
+//	return formattedDate
+	new Date().format("yyyyMMddHHmmss")
+}
+
 plugins {
 	id 'org.springframework.boot' version '2.7.1-SNAPSHOT'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
@@ -5,7 +12,7 @@ plugins {
 }
 
 group = 'com.eosa'
-version = '0.8.0'
+version = '0.8.0_'+getDate()
 sourceCompatibility = '11'
 
 configurations {

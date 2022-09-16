@@ -45,16 +45,17 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     )
     Users usersAccountDupliCheck(String usersAccount);
 
-//    /**
-//     * 회원가입을 할 때 이메일이 중복인지 검사하기 위한 메서드
-//     * @param usersEmail
-//     * @return 0 | null
-//     */
-//    @Query(
-//        value="SELECT * FROM Users WHERE usersEmail=?1",
-//        nativeQuery=true
-//    )
-//    Users usersEmailDupliCheck(String usersEmail);
+    /**
+     * 회원가입을 할 때 이메일이 중복인지 검사하기 위한 메서드
+     * @param usersEmail
+     * @return 0 | null
+     * @Author PARK MIN JAE
+     */
+    @Query(
+        value="SELECT * FROM Users WHERE usersEmail=?1",
+        nativeQuery=true
+    )
+    Users usersEmailDupliCheck(String usersEmail);
 
     /**
      * Spring Security formLogin()에서 인증을 성공했을 때

@@ -90,7 +90,7 @@ public class UsersController {
             message.setTo(usersPhone);  // 수신번호
             message.setText("어사 회원가입 핸드폰 인증 단계입니다.\n다음의 번호를 입력해주세요.\n"+authCode); // 발신내용
             log.info("[sendOne] usersPhone: {} 의 SMS 인증코드: {}",usersPhone, authCode);
-//          SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+            SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
 //          smsCertificationService.savedAuthCode(usersPhone, authCode);
         }
 //        else {
