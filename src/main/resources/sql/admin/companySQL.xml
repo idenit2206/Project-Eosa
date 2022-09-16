@@ -103,6 +103,7 @@
                        GROUP BY CT.companysIdx) T ON C.companysIdx = T.companysIdx
                  LEFT OUTER JOIN CompanysPremium P ON C.companysIdx = P.companysIdx
                  LEFT OUTER JOIN (SELECT F.companysFlagIdx,
+                                         F.companysIdx,
                                          F.companysName,
                                          F.flagReqDate,
                                          F.flagStartDate,
@@ -117,8 +118,54 @@
                                                         GROUP_CONCAT(FT.companysFlagCategory SEPARATOR '|') companysFlagCategory
                                                  FROM CompanysFlagCategory FT
                                                  GROUP BY FT.companysFlagIdx) FCT ON F.companysFlagIdx = FCT.companysFlagIdx) B
-                                 ON C.companysName = B.companysName
+                                 ON C.companysIdx = B.companysIdx
         WHERE C.companysIdx = #{companysIdx}
     </select>
+
+    <!-- 업체 수정 -->
+    <update id="updateCompanys" parameterType="CompanysDTO">
+        UPDATE Companys
+        SET companysName       = #{companysName},
+            companysComment    = #{companysComment},
+            companysSpec       = #{companysSpec},
+            companysRegion1    = #{companysRegion1},
+            companysRegion2    = #{companysRegion2},
+            companysRegion3    = #{companysRegion3},
+            companysBankName   = #{companysBankName},
+            companysBankNumber = #{companysBankNumber},
+            companysEnabled    = #{companysEnabled},
+            companysMemo       = #{companysMemo}
+        WHERE companysIdx = #{companysIdx}
+    </update>
+
+    <!-- 업체 활동 지역 등록 -->
+    <insert id="insertCompanysRegion" parameterType="hashmap">
+        INSERT INTO CompanysActiveRegion (companysIdx,
+                                          activeRegion)
+        VALUES (#{companysIdx},
+                #{activeRegion})
+    </insert>
+
+    <!-- 업체 활동 지역 삭제 -->
+    <delete id="deleteCompanysRegion" parameterType="long">
+        DELETE
+        FROM CompanysActiveRegion
+        WHERE companysIdx = #{companysIdx}
+    </delete>
+
+    <!-- 업체 분야 등록 -->
+    <insert id="insertCompanysCategory" parameterType="hashmap">
+        INSERT INTO CompanysCategory (companysIdx,
+                                      companysCategoryValue)
+        VALUES (#{companysIdx},
+                #{companysCategoryValue})
+    </insert>
+
+    <!-- 업체 분야 삭제 -->
+    <delete id="deleteCompanysCategory" parameterType="long">
+        DELETE
+        FROM CompanysCategory
+        WHERE companysIdx = #{companysIdx}
+    </delete>
 
 </mapper>

@@ -44,4 +44,44 @@ public interface CompanyMapper {
      */
     CompanysDTO selectCompanyDetails(long companysIdx);
 
+    /**
+     * 업체 수정 매퍼
+     *
+     * @param companysDTO
+     * @return int
+     */
+    int updateCompanys(CompanysDTO companysDTO);
+
+    /**
+     * 업체 활동 지역 등록 매퍼
+     *
+     * @param map
+     * @return int
+     */
+    int insertCompanysRegion(Map<String, Object> map);
+
+    /**
+     * 업체 활동 지역 삭제 매퍼
+     *
+     * @param companysIdx
+     * @return int
+     */
+    int deleteCompanysRegion(long companysIdx);
+
+    /**
+     * 업체 분야 등록 매퍼
+     *
+     * @param map
+     * @return int
+     */
+    int insertCompanysCategory(Map<String, Object> map);
+
+    /**
+     * 업체 분야 삭제 매퍼
+     *
+     * @param companysIdx
+     * @return int
+     */
+    int deleteCompanysCategory(long companysIdx);
+
 }

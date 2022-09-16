@@ -1,12 +1,23 @@
 package com.eosa.admin.controller;
 
+import com.eosa.admin.dto.CompanysDTO;
+import com.eosa.admin.encode.SHA256;
 import com.eosa.admin.service.CompanyService;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  * packageName    : com.eosa.admin.controller
@@ -57,6 +68,47 @@ public class CompanyController {
     public String companyDetails(Model model, @RequestParam long companysIdx) {
 
         return companyService.companyDetails(model, companysIdx);
+    }
+
+    /**
+     * 업체 수정 컨트롤러
+     *
+     * @param companysDTO
+     * @return int
+     */
+    @ResponseBody
+    @PostMapping("/update")
+    public int updateCompanys(CompanysDTO companysDTO) {
+
+        return companyService.updateCompany(companysDTO);
+    }
+
+    /**
+     * 안심번호 추출 컨트롤러
+     *
+     * @return String
+     * @throws NoSuchAlgorithmException
+     */
+    @ResponseBody
+    @PostMapping("/safety")
+    public String safetyNumber() throws NoSuchAlgorithmException {
+
+        return companyService.safetyNumber();
+    }
+
+    /**
+     * 안심번호 등록 컨트롤러
+     *
+     * @param phoneNumber
+     * @param safetyNumber
+     * @return int
+     * @throws NoSuchAlgorithmException
+     */
+    @ResponseBody
+    @PostMapping("/safety/mapping")
+    public int safetyMapping(String phoneNumber, String safetyNumber) throws NoSuchAlgorithmException {
+
+        return companyService.safetyMapping(phoneNumber, safetyNumber);
     }
 
 }

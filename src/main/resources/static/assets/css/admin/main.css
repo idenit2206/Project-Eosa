@@ -158,6 +158,10 @@ select:focus {
 .company-description-wrap {
   display: flex;
   flex-direction: column;
+  width: 100%;
+}
+.company-profile-wrap .company-description-wrap .textarea {
+  height: 137px;
 }
 .company-description-wrap .company-title {
   font-weight: 500;
@@ -176,6 +180,32 @@ select:focus {
   padding: 10px;
   height: 150px;
   overflow-y: scroll;
+}
+.mape-wrap {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  width: calc(100% - 185px);
+}
+.center-wrap .mape-wrap .btn-green-lt, .dt-table .center-wrap .btn-green-lt {
+  height: 38px;
+  background-color: #EAF6EF;
+  border: 1px solid #dbdbdb;
+  color: #4C956C;
+  font-size: 14px;
+  transition: 0.25s background-color;
+}
+.center-wrap .mape-wrap .btn-green-lt:hover, .dt-table .center-wrap .btn-green-lt:hover {
+  background-color: #d9eae0;
+}
+.dt-table .company-profile-wrap .company-description-wrap .input-wrap {
+  height: 50px;
+}
+.dt-table .company-profile-wrap .company-description-wrap .input-wrap .input {
+  height: 50px;
+  font-size: 16px;
+  font-weight: 600;
+  background: #FFF;
 }
 .form-menu {
   padding-bottom: 0 !important;
@@ -400,8 +430,8 @@ select:focus {
   background-color: #4C956C;
 }
 .fieldset__hr {
-  margin: 30px 0;
-  border: 1px solid #e8effa;
+  margin: 24px 0;
+  border: 0;
 }
 .fieldset__hr--sm {
   width: 36px;
@@ -796,12 +826,12 @@ option {
 .input-wrap .date-picker input[type=month], .input-wrap .date-picker input[type=time] {
   height: 48px;
 }
+
 .date-wrap label {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   padding: 0px 40px 0px 10px;
-  background-color: #f9f9f9;
 }
 /*input[type='text'] wrap[label + input]*/
 .check-wrap {
@@ -2485,7 +2515,7 @@ body.modal-overlayed::after {
   overflow-y: auto;
   display: none;
 }
-.modal-details .table, .modal-reason .table, .modal-terminate .table {
+.modal-details .table, .modal-reason .table, .modal-terminate .table, .modal-request .table {
   margin-top: 40px;
   border: 1px solid #dfdfdf;
   border-bottom: none;
@@ -2581,6 +2611,9 @@ body.modal-overlayed::after {
 }
 .modal .table .modal-td {
   text-align: start;
+}
+.modal-td .select-wrap .select {
+  width: 50%;
 }
 .modal-details .table .modal-contents, .modal-details .table .modal-memo {
   padding: 20px;

@@ -46,29 +46,23 @@ public class UserService {
      */
     public String userList(Model model, String role, String sort, String search, int page) {
 
-        Map<String, Object> cntMap = new HashMap<>();
         Map<String, Object> map = new HashMap<>();
 
-        cntMap.put("usersRole", role);
         map.put("usersRole", role);
 
         // 필터 검색 조건
         if (search != "" && !search.equals("")) {
             if (sort.equals("id")) {
-                cntMap.put("id", sort);
                 map.put("id", sort);
             } else if (sort.equals("name")) {
-                cntMap.put("name", sort);
                 map.put("name", sort);
             } else if (sort.equals("phone")) {
-                cntMap.put("phone", sort);
                 map.put("phone", sort);
             }
-            cntMap.put("search", search);
             map.put("search", search);
         }
 
-        int count = userMapper.countUsersList(cntMap);
+        int count = userMapper.countUsersList(map);
 
         Pagination pagination = new Pagination(count, page);
 
@@ -125,26 +119,21 @@ public class UserService {
      */
     public String terminateList(Model model, String sort, String search, int page) {
 
-        Map<String, Object> cntMap = new HashMap<>();
         Map<String, Object> map = new HashMap<>();
 
         // 필터 검색 조건
         if (search != "" && !search.equals("")) {
             if (sort.equals("id")) {
-                cntMap.put("id", sort);
                 map.put("id", sort);
             } else if (sort.equals("name")) {
-                cntMap.put("name", sort);
                 map.put("name", sort);
             } else if (sort.equals("phone")) {
-                cntMap.put("phone", sort);
                 map.put("phone", sort);
             }
-            cntMap.put("search", search);
             map.put("search", search);
         }
 
-        int count = userMapper.countTerminateList(cntMap);
+        int count = userMapper.countTerminateList(map);
 
         Pagination pagination = new Pagination(count, page);
 
