@@ -282,14 +282,17 @@ select:focus {
   background-color: #03C75A;
   color: #fff;
 }
-.btn-yellow {
-  background: #FFC416;
-  border: 0;
-  color: #FFF;
+.btn-check {
+  width: 30%;
+  height: 38px;
+  background-color: #EAF6EF;
+  border: 1px solid #dbdbdb;
+  color: #4C956C;
   font-size: 14px;
+  transition: 0.25s background-color;
 }
-.btn-yellow:hover {
-  background: #ffbe00;
+.btn-check:hover {
+  background-color: #d9eae0;
 }
 .btn-green {
   background: #4C956C;
@@ -325,6 +328,20 @@ select:focus {
   width: 100%;
   display: flex;
   gap: 12px;
+}
+.file-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.file-wrap a {
+  width: 65%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 38px;
+  color: #4361EE;
+  text-decoration: underline;
 }
 /* specific */
 .btn-terminate {

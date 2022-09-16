@@ -64,8 +64,10 @@
                C.companysRegion3,
                C.companysRegistCerti,
                C.companysRegistCertiName,
+               C.companysRegistCertiCheck,
                C.companysLicense,
                C.companysLicenseName,
+               C.companysLicenseCheck,
                C.companysProfileImage,
                C.companysProfileImageName,
                C.companysBankName,
@@ -137,6 +139,9 @@
             companysEnabled    = #{companysEnabled},
             <if test="companysDummyPhone != null">
                 companysDummyPhone = #{companysDummyPhone},
+            </if>
+            <if test="companysDummyPhone == ''">
+                companysDummyPhone = NULL,
             </if>
             companysMemo       = #{companysMemo}
         WHERE companysIdx = #{companysIdx}

@@ -150,7 +150,7 @@ public class CompanyService {
     }
 
     /**
-     * 안심번호 등록 서비스
+     * 안심번호 등록/삭제 서비스
      *
      * @param companysDTO
      * @return int
@@ -162,7 +162,7 @@ public class CompanyService {
 
         Map<String, String> map = safety.safetyEncode();
 
-        String result = safety.safetyAPI("https://bizapi.callmix.co.kr/biz050/BZV210?secureCode=" + map.get("secureCode") + "&bizId=" + map.get("id") + "&monthDay=" + map.get("monthDay") + "&tkGbn=1&rn=" + companysDTO.getCompanysPhone() + "&vn=" + companysDTO.getCompanysDummyPhone());
+        String result = safety.safetyAPI("https://bizapi.callmix.co.kr/biz050/BZV210?secureCode=" + map.get("secureCode") + "&bizId=" + map.get("id") + "&monthDay=" + map.get("monthDay") + "&tkGbn=" + companysDTO.getTkGbn() + "&rn=" + companysDTO.getCompanysPhone() + "&vn=" + companysDTO.getCompanysDummyPhone());
 
         JSONObject json = new JSONObject(result);
 

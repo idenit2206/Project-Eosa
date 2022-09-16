@@ -29,7 +29,13 @@ public class CompanysDTO {
     private String companysRegion2;         // 구/군
     private String companysRegion3;         // 상세주소
     private String companysRegistCerti;     // 사업자등록증
+    private String companysRegistCertiName; // 사업자등록증 파일명
+    private int companysRegistCertiCheck;   // 사업자 인증
+    private String companysLicense;         // 자격증
+    private String companysLicenseName;     // 자격증 파일명
+    private int companysLicenseCheck;       // 자격증 인증
     private String companysProfileImage;    // 프로필 이미지
+    private String companysProfileImageName;// 프로필 이미지 파일명
     private String companysBankName;        // 계좌 은행
     private String companysBankNumber;      // 계좌번호
     private Timestamp companysRegistDate;   // 업체 등록일
@@ -66,5 +72,7 @@ public class CompanysDTO {
 
     private long companysFlagCategoryIdx;   // 깃발 업체 업무 분야 고유 번호
     private String companysFlagCategory;    // 깃발 업체 업무 분야
+
+    private int tkGbn;                      // 1. 등록, 2. 삭제
 
 }
