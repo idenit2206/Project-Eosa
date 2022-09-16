@@ -28,26 +28,26 @@ import lombok.NoArgsConstructor;
 public class Users {
 
     public enum usersRole {
-        CLIENT, DETECTIVE, CEO, ADMIN, SUPER_ADMIN
+        CLIENT, DETECTIVE, TEMP, ADMIN, SUPER_ADMIN
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long usersIdx;
 
-    @Column(nullable=false, length=30)
+    @Column(nullable=true, length=30)
     private String usersAccount;
 
     @Column(nullable=false)
     private String usersPass;
 
-    @Column(nullable=false, length=30)
+    @Column(nullable=true, length=30)
     private String usersName;    
 
-    @Column(nullable=false, length=30)
+    @Column(nullable=true, length=30)
     private String usersNick;
 
-    @Column(nullable=false, length=13)
+    @Column(nullable=true, length=15)
     private String usersPhone;
 
     @Column(nullable=false, length=30)

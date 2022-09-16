@@ -48,11 +48,15 @@ public class Companys {
     private String companysRegistCerti;
     @Column(nullable=true, length=255)
     private String companysRegistCertiName;
+    @Column(nullable=false)
+    private int companysRegistCertiCheck;
 
     @Column(nullable=true, length=255)
     private String companysLicense;
     @Column(nullable=true, length=255)
     private String companysLicenseName;
+    @Column(nullable=false)
+    private int companysLicenseCheck;
 
     @Column(nullable=true, length=255)
     private String companysProfileImage;

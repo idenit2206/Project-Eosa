@@ -1,7 +1,7 @@
 package com.eosa.web.tempuser.service;
 
-import com.eosa.web.tempuser.entity.TempUser;
 import com.eosa.web.tempuser.repository.TempUserRepository;
+import com.eosa.web.users.entity.Users;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -25,29 +25,37 @@ public class TempUserService implements TempUserRepository {
     @Autowired private TempUserRepository tempUserRepository;
 
     @Override
-    public <S extends TempUser> S save(S entity) {
-        entity.setTempUserPass(passwordEncoder.encode(entity.getTempUserPass()));
-        entity.setTempUserRegistDate(LocalDateTime.now());
+    public <S extends Users> S save(S entity) {
+        entity.setUsersPass(passwordEncoder.encode(entity.getUsersPass()));
+        entity.setUsersRole("TEMP");
+        entity.setUsersJoinDate(LocalDateTime.now());
         return tempUserRepository.save(entity);
     }
 
     @Override
-    public List<TempUser> findAll() {
+    public Users signIn(String usersEmail, String usersPass) {
+        String encodeUsersPass = passwordEncoder.encode(usersPass);
+        return tempUserRepository.signIn(usersEmail, encodeUsersPass);
+    }
+
+
+    @Override
+    public List<Users> findAll() {
         return null;
     }
 
     @Override
-    public List<TempUser> findAll(Sort sort) {
+    public List<Users> findAll(Sort sort) {
         return null;
     }
 
     @Override
-    public Page<TempUser> findAll(Pageable pageable) {
+    public Page<Users> findAll(Pageable pageable) {
         return null;
     }
 
     @Override
-    public List<TempUser> findAllById(Iterable<Long> longs) {
+    public List<Users> findAllById(Iterable<Long> longs) {
         return null;
     }
 
@@ -62,7 +70,7 @@ public class TempUserService implements TempUserRepository {
     }
 
     @Override
-    public void delete(TempUser entity) {
+    public void delete(Users entity) {
 
     }
 
@@ -72,7 +80,7 @@ public class TempUserService implements TempUserRepository {
     }
 
     @Override
-    public void deleteAll(Iterable<? extends TempUser> entities) {
+    public void deleteAll(Iterable<? extends Users> entities) {
 
     }
 
@@ -82,12 +90,12 @@ public class TempUserService implements TempUserRepository {
     }
 
     @Override
-    public <S extends TempUser> List<S> saveAll(Iterable<S> entities) {
+    public <S extends Users> List<S> saveAll(Iterable<S> entities) {
         return null;
     }
 
     @Override
-    public Optional<TempUser> findById(Long aLong) {
+    public Optional<Users> findById(Long aLong) {
         return Optional.empty();
     }
 
@@ -102,17 +110,17 @@ public class TempUserService implements TempUserRepository {
     }
 
     @Override
-    public <S extends TempUser> S saveAndFlush(S entity) {
+    public <S extends Users> S saveAndFlush(S entity) {
         return null;
     }
 
     @Override
-    public <S extends TempUser> List<S> saveAllAndFlush(Iterable<S> entities) {
+    public <S extends Users> List<S> saveAllAndFlush(Iterable<S> entities) {
         return null;
     }
 
     @Override
-    public void deleteAllInBatch(Iterable<TempUser> entities) {
+    public void deleteAllInBatch(Iterable<Users> entities) {
 
     }
 
@@ -127,53 +135,52 @@ public class TempUserService implements TempUserRepository {
     }
 
     @Override
-    public TempUser getOne(Long aLong) {
+    public Users getOne(Long aLong) {
         return null;
     }
 
     @Override
-    public TempUser getById(Long aLong) {
+    public Users getById(Long aLong) {
         return null;
     }
 
     @Override
-    public TempUser getReferenceById(Long aLong) {
+    public Users getReferenceById(Long aLong) {
         return null;
     }
 
     @Override
-    public <S extends TempUser> Optional<S> findOne(Example<S> example) {
+    public <S extends Users> Optional<S> findOne(Example<S> example) {
         return Optional.empty();
     }
 
     @Override
-    public <S extends TempUser> List<S> findAll(Example<S> example) {
+    public <S extends Users> List<S> findAll(Example<S> example) {
         return null;
     }
 
     @Override
-    public <S extends TempUser> List<S> findAll(Example<S> example, Sort sort) {
+    public <S extends Users> List<S> findAll(Example<S> example, Sort sort) {
         return null;
     }
 
     @Override
-    public <S extends TempUser> Page<S> findAll(Example<S> example, Pageable pageable) {
+    public <S extends Users> Page<S> findAll(Example<S> example, Pageable pageable) {
         return null;
     }
 
     @Override
-    public <S extends TempUser> long count(Example<S> example) {
+    public <S extends Users> long count(Example<S> example) {
         return 0;
     }
 
     @Override
-    public <S extends TempUser> boolean exists(Example<S> example) {
+    public <S extends Users> boolean exists(Example<S> example) {
         return false;
     }
 
     @Override
-    public <S extends TempUser, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
+    public <S extends Users, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return null;
     }
-
 }
