@@ -99,16 +99,15 @@ public class CompanyController {
     /**
      * 안심번호 등록 컨트롤러
      *
-     * @param phoneNumber
-     * @param safetyNumber
+     * @param companysDTO
      * @return int
      * @throws NoSuchAlgorithmException
      */
     @ResponseBody
     @PostMapping("/safety/mapping")
-    public int safetyMapping(String phoneNumber, String safetyNumber) throws NoSuchAlgorithmException {
+    public int safetyMapping(CompanysDTO companysDTO) throws NoSuchAlgorithmException {
 
-        return companyService.safetyMapping(phoneNumber, safetyNumber);
+        return companyService.safetyMapping(companysDTO);
     }
 
 }
