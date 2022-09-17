@@ -199,36 +199,53 @@ public class CompanysController {
         @RequestParam(value="companysRegion2", required = false, defaultValue = "") List<String> companysRegion2
     ) {
         CustomResponseData result = new CustomResponseData();
+        List<SelectCompanys> itemList = new ArrayList<>();
         Set<Long> companysIdxSet = new HashSet<>();
         List<Long> companysIdxList = new ArrayList<>();
 
-        List<SelectCompanys> itemList = new ArrayList<>();
+        if(companysCategory.size() == 0 && companysRegion1.size() == 0 && companysRegion2.size() == 0) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
 
-//        log.debug("[selectCompanysByFilter] parameter Test: {}, {}, {}, {}, {}", companysPremium, companysLocalPremium, companysCategory.toString(), companysRegion1, companysRegion2);
-//        log.debug("[selectCompanysByFilter] parameter Test Category size: {}, content: {}", companysCategory.size(), companysCategory.toString());
-//        List<SelectCompanys> selectQuery = companysService.selectCompanysByFilter(companysPremium, companysLocalPremium, companysCategory.get(0), companysRegion1.get(0), companysRegion2.get(0));
+        if(companysCategory.size() != 0 && companysRegion1.size() == 0 && companysRegion2.size() == 0) {
+            // Set<Long> list = new HashSet<>();
+            for(int i = 0; i < companysCategory.size(); i++) {
+                companysIdxSet.addAll(companysService.selectCompanysByFilter2(companysCategory.get(i), "", ""));
+            }
+        }
 
-        if(companysRegion2 != null) {
-            for (int i = 0; i < companysCategory.size(); i++) {
-                for (int j = 0; j < companysRegion1.size(); j++) {
+        if(companysCategory.size() != 0 && companysRegion1.size() != 0 && companysRegion2.size() == 0) {
+            for(int i = 0; i < companysCategory.size(); i++) {
+                for(int j = 0; j < companysRegion1.size(); j++) {
+                    companysIdxSet.addAll(companysService.selectCompanysByFilter2(companysCategory.get(i), companysRegion1.get(j), ""));
+                }
+            }
+        }
+
+        if(companysCategory.size() != 0 && companysRegion1.size() != 0 && companysRegion2.size() != 0) {
+            for(int i = 0; i < companysCategory.size(); i++) {
+                for(int j = 0; j < companysRegion1.size(); j++) {
                     for(int k = 0; k < companysRegion2.size(); k++) {
-                        List<Long> list = companysService.selectCompanysByCompanysCategoryCompanysRegion1CompanysRegion2(companysCategory.get(i), companysRegion1.get(j), companysRegion2.get(k));
-                    }
+                        companysIdxSet.addAll(companysService.selectCompanysByFilter2(companysCategory.get(i), companysRegion1.get(j), companysRegion2.get(k)));
+                    }                    
                 }
             }
         }
 
-        if(companysRegion2 == null) {
-            for (int i = 0; i < companysCategory.size(); i++) {
-                for (int j = 0; j < companysRegion1.size(); j++) {
-                    List<Long> list = companysService.selectCompanysByCompanysCategoryCompanysRegion1(companysCategory.get(i), companysRegion1.get(j));
-                    for (int k = 0; k < list.size(); k++) {
-                        companysIdxSet.add(list.get(k));
-                    }
-                }
-            }
+        Iterator<Long> iter = companysIdxSet.iterator();
+        while(iter.hasNext()) {
+            itemList.add(companysService.selectOneCompanysByCompanysIdxTest(iter.next()));
         }
 
+        // List<Long> tempIdx = companysService.selectCompanysByFilter2("가정", "서울", "서초");
+    
+
+        result.setStatusCode(HttpStatus.OK.value());
+        result.setResultItem(itemList);
+        result.setResponseDateTime(LocalDateTime.now());
+        
         return result;
     }
 

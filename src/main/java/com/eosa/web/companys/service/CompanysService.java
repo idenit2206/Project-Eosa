@@ -2,6 +2,7 @@ package com.eosa.web.companys.service;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -18,8 +19,8 @@ import org.springframework.stereotype.Service;
 import com.eosa.web.companys.repository.CompanysRepository;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestParam;
 
+@Slf4j
 @Service
 public class CompanysService implements CompanysRepository {
 
@@ -136,14 +137,10 @@ public class CompanysService implements CompanysRepository {
     }
 
     @Override
-    public List<Long> selectCompanysByCompanysCategoryCompanysRegion1CompanysRegion2(String companysCategoryValue, String companysRegion1, String companysRegion2) {
-        return companysRepository.selectCompanysByCompanysCategoryCompanysRegion1CompanysRegion2(companysCategoryValue, companysRegion1, companysRegion2);
+    public List<Long> selectCompanysByFilter2(String companysCategory, String companysRegion1, String companysRegion2) {
+        return companysRepository.selectCompanysByFilter2(companysCategory, companysRegion1, companysRegion2);
     }
 
-    @Override
-    public List<Long> selectCompanysByCompanysCategoryCompanysRegion1(String companysCategoryValue, String companysRegion1) {
-        return companysRepository.selectCompanysByCompanysCategoryCompanysRegion1(companysCategoryValue, companysRegion1);
-    }
 
     @Override
     public List<Companys> findAll() {
@@ -329,6 +326,6 @@ public class CompanysService implements CompanysRepository {
     public <S extends Companys, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
         // TODO Auto-generated method stub
         return null;
-    }   
+    }
 
 }
