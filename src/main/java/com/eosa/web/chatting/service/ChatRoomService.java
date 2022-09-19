@@ -93,13 +93,18 @@ public class ChatRoomService implements ChatRoomRepository {
         log.info("[save] insertRoomInfo: {}", entity.toString());
         return (S) chatRoomRepository.save(entity);
     }
-    
-    public List<ChatRoom> deleteChatRoom(String roomId) {
+
+    @Override
+    public int deleteRoomByRoomId(String roomId) {
+        return chatRoomRepository.deleteRoomByRoomId(roomId);
+    }
+
+    public List<ChatRoom> selectRoomListOnServer(String roomId) {
         chatRooms.remove(roomId);
         List<ChatRoom> result = new ArrayList<>(chatRooms.values());
-    
         return result;
     }
+
 
     @Override
     public List<ChatRoom> selectChatRoomListByUsersIdx(Long usersIdx) {

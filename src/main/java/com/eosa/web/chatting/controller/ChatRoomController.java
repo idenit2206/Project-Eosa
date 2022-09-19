@@ -172,12 +172,20 @@ public class ChatRoomController {
         return chatRoomService.findAllRoom();
     }
 
-    @PutMapping("/room")
+    @PutMapping("/deleteRoomByRoomId")
     @ResponseBody
-    public List<ChatRoom> deleteRoom(
-        @RequestParam("roomId") String roomId
+    public List<ChatRoom> deleteRoomByRoomId(
+        @RequestParam("roomId") String roomId,
+        @RequestParam("usersIdx") Long usersIdx
     ) {
-        return chatRoomService.deleteChatRoom(roomId);
+        List<ChatRoom> result = null;
+        int updateEnableZero = chatRoomService.deleteRoomByRoomId(roomId);
+        if(updateEnableZero == 1) {
+            result = chatRoomService.selectRoomListOnServer(roomId);
+        } else {
+            result = chatRoomService.getChatRoomListByUsersIdx(usersIdx);
+        }
+        return result;
     }   
 
     // TestMethod 현재 존재하는 모든 채팅방 삭제

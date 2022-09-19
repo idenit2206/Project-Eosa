@@ -39,6 +39,12 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
     )
     SelectCompanys selectOneCompanysByCompanysIdxTest(Long companysIdx);
 
+    /**
+     * companysIdx와 usersIdx가 일치하는 Companys테이블을 UserLikeCompany테이블과 JOIN하여 조회
+     * @param companysIdx
+     * @param usersIdx
+     * @return
+     */
     @Query(value=
         "SELECT " +
         "C.companysIdx, C.companysName, C.companysCeoIdx, C.companysCeoName, " +

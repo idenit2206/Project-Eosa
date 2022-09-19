@@ -38,8 +38,7 @@ public class CustomWebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
-        // 전달되는 메시지 용량을 9MB로 제한한다.
-        registration.setMessageSizeLimit(900 * 1024 * 1024);
+        registration.setMessageSizeLimit(5000 * 1024);
     }
 
 }

@@ -37,4 +37,13 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
     )
     List<ChatRoom> selectChatRoomListByCompanysIdx(Long companysIdx);
 
+    @Query(
+        value=
+        "UPDATE ChatRoom cr " +
+        "SET cr.usable = 0 " +
+        "WHERE cr.roomId = ?1"
+        ,nativeQuery = true
+    )
+    int deleteRoomByRoomId(String roomId);
+
 }
