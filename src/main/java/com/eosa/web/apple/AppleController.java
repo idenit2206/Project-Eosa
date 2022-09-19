@@ -11,6 +11,7 @@ import com.nimbusds.jwt.SignedJWT;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URLDecoder;
@@ -40,8 +43,11 @@ public class AppleController {
 
     private final HttpSession session;
 
-    @PostMapping("/apple/callback")
-    public ModelAndView appleLoginCallBack(@RequestBody String apple_data) throws JOSEException, ParseException, IOException {
+    @Value("${my.service.domain}") private String myDomain;
+    @Value("${my.ui.port}") private String myUiPort;
+
+    @PostMapping("/api/user/apple/redirect")
+    public ModelAndView appleLoginCallBack(@RequestBody String apple_data, HttpServletResponse response) throws JOSEException, ParseException, IOException {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -103,22 +109,35 @@ public class AppleController {
 
         //회원정보 없을 시 회원가입
         if (memberDTO == null) {
+//            MVC pattern
+//            session.setAttribute("provider", provider);
+//            session.setAttribute("providerId", providerId);
+//            session.setAttribute("username", username);
+//            session.setAttribute("memberPassword", memberPassword);
+//            session.setAttribute("memberEmail", memberEmail);
+//            session.setAttribute("memberName", memberName);
+//
+//            mv.setViewName("redirect:/sns-signup");
+//            return mv;
+            Cookie cookieProvider = new Cookie("provider", provider+"/"+memberEmail+"/"+"");
+            cookieProvider.setPath("/");
+            response.addCookie(cookieProvider);
+            response.sendRedirect("http://" + myDomain + ":" + myUiPort + "/user/register");
+            response.flushBuffer();
 
-            session.setAttribute("provider", provider);
-            session.setAttribute("providerId", providerId);
-            session.setAttribute("username", username);
-            session.setAttribute("memberPassword", memberPassword);
-            session.setAttribute("memberEmail", memberEmail);
-            session.setAttribute("memberName", memberName);
-
-            mv.setViewName("redirect:/sns-signup");
-            return mv;
         } else if (!principalDetails.isEnabled()) {
-            String msg = "msg-approval";
-            msg = URLEncoder.encode(msg, "UTF-8");
-            mv.setViewName("redirect:/login/error?msg="+msg);
-
-            return mv;
+//            MVC pattern
+//            String msg = "msg-approval";
+//            msg = URLEncoder.encode(msg, "UTF-8");
+//            mv.setViewName("redirect:/login/error?msg="+msg);
+//
+//            return mv;
+        }
+        else {
+            Cookie cookieAccount = new Cookie("usersAccount", memberEmail);
+            cookieAccount.setPath("/");
+            response.addCookie(cookieAccount);
+            response.sendRedirect("http://" + myDomain + ":" + myUiPort + "/");
         }
 
         // 로그인 세션에 들어갈 권한을 설정합니다.

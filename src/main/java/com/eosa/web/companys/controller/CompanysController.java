@@ -209,6 +209,20 @@ public class CompanysController {
             result.setResponseDateTime(LocalDateTime.now());
         }
 
+        if(companysCategory.size() == 0 && companysRegion1.size() != 0 && companysRegion2.size() == 0) {
+            for(int i = 0; i < companysRegion1.size(); i++) {
+                companysIdxSet.addAll(companysService.selectCompanysByFilter2("", companysRegion1.get(i), ""));
+            }
+        }
+
+        if(companysCategory.size() == 0 && companysRegion1.size() != 0 && companysRegion2.size() != 0) {
+            for(int i = 0; i < companysRegion1.size(); i++) {
+                for(int j = 0; j < companysRegion2.size(); j++) {
+                    companysIdxSet.addAll(companysService.selectCompanysByFilter2("", companysRegion1.get(i), companysRegion2.get(j)));
+                }
+            }
+        }
+
         if(companysCategory.size() != 0 && companysRegion1.size() == 0 && companysRegion2.size() == 0) {
             // Set<Long> list = new HashSet<>();
             for(int i = 0; i < companysCategory.size(); i++) {
@@ -379,7 +393,7 @@ public class CompanysController {
     }
 
     /**
-     * DETECTIVE 상세 조회
+     * usersIdx와 일치하는 Companys 정보 조회
      * @param usersIdx Long type
      * @return
      */
@@ -389,7 +403,7 @@ public class CompanysController {
     ){
       CustomResponseData result = new CustomResponseData();
       Map<String, Object> items = new HashMap<>();
-      log.debug("[selectCompanyInfoByUsersIdx] companysIdx가 일치하는 Companys 정보를 조회합니다", usersIdx);
+      log.debug("[selectCompanyInfoByUsersIdx] companysIdx가 일치하는 Companys 정보를 조회합니다 companysIdx: {}", usersIdx);
 
       Companys step1 = companysService.selectCompanyInfoByUsersIdx(usersIdx);
 

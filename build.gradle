@@ -2,7 +2,7 @@ def getDate() {
 //	def date = new Date()
 //	def formattedDate = date.format("yyyyMMddHHmmss")
 //	return formattedDate
-	new Date().format("yyyyMMddHHmmss")
+	new Date().format("yyyyMMdd")
 }
 
 plugins {
@@ -12,7 +12,7 @@ plugins {
 }
 
 group = 'com.eosa'
-version = '0.8.0_'+getDate()
+version = '0.8.1-'+getDate()
 sourceCompatibility = '11'
 
 configurations {

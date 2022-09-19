@@ -105,6 +105,11 @@ public class UsersReviewController {
         return result;
     }
 
+    /**
+     * requestFormIdx와 일치하는 UsersReview 조회
+     * @param requestFormIdx
+     * @return
+     */
     @GetMapping("/selectOneUsersReviewByRequestFormIdx")
     public CustomResponseData selectOneUsersReviewByRequestFormIdx(@RequestParam("requestFormIdx") Long requestFormIdx) {
         log.debug("[selectOneUsersReviewByRequestFormIdx] Start");

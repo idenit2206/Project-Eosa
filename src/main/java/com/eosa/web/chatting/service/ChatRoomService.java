@@ -27,31 +27,28 @@ import lombok.extern.slf4j.Slf4j;
 public class ChatRoomService implements ChatRoomRepository {
 
     private Map<String, ChatRoom> chatRooms;
-        
+    private Set<String> chatRoomIdList;
+
     @PostConstruct
-    private void init() {
+    private void initChatRooms() {
         chatRooms = new LinkedHashMap<>();
+    }
+
+    @PostConstruct
+    private void initChatRoomIdList() {
+        chatRoomIdList = new HashSet<>();
     }
 
     public void testAllFlush() {
         chatRooms.clear();
+        chatRoomIdList.clear();
     }
 
     @Autowired private ChatRoomRepository chatRoomRepository;
     @Autowired private CompanysService companysService;
 
     /**
-     * 모든 채팅방 목록보기
-     * @return
-    */
-    public List<ChatRoom> findAllRoom() {
-        List<ChatRoom> result = new ArrayList<>(chatRooms.values());
-        Collections.reverse(result);
-        return result;
-    }
-
-    /**
-     * ChatRoom 찾기 roomId 기준
+     * roomId가 일치하는 ChatRoom 찾기
      * @param roomId
      * @return
      */
@@ -93,29 +90,73 @@ public class ChatRoomService implements ChatRoomRepository {
         log.info("[save] insertRoomInfo: {}", entity.toString());
         return (S) chatRoomRepository.save(entity);
     }
-    
-    public List<ChatRoom> deleteChatRoom(String roomId) {
+
+    @Override
+    public int deleteRoomByRoomId(String roomId) {
+        return chatRoomRepository.deleteRoomByRoomId(roomId);
+    }
+
+    public List<ChatRoom> selectRoomListOnServer(String roomId) {
         chatRooms.remove(roomId);
         List<ChatRoom> result = new ArrayList<>(chatRooms.values());
-    
         return result;
     }
 
+    /**
+     * usersIdx가 일치하는 채팅방들을 List 형식으로 반환
+     * @param usersIdx
+     * @return
+     */
     @Override
     public List<ChatRoom> selectChatRoomListByUsersIdx(Long usersIdx) {
         List<ChatRoom> result = chatRoomRepository.selectChatRoomListByUsersIdx(usersIdx);
         for(int i = 0; i < result.size(); i++) {
-            chatRooms.put(result.get(i).getRoomId(), result.get(i));
+           chatRoomIdList.add(result.get(i).getRoomId());
+        }
+        Iterator<String> iter = chatRoomIdList.iterator();
+        while(iter.hasNext()) {
+            String crid = iter.next();
+            log.debug("[selectChatRoomListByUsersIdx] iter: {}", crid);
+            ChatRoom cr = selectChatRoomByChatRoomId(crid);
+            chatRooms.put(crid, cr);
         }
         return result;
     }
 
+
+    /**
+     * companysIdx가 일치하는 채팅방들을 List로 출력
+     * @param companysIdx
+     * @return
+     */
     @Override
     public List<ChatRoom> selectChatRoomListByCompanysIdx(Long companysIdx) {
         List<ChatRoom> result = chatRoomRepository.selectChatRoomListByCompanysIdx(companysIdx);
         for(int i = 0; i < result.size(); i++) {
             chatRooms.put(result.get(i).getRoomId(), result.get(i));
         }
+        return result;
+    }
+
+    @Override
+    public ChatRoom selectChatRoomByChatRoomId(String roomId) {
+        return chatRoomRepository.selectChatRoomByChatRoomId(roomId);
+    }
+
+    /**
+     * 모든 채팅방 목록보기(테스트용)
+     * @return
+     */
+    public List<ChatRoom> findAllRoom() {
+//        List<ChatRoom> result = new ArrayList<>(chatRooms.values());
+        List<ChatRoom> result = null;
+        List<ChatRoom> selectRows = chatRoomRepository.findAll();
+        for(int i = 0; i < selectRows.size(); i++) {
+            chatRooms.put(selectRows.get(i).getRoomId(), selectRows.get(i));
+        }
+        result = new ArrayList<>(chatRooms.values());
+
+        Collections.reverse(result);
         return result;
     }
 

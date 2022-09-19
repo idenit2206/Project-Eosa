@@ -1,13 +1,19 @@
 package com.eosa.web.companys.service;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
+import com.eosa.admin.dto.CompanysDTO;
+import com.eosa.admin.safety.Safety;
 import com.eosa.web.companys.entity.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -129,16 +135,54 @@ public class CompanysService implements CompanysRepository {
     }
 
     @Override
-    public List<SelectCompanys> selectCompanysByFilter(
-        boolean companysPremium, boolean companysLocalPremium, String companysCategory,
-        String companysRegion1, String companysRegion2
-    ) {
-        return companysRepository.selectCompanysByFilter(companysPremium, companysLocalPremium, companysCategory, companysRegion1, companysRegion2);
-    }
-
-    @Override
     public List<Long> selectCompanysByFilter2(String companysCategory, String companysRegion1, String companysRegion2) {
         return companysRepository.selectCompanysByFilter2(companysCategory, companysRegion1, companysRegion2);
+    }
+
+    // 안심번호
+    /**
+     * 안심번호 추출 서비스
+     *
+     * @return String
+     * @throws NoSuchAlgorithmException
+     */
+    public String safetyNumber() throws NoSuchAlgorithmException {
+
+        Safety safety = new Safety();
+
+        Map<String, String> map = safety.safetyEncode();
+
+        String result = safety.safetyAPI("https://bizapi.callmix.co.kr/biz050/BZV100?secureCode=" + map.get("secureCode") + "&bizId=" + map.get("id") + "&monthDay=" + map.get("monthDay") + "&selGbn=3&seqNo=0&reqCnt=1");
+
+        // 받아온 JSON에서 데이터 추출
+        JSONObject json = new JSONObject(result);
+        JSONArray jsonArray = json.getJSONArray("vnList");
+        JSONObject obj = jsonArray.getJSONObject(0);
+        String vn = obj.getString("vn");
+
+        return vn;
+    }
+
+    /**
+     * 안심번호 등록/삭제 서비스
+     *
+     * @param companysDTO
+     * @return int
+     * @throws NoSuchAlgorithmException
+     */
+    public int safetyMapping(CompanysDTO companysDTO) throws NoSuchAlgorithmException {
+
+        Safety safety = new Safety();
+
+        Map<String, String> map = safety.safetyEncode();
+
+        String result = safety.safetyAPI("https://bizapi.callmix.co.kr/biz050/BZV210?secureCode=" + map.get("secureCode") + "&bizId=" + map.get("id") + "&monthDay=" + map.get("monthDay") + "&tkGbn=" + companysDTO.getTkGbn() + "&rn=" + companysDTO.getCompanysPhone() + "&vn=" + companysDTO.getCompanysDummyPhone());
+
+        JSONObject json = new JSONObject(result);
+
+        int num = json.getString("resCd").equals("SUCCESS") ? 1 : 0;
+
+        return num;
     }
 
 

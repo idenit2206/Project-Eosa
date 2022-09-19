@@ -42,7 +42,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping("/api/callmix")
-public class CallMixController {
+public class CallMixController_backup {
 
     @GetMapping("/ansim")
     public CustomResponseData test() throws NoSuchAlgorithmException, IOException {

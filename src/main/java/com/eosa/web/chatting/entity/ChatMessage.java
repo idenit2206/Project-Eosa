@@ -3,6 +3,7 @@ package com.eosa.web.chatting.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -16,7 +17,7 @@ public class ChatMessage {
     @Column private String roomId;
     @Column private String sender;
     @Column private String message;
-    @Column private String fileMessage;
+    @Transient private String fileMessage;
     @Column private String sendDate;
 
 }

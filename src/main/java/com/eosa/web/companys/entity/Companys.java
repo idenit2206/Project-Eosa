@@ -34,6 +34,9 @@ public class Companys {
     private String companysSpec;
 
     @Column private String companysPhone;
+    @Column private String companysDummyPhone;
+    @Column private String companysMemo;
+
 
     @Column(nullable=false, length=50)
     private String companysRegion1;
@@ -83,8 +86,5 @@ public class Companys {
     @Column(nullable=false)
     @ColumnDefault("0")
     private boolean companysDelete;
-
-    @Column private String companysDummyPhone;
-    @Column private String companysMemo;
 
 }

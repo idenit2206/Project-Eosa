@@ -25,13 +25,17 @@ public class CompanysPremiumController {
             @RequestParam("companysCeoName") String companysCeoName
     ) {
         CustomResponseData result = new CustomResponseData();
-
-        Long companysIdx = companysService.selectCompanyIdxByComapnysNameAndCompanysCeoName(companysName.trim(), companysCeoName.trim());
+//        Parameter 조건에 해당하는 Companys가 DB에 존재하는지 확인
+//        Long companysIdx = companysService.selectCompanyIdxByComapnysNameAndCompanysCeoName(companysName.trim(), companysCeoName.trim());
 //        log.debug("[insertCompanyPremium] companysIdx: {}", String.valueOf(companysIdx));
-        if(companysIdx != null) {
-            CompanysPremium requestPremium = new CompanysPremium();
-            requestPremium.setCompanysIdx(companysIdx);
-            CompanysPremium insertData = companysPremiumService.save(requestPremium);
+
+
+
+        if(!companysName.equals("") || !companysName.equals(null) && !companysCeoName.equals("") || !companysCeoName.equals(null)) {
+            CompanysPremium entity = new CompanysPremium();
+            entity.setCompanysName(companysName);
+            entity.setCompanysCeoName(companysCeoName);
+            CompanysPremium insertData = companysPremiumService.save(entity);
 
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem(insertData);

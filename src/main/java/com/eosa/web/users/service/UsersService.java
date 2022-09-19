@@ -82,7 +82,7 @@ public class UsersService implements UsersRepository {
     }
    
     /**
-     * 사용자 계정을 기반으로 해당 사용자의 정보 조회 (사용자 정보 조회시 사용)
+     * usersAccount에 일치하는 사용자의 정보 조회
      */
     public GetUsersInfoByUsersAccountEntity getUsersInfoByUsersAccount(String usersAccount) {
         GetUsersInfoByUsersAccountEntity result = usersRepository.getUsersInfoByUsersAccount(usersAccount);

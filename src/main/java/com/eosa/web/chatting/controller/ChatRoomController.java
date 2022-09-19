@@ -1,10 +1,7 @@
 package com.eosa.web.chatting.controller;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.eosa.web.chatting.entity.ChatMessage;
 import com.eosa.web.chatting.service.ChatMessageService;
@@ -32,11 +29,11 @@ public class ChatRoomController {
     @Autowired private ChatRoomService chatRoomService;
     @Autowired private ChatMessageService chatMessageService;
 
-    // 채팅 리스트 화면
-    @GetMapping("/room")
-    public String room(Model model) {
-        return "service/chatting/room";
-    }
+//    // 채팅 리스트 화면 MVC pattern
+//    @GetMapping("/room")
+//    public String room(Model model) {
+//        return "service/chatting/room";
+//    }
 
     // 채팅방 생성
     // @PostMapping("/room")
@@ -172,12 +169,20 @@ public class ChatRoomController {
         return chatRoomService.findAllRoom();
     }
 
-    @PutMapping("/room")
+    @PutMapping("/deleteRoomByRoomId")
     @ResponseBody
-    public List<ChatRoom> deleteRoom(
-        @RequestParam("roomId") String roomId
+    public List<ChatRoom> deleteRoomByRoomId(
+        @RequestParam("roomId") String roomId,
+        @RequestParam("usersIdx") Long usersIdx
     ) {
-        return chatRoomService.deleteChatRoom(roomId);
+        List<ChatRoom> result = null;
+        int updateEnableZero = chatRoomService.deleteRoomByRoomId(roomId.trim());
+        if(updateEnableZero == 1) {
+            result = chatRoomService.selectRoomListOnServer(roomId);
+        } else {
+            result = chatRoomService.getChatRoomListByUsersIdx(usersIdx);
+        }
+        return result;
     }   
 
     // TestMethod 현재 존재하는 모든 채팅방 삭제
@@ -188,10 +193,12 @@ public class ChatRoomController {
         chatRoomService.testAllFlush();
     }
 
-    //    // TestMethod 모든 채팅방 목록 반환
-//    @GetMapping("/rooms")
-//    @ResponseBody
-//    public List<ChatRoom> rooms() {
-//        return chatRoomService.findAllRoom();
-//    }
+    /**
+     * TestMethod 모든 채팅방 목록 반환
+    */
+    @GetMapping("/rooms")
+    @ResponseBody
+    public List<ChatRoom> rooms() {
+        return chatRoomService.findAllRoom();
+    }
 }
