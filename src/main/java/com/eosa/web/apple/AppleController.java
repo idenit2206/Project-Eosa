@@ -46,7 +46,7 @@ public class AppleController {
     @Value("${my.service.domain}") private String myDomain;
     @Value("${my.ui.port}") private String myUiPort;
 
-    @PostMapping("/apple/callback")
+    @PostMapping("/api/user/apple/redirect")
     public ModelAndView appleLoginCallBack(@RequestBody String apple_data, HttpServletResponse response) throws JOSEException, ParseException, IOException {
 
         ObjectMapper objectMapper = new ObjectMapper();

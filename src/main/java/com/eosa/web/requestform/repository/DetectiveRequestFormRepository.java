@@ -33,12 +33,14 @@ public interface DetectiveRequestFormRepository extends JpaRepository<RequestFor
     @Query(
             value="SELECT " +
                     "RequestForm.requestFormIdx, RequestForm.usersIdx, Users.usersAccount, Users.usersAge, Users.usersGender, RequestForm.companysIdx, " +
+                    "C.companysName, C.companysPremium, " +
                     "RequestForm.requestFormRegion1, RequestForm.requestFormRegion2, " +
                     "RequestForm.requestFormStatus, RequestForm.requestConsultDate, RequestForm.requestFormDate, " +
                     "RequestForm.requestFormAcceptDate, RequestForm.requestFormCompDate, RequestForm.requestFormRejectMessage, " +
                     "GROUP_CONCAT(RequestFormCategory.requestFormCategoryValue) AS requestFormCategory " +
                     "FROM RequestForm INNER JOIN RequestFormCategory ON RequestForm.requestFormIdx = RequestFormCategory.requestFormIdx " +
                     "INNER JOIN Users ON RequestForm.usersIdx = Users.usersIdx " +
+                    "LEFT JOIN Companys C ON RequestForm.companysIdx = C.companysIdx " +
                     "WHERE RequestForm.companysIdx = ?1 " +
                     "GROUP BY RequestForm.RequestFormIdx " +
                     "ORDER BY RequestForm.requestFormDate DESC",
