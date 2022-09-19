@@ -1,10 +1,7 @@
 package com.eosa.web.chatting.controller;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.eosa.web.chatting.entity.ChatMessage;
 import com.eosa.web.chatting.service.ChatMessageService;
@@ -179,7 +176,7 @@ public class ChatRoomController {
         @RequestParam("usersIdx") Long usersIdx
     ) {
         List<ChatRoom> result = null;
-        int updateEnableZero = chatRoomService.deleteRoomByRoomId(roomId);
+        int updateEnableZero = chatRoomService.deleteRoomByRoomId(roomId.trim());
         if(updateEnableZero == 1) {
             result = chatRoomService.selectRoomListOnServer(roomId);
         } else {

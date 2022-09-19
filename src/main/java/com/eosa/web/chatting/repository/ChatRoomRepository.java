@@ -37,6 +37,8 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
     )
     List<ChatRoom> selectChatRoomListByCompanysIdx(Long companysIdx);
 
+    @Transactional
+    @Modifying
     @Query(
         value=
         "UPDATE ChatRoom cr " +
