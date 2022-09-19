@@ -198,6 +198,13 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     List<Users> selectAllDetective();
 
     @Query(
+        value="SELECT * FROM Users " +
+        "WHERE usersIdx = ?1",
+        nativeQuery = true
+    )
+    Users selectUsersByUsersIdx(Long usersIdx);
+
+    @Query(
         value="SELECT usersAccount FROM Users " +
         "WHERE usersIdx = ?1",
         nativeQuery = true

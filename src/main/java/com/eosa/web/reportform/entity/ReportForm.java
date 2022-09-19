@@ -18,5 +18,6 @@ public class ReportForm {
     @Column private String reportDetail;
     @Column private int reportCheckState;
     @Column private LocalDateTime reportDate;
+    @Column private LocalDateTime reportCheckDate;
 
 }

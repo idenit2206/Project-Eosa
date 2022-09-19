@@ -182,6 +182,11 @@ public class UsersService implements UsersRepository {
         return usersRepository.deleteUserInfo(usersIdx);
     }
 
+    @Override
+    public Users selectUsersByUsersIdx(Long usersIdx) {
+        return usersRepository.selectUsersByUsersIdx(usersIdx);
+    }
+
     public String selectUsersAccountByUsersIdx(Long usersIdx) {
         return usersRepository.selectUsersAccountByUsersIdx(usersIdx);
     }
