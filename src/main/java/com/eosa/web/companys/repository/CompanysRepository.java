@@ -265,7 +265,7 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
     )
     List<SelectAllCompanysList> selectCompanysByCompanysRegion1(String companysRegion1);
 
-    @Query(value = "SELECT * FROM Companys WHERE companysCeoIdx = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM Companys C WHERE C.companysCeoIdx = ?1", nativeQuery = true)
     Companys selectCompanyInfoByUsersIdx(Long companysCeoIdx);
 
     @Query(

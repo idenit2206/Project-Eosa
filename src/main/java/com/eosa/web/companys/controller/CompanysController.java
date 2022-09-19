@@ -393,7 +393,7 @@ public class CompanysController {
     }
 
     /**
-     * DETECTIVE 상세 조회
+     * usersIdx와 일치하는 Companys 정보 조회
      * @param usersIdx Long type
      * @return
      */
@@ -403,7 +403,7 @@ public class CompanysController {
     ){
       CustomResponseData result = new CustomResponseData();
       Map<String, Object> items = new HashMap<>();
-      log.debug("[selectCompanyInfoByUsersIdx] companysIdx가 일치하는 Companys 정보를 조회합니다", usersIdx);
+      log.debug("[selectCompanyInfoByUsersIdx] companysIdx가 일치하는 Companys 정보를 조회합니다 companysIdx: {}", usersIdx);
 
       Companys step1 = companysService.selectCompanyInfoByUsersIdx(usersIdx);
 

@@ -115,8 +115,10 @@ public class ChatRoomService implements ChatRoomRepository {
         }
         Iterator<String> iter = chatRoomIdList.iterator();
         while(iter.hasNext()) {
-            ChatRoom cr = selectChatRoomByChatRoomId(iter.next());
-            chatRooms.put(iter.next(), cr);
+            String crid = iter.next();
+            log.debug("[selectChatRoomListByUsersIdx] iter: {}", crid);
+            ChatRoom cr = selectChatRoomByChatRoomId(crid);
+            chatRooms.put(crid, cr);
         }
         return result;
     }

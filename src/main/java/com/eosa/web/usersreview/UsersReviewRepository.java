@@ -50,6 +50,6 @@ public interface UsersReviewRepository extends JpaRepository<UsersReview, Long>{
     )
     List<SelectReviewEntity> selectUsersReviewByUsersIdx(Long usersIdx);
 
-    @Query(value="SELECT * FROM UsersReview WHERE requestFormIdx = ?1", nativeQuery = true)
+    @Query(value="SELECT * FROM UsersReview WHERE reviewRequestFormIdx = ?1", nativeQuery = true)
     SelectReviewEntity selectOneUsersReviewByRequestFormIdx(Long requestFormIdx);
 }
