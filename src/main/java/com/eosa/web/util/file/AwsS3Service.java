@@ -79,7 +79,6 @@ public class AwsS3Service {
     public List<String> uploadMultipleFile(List<MultipartFile> files, String directoryName, Long companysIdx) {
         List<String> fileURLList = new ArrayList<>();
 
-
         files.forEach(file -> {
             String fileNameOrigin = file.getOriginalFilename();
             String fileName = directoryName + "_" +

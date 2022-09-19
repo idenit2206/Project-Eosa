@@ -29,11 +29,11 @@ public class ChatRoomController {
     @Autowired private ChatRoomService chatRoomService;
     @Autowired private ChatMessageService chatMessageService;
 
-    // 채팅 리스트 화면
-    @GetMapping("/room")
-    public String room(Model model) {
-        return "service/chatting/room";
-    }
+//    // 채팅 리스트 화면 MVC pattern
+//    @GetMapping("/room")
+//    public String room(Model model) {
+//        return "service/chatting/room";
+//    }
 
     // 채팅방 생성
     // @PostMapping("/room")
@@ -193,10 +193,12 @@ public class ChatRoomController {
         chatRoomService.testAllFlush();
     }
 
-    //    // TestMethod 모든 채팅방 목록 반환
-//    @GetMapping("/rooms")
-//    @ResponseBody
-//    public List<ChatRoom> rooms() {
-//        return chatRoomService.findAllRoom();
-//    }
+    /**
+     * TestMethod 모든 채팅방 목록 반환
+    */
+    @GetMapping("/rooms")
+    @ResponseBody
+    public List<ChatRoom> rooms() {
+        return chatRoomService.findAllRoom();
+    }
 }

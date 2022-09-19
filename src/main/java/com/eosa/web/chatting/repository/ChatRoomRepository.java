@@ -26,7 +26,7 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
 //    public int createChatRoom(@Param("LiveChat") ChatRoom chatRoom);
 
     @Query(
-        value="SELECT * FROM ChatRoom c WHERE c.usersIdx = ?1",
+        value="SELECT * FROM ChatRoom c WHERE c.usersIdx = ?1 and c.usable = 1",
         nativeQuery = true
     )
     List<ChatRoom> selectChatRoomListByUsersIdx(Long usersIdx);
@@ -36,6 +36,9 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
         ,nativeQuery = true
     )
     List<ChatRoom> selectChatRoomListByCompanysIdx(Long companysIdx);
+
+    @Query(value="SELECT * FROM ChatRoom c WHERE c.roomId = ?1", nativeQuery = true)
+    ChatRoom selectChatRoomByChatRoomId(String roomId);
 
     @Transactional
     @Modifying
