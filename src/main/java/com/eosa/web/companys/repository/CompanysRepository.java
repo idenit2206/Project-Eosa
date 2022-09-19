@@ -20,6 +20,7 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         "SELECT " +
         "C.companysIdx, C.companysName, C.companysCeoIdx, C.companysCeoName, " +
         "C.companysComment, C.companysSpec, C.companysPhone, " +
+        "C.companysDummyPhone, C.companysMemo, " +
         "C.companysRegion1, C.companysRegion2, C.companysRegion3, " +
         "C.companysRegistCerti, C.companysRegistCertiName, " +
         "C.companysLicense, C.companysLicenseName, " +
@@ -145,13 +146,22 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
      */
     @Query(value=
         "SELECT " +
-        "Companys.companysIdx, Companys.companysName, Companys.companysCeoIdx, Companys.companysCeoName, " +
-        "Companys.companysPhone, Companys.companysComment, Companys.companysSpec, Companys.companysRegistDate, " +
-        "Companys.companysRegion1, Companys.companysProfileImage, Companys.companysEnabled, Companys.companysDelete, " +
-        "Companys.companysPremium, Companys.companysLocalPremium, " +
-        "(SELECT GROUP_CONCAT(CompanysCategory.companysCategoryValue) FROM CompanysCategory WHERE CompanysCategory.companysIdx = Companys.companysIdx) " +
-//        "(SELECT IFNULL(a.idx, 0) AS UserLikeCompanyEnable FROM UserLikeCompany a RIGHT OUTER JOIN (SELECT '') AS b ON a.usersIdx=?1 AND a.companysIdx=Companys.companysIdx) " +
-        "AS CompanysCategory FROM Companys",
+        "C.companysIdx, C.companysName, C.companysCeoIdx, C.companysCeoName, " +
+        "C.companysComment, C.companysSpec, C.companysPhone, " +
+        "C.companysDummyPhone, C.companysMemo, " +
+        "C.companysRegion1, C.companysRegion2, C.companysRegion3, " +
+        "C.companysRegistCerti, C.companysRegistCertiName, " +
+        "C.companysLicense, C.companysLicenseName, " +
+        "C.companysProfileImage, C.companysProfileImageName, " +
+        "C.companysBankName, C.companysBankNumber, C.companysRegistDate, " +
+        "C.companysPremium, C.companysLocalPremium, " +
+        "C.companysEnabled, C.companysDelete, " +
+        "GROUP_CONCAT(DISTINCT CAR.activeRegion) AS activeRegion, " +
+        "GROUP_CONCAT(DISTINCT CC.companysCategoryValue) AS companysCategoryValue " +
+        "FROM Companys C " +
+        "LEFT JOIN CompanysActiveRegion CAR on C.companysIdx = CAR.companysIdx " +
+        "LEFT JOIN CompanysCategory CC on C.companysIdx = CC.companysIdx " +
+        "GROUP BY C.companysIdx",
         nativeQuery = true
     )
     List<SelectCompanys> selectAllCompanys();
@@ -293,42 +303,6 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
 
     @Query(value="SELECT * FROM Companys WHERE companysCeoIdx = ?1", nativeQuery = true)
     Companys selectCompanysPremiumEnabled(Long companysCeoIdx);
-
-
-    @Query(value=
-        "SELECT " +
-        "C.companysIdx, C.companysName, C.companysCeoName, C.companysCeoIdx, " +
-        "C.companysComment, C.companysSpec, C.companysPhone, " +
-        "C.companysRegion1, C.companysRegion2, C.companysRegion3, " +
-        "C.companysRegistCerti, C.companysRegistCertiName, " +
-        "C.companysLicense, C.companysLicenseName, " +
-        "C.companysProfileImage, C.companysProfileImageName, " +
-        "C.companysBankName, C.companysBankNumber, C.companysRegistDate, " +
-        "C.companysPremium, C.companysLocalPremium, " +
-        "C.companysEnabled, C.companysDelete, " +
-        "GROUP_CONCAT(DISTINCT CAR.activeRegion) AS activeRegion, " +
-        "GROUP_CONCAT(DISTINCT CC.companysCategoryValue) AS companysCategoryValue " +
-        "FROM Companys C " +
-        "LEFT JOIN CompanysCategory CC on C.companysIdx = CC.companysIdx " +
-        "LEFT JOIN CompanysActiveRegion CAR on C.companysIdx = CAR.companysIdx " +
-        "WHERE " +
-        "CC.companysCategoryValue LIKE CONCAT('%', :companysCategory, '%') " +
-        "AND " +
-        "C.companysPremium = :companysPremium " +
-        "AND " +
-        "C.companysLocalPremium = :companysLocalPremium " +
-        "AND " +
-        "C.companysRegion1 LIKE CONCAT('%', :companysRegion1, '%') " +
-        "AND " +
-        "C.companysRegion2 LIKE CONCAT('%', :companysRegion2, '%') " +
-        "AND C.companysEnabled = FALSE " +
-        "GROUP BY C.companysIdx"
-    ,nativeQuery = true)
-    List<SelectCompanys> selectCompanysByFilter(
-            @Param("companysPremium") boolean companysPremium, @Param("companysLocalPremium") boolean companysLocalPremium,
-            @Param("companysCategory") String companysCategory,
-            @Param("companysRegion1") String companysRegion1, @Param("companysRegion2") String companysRegion2
-    );
 
     @Query(
         value="SELECT C.companysIdx " +
