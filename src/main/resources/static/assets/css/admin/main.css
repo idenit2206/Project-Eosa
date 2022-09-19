@@ -188,6 +188,7 @@ select:focus {
   width: calc(100% - 185px);
 }
 .center-wrap .mape-wrap .btn-green-lt, .dt-table .center-wrap .btn-green-lt {
+  width: calc(100% - 190px);
   height: 38px;
   background-color: #EAF6EF;
   border: 1px solid #dbdbdb;
@@ -197,6 +198,18 @@ select:focus {
 }
 .center-wrap .mape-wrap .btn-green-lt:hover, .dt-table .center-wrap .btn-green-lt:hover {
   background-color: #d9eae0;
+}
+.company-delete {
+  width: 100%;
+  height: 38px;
+  background-color: #ffeaea;
+  border: 1px solid #FF6666;
+  color: #FF6666;
+  font-size: 14px;
+  transition: 0.25s background-color;
+}
+.company-delete:hover {
+  background-color: #fddddd;
 }
 .dt-table .company-profile-wrap .company-description-wrap .input-wrap {
   height: 50px;
@@ -231,7 +244,78 @@ select:focus {
 .hidden {
   display: none;
 }
-
+.section .details-form {
+  padding-top: 0;
+}
+.t-top-wrap {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 40px;
+  padding: 10px 30px 20px;
+}
+.btn-review {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  background: center/auto 40px url(../../images/ico/ico-review.svg) no-repeat;
+}
+.btn-report {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  background: center/auto 40px url(../../images/ico/ico-report.svg) no-repeat;
+}
+.t-top-wrap .badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  height: 24px;
+  padding: 0px 7px;
+  font-size: 14px;
+  border-radius: 12px;
+  color: #FFF;
+  background-color: #E94E58;
+  margin-left: 3px;
+}
+.header-wrap .check-search {
+  width: 30%;
+}
+.header-wrap .check-btn {
+  width: 40%;
+}
+.filter-check {
+  position: relative;
+  width: 50%;
+  height: 34px;
+}
+.filter-check input[type=radio] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+.filter-check label {
+  width: 100%;
+  height: 100%;
+  line-height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #333;
+  font-size: 14px;
+  font-weight: 700;
+  border: 1px solid #dbdbdb;
+  cursor: pointer;
+  user-select: none;
+}
+.filter-check input[type=radio]:checked + label {
+  border: 1px solid #4C956C;
+  color: #4C956C;
+}
 .btn, .btn-tab, .btn-filter, .btn-full, .btn-prime, .btn-normal, .btn-del {
   display: inline-block;
   height: 34px;
@@ -342,6 +426,25 @@ select:focus {
   line-height: 38px;
   color: #4361EE;
   text-decoration: underline;
+}
+.two-btn-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+.two-btn-wrap button {
+  height: 38px;
+  font-size: 14px;
+  width: 31%;
+}
+.two-btn-wrap .btn-cancel {
+  color: #FFF;
+  background: #FF6666;
+}
+.two-btn-wrap .btn-green-sm {
+  color: #FFF;
+  background: #4C956C;
 }
 /* specific */
 .btn-terminate {
@@ -2532,7 +2635,7 @@ body.modal-overlayed::after {
   overflow-y: auto;
   display: none;
 }
-.modal-details .table, .modal-reason .table, .modal-terminate .table, .modal-request .table {
+.modal-details .table, .modal-reason .table, .modal-terminate .table, .modal-request .table, .modal-form .table {
   margin-top: 40px;
   border: 1px solid #dfdfdf;
   border-bottom: none;

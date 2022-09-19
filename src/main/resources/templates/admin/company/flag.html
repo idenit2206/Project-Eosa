@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/fragments/layout}">
+
+<th:block layout:fragment="content">
+
+    <th:block th:replace="admin/fragments/aside :: asideFragment"></th:block>
+
+    <main id="main" class="main-list" data-category="company">
+        <section class="section section-users">
+            <h2 class="section_title">광고 목록</h2>
+            <div class="table">
+                <div class="table__top">
+                    <div class="top-wrap">
+                        <div class="form-tab">
+                            <button class="btn tab-menu premium" th:onclick="|goTo('/admin/manage/company/premium')|">프리미엄</button>
+                            <button class="btn tab-menu flag on" th:onclick="|goTo('/admin/manage/company/flag')|">마패</button>
+                        </div>
+                        <div class="header-wrap">
+                            <span class="table__count">전체<i class="value" th:text="${count}"></i></span>
+                            <form class="table__search check-search">
+                                <div class="filter-check">
+                                    <input type="radio" id="filter01" name="enabled" value="" th:checked="${enabled} eq '' or ${enabled} eq null">
+                                    <label for="filter01">전체</label>
+                                </div>
+                                <div class="filter-check">
+                                    <input type="radio" id="filter02" name="enabled" value="0" th:checked="${enabled} eq 0">
+                                    <label for="filter02">신청</label>
+                                </div>
+                                <div class="filter-check">
+                                    <input type="radio" id="filter03" name="enabled" value="1" th:checked="${enabled} eq 1">
+                                    <label for="filter03">적용</label>
+                                </div>
+                                <button type="submit" class="btn-prime check-btn">검색</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th class="check"><input type="checkbox" name="checkAll" id="checkAll"></th>
+                        <th>업체명</th>
+                        <th>대표명</th>
+                        <th>연락처</th>
+                        <th>계좌번호</th>
+                        <th>지역</th>
+                        <th>적용일</th>
+                        <th>상태</th>
+                        <th>신청일</th>
+                    </tr>
+                    </thead>
+
+                    <tbody th:if="${count} eq 0">
+                    <tr>
+                        <td colspan="9">
+                            <span>등록된 프리미엄이 없습니다.</span>
+                        </td>
+                    </tr>
+                    </tbody>
+
+                    <tbody th:if="${count} ne 0">
+                    <tr th:each="list : ${flagList}" th:onclick="|linkTo(event,'/admin/manage/company/details?companysIdx=${list.companysIdx}')|">
+                        <td class="check"><input type="checkbox" name="listCheck"></td>
+                        <td>
+                            <span th:text="${list.companysName}"></span>
+                        </td>
+                        <td>
+                            <span th:text="${list.companysCeoName}"></span>
+                        </td>
+                        <td>
+                            <span th:text="${list.companysPhone}" class="contact"></span>
+                        </td>
+                        <td>
+                            <span th:text="|(${list.companysBankName}) ${list.companysBankNumber}|"></span>
+                        </td>
+                        <td>
+                            <span th:text="|${list.companysFlagRegion1} ${list.companysFlagRegion2 eq null ? '' : ', ' + list.companysFlagRegion2}|"></span>
+                        </td>
+                        <td>
+                            <span th:if="${list.companysFlagEnabled} eq 1" th:text="${#dates.format(list.flagStartDate, 'yyyy-MM-dd')} + ' ~ ' + ${#dates.format(list.flagEndDate, 'yyyy-MM-dd')}"></span>
+                        </td>
+                        <td>
+                            <span th:text="${list.companysFlagEnabled} eq 0 ? '신청' : '적용'"></span>
+                        </td>
+                        <td>
+                            <span th:text="${#dates.format(list.flagReqDate, 'yyyy-MM-dd')}"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="table__action">
+                    <button type="button" class="btn-normal btn-delete">삭제</button>
+                </div>
+
+                <div class="table__paging">
+                    <ul>
+                        <li><a class="first" th:href="@{/admin/manage/company/flag(enabled=${enabled}, page=1)}"></a></li>
+                        <li><a class="prev" th:href="@{/admin/manage/company/flag(enabled=${enabled}, page=${pagination.prevBlock})}"></a></li>
+
+                        <th:block th:with="start = ${pagination.startPage}, end = ${pagination.endPage}">
+                            <li th:each="pageButton : ${#numbers.sequence(start, end)}"><a class="pageNum" th:href="@{/admin/manage/company/flag(enabled=${enabled}, page=${pageButton})}" th:text="${pageButton}"></a></li>
+                        </th:block>
+
+                        <li><a class="next" th:href="@{/admin/manage/company/flag(enabled=${enabled}, page=${pagination.nextBlock})}"></a></li>
+                        <li><a class="last" th:href="@{/admin/manage/company/flag(enabled=${enabled}, page=${pagination.totalPageCnt eq 0 ? 1 : pagination.totalPageCnt})}"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+</th:block>
+
+<th:block layout:fragment="script">
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            highlightMenu('ad');
+            pageOn();
+            listCheck();
+            telFormat();
+            new Table(document.querySelector('#main table'));
+        });
+    </script>
+</th:block>
+
+</html>

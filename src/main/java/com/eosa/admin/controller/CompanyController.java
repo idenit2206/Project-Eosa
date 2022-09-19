@@ -110,4 +110,142 @@ public class CompanyController {
         return companyService.safetyMapping(companysDTO);
     }
 
+    /**
+     * 업체 인증 컨트롤러
+     *
+     * @param companysIdx
+     * @param sort
+     * @param num
+     * @return
+     */
+    @ResponseBody
+    @PostMapping("/check")
+    public int updateCheck(@RequestParam long companysIdx, @RequestParam int sort, @RequestParam int num) {
+
+        return companyService.updateCheck(companysIdx, sort, num);
+    }
+
+    /**
+     * 업체 프리미엄 신청 컨트롤러
+     *
+     * @param companysDTO
+     * @return int
+     */
+    @ResponseBody
+    @PostMapping("/premium/request")
+    public int requestPremium(CompanysDTO companysDTO) {
+
+        return companyService.requestPremium(companysDTO);
+    }
+
+    /**
+     * 업체 프리미엄 등록 컨트롤러
+     *
+     * @param companysDTO
+     * @return int
+     */
+    @ResponseBody
+    @PostMapping("/premium/approval")
+    public int approvalPremium(CompanysDTO companysDTO) {
+
+        return companyService.approvalPremium(companysDTO);
+    }
+
+    /**
+     * 업체 프리미엄 해지 컨트롤러
+     *
+     * @param companysIdx
+     * @return int
+     */
+    @ResponseBody
+    @PostMapping("/premium/cancel")
+    public int cancelPremium(@RequestParam long companysIdx) {
+
+        return companyService.cancelPremium(companysIdx);
+    }
+
+    /**
+     * 업체 마패 신청 컨트롤러
+     *
+     * @param companysDTO
+     * @return int
+     */
+    @ResponseBody
+    @PostMapping("/flag/request")
+    public int requestFlag(CompanysDTO companysDTO) {
+
+        return companyService.requestFlag(companysDTO);
+    }
+
+    /**
+     * 업체 마패 등록 컨트롤러
+     *
+     * @param companysDTO
+     * @return int
+     */
+    @ResponseBody
+    @PostMapping("/flag/approval")
+    public int approvalFlag(CompanysDTO companysDTO) {
+
+        return companyService.approvalFlag(companysDTO);
+    }
+
+    /**
+     * 업체 마패 수정 컨트롤러
+     *
+     * @param companysDTO
+     * @return int
+     */
+    @ResponseBody
+    @PostMapping("/flag/update")
+    public int updateFlag(CompanysDTO companysDTO) {
+
+        return companyService.updateFlag(companysDTO);
+    }
+
+    /**
+     * 업체 마패 해지 컨트롤러
+     *
+     * @param companysIdx
+     * @return int
+     */
+    @ResponseBody
+    @PostMapping("/flag/cancel")
+    public int cancelFlag(@RequestParam long companysIdx) {
+
+        return companyService.cancelFlag(companysIdx);
+    }
+
+    /**
+     * 프리미엄 목록 조회 컨트롤러
+     *
+     * @param model
+     * @param enabled
+     * @param page
+     * @return String
+     */
+    @GetMapping("/premium")
+    public String premiumList(Model model,
+                              @RequestParam(required = false) String enabled,
+                              @RequestParam(defaultValue = "1") int page) {
+
+        return companyService.premiumList(model, enabled, page);
+    }
+
+    /**
+     * 마패 목록 조회 컨트롤러
+     *
+     * @param model
+     * @param enabled
+     * @param page
+     * @return String
+     */
+    @GetMapping("/flag")
+    public String flagList(Model model,
+                           @RequestParam(required = false) String enabled,
+                           @RequestParam(defaultValue = "1") int page) {
+
+        return companyService.flagList(model, enabled, page);
+    }
+
 }

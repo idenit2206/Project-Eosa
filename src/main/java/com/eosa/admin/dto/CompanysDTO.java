@@ -74,5 +74,7 @@ public class CompanysDTO {
     private String companysFlagCategory;    // 깃발 업체 업무 분야
 
     private int tkGbn;                      // 1. 등록, 2. 삭제
+    private String reviewCount;             // 리뷰 개수
+    private String reportCount;             // 신고 개수
 
 }

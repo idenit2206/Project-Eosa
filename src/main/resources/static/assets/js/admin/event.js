@@ -474,3 +474,189 @@ async function updateCompany() {
     }
 
 };
+
+/**
+ * 업체 인증
+ */
+function updateCheck(sort, num) {
+    const sortName = (sort == 0) ? '사업자등록증' : '탐정자격증';
+    const message = (num == 1) ? sortName + '을 인증하시겠습니까?' : sortName + ' 인증을 취소하시겠습니까?';
+    const result = (num == 1) ? sortName + '이 인증되었습니다.' : sortName + ' 인증이 취소되었습니다.';
+    const msg = confirm(message);
+    if (msg) {
+
+        const formData = new FormData();
+        formData.set('sort', sort);
+        formData.set('num', num);
+        formData.set('companysIdx', document.querySelector('.companysIdx').value);
+
+        fetchApi('/admin/manage/company/check', 'post', formData, result);
+    }
+
+};
+
+/**
+ * 프리미엄 신청
+ */
+function requestPremium() {
+
+    const msg = confirm('프리미엄을 신청하시겠습니까?');
+    if (msg) {
+        const formData = new FormData();
+        formData.set('companysIdx', document.querySelector('.companysIdx').value);
+        formData.set('companysName', document.querySelector('.c-name').value);
+        formData.set('companysCeoName', document.querySelector('.c-ceo').textContent);
+
+        fetchApi('/admin/manage/company/premium/request', 'post', formData, '프리미엄이 신청되었습니다.');
+    }
+
+};
+
+/**
+ * 프리미엄 등록
+ */
+function approvalPremium() {
+
+    const start = document.querySelector('#date01');
+    const end = document.querySelector('#date02');
+
+    if (start.value == '') {
+        alert('시작일을 입력해 주세요.');
+    } else if (end.value == '') {
+        alert('종료일을 입력해 주세요.');
+    } else {
+        const msg = confirm('프리미엄을 등록하시겠습니까?');
+        if (msg) {
+            const formData = new FormData();
+
+            formData.set('companysIdx', document.querySelector('.companysIdx').value);
+            formData.set('premiumStartDate', start.value + ' 00:00:00');
+            formData.set('premiumEndDate',  end.value + ' 00:00:00');
+
+            fetchApi('/admin/manage/company/premium/approval', 'post', formData, '프리미엄이 등록되었습니다.');
+        }
+    }
+
+};
+
+/**
+ * 프리미엄 해지
+ */
+function cancelPremium() {
+
+    const msg = confirm('프리미엄을 해지하시겠습니까?');
+    if (msg) {
+        const formData = new FormData();
+
+        formData.set('companysIdx', document.querySelector('.companysIdx').value);
+        fetchApi('/admin/manage/company/premium/cancel', 'post', formData, '프리미엄이 해지되었습니다.');
+    }
+
+};
+
+/**
+ * 마패 신청
+ */
+function requestFlag() {
+
+    const region = document.querySelector('#region05');
+    const category = document.querySelectorAll('input[name=f-category]:checked');
+
+    if (region.value == '') {
+        alert('광고 지역을 선택해 주세요.');
+    } else if (category.length == 0) {
+        alert('광고 분야를 선택해 주세요.');
+    } else {
+        const msg = confirm('마패를 신청하시겠습니까?');
+        if (msg) {
+            const formData = new FormData();
+
+            formData.set('companysIdx', document.querySelector('.companysIdx').value);
+            formData.set('companysName', document.querySelector('.f-name').textContent);
+            formData.set('companysCeoName', document.querySelector('.f-ceo').textContent);
+            formData.set('companysFlagRegion1', region.value);
+            if (region.value == '서울') formData.set('companysFlagRegion2', document.querySelector('#region06').value);
+
+            for (let i = 0; i < category.length; i++) {
+                formData.append('companysFlagCategory', category[i].value);
+            }
+
+            formData.set('flagPrice', document.querySelector('.f-price').textContent.split(' ')[0]);
+            formData.set('flagPriceBank', document.querySelector('.f-bank').textContent);
+
+            fetchApi('/admin/manage/company/flag/request', 'post', formData, '마패가 신청되었습니다.');
+        }
+    }
+
+};
+
+/**
+ * 마패 등록
+ */
+function approvalFlag() {
+
+    const start = document.querySelector('#date03');
+    const end = document.querySelector('#date04');
+
+    if (start.value == '') {
+        alert('시작일을 입력해 주세요.');
+    } else if (end.value == '') {
+        alert('종료일을 입력해 주세요.');
+    } else {
+        const msg = confirm('마패를 등록하시겠습니까?');
+        if (msg) {
+            const formData = new FormData();
+
+            formData.set('companysIdx', document.querySelector('.companysIdx').value);
+            formData.set('flagStartDate', start.value + ' 00:00:00');
+            formData.set('flagEndDate', end.value + ' 00:00:00');
+
+            fetchApi('/admin/manage/company/flag/approval', 'post', formData, '마패가 등록되었습니다.');
+        }
+    }
+
+};
+
+/**
+ * 마패 수정
+ */
+function modifyFlag() {
+
+    const region = document.querySelector('#region03');
+    const category = document.querySelectorAll('input[name=m-category]:checked');
+
+    if (category.length == 0) {
+        alert('광고 분야를 선택해 주세요.');
+    } else {
+        const msg = confirm('수정하시겠습니까?');
+        if (msg) {
+            const formData = new FormData();
+
+            formData.set('companysFlagIdx', document.querySelector('.companysFlagIdx').value);
+            formData.set('companysFlagRegion1', region.value);
+            if (region.value == '서울') formData.set('companysFlagRegion2', document.querySelector('#region04').value);
+
+            for (let i = 0; i < category.length; i++) {
+                formData.append('companysFlagCategory', category[i].value);
+            }
+
+            fetchApi('/admin/manage/company/flag/update', 'post', formData, '신청서가 수정되었습니다.');
+        }
+    }
+
+};
+
+/**
+ * 마패 해지
+ */
+function cancelFlag() {
+
+    const msg = confirm('마패를 해지하시겠습니까?');
+    if (msg) {
+        const formData = new FormData();
+        formData.set('companysIdx', document.querySelector('.companysIdx').value);
+
+        fetchApi('/admin/manage/company/flag/cancel', 'post', formData, '마패가 해지되었습니다.');
+    }
+
+};

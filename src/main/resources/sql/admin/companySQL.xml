@@ -24,6 +24,7 @@
                C.companysName,
                C.companysCeoName,
                C.companysPhone,
+               C.companysDummyPhone,
                C.companysRegion1,
                C.companysRegion2,
                C.companysRegion3,
@@ -87,13 +88,17 @@
                P.premiumEndDate,
                P.companysPremiumEnabled,
                B.companysFlagIdx,
+               B.flagPrice,
+               B.flagPriceBank,
                B.flagReqDate,
                B.flagStartDate,
                B.flagEndDate,
                B.companysFlagEnabled,
                B.companysFlagRegion1,
                B.companysFlagRegion2,
-               B.companysFlagCategory
+               B.companysFlagCategory,
+               RV.reviewCount,
+               RF.reportCount
         FROM Companys C
                  JOIN (SELECT AR.companysIdx,
                               GROUP_CONCAT(AR.activeRegion SEPARATOR '|') activeRegion
@@ -107,6 +112,8 @@
                  LEFT OUTER JOIN (SELECT F.companysFlagIdx,
                                          F.companysIdx,
                                          F.companysName,
+                                         F.flagPrice,
+                                         F.flagPriceBank,
                                          F.flagReqDate,
                                          F.flagStartDate,
                                          F.flagEndDate,
@@ -121,6 +128,14 @@
                                                  FROM CompanysFlagCategory FT
                                                  GROUP BY FT.companysFlagIdx) FCT ON F.companysFlagIdx = FCT.companysFlagIdx) B
                                  ON C.companysIdx = B.companysIdx
+                 LEFT OUTER JOIN (SELECT COUNT(UR.reviewCompanysIdx) reviewCount,
+                                         UR.reviewCompanysIdx
+                                  FROM UsersReview UR
+                                  GROUP BY UR.reviewCompanysIdx) RV ON C.companysIdx = RV.reviewCompanysIdx
+                 LEFT OUTER JOIN (SELECT COUNT(R.companysIdx) reportCount,
+                                         R.companysIdx
+                                  FROM ReportForm R
+                                  GROUP BY R.companysIdx) RF ON C.companysIdx = RF.companysIdx
         WHERE C.companysIdx = #{companysIdx}
     </select>
 
@@ -176,5 +191,202 @@
         FROM CompanysCategory
         WHERE companysIdx = #{companysIdx}
     </delete>
+
+    <!-- 업체 인증 -->
+    <update id="updateCheck" parameterType="hashmap">
+        UPDATE Companys
+        SET
+            <if test="sort == 0">
+                companysRegistCertiCheck = #{num}
+            </if>
+            <if test="sort == 1">
+                companysLicenseCheck = #{num}
+            </if>
+        WHERE companysIdx = #{companysIdx}
+    </update>
+
+    <!-- 업체 프리미엄 신청 -->
+    <insert id="insertPremium" parameterType="CompanysDTO">
+        INSERT INTO CompanysPremium (companysIdx,
+                                     companysName,
+                                     companysCeoName,
+                                     premiumReqDate)
+        VALUES (#{companysIdx},
+                #{companysName},
+                #{companysCeoName},
+                NOW())
+    </insert>
+
+    <!-- 업체 프리미엄 등록 -->
+    <update id="updatePremium" parameterType="CompanysDTO">
+        UPDATE CompanysPremium
+        SET premiumStartDate       = #{premiumStartDate},
+            premiumEndDate         = #{premiumEndDate},
+            companysPremiumEnabled = 1
+        WHERE companysIdx = #{companysIdx}
+    </update>
+
+    <!-- 업체 프리미엄 해지 -->
+    <update id="cancelPremium" parameterType="long">
+        UPDATE CompanysPremium
+        SET premiumStartDate       = NULL,
+            premiumEndDate         = NULL,
+            companysPremiumEnabled = 0
+        WHERE companysIdx = #{companysIdx}
+    </update>
+
+    <!-- 업체 마패 신청 -->
+    <insert id="insertFlag" parameterType="CompanysDTO" useGeneratedKeys="true" keyProperty="companysFlagIdx">
+        INSERT INTO CompanysFlag (companysIdx,
+                                  companysName,
+                                  companysCeoName,
+                                  flagPrice,
+                                  flagPriceBank,
+                                  flagReqDate)
+        VALUES (#{companysIdx},
+                #{companysName},
+                #{companysCeoName},
+                #{flagPrice},
+                #{flagPriceBank},
+                NOW())
+    </insert>
+
+    <!-- 업체 마패 분야 등록 -->
+    <insert id="insertFlagCategory" parameterType="CompanysDTO">
+        INSERT INTO CompanysFlagCategory (companysFlagIdx,
+                                          companysFlagCategory)
+        VALUES (#{companysFlagIdx},
+                #{companysFlagCategory})
+    </insert>
+
+    <!-- 업체 마패 분야 삭제 -->
+    <delete id="deleteFlagCategory" parameterType="long">
+        DELETE
+        FROM CompanysFlagCategory
+        WHERE companysFlagIdx = #{companysFlagIdx}
+    </delete>
+
+    <!-- 업체 마패 지역 등록 -->
+    <insert id="insertFlagRegion" parameterType="CompanysDTO">
+        INSERT INTO CompanysFlagRegion (companysFlagIdx,
+                                        companysFlagRegion1,
+                                        companysFlagRegion2)
+        VALUES (#{companysFlagIdx},
+                #{companysFlagRegion1},
+                #{companysFlagRegion2})
+    </insert>
+
+    <!-- 업체 마패 지역 수정 -->
+    <update id="updateFlagRegion" parameterType="CompanysDTO">
+        UPDATE CompanysFlagRegion
+        SET companysFlagRegion1 = #{companysFlagRegion1},
+            <if test="companysFlagRegion1 == '서울'">
+                companysFlagRegion2 = #{companysFlagRegion2}
+            </if>
+            <if test="companysFlagRegion1 != '서울'">
+                companysFlagRegion2 = NULL
+            </if>
+        WHERE companysFlagIdx = #{companysFlagIdx}
+    </update>
+
+    <!-- 업체 마패 등록 -->
+    <update id="updateFlag" parameterType="CompanysDTO">
+        UPDATE CompanysFlag
+        SET flagStartDate       = #{flagStartDate},
+            flagEndDate         = #{flagEndDate},
+            companysFlagEnabled = 1
+        WHERE companysIdx = #{companysIdx}
+    </update>
+
+    <!-- 업체 마패 해지 -->
+    <update id="cancelFlag" parameterType="long">
+        UPDATE CompanysFlag
+        SET flagStartDate       = NULL,
+            flagEndDate         = NULL,
+            companysFlagEnabled = 0
+        WHERE companysIdx = #{companysIdx}
+    </update>
+
+    <!-- 업체 광고 상태 변경 -->
+    <update id="updateAd" parameterType="hashmap">
+        UPDATE Companys
+        SET
+            <if test="sort == 'premium'">
+                companysPremium = #{num}
+            </if>
+            <if test="sort == 'flag'">
+                companysLocalPremium = #{num}
+            </if>
+        WHERE companysIdx = #{companysIdx}
+    </update>
+
+    <!-- 프리미엄 목록 개수 조회 -->
+    <select id="countPremiumList" resultType="int" parameterType="hashmap">
+        SELECT COUNT(*)
+        FROM CompanysPremium P
+        <where>
+            <if test="enabled != null">
+                AND P.companysPremiumEnabled = #{enabled}
+            </if>
+        </where>
+    </select>
+
+    <!-- 프리미엄 목록 조회 -->
+    <select id="selectPremiumList" resultType="CompanysDTO" parameterType="hashmap">
+        SELECT C.companysIdx,
+               C.companysName,
+               C.companysCeoName,
+               C.companysPhone,
+               C.companysBankName,
+               C.companysBankNumber,
+               P.premiumReqDate,
+               P.premiumStartDate,
+               P.premiumEndDate,
+               P.companysPremiumEnabled
+        FROM CompanysPremium P
+                 JOIN Companys C on P.companysIdx = C.companysIdx
+        <where>
+            <if test="enabled != null">
+                AND P.companysPremiumEnabled = #{enabled}
+            </if>
+        </where>
+        ORDER BY P.premiumReqDate DESC LIMIT #{startIndex}, #{pageSize}
+    </select>
+
+    <!-- 마패 목록 개수 조회 -->
+    <select id="countFlagList" resultType="int" parameterType="hashmap">
+        SELECT COUNT(*)
+        FROM CompanysFlag F
+        <where>
+            <if test="enabled != null">
+                AND F.companysFlagEnabled = #{enabled}
+            </if>
+        </where>
+    </select>
+
+    <!-- 마패 목록 조회 -->
+    <select id="selectFlagList" resultType="CompanysDTO" parameterType="hashmap">
+        SELECT C.companysIdx,
+               C.companysName,
+               C.companysCeoName,
+               C.companysPhone,
+               C.companysBankName,
+               C.companysBankNumber,
+               F.flagReqDate,
+               F.flagStartDate,
+               F.flagEndDate,
+               F.companysFlagEnabled,
+               R.companysFlagRegion1,
+               R.companysFlagRegion2
+        FROM CompanysFlag F
+                 JOIN Companys C on F.companysIdx = C.companysIdx
+                 JOIN CompanysFlagRegion R ON R.companysFlagIdx = F.companysFlagIdx
+        <where>
+            <if test="enabled != null">
+                AND F.companysFlagEnabled = #{enabled}
+            </if>
+        </where>
+        ORDER BY F.flagReqDate DESC LIMIT #{startIndex}, #{pageSize}
+    </select>
 
 </mapper>

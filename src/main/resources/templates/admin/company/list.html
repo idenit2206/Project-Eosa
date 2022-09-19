@@ -43,7 +43,7 @@
                         <th>연락처</th>
                         <th th:if="${enabled} eq 1">안심번호</th>
                         <th class="width-250">분야</th>
-                        <th>지역</th>
+                        <th class="width-250">지역</th>
                         <th th:if="${enabled} eq 1" class="width-90">프리미엄</th>
                         <th th:if="${enabled} eq 1" class="width-90">마패</th>
                         <th>등록일</th>
@@ -72,13 +72,13 @@
                             <span th:text="${list.companysPhone}" class="contact"></span>
                         </td>
                         <td th:if="${enabled} eq 1">
-                            <span th:text="${list.companysPhone}" class="contact"></span>
+                            <span th:text="${list.companysDummyPhone}" class="safety"></span>
                         </td>
                         <td>
                             <span th:text="${#strings.replace(list.companysCategoryValue, '|', ', ')}" class="table-overflow"></span>
                         </td>
                         <td>
-                            <span th:text="|${list.companysRegion1}, ${list.companysRegion2}, ${list.companysRegion3}|"></span>
+                            <span th:text="|${list.companysRegion1 + ','} ${list.companysRegion1 eq '서울' ? list.companysRegion2 + ',' : ''} ${list.companysRegion3}|" class="table-overflow"></span>
                         </td>
                         <td th:if="${enabled} eq 1">
                             <div class="icon-wrap">
@@ -127,6 +127,7 @@
             pageOn();
             listCheck();
             telFormat();
+            safetyFormat();
             new Table(document.querySelector('#main table'));
         });
     </script>
