@@ -663,6 +663,14 @@ function telFormat() {
   }
 };
 
+/* 안심번호 포맷 */
+function safetyFormat() {
+  const safeties = document.querySelectorAll('.safety');
+  for (const safety of safeties) {
+    safety.textContent = safety.textContent.replace(/([\d|*]{4})([\d|*]{4})([\d|*]{4})/, `$1-$2-$3`);
+  }
+};
+
 /* 숫자만 사용 */
 function onlyNum() {
   const num = document.querySelectorAll('.onlyNum');
@@ -862,6 +870,40 @@ function modalRegionSelect() {
 
         region02.disabled = false;
         region02.options[1].selected = true;
+      }
+    });
+  }
+};
+
+/* 신청서 셀렉트 */
+function appRegionSelect() {
+  const region01 = document.querySelector('#region05');
+  const region02 = document.querySelector('#region06');
+  const price = document.querySelector('.f-price');
+
+  if (region01 != null) {
+    region01.addEventListener('change', e => {
+      if (region01.value != '서울') {
+        region02.options.length = 1;
+        region02.options[0].selected = true;
+        region02.disabled = true;
+
+        price.textContent = '10000 원';
+      } else {
+        region02.options[1] = new Option('서초', '서초');
+        region02.options[2] = new Option('강남', '강남');
+        region02.options[3] = new Option('강동/송파', '강동/송파');
+        region02.options[4] = new Option('강서/양천/영등포/구로', '강서/양천/영등포/구로');
+        region02.options[5] = new Option('도봉/강북/성북/노원', '도봉/강북/성북/노원');
+        region02.options[6] = new Option('동대문/성동/광진/중랑', '동대문/성동/광진/중랑');
+        region02.options[7] = new Option('종로/중구/용산', '종로/중구/용산');
+        region02.options[8] = new Option('서대문/마포/은평', '서대문/마포/은평');
+        region02.options[9] = new Option('동작/관악/금천', '동작/관악/금천');
+
+        region02.disabled = false;
+        region02.options[1].selected = true;
+
+        price.textContent = '10000 원';
       }
     });
   }

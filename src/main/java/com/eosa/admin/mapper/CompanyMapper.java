@@ -84,4 +84,131 @@ public interface CompanyMapper {
      */
     int deleteCompanysCategory(long companysIdx);
 
+    /**
+     * 업체 인증 매퍼
+     *
+     * @param map
+     * @return int
+     */
+    int updateCheck(Map<String, Object> map);
+
+    /**
+     * 업체 프리미엄 신청 매퍼
+     *
+     * @param companysDTO
+     * @return int
+     */
+    int insertPremium(CompanysDTO companysDTO);
+
+    /**
+     * 업체 프리미엄 등록 매퍼
+     *
+     * @param companysDTO
+     * @return int
+     */
+    int updatePremium(CompanysDTO companysDTO);
+
+    /**
+     * 업체 프리미엄 해지 매퍼
+     *
+     * @param companysIdx
+     * @return int
+     */
+    int cancelPremium(long companysIdx);
+
+    /**
+     * 업체 마패 신청 매퍼
+     *
+     * @param companysDTO
+     * @return int
+     */
+    int insertFlag(CompanysDTO companysDTO);
+
+    /**
+     * 업체 마패 분야 등록 매퍼
+     *
+     * @param companysDTO
+     * @return int
+     */
+    int insertFlagCategory(CompanysDTO companysDTO);
+
+    /**
+     * 업체 마패 분야 삭제 매퍼
+     *
+     * @param companysFlagIdx
+     * @return int
+     */
+    int deleteFlagCategory(long companysFlagIdx);
+
+    /**
+     * 업체 마패 지역 등록 매퍼
+     * @param companysDTO
+     * @return int
+     */
+    int insertFlagRegion(CompanysDTO companysDTO);
+
+    /**
+     * 업체 마패 지역 수정 매퍼
+     *
+     * @param companysDTO
+     * @return int
+     */
+    int updateFlagRegion(CompanysDTO companysDTO);
+
+    /**
+     * 업체 마패 등록 매퍼
+     *
+     * @param companysDTO
+     * @return
+     */
+    int updateFlag(CompanysDTO companysDTO);
+
+    /**
+     * 업체 마패 해지 매퍼
+     *
+     * @param companysIdx
+     * @return int
+     */
+    int cancelFlag(long companysIdx);
+
+    /**
+     * 업체 광고 상태 변경 매퍼
+     *
+     * @param map
+     * @return int
+     */
+    int updateAd(Map<String, Object> map);
+
+    /**
+     * 프리미엄 목록 개수 조회 매퍼
+     *
+     * @param map
+     * @return int
+     */
+    int countPremiumList(Map<String, Object> map);
+
+    /**
+     * 프리미엄 목록 조회 매퍼
+     *
+     * @param map
+     * @return CompanysDTO
+     */
+    List<CompanysDTO> selectPremiumList(Map<String, Object> map);
+
+    /**
+     * 마패 목록 개수 조회 매퍼
+     *
+     * @param map
+     * @return int
+     */
+    int countFlagList(Map<String, Object> map);
+
+    /**
+     * 마패 목록 조회 매퍼
+     *
+     * @param map
+     * @return CompanysDTO
+     */
+    List<CompanysDTO> selectFlagList(Map<String, Object> map);
+
 }

@@ -10,8 +10,21 @@
     <main id="main" data-category="company">
         <section class="section section-users">
 
-            <div class="form form--xxl">
-                <div class="tab_cont">
+            <div class="form form--xxl form-menu">
+                <div class="t-top-wrap">
+                    <div>
+                        <a class="btn-review"></a>
+                        <label class="badge" th:if="${details.reviewCount} ne null" th:text="${details.reviewCount}"></label>
+                    </div>
+                    <div>
+                        <a class="btn-report"></a>
+                        <label class="badge" th:if="${details.reportCount} ne null" th:text="${details.reportCount}"></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form form--xxl details-form">
+                <div>
                     <fieldset class="fieldset">
                         <table class="dt-table">
                             <tbody>
@@ -54,7 +67,7 @@
                                         </div>
                                     </td>
                                     <th>대표</th>
-                                    <td th:text="${details.companysCeoName}"></td>
+                                    <td class="c-ceo" th:text="${details.companysCeoName}"></td>
                                 </tr>
                                 <tr>
                                     <th>주소<i class="required">*</i></th>
@@ -230,18 +243,27 @@
                                     <th>사업자등록증</th>
                                     <td>
                                        <div class="file-wrap">
-                                           <a th:href="${details.companysRegistCerti}" th:text="${details.companysRegistCertiName}"></a>
-                                           <button type="button" class="btn-check">인증</button>
+                                           <a th:href="${details.companysRegistCerti}" th:text="${details.companysRegistCertiName}" target="_blank"></a>
+                                           <button type="button" class="btn-check certi-check" th:if="${details.companysRegistCertiCheck} eq 0">인증</button>
+                                           <button type="button" class="btn-check certi-cancel" th:if="${details.companysRegistCertiCheck} eq 1">인증 취소</button>
                                        </div>
                                     </td>
                                     <th>탐정자격증</th>
                                     <td>
-
+                                        <div class="file-wrap" th:if="${details.companysLicense} ne null">
+                                            <a th:href="${details.companysLicense}" th:text="${details.companysLicenseName}" target="_blank"></a>
+                                            <button type="button" class="btn-check license-check" th:if="${details.companysLicenseCheck} eq 0">인증</button>
+                                            <button type="button" class="btn-check license-cancel" th:if="${details.companysLicenseCheck} eq 1">인증 취소</button>
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>삭제</th>
-                                    <td></td>
+                                    <td>
+                                        <div class="input-wrap">
+                                            <button type="button" class="company-delete">삭제</button>
+                                        </div>
+                                    </td>
                                     <th>등록일</th>
                                     <td th:text="${#dates.format(details.companysRegistDate, 'yyyy-MM-dd')}"></td>
                                 </tr>
@@ -270,8 +292,8 @@
                             <tr>
                                 <td>
                                     <div class="input-wrap center-wrap">
-                                        <button type="button" th:if="${details.idx} eq 0" class="btn-normal btn-green-lt">프리미엄 등록</button>
-                                        <select class="select width-100-per" th:if="${details.idx} ne 0">
+                                        <button type="button" th:if="${details.idx} eq 0" class="btn-normal btn-green-lt req-premium">프리미엄 신청</button>
+                                        <select class="select width-100-per" th:if="${details.idx} ne 0" disabled>
                                             <option value="1" th:selected="${details.companysPremium} eq 1">적용</option>
                                             <option value="0" th:selected="${details.companysPremium} eq 0">미적용</option>
                                         </select>
@@ -279,9 +301,9 @@
                                 </td>
                                 <td>
                                     <div class="input-wrap center-wrap">
-                                        <button type="button" th:if="${details.companysFlagIdx} eq 0" class="btn-normal btn-green-lt">마패 등록</button>
+                                        <button type="button" th:if="${details.companysFlagIdx} eq 0" class="btn-normal btn-green-lt js-modalShow" data-modal="form">마패 신청</button>
                                         <div class="mape-wrap" th:if="${details.companysFlagIdx} ne 0">
-                                            <select class="select width-100-per">
+                                            <select class="select width-100-per" disabled>
                                                 <option value="1" th:selected="${details.companysLocalPremium} eq 1">적용</option>
                                                 <option value="0" th:selected="${details.companysLocalPremium} eq 0">미적용</option>
                                             </select>
@@ -294,39 +316,47 @@
                                 <td>
                                     <div class="input-wrap center-wrap">
                                         <div class="date-wrap datepicker">
-                                            <label for="date01">시작일</label>
-                                            <input type="date" id="date01" class="input" data-placeholder="시작일">
+                                            <label for="date01" th:text="${details.premiumStartDate} eq null ? '시작일' : ${#dates.format(details.premiumStartDate, 'yyyy-MM-dd')}"></label>
+                                            <input type="date" id="date01" class="input" data-placeholder="시작일" th:value="${#dates.format(details.premiumStartDate, 'yyyy-MM-dd')}">
                                         </div>
                                         <span class="between">~</span>
                                         <div class="date-wrap datepicker">
-                                            <label for="date02">종료일</label>
-                                            <input type="date" id="date02" class="input" data-placeholder="종료일">
+                                            <label for="date02" th:text="${details.premiumEndDate} eq null ? '종료일' : ${#dates.format(details.premiumEndDate, 'yyyy-MM-dd')}"></label>
+                                            <input type="date" id="date02" class="input" data-placeholder="종료일" th:value="${#dates.format(details.premiumEndDate, 'yyyy-MM-dd')}">
                                         </div>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="input-wrap center-wrap">
                                         <div class="date-wrap datepicker">
-                                            <label for="date03">시작일</label>
-                                            <input type="date" id="date03" class="input" data-placeholder="시작일">
+                                            <label for="date03" th:text="${details.flagStartDate} eq null ? '시작일' : ${#dates.format(details.flagStartDate, 'yyyy-MM-dd')}"></label>
+                                            <input type="date" id="date03" class="input" data-placeholder="시작일" th:value="${#dates.format(details.flagStartDate, 'yyyy-MM-dd')}">
                                         </div>
                                         <span class="between">~</span>
                                         <div class="date-wrap datepicker">
-                                            <label for="date04">종료일</label>
-                                            <input type="date" id="date04" class="input" data-placeholder="종료일">
+                                            <label for="date04" th:text="${details.flagEndDate} eq null ? '종료일' : ${#dates.format(details.flagEndDate, 'yyyy-MM-dd')}"></label>
+                                            <input type="date" id="date04" class="input" data-placeholder="종료일" th:value="${#dates.format(details.flagEndDate, 'yyyy-MM-dd')}">
                                         </div>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <div class="input-wrap center-wrap">
-                                        <button type="button" th:if="${details.idx} ne 0" class="btn-normal btn-green">등록</button>
+                                    <div class="input-wrap center-wrap" th:if="${details.companysPremium} eq 0 and ${details.idx} ne 0">
+                                        <button type="button" class="btn-normal btn-green approval-premium">등록</button>
+                                    </div>
+                                    <div class="two-btn-wrap" th:if="${details.companysPremium} eq 1 and ${details.idx} ne 0">
+                                        <button type="button" class="btn-cancel cancel-premium">해지</button>
+                                        <button type="button" class="btn-green-sm approval-premium">등록</button>
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="input-wrap center-wrap">
-                                        <button type="button" th:if="${details.companysFlagIdx} ne 0" class="btn-normal btn-green">등록</button>
+                                    <div class="input-wrap center-wrap" th:if="${details.companysLocalPremium} eq 0 and ${details.companysFlagIdx} ne 0">
+                                        <button type="button" class="btn-normal btn-green approval-flag">등록</button>
+                                    </div>
+                                    <div class="two-btn-wrap" th:if="${details.companysLocalPremium} eq 1 and ${details.companysFlagIdx} ne 0">
+                                        <button type="button" class="btn-cancel cancel-flag">해지</button>
+                                        <button type="button" class="btn-green-sm approval-flag">등록</button>
                                     </div>
                                 </td>
                             </tr>
@@ -453,11 +483,151 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td class="modal-th">금액</td>
+                                <td class="modal-td" th:text="|${details.flagPrice} 원|"></td>
+                            </tr>
+                            <tr>
                                 <td class="modal-th">계좌번호</td>
-                                <td th:text="|(${details.companysBankName}) ${details.companysBankNumber}|"></td>
+                                <td class="modal-td" th:text="${details.flagPriceBank}"></td>
                             </tr>
                             </tbody>
                         </table>
+                    </div>
+                    <div class="form__action bottom">
+                        <a class="btn-normal js-modalClose">닫기</a>
+                        <button class="btn-prime update-flag">수정</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal modal-form" data-modal="form" th:if="${details.companysFlagIdx} eq 0">
+        <div class="modal__inner">
+            <div class="modal-head">
+                <span class="modal__title">마패 신청서</span>
+                <a class="modal-cross js-modalClose"></a>
+            </div>
+            <div class="details">
+                <div class="details-body">
+                    <div class="table">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td class="modal-th">업체명</td>
+                                <td class="modal-td f-name" th:text="${details.companysName}"></td>
+                            </tr>
+                            <tr>
+                                <td class="modal-th">대표</td>
+                                <td class="modal-td f-ceo" th:text="${details.companysCeoName}"></td>
+                            </tr>
+
+                            <tr>
+                                <td class="modal-th">광고 지역</td>
+                                <td class="modal-td">
+                                    <div class="select-wrap">
+                                        <select class="select select-sm" id="region05">
+                                            <option value="" selected disabled>선택</option>
+                                            <option value="서울">서울</option>
+                                            <option value="경기">경기</option>
+                                            <option value="대전/충남/세종">대전/충남/세종</option>
+                                            <option value="인천/부천">인천/부천</option>
+                                            <option value="강원">강원</option>
+                                            <option value="전주/전북">전주/전북</option>
+                                            <option value="청주/충북">청주/충북</option>
+                                            <option value="대구/경북">대구/경북</option>
+                                            <option value="부산/울산/경남">부산/울산/경남</option>
+                                            <option value="광주/전남">광주/전남</option>
+                                            <option value="제주">제주</option>
+                                        </select>
+                                        <select class="select select-sm" id="region06" disabled>
+                                            <option value="" selected disabled>선택</option>
+                                            <option value="서초">서초</option>
+                                            <option value="강남">강남</option>
+                                            <option value="강동/송파">강동/송파</option>
+                                            <option value="강서/양천/영등포/구로">강서/양천/영등포/구로</option>
+                                            <option value="도봉/강북/성북/노원">도봉/강북/성북/노원</option>
+                                            <option value="동대문/성동/광진/중랑">동대문/성동/광진/중랑</option>
+                                            <option value="종로/중구/용산">종로/중구/용산</option>
+                                            <option value="서대문/마포/은평">서대문/마포/은평</option>
+                                            <option value="동작/관악/금천">동작/관악/금천</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="modal-th">광고 분야</td>
+                                <td class="modal-td">
+                                    <div class="checkbox-wrap">
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="f-category1" name="f-category" value="가정문제">
+                                            <label for="f-category1">가정문제</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="f-category2" name="f-category" value="기업문제">
+                                            <label for="f-category2">기업문제</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="f-category3" name="f-category" value="안전분야 조사">
+                                            <label for="f-category3">안전분야 조사</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="f-category4" name="f-category" value="사기/분쟁">
+                                            <label for="f-category4">사기/분쟁</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="f-category5" name="f-category" value="스토킹">
+                                            <label for="f-category5">스토킹</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="f-category6" name="f-category" value="의료/보험">
+                                            <label for="f-category6">의료/보험</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="f-category7" name="f-category" value="부동산">
+                                            <label for="f-category7">부동산</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="f-category8" name="f-category" value="금융/사이버">
+                                            <label for="f-category8">금융/사이버</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="f-category9" name="f-category" value="민원대행">
+                                            <label for="f-category9">민원대행</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="f-category10" name="f-category" value="불법기기탐지">
+                                            <label for="f-category10">불법기기탐지</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="f-category11" name="f-category" value="경호/경비">
+                                            <label for="f-category11">경호/경비</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="f-category12" name="f-category" value="일반조사">
+                                            <label for="f-category12">일반조사</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="f-category13" name="f-category" value="해외조사">
+                                            <label for="f-category13">해외조사</label>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="modal-th">금액</td>
+                                <td class="modal-td f-price">0 원</td>
+                            </tr>
+                            <tr>
+                                <td class="modal-th">계좌번호</td>
+                                <td class="modal-td f-bank" th:text="|(${details.companysBankName}) ${details.companysBankNumber}|"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="form__action bottom">
+                        <a class="btn-normal js-modalClose">닫기</a>
+                        <button class="btn-prime approval-flag">신청하기</button>
                     </div>
                 </div>
             </div>
@@ -472,11 +642,15 @@
             highlightMenu('list');
             onlyNum();
             regionSelect();
+            appRegionSelect();
             modalRegionSelect();
 
-            // 신청서 모달
             const flagIdx = document.querySelector('.companysFlagIdx');
+            // 신청서 모달
             if (flagIdx.value != 0) new Modal({modal: '.modal-request', name: 'request'});
+            // 마패 신청하기 모달
+            else if (flagIdx.value == 0) new Modal({modal: '.modal-form', name: 'form'});
+
 
             // 달력, 시간
             const datePickers = document.querySelectorAll('.datepicker');
@@ -485,6 +659,70 @@
             // 업체 수정
             const updateBtn = document.querySelector('.btn-update');
             updateBtn.addEventListener('click', updateCompany);
+
+            // 사업자 인증
+            const checkCerti = document.querySelector('.certi-check');
+
+            if (checkCerti != null) {
+                checkCerti.addEventListener('click', e => {
+                    updateCheck(0, 1);
+                });
+            }
+
+            // 사업자 인증 취소
+            const cancelCerti = document.querySelector('.certi-cancel');
+            if (cancelCerti != null) {
+                cancelCerti.addEventListener('click', e => {
+                    updateCheck(0, 0);
+                });
+            }
+
+            // 자격증 인증
+            const checkLicense = document.querySelector('.license-check');
+            if (checkLicense != null) {
+                checkLicense.addEventListener('click', e => {
+                    updateCheck(1, 1);
+                });
+            }
+
+            // 자격증 인증 취소
+            const cancelLicense = document.querySelector('.license-cancel');
+            if (cancelLicense != null) {
+                cancelLicense.addEventListener('click', e => {
+                    update(1, 0);
+                });
+            }
+
+            // 프리미엄 신청
+            const reqPremium = document.querySelector('.req-premium');
+            if (reqPremium != null) reqPremium.addEventListener('click', requestPremium);
+
+            // 프리미엄 등록
+            const appPremium = document.querySelector('.approval-premium');
+            if (appPremium != null) appPremium.addEventListener('click', approvalPremium);
+
+            // 프리미엄 해지
+            const canPremium = document.querySelector('.cancel-premium');
+            if (canPremium != null) canPremium.addEventListener('click', cancelPremium);
+
+            // 마패 신청
+            const reqFlag = document.querySelector('.approval-flag');
+            if (reqFlag != null) reqFlag.addEventListener('click', requestFlag);
+
+            // 마패 등록
+            const appFlag = document.querySelector('.approval-flag');
+            if (appFlag != null) appFlag.addEventListener('click', approvalFlag);
+
+            // 마패 수정
+            const updateFlag = document.querySelector('.update-flag');
+            if (updateFlag != null) updateFlag.addEventListener('click', modifyFlag);
+
+            // 마패 해지
+            const canFlag = document.querySelector('.cancel-flag');
+            if (canFlag != null) canFlag.addEventListener('click', cancelFlag);
+
+            // 업체 삭제
+            const deleteBtn = document.querySelector('.company-delete');
         });
     </script>
 </th:block>

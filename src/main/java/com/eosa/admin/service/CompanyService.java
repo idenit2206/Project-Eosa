@@ -171,4 +171,222 @@ public class CompanyService {
         return num;
     }
 
+    /**
+     * 업체 인증 서비스
+     *
+     * @param companysIdx
+     * @param sort
+     * @return int
+     */
+    public int updateCheck(long companysIdx, int sort, int num) {
+
+        Map<String, Object> map = new HashMap<>();
+
+        if (sort == 0) {
+            map.put("sort", sort);
+        } else if (sort == 1) {
+            map.put("sort", sort);
+        }
+
+        map.put("num", num);
+        map.put("companysIdx", companysIdx);
+
+        return companyMapper.updateCheck(map);
+    }
+
+    /**
+     * 업체 프리미엄 신청 서비스
+     *
+     * @param companysDTO
+     * @return int
+     */
+    public int requestPremium(CompanysDTO companysDTO) {
+
+        return companyMapper.insertPremium(companysDTO);
+    }
+
+    /**
+     * 업체 프리미엄 등록 서비스
+     *
+     * @param companysDTO
+     * @return int
+     */
+    public int approvalPremium(CompanysDTO companysDTO) {
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("sort", "premium");
+        map.put("num", 1);
+        map.put("companysIdx", companysDTO.getCompanysIdx());
+
+        companyMapper.updateAd(map);
+
+        return companyMapper.updatePremium(companysDTO);
+    }
+
+    /**
+     * 업체 프리미엄 해지 서비스
+     *
+     * @param companysIdx
+     * @return int
+     */
+    public int cancelPremium(long companysIdx) {
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("sort", "premium");
+        map.put("num", 0);
+        map.put("companysIdx", companysIdx);
+
+        companyMapper.updateAd(map);
+
+        return companyMapper.cancelPremium(companysIdx);
+    }
+
+    /**
+     * 업체 마패 신청 서비스
+     *
+     * @param companysDTO
+     * @return int
+     */
+    public int requestFlag(CompanysDTO companysDTO) {
+
+        int result = companyMapper.insertFlag(companysDTO);
+
+        companyMapper.insertFlagRegion(companysDTO);
+
+        String category[] = companysDTO.getCompanysFlagCategory().split(",");
+
+        for (int i = 0; i < category.length; i++) {
+            companysDTO.setCompanysFlagCategory(category[i]);
+            companyMapper.insertFlagCategory(companysDTO);
+        }
+
+        return result;
+    }
+
+    /**
+     * 업체 마패 등록 서비스
+     *
+     * @param companysDTO
+     * @return int
+     */
+    public int approvalFlag(CompanysDTO companysDTO) {
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("sort", "flag");
+        map.put("num", 1);
+        map.put("companysIdx", companysDTO.getCompanysIdx());
+
+        companyMapper.updateAd(map);
+
+        return companyMapper.updateFlag(companysDTO);
+    }
+
+    /**
+     * 업체 마패 수정 서비스
+     *
+     * @param companysDTO
+     * @return int
+     */
+    public int updateFlag(CompanysDTO companysDTO) {
+
+        companyMapper.deleteFlagCategory(companysDTO.getCompanysFlagIdx());
+
+        String category[] = companysDTO.getCompanysFlagCategory().split(",");
+
+        for (int i = 0; i < category.length; i++) {
+            companysDTO.setCompanysFlagCategory(category[i]);
+            companyMapper.insertFlagCategory(companysDTO);
+        }
+
+        return companyMapper.updateFlagRegion(companysDTO);
+    }
+
+    /**
+     * 업체 마패 해지 서비스
+     *
+     * @param companysIdx
+     * @return int
+     */
+    public int cancelFlag(long companysIdx) {
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("sort", "flag");
+        map.put("num", 0);
+        map.put("companysIdx", companysIdx);
+
+        companyMapper.updateAd(map);
+
+        return companyMapper.cancelFlag(companysIdx);
+    }
+
+    /**
+     * 프리미엄 목록 조회 서비스
+     *
+     * @param model
+     * @param enabled
+     * @param page
+     * @return String
+     */
+    public String premiumList(Model model, String enabled, int page) {
+
+        Map<String, Object> map = new HashMap<>();
+
+        if (enabled != null) {
+            if (!enabled.equals("")) {
+                map.put("enabled", enabled);
+            }
+        }
+
+        int count = companyMapper.countPremiumList(map);
+
+        Pagination pagination = new Pagination(count, page);
+
+        map.put("startIndex", pagination.getStartIndex());
+        map.put("pageSize", pagination.getPageSize());
+
+        List<CompanysDTO> list = companyMapper.selectPremiumList(map);
+
+        model.addAttribute("premiumList", list);
+        model.addAttribute("pagination", pagination);
+        model.addAttribute("count", count);
+        model.addAttribute("enabled", enabled);
+
+        return "admin/company/premium";
+    }
+
+    /**
+     * 마패 목록 조회 서비스
+     *
+     * @param model
+     * @param enabled
+     * @param page
+     * @return String
+     */
+    public String flagList(Model model, String enabled, int page) {
+
+        Map<String, Object> map = new HashMap<>();
+
+        if (enabled != null) {
+            if (!enabled.equals("")) {
+                map.put("enabled", enabled);
+            }
+        }
+
+        int count = companyMapper.countFlagList(map);
+
+        Pagination pagination = new Pagination(count, page);
+
+        map.put("startIndex", pagination.getStartIndex());
+        map.put("pageSize", pagination.getPageSize());
+
+        List<CompanysDTO> list = companyMapper.selectFlagList(map);
+
+        model.addAttribute("flagList", list);
+        model.addAttribute("pagination", pagination);
+        model.addAttribute("count", count);
+        model.addAttribute("enabled", enabled);
+
+        return "admin/company/flag";
+    }
+
 }
