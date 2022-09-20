@@ -543,6 +543,25 @@ public class UsersController {
         return result;
     }
 
+    @GetMapping("/selectUsersByUsersIdx")
+    public CustomResponseData selectUsersByUsersIdx(@RequestParam("usersIdx") Long usersIdx) {
+        CustomResponseData result = new CustomResponseData();
+        Users rows = usersService.selectUsersByUsersIdx(usersIdx);
+
+        if(rows != null) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(rows);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
+
     // Apple SignIn
     // Server to Server Notification Endpoint: https://dowajo.co.kr/api/user/apple/SignIn
 
