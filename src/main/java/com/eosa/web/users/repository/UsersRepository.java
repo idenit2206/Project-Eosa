@@ -217,9 +217,9 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     @Query(value =
         "UPDATE Users " +
         "SET usersPass = :usersPass " +
-        "WHERE usersEmail = :usersEmail "
+        "WHERE usersAccount = :usersAccount AND usersEmail = :usersEmail"
         ,nativeQuery = true
     )
-    int updateUsersPass(@Param("usersEmail") String usersEmail, @Param("usersPass") String encodedCode);
+    int updateUsersPass(@Param("usersAccount") String usersAccount, @Param("usersEmail") String usersEmail, @Param("usersPass") String encodedCode);
     
 }

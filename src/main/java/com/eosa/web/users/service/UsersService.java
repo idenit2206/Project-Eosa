@@ -196,8 +196,8 @@ public class UsersService implements UsersRepository {
     }
 
     @Override
-    public int updateUsersPass(String usersEmail, String encodedCode) {
-        return usersRepository.updateUsersPass(usersEmail, encodedCode);
+    public int updateUsersPass(String usersAccount, String usersEmail, String encodedCode) {
+        return usersRepository.updateUsersPass(usersAccount, usersEmail, encodedCode);
     }
 
     @Override
