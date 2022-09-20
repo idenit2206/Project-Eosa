@@ -2283,6 +2283,9 @@ body.modal-overlayed::after {
 .nav-main > li > a[data-category=contact] {
   background: 17px center/auto 17px url(../../images/ico/ico-tel.svg) no-repeat;
 }
+.nav-main > li > a[data-category=banner] {
+  background: 17px center/auto 17px url(../../images/ico/ico-flag.svg) no-repeat;
+}
 .nav-main > li > a[data-category=board] {
   background: 17px center/auto 17px url(../../images/ico/ico-pin.svg) no-repeat;
 }
@@ -2550,12 +2553,16 @@ body.modal-overlayed::after {
 .modal-review.w-760 {
   width: 760px;
 }
+.review-body {
+  margin-top: 40px;
+}
 .score-wrap {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 100%;
+  height: 180px;
   padding: 14px;
+  border: 1px solid #616161;
 }
 .score-wrap .average-wrap {
   width: 50%;
@@ -2592,13 +2599,18 @@ body.modal-overlayed::after {
   gap: 20px;
 }
 .score-wrap .s-wrap .star-wrap .star-label {
-  width: 70px;
+  width: 25%;
   text-align: right;
   font-weight: 500;
   letter-spacing: -1px;
 }
 .score-wrap .s-wrap .star-wrap .star-img {
   width: 130px;
+}
+.details-wrap {
+  height: 250px;
+  border: 1px solid #dbdbdb;
+  border-top: 0;
 }
 .modal .report table,
 .modal .filter table {

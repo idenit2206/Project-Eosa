@@ -8,17 +8,17 @@ import java.util.Map;
 
 /**
  * packageName    : com.eosa.admin.mapper
- * fileName       : BoardMapper
+ * fileName       : ReviewMapper
  * author         : Jihun Kim
  * date           : 2022-09-20
- * description    : 게시판 매퍼
+ * description    : 리뷰 매퍼
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2022-09-20        Jihun Kim       최초 생성
  */
 @Mapper
-public interface BoardMapper {
+public interface ReviewMapper {
 
     /**
      * 리뷰 목록 개수 조회 매퍼
