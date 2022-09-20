@@ -679,3 +679,23 @@ function modifyPolicy(num) {
     }
 
 };
+
+function insertNotice() {
+    const title = document.querySelector("#title");
+    const author = document.querySelector("#author");
+    const content = document.querySelector("#content");
+
+    if(title.value == '') {
+        alertFocus('제목을 입력해 주세요.', title);
+    }
+
+    else {
+        let formData = new FormData();
+
+        formData.set("title", title.value);
+        formData.set("content", content.innerText);
+        formData.set("author", author.value);
+
+        fetchApi('/admin/manage/notice/insert', 'post', formData, '공지사항이 등록되었습니다.', '/admin/manage/notice/list')
+    }
+}

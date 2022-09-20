@@ -255,7 +255,6 @@ public class CompanysController {
         }
 
         // List<Long> tempIdx = companysService.selectCompanysByFilter2("가정", "서울", "서초");
-    
 
         result.setStatusCode(HttpStatus.OK.value());
         result.setResultItem(itemList);

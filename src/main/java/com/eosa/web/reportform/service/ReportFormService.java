@@ -38,7 +38,7 @@ public class ReportFormService implements ReportFormRepository {
 
     @Override
     public List<ReportForm> findAll() {
-        return null;
+        return reportFormRepository.findAll();
     }
 
     @Override

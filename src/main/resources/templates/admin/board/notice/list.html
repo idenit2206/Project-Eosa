@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/fragments/layout}">
+
+<th:block layout:fragment="content">
+
+    <th:block th:replace="admin/fragments/aside :: asideFragment"></th:block>
+
+    <main id="main" class="main-list" data-category="notice">
+        <section class="section section-users">
+            <h2 class="section_title">공지사항 목록</h2>
+            <div class="table">
+                <div class="table__top">
+                    <div class="top-wrap">
+                        <div class="header-wrap">
+                            <span class="table__count">전체<i class="value" th:text="${count}"></i></span>
+<!--                            <form class="table__search check-search">-->
+<!--                                <select class="select" name="sort">-->
+<!--                                    <option value="company" th:selected="${sort} eq 'company'">업체</option>-->
+<!--                                    <option value="writer" th:selected="${sort} eq 'writer'">작성자</option>-->
+<!--                                </select>-->
+<!--                                <input class="input" name="search" type="text" th:value="${search}" placeholder="검색어 입력">-->
+<!--                                <button type="submit" class="btn-prime check-btn">검색</button>-->
+<!--                            </form>-->
+                        </div>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th class="check"><input type="checkbox" name="checkAll" id="checkAll"></th>
+                        <th>번호</th>
+                        <th>제목</th>
+                        <th class="w-550">내용</th>
+                        <th>작성자</th>
+                        <th>등록일</th>
+                    </tr>
+                    </thead>
+
+                    <tbody th:if="${count} eq 0">
+                    <tr>
+                        <td colspan="6">
+                            <span>등록된 공지사항이 없습니다.</span>
+                        </td>
+                    </tr>
+                    </tbody>
+
+                    <tbody th:if="${count} ne 0">
+                    <tr th:each="list : ${noticeList}" class="js-modalShow review-btn" data-modal="review">
+                        <td class="check"><input type="checkbox" name="listCheck"></td>
+                        <td>
+                            <span th:text="${list.idx}"></span>
+                        </td>
+                        <td>
+                            <span th:text="${list.title}"></span>
+                        </td>
+                        <td>
+                            <div class="review-wrap">
+                                <span th:text="${list.content}"></span>
+                            </div>
+                        </td>
+                        <td>
+                            <span th:text="${list.author}"></span>
+                        </td>
+                        <td>
+                            <span th:text="${list.postDate}"></span>
+<!--                            <span th:text="${#dates.format(list.postDate, 'yyyy-MM-dd')}"></span>-->
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="table__action">
+                    <button type="button" class="btn-normal btn-delete">삭제</button>
+                    <button type="button" class="btn-normal">
+                        <a href="/admin/manage/notice/register">
+                            작성하기
+                        </a>
+                    </button>
+                </div>
+
+                <div class="table__paging">
+                    <ul>
+                        <li><a class="first" th:href="@{/admin/manage/notice/list(sort=${sort}, search=${search}, page=1)}"></a></li>
+                        <li><a class="prev" th:href="@{/admin/manage/notice/list(sort=${sort}, search=${search}, page=${pagination.prevBlock})}"></a></li>
+
+                        <th:block th:with="start = ${pagination.startPage}, end = ${pagination.endPage}">
+                            <li th:each="pageButton : ${#numbers.sequence(start, end)}"><a class="pageNum" th:href="@{/admin/manage/notice/list(sort=${sort}, search=${search}, page=${pageButton})}" th:text="${pageButton}"></a></li>
+                        </th:block>
+
+                        <li><a class="next" th:href="@{/admin/manage/notice/list(sort=${sort}, search=${search}, page=${pagination.nextBlock})}"></a></li>
+                        <li><a class="last" th:href="@{/admin/manage/notice/list(sort=${sort}, search=${search}, page=${pagination.totalPageCnt eq 0 ? 1 : pagination.totalPageCnt})}"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="modal modal-review w-760" data-modal="review">
+        <div class="modal__inner">
+            <div class="modal-head">
+                <span class="modal__title">공지사항 상세</span>
+                <a class="modal-cross js-modalClose"></a>
+            </div>
+            <div class="write">
+                <input type="hidden" class="modal-id">
+                <div class="write-body">
+                    <div class="review-body">
+                        <div class="score-wrap">
+                            <div class="average-wrap">
+                                <span class="average-label">리뷰 평균 점수</span>
+                                <span class="average-score">4.75</span>
+                            </div>
+                            <div class="s-wrap">
+                                <div class="star-wrap">
+                                    <span class="star-label">성과 만족도</span>
+                                    <img class="star-img" th:src="@{/assets/images/ico/ico-star1.svg}">
+                                </div>
+                                <div class="star-wrap">
+                                    <span class="star-label">소통능력</span>
+                                    <img class="star-img" th:src="@{/assets/images/ico/ico-star3.svg}">
+                                </div>
+                                <div class="star-wrap">
+                                    <span class="star-label">일정준수</span>
+                                    <img class="star-img" th:src="@{/assets/images/ico/ico-star5.svg}">
+                                </div>
+                                <div class="star-wrap">
+                                    <span class="star-label">전문성 </span>
+                                    <img class="star-img" th:src="@{/assets/images/ico/ico-star4.svg}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="details-wrap">
+
+                        </div>
+                    </div>
+                    <div class="form__action bottom">
+                        <button class="btn-del hospital-delete">삭제하기</button>
+                        <button class="btn-prime hospital-modify">수정하기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+
+<th:block layout:fragment="script">
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            highlightMenu();
+            pageOn();
+            listCheck();
+            reviewDetailsModal();
+            new Table(document.querySelector('#main table'));
+        });
+    </script>
+</th:block>
+
+</html>
