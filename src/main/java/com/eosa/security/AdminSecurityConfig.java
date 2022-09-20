@@ -30,7 +30,7 @@ public class AdminSecurityConfig {
         http.csrf().disable();
 
         http
-            .antMatcher("/admin/**")
+            .antMatcher("/admin/**/test")
             .authorizeRequests()
                 .antMatchers(PERMIT_URL).permitAll()
 //                 .anyRequest().hasAnyAuthority("ADMIN", "SUPER_ADMIN")

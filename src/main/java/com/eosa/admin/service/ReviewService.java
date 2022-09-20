@@ -69,4 +69,28 @@ public class ReviewService {
         return "admin/board/review/list";
     }
 
+    /**
+     * 리뷰 삭제 서비스
+     *
+     * @param idx
+     * @return int
+     */
+    public int deleteReview(long idx) {
+
+        return reviewMapper.deleteReview(idx);
+    }
+
+    /**
+     * 리뷰 다중 삭제 서비스
+     *
+     * @param idx
+     * @return int
+     */
+    public int deleteReviewMulti(String idx) {
+
+        String arr[] = idx.split(",");
+
+        return reviewMapper.deleteReviewMulti(arr);
+    }
+
 }

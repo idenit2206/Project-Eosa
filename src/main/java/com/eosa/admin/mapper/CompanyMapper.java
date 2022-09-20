@@ -1,6 +1,7 @@
 package com.eosa.admin.mapper;
 
 import com.eosa.admin.dto.CompanysDTO;
+import com.eosa.admin.dto.ReviewDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -210,5 +211,21 @@ public interface CompanyMapper {
      * @return CompanysDTO
      */
     List<CompanysDTO> selectFlagList(Map<String, Object> map);
+
+    /**
+     * 업체 리뷰, 신고 개수 조회 매퍼
+     *
+     * @param map
+     * @return Integer
+     */
+    List<Integer> countReviewReport(Map<String, Object> map);
+
+    /**
+     * 업체 리뷰 조회 매퍼
+     *
+     * @param map
+     * @return ReviewDTO
+     */
+    List<ReviewDTO> selectCompanysReview(Map<String, Object> map);
 
 }

@@ -4,9 +4,7 @@ import com.eosa.admin.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * packageName    : com.eosa.admin.controller
@@ -42,6 +40,32 @@ public class ReviewController {
                              @RequestParam(defaultValue = "1") int page) {
 
         return reviewService.reviewList(model, sort, search, page);
+    }
+
+    /**
+     * 리뷰 삭제 컨트롤러
+     *
+     * @param idx
+     * @return int
+     */
+    @ResponseBody
+    @PostMapping("/delete")
+    public int deleteReview(@RequestParam long idx) {
+
+        return reviewService.deleteReview(idx);
+    }
+
+    /**
+     * 리뷰 다중 삭제 컨트롤러
+     *
+     * @param idx
+     * @return int
+     */
+    @ResponseBody
+    @PostMapping("/delete/multi")
+    public int deleteReviewMulti(@RequestParam String idx) {
+
+        return reviewService.deleteReviewMulti(idx);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.eosa.admin.service;
 
 import com.eosa.admin.dto.CompanysDTO;
+import com.eosa.admin.dto.ReviewDTO;
 import com.eosa.admin.mapper.CompanyMapper;
 import com.eosa.admin.pagination.Pagination;
 import com.eosa.admin.safety.Safety;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.math.BigDecimal;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
@@ -387,6 +389,63 @@ public class CompanyService {
         model.addAttribute("enabled", enabled);
 
         return "admin/company/flag";
+    }
+
+    /**
+     * 업체 리뷰 조회 서비스
+     *
+     * @param model
+     * @param page
+     * @return String
+     */
+    public String companyReview(Model model, long companysIdx, int page) {
+
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("companysIdx", companysIdx);
+
+        List<Integer> count = companyMapper.countReviewReport(map);
+
+        Pagination pagination = new Pagination(count.get(0), page);
+
+        map.put("startIndex", pagination.getStartIndex());
+        map.put("pageSize", pagination.getPageSize());
+
+        List<ReviewDTO> list = companyMapper.selectCompanysReview(map);
+
+        // 평점 구하기
+        BigDecimal total = new BigDecimal("0.00");
+        BigDecimal resultScore = new BigDecimal("0.00");
+        BigDecimal communicationScore = new BigDecimal("0.00");
+        BigDecimal processScore = new BigDecimal("0.00");
+        BigDecimal specialityScore = new BigDecimal("0.00");
+
+        for (int i = 0; i < list.size(); i++) {
+            total = total.add(list.get(i).getAverage());
+            resultScore = resultScore.add(BigDecimal.valueOf(list.get(i).getResultScore()));
+            communicationScore = communicationScore.add(BigDecimal.valueOf(list.get(i).getCommunicationScore()));
+            processScore = processScore.add(BigDecimal.valueOf(list.get(i).getProcessScore()));
+            specialityScore = specialityScore.add(BigDecimal.valueOf(list.get(i).getSpecialityScore()));
+        }
+
+        BigDecimal review = new BigDecimal(String.valueOf(count.get(0)));
+        total = total.divide(review);
+        resultScore = resultScore.divide(review);
+        communicationScore = communicationScore.divide(review);
+        processScore = processScore.divide(review);
+        specialityScore = specialityScore.divide(review);
+
+        model.addAttribute("reviewList", list);
+        model.addAttribute("pagination", pagination);
+        model.addAttribute("count", count);
+        model.addAttribute("companysIdx", companysIdx);
+        model.addAttribute("total", total);
+        model.addAttribute("resultScore", resultScore);
+        model.addAttribute("communicationScore", communicationScore);
+        model.addAttribute("processScore", processScore);
+        model.addAttribute("specialityScore", specialityScore);
+
+        return "admin/company/review";
     }
 
 }

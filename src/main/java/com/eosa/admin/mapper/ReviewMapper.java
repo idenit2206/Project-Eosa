@@ -36,4 +36,20 @@ public interface ReviewMapper {
      */
     List<ReviewDTO> selectReviewList(Map<String, Object> map);
 
+    /**
+     * 리뷰 삭제 매퍼
+     *
+     * @param idx
+     * @return int
+     */
+    int deleteReview(long idx);
+
+    /**
+     * 리뷰 다중 삭제 매퍼
+     *
+     * @param arr
+     * @return int
+     */
+    int deleteReviewMulti(String[] arr);
+
 }

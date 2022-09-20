@@ -389,4 +389,37 @@
         ORDER BY F.flagReqDate DESC LIMIT #{startIndex}, #{pageSize}
     </select>
 
+    <!-- 업체 리뷰, 신고 개수 조회 -->
+    <select id="countReviewReport" resultType="Integer" parameterType="hashmap">
+        SELECT COUNT(*)
+        FROM UsersReview
+        WHERE reviewCompanysIdx = #{companysIdx}
+        UNION ALL
+        SELECT COUNT(*)
+        FROM ReportForm
+        WHERE companysIdx = #{companysIdx}
+    </select>
+
+    <!-- 업체 리뷰 조회 -->
+    <select id="selectCompanysReview" resultType="ReviewDTO" parameterType="hashmap">
+        SELECT R.idx,
+               R.reviewCompanysIdx,
+               R.resultScore,
+               R.communicationScore,
+               R.processScore,
+               R.specialityScore,
+               ROUND((R.resultScore + R.communicationScore + R.processScore + R.specialityScore) / 4, 2) average,
+               R.reviewDetail,
+               R.reviewDate,
+               U.usersAccount,
+               U.usersName,
+               U.usersNick,
+               C.companysName
+        FROM UsersReview R
+                 JOIN Users U ON R.reviewUsersIdx = U.usersIdx
+                 JOIN Companys C ON R.reviewCompanysIdx = C.companysIdx
+        WHERE R.reviewCompanysIdx = #{companysIdx}
+        ORDER BY R.reviewDate DESC LIMIT #{startIndex}, #{pageSize}
+    </select>
+
 </mapper>
