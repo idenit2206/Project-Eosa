@@ -20,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
@@ -47,7 +48,10 @@ public class AppleController {
     @Value("${my.ui.port}") private String myUiPort;
 
     @PostMapping("/api/user/apple/redirect")
-    public ModelAndView appleLoginCallBack(@RequestBody String apple_data, HttpServletResponse response) throws JOSEException, ParseException, IOException {
+    public void appleLoginCallBack(
+        @RequestBody String apple_data,
+        HttpServletResponse response
+    ) throws JOSEException, ParseException, IOException {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -122,7 +126,7 @@ public class AppleController {
             Cookie cookieProvider = new Cookie("provider", provider+"/"+memberEmail+"/"+"");
             cookieProvider.setPath("/");
             response.addCookie(cookieProvider);
-            response.sendRedirect("http://" + myDomain + ":" + myUiPort + "/user/register");
+            response.sendRedirect("https://" + myDomain + ":" + myUiPort + "/user/register");
             response.flushBuffer();
 
         } else if (!principalDetails.isEnabled()) {
@@ -137,7 +141,7 @@ public class AppleController {
             Cookie cookieAccount = new Cookie("usersAccount", memberEmail);
             cookieAccount.setPath("/");
             response.addCookie(cookieAccount);
-            response.sendRedirect("http://" + myDomain + ":" + myUiPort + "/");
+            response.sendRedirect("https://" + myDomain + ":" + myUiPort + "/");
         }
 
         // 로그인 세션에 들어갈 권한을 설정합니다.
@@ -152,8 +156,7 @@ public class AppleController {
         SecurityContextHolder.getContext().setAuthentication(auth);
 
 //        mv.setViewName("redirect:/");
-
-        return mv;
+//        return mv;
     }
 
     public JSONObject decodeFromIdToken(String id_token) {

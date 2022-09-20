@@ -198,6 +198,7 @@ public class CompanysController {
         @RequestParam(value="companysRegion1", required = false, defaultValue = "") List<String> companysRegion1,
         @RequestParam(value="companysRegion2", required = false, defaultValue = "") List<String> companysRegion2
     ) {
+        log.info("[selectCompanysByFilter] 업체를 검색합니다. 검색 조건 카테고리: {}, 지역1: {}, 지역2: {}", companysCategory.toString(), companysRegion1.toString(), companysRegion2.toString());
         CustomResponseData result = new CustomResponseData();
         List<SelectCompanys> itemList = new ArrayList<>();
         Set<Long> companysIdxSet = new HashSet<>();
