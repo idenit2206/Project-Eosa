@@ -693,7 +693,7 @@ function insertNotice() {
         let formData = new FormData();
 
         formData.set("title", title.value);
-        formData.set("content", content.innerText);
+        formData.set("content", content.value);
         formData.set("author", author.value);
 
         fetchApi('/admin/manage/notice/insert', 'post', formData, '공지사항이 등록되었습니다.', '/admin/manage/notice/list')
