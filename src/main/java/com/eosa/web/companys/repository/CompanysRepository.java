@@ -59,11 +59,11 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         "GROUP_CONCAT(DISTINCT CAR.activeRegion) AS activeRegion, " +
         "GROUP_CONCAT(DISTINCT CC.companysCategoryValue) AS companysCategoryValue, " +
         "(SELECT IFNULL(ULC.userLikeCompanyEnable, '0') FROM UserLikeCompany ULC " +
-        "RIGHT OUTER JOIN (SELECT '') AS n ON ULC.usersIdx=:usersIdx AND ULC.companysIdx=C.companysIdx) AS UserLikeCompanyEnable " +
+        "RIGHT OUTER JOIN (SELECT '') AS n ON ULC.usersIdx = :usersIdx AND ULC.companysIdx=C.companysIdx) AS UserLikeCompanyEnable " +
         "FROM Companys C " +
         "LEFT JOIN CompanysActiveRegion CAR on C.companysIdx = CAR.companysIdx " +
         "LEFT JOIN CompanysCategory CC on C.companysIdx = CC.companysIdx " +
-        "WHERE C.companysIdx=:companysIdx " +
+        "WHERE C.companysIdx = :companysIdx " +
         "GROUP BY C.companysIdx"
         ,nativeQuery = true
     )

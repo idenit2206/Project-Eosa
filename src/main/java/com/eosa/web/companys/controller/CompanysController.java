@@ -621,8 +621,35 @@ public class CompanysController {
     @GetMapping("/selectOneCompanysUserLikeCompanyEnableByCompanysIdxUsersIdx")
     public CustomResponseData selectOneCompanysUserLikeCompanyEnableByCompanysIdxUsersIdxTest(@RequestParam("companysIdx") Long companysIdx, @RequestParam("usersIdx") Long usersIdx) {
         CustomResponseData result = new CustomResponseData();
+        log.debug("[selectOneCompanysUserLikeCompanyEnableByCompanysIdxUsersIdxTest] companysIdx: {}, usersIdx: {}", companysIdx, usersIdx);
         SelectCompanysUserLikeCompanyEnable item = companysService.selectOneCompanysUserLikeCompanyEnableByCompanysIdxUsersIdx(companysIdx, usersIdx);
         result.setResultItem(item);
+        return result;
+    }
+
+    @GetMapping("/selectListCompanysUserLikeCompanyEnableByCompanysIdxUsersIdx")
+    public CustomResponseData selectListCompanysUserLikeCompanyEnableByCompanysIdxUsersIdxTest(
+            @RequestParam("companysIdx") List<Long> companysIdxList,
+            @RequestParam("usersIdx") Long usersIdx) {
+        CustomResponseData result = new CustomResponseData();
+        log.debug("[selectOneCompanysUserLikeCompanyEnableByCompanysIdxUsersIdxTest] companysIdx: {}", companysIdxList.toString());
+        log.debug("[selectOneCompanysUserLikeCompanyEnableByCompanysIdxUsersIdxTest] usersIdx: {}", usersIdx);
+        List<SelectCompanysUserLikeCompanyEnable> items = new ArrayList<>();
+
+        for(int i = 0; i < companysIdxList.size(); i++) {
+            items.add(companysService.selectOneCompanysUserLikeCompanyEnableByCompanysIdxUsersIdx(companysIdxList.get(i), usersIdx));
+        }
+        if(items != null) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(items);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
         return result;
     }
 
