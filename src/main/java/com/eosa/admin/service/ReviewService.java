@@ -1,7 +1,7 @@
 package com.eosa.admin.service;
 
 import com.eosa.admin.dto.ReviewDTO;
-import com.eosa.admin.mapper.BoardMapper;
+import com.eosa.admin.mapper.ReviewMapper;
 import com.eosa.admin.pagination.Pagination;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,20 +13,20 @@ import java.util.Map;
 
 /**
  * packageName    : com.eosa.admin.service
- * fileName       : BoardService
+ * fileName       : ReviewMapper
  * author         : Jihun Kim
  * date           : 2022-09-20
- * description    : 게시판 서비스
+ * description    : 리뷰 서비스
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2022-09-20        Jihun Kim       최초 생성
  */
 @Service
-public class BoardService {
+public class ReviewService {
 
     @Autowired
-    private BoardMapper boardMapper;
+    private ReviewMapper reviewMapper;
 
     /**
      * 리뷰 목록 조회 서비스
@@ -51,14 +51,14 @@ public class BoardService {
             map.put("search", search);
         }
 
-        int count = boardMapper.countReviewList(map);
+        int count = reviewMapper.countReviewList(map);
 
         Pagination pagination = new Pagination(count, page);
 
         map.put("startIndex", pagination.getStartIndex());
         map.put("pageSize", pagination.getPageSize());
 
-        List<ReviewDTO> list = boardMapper.selectReviewList(map);
+        List<ReviewDTO> list = reviewMapper.selectReviewList(map);
 
         model.addAttribute("reviewList", list);
         model.addAttribute("pagination", pagination);
