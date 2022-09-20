@@ -42,8 +42,7 @@ public class NoticeController {
     @DeleteMapping("/deleteByNoticeIdx")
     @ResponseBody
     public void deleteByNoticeIdx(@RequestParam("noticeIdx") Long idx) {
-        int deleteRow =  noticeService.deleteByNoticeIdx(idx);
-        log.debug("admin/board/notice/list");
+        int deleteRow =  noticeService.deleteByNoticeIdx(idx);        
     }
 
 }
