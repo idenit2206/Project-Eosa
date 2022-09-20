@@ -21,7 +21,7 @@ public class AdminSecurityConfig {
 
     private String[] PERMIT_URL = {
         "/assets/**", "/js/**", "/css/**", "/webjars/**",
-        "/admin/sign/**"
+        "/admin", "/admin/sign/**"
     };
 
     @Bean
@@ -30,7 +30,7 @@ public class AdminSecurityConfig {
         http.csrf().disable();
 
         http
-            .antMatcher("/ad/**")
+            .antMatcher("/admin/**")
             .authorizeRequests()
                 .antMatchers(PERMIT_URL).permitAll()
                  .anyRequest().hasAnyAuthority("ADMIN", "SUPER_ADMIN")

@@ -33,7 +33,6 @@ public class AdminController {
      */
     @GetMapping({"", "/"})
     public String adminMain(Model model) {
-
         return adminService.adminMain(model);
     }
 
