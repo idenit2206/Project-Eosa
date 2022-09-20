@@ -64,7 +64,7 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
      * @return
      */
     @Query(
-        value= "SELECT usersIdx, usersAccount, usersName, usersRole " +
+        value= "SELECT usersIdx, usersAccount, usersName, usersNick, usersRole " +
         "FROM Users WHERE usersAccount = ?1",
         nativeQuery=true
     )
@@ -210,5 +210,16 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
         nativeQuery = true
     )
     String selectUsersAccountByUsersIdx(Long usersIdx);
+
+
+    @Transactional
+    @Modifying
+    @Query(value =
+        "UPDATE Users " +
+        "SET usersPass = :usersPass " +
+        "WHERE usersAccount = :usersAccount AND usersEmail = :usersEmail"
+        ,nativeQuery = true
+    )
+    int updateUsersPass(@Param("usersAccount") String usersAccount, @Param("usersEmail") String usersEmail, @Param("usersPass") String encodedCode);
     
 }
