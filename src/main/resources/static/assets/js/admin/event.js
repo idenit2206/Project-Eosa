@@ -660,3 +660,22 @@ function cancelFlag() {
     }
 
 };
+
+/**
+ * 정책 수정
+ */
+function modifyPolicy(num) {
+
+    const policy = (num == 0) ? '이용약관' : '개인정보처리방침';
+
+    const msg = confirm(policy + '을 수정하시겠습니까?');
+    if (msg) {
+        const formData = new FormData();
+
+        formData.set('policyIdx', document.querySelectorAll('.policyIdx')[num].value);
+        formData.set('policyContents', document.querySelectorAll('.policyContents')[num].value);
+
+        fetchApi('/admin/manage/policy/update', 'post', formData, policy + '이 수정되었습니다.');
+    }
+
+};
