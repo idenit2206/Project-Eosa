@@ -272,12 +272,15 @@ select:focus {
   justify-content: center;
   position: absolute;
   height: 24px;
-  padding: 0px 7px;
+  padding: 0px 8px;
   font-size: 14px;
   border-radius: 12px;
   color: #FFF;
   background-color: #E94E58;
   margin-left: 3px;
+}
+.form-review .table {
+  margin-top: 0;
 }
 .header-wrap .check-search {
   width: 30%;
@@ -2393,7 +2396,19 @@ body.modal-overlayed::after {
     margin-left: 0;
   }
 }
-
+progress {
+  -webkit-appearance: none;
+}
+::-webkit-progress-bar {
+  background: #E0E0E0;
+  border-radius: 3px;
+  height: 6px;
+}
+::-webkit-progress-value {
+  background: #4C956C;
+  border-radius: 3px;
+  height: 6px;
+}
 .section {
   padding: 16px;
   background-color: #fff;
@@ -2561,16 +2576,18 @@ body.modal-overlayed::after {
   align-items: center;
   justify-content: space-between;
   height: 180px;
-  padding: 14px;
+  padding: 20px 14px;
   border: 1px solid #616161;
 }
 .score-wrap .average-wrap {
   width: 50%;
+  height: 70%;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   border-right: 2px solid #dbdbdb;
+  gap: 16px;
 }
 .score-wrap .average-wrap .average-label {
   font-size: 16px;
@@ -2585,11 +2602,12 @@ body.modal-overlayed::after {
 }
 .score-wrap .s-wrap {
   width: 50%;
+  height: 100%;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 14px;
 }
 .score-wrap .s-wrap .star-wrap {
   width: 100%;
@@ -2599,18 +2617,44 @@ body.modal-overlayed::after {
   gap: 20px;
 }
 .score-wrap .s-wrap .star-wrap .star-label {
-  width: 25%;
+  width: 20%;
   text-align: right;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: 400;
   letter-spacing: -1px;
 }
 .score-wrap .s-wrap .star-wrap .star-img {
   width: 130px;
 }
 .details-wrap {
-  height: 250px;
+  height: 100%;
   border: 1px solid #dbdbdb;
   border-top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 40px;
+  line-height: 26px;
+}
+.details-wrap .details-contents {
+  color: #757575;
+}
+.details-wrap .details-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.details-wrap .details-info span {
+  color: #9e9e9e;
+  font-size: 14px;
+}
+.details-wrap .details-info .space {
+  width: 1px;
+  height: 14px;
+  background: #dbdbdb;
 }
 .modal .report table,
 .modal .filter table {

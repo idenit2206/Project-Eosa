@@ -1,23 +1,13 @@
 package com.eosa.admin.controller;
 
 import com.eosa.admin.dto.CompanysDTO;
-import com.eosa.admin.encode.SHA256;
 import com.eosa.admin.service.CompanyService;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.security.NoSuchAlgorithmException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 /**
  * packageName    : com.eosa.admin.controller
@@ -246,6 +236,22 @@ public class CompanyController {
                            @RequestParam(defaultValue = "1") int page) {
 
         return companyService.flagList(model, enabled, page);
+    }
+
+    /**
+     * 업체 리뷰 조회 컨트롤러
+     *
+     * @param model
+     * @param companysIdx
+     * @param page
+     * @return String
+     */
+    @GetMapping("/review")
+    public String companyReview(Model model,
+                                @RequestParam long companysIdx,
+                                @RequestParam(defaultValue = "1") int page) {
+
+        return companyService.companyReview(model, companysIdx, page);
     }
 
 }

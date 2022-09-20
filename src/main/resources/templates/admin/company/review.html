@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/fragments/layout}">
+
+<th:block layout:fragment="content">
+
+    <th:block th:replace="admin/fragments/aside :: asideFragment"></th:block>
+
+    <main id="main" data-category="company">
+        <section class="section section-users">
+
+            <div class="form form--xxl form-menu">
+                <div class="t-top-wrap">
+                    <div>
+                        <a class="btn-review"></a>
+                        <label class="badge" th:if="${count[0]} ne 0" th:text="${count[0]}"></label>
+                    </div>
+                    <div>
+                        <a class="btn-report"></a>
+                        <label class="badge" th:if="${count[1]} ne 0" th:text="${count[1]}"></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form form--xxl form-menu form-review">
+                <div class="review-body">
+                    <div class="score-wrap">
+                        <div class="average-wrap">
+                            <span class="average-label">업체 평균 점수</span>
+                            <span class="average-score" th:text="${total}"></span>
+                        </div>
+                        <div class="s-wrap">
+                            <div class="star-wrap">
+                                <span class="star-label">성과 만족도</span>
+                                <meter th:value="${resultScore}" max="5"></meter>
+                            </div>
+                            <div class="star-wrap">
+                                <span class="star-label">소통능력</span>
+                                <meter th:value="${communicationScore}" max="5"></meter>
+                            </div>
+                            <div class="star-wrap">
+                                <span class="star-label">일정준수</span>
+                                <meter th:value="${processScore}" max="5"></meter>
+                            </div>
+                            <div class="star-wrap">
+                                <span class="star-label">전문성</span>
+                                <meter th:value="${specialityScore}" max="5"></meter>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form form--xxl form-menu form-review">
+                <div class="table">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th class="check"><input type="checkbox" name="checkAll" id="checkAll"></th>
+                            <th>업체명</th>
+                            <th>의뢰인</th>
+                            <th class="w-550">내용</th>
+                            <th>평점</th>
+                            <th>등록일</th>
+                        </tr>
+                        </thead>
+
+                        <tbody th:if="${count[0]} eq 0">
+                        <tr>
+                            <td colspan="6">
+                                <span>등록된 리뷰가 없습니다.</span>
+                            </td>
+                        </tr>
+                        </tbody>
+
+                        <tbody th:if="${count[0]} ne 0">
+                        <tr th:each="list : ${reviewList}" class="js-modalShow review-btn" data-modal="review">
+
+                            <input type="hidden" class="reviewIdx" th:value="${list.idx}">
+                            <input type="hidden" class="companyIdx" th:value="${list.reviewCompanysIdx}">
+                            <input type="hidden" class="resultScore" th:value="${list.resultScore}">
+                            <input type="hidden" class="communicationScore" th:value="${list.communicationScore}">
+                            <input type="hidden" class="processScore" th:value="${list.processScore}">
+                            <input type="hidden" class="specialityScore" th:value="${list.specialityScore}">
+
+                            <td class="check" onclick="event.cancelBubble=true"><input type="checkbox" name="listCheck"></td>
+                            <td>
+                                <span class="companysName" th:text="${list.companysName}"></span>
+                            </td>
+                            <td>
+                                <span class="usersAccount" th:text="${list.usersAccount}"></span>
+                            </td>
+                            <td>
+                                <div class="review-wrap">
+                                    <span class="reviewDetail" th:text="${list.reviewDetail}"></span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="average" th:text="${list.average}"></span>
+                            </td>
+                            <td>
+                                <span class="reviewDate" th:text="${#dates.format(list.reviewDate, 'yyyy-MM-dd')}"></span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="table__action">
+                        <button type="button" class="btn-normal btn-delete">삭제</button>
+                    </div>
+
+                    <div class="table__paging">
+                        <ul>
+                            <li><a class="first" th:href="@{/admin/manage/company/review(companysIdx=${companysIdx}, page=1)}"></a></li>
+                            <li><a class="prev" th:href="@{/admin/manage/company/review(companysIdx=${companysIdx}, page=${pagination.prevBlock})}"></a></li>
+
+                            <th:block th:with="start = ${pagination.startPage}, end = ${pagination.endPage}">
+                                <li th:each="pageButton : ${#numbers.sequence(start, end)}"><a class="pageNum" th:href="@{/admin/manage/company/review(companysIdx=${companysIdx}, page=${pageButton})}" th:text="${pageButton}"></a></li>
+                            </th:block>
+
+                            <li><a class="next" th:href="@{/admin/manage/company/review(companysIdx=${companysIdx}, page=${pagination.nextBlock})}"></a></li>
+                            <li><a class="last" th:href="@{/admin/manage/company/review(companysIdx=${companysIdx}, page=${pagination.totalPageCnt eq 0 ? 1 : pagination.totalPageCnt})}"></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form form--xxl details-form">
+                <div>
+                    <div class= "form__action bottom">
+                        <a th:href="@{/admin/manage/company/details(companysIdx=${companysIdx})}" class="btn-normal">업체정보</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="modal modal-review w-760" data-modal="review">
+        <div class="modal__inner">
+            <div class="modal-head">
+                <span class="modal__title"></span>
+                <a class="modal-c ross js-modalClose"></a>
+            </div>
+            <div class="write">
+                <input type="hidden" class="modal-id">
+                <div class="write-body">
+                    <div class="review-body">
+                        <div class="score-wrap">
+                            <div class="average-wrap">
+                                <span class="average-label">리뷰 평균 점수</span>
+                                <span class="average-score"></span>
+                            </div>
+                            <div class="s-wrap">
+                                <div class="star-wrap">
+                                    <span class="star-label">성과 만족도</span>
+                                    <img class="star-img m-result">
+                                </div>
+                                <div class="star-wrap">
+                                    <span class="star-label">소통능력</span>
+                                    <img class="star-img m-communication">
+                                </div>
+                                <div class="star-wrap">
+                                    <span class="star-label">일정준수</span>
+                                    <img class="star-img m-process">
+                                </div>
+                                <div class="star-wrap">
+                                    <span class="star-label">전문성</span>
+                                    <img class="star-img m-special">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="details-wrap">
+                            <div class="details-contents"></div>
+                            <div class="details-info">
+                                <span class="writer"></span>
+                                <label class="space"></label>
+                                <span class="date"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form__action bottom">
+                        <button class="btn-del review-delete">삭제하기</button>
+                        <button class="btn-prime redirect-company">업체 바로가기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+
+<th:block layout:fragment="script">
+    <script>
+        window.addEventListener('load', function () {
+            highlightMenu('list');
+            reviewDetailsModal();
+        });
+    </script>
+</th:block>
+
+</html>

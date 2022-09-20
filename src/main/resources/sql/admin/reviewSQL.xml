@@ -21,6 +21,7 @@
     <!-- 리뷰 목록 조회 -->
     <select id="selectReviewList" resultType="ReviewDTO" parameterType="hashmap">
         SELECT R.idx,
+               R.reviewCompanysIdx,
                R.resultScore,
                R.communicationScore,
                R.processScore,
@@ -43,5 +44,22 @@
         </where>
         ORDER BY R.reviewDate DESC LIMIT #{startIndex}, #{pageSize}
     </select>
+
+    <!-- 리뷰 삭제 -->
+    <delete id="deleteReview" parameterType="long">
+        DELETE
+        FROM UsersReview
+        WHERE idx = ${idx}
+    </delete>
+
+    <!-- 리뷰 다중 삭제 -->
+    <delete id="deleteReviewMulti">
+        DELETE
+        FROM UsersReview
+        WHERE idx IN
+        <foreach collection="array" item="arr" index="i" open="(" separator="," close=")">
+            #{arr}
+        </foreach>
+    </delete>
 
 </mapper>

@@ -679,3 +679,42 @@ function modifyPolicy(num) {
     }
 
 };
+
+/**
+ * 리뷰 삭제
+ */
+function deleteReview() {
+
+    const msg = confirm('리뷰를 삭제하시겠습니까?');
+    if (msg) {
+        const formData = new FormData();
+        formData.set('idx', document.querySelector('.modal-review .modal-id').value);
+
+        fetchApi('/admin/manage/review/delete', 'post', formData, '리뷰가 삭제되었습니다.');
+    }
+
+};
+
+/**
+ * 리뷰 다중 삭제
+ */
+function deleteReviewMulti() {
+    const formData = new FormData();
+    const listCheck = document.querySelectorAll('input[name=listCheck]');
+    const listChecked = document.querySelectorAll('input[name=listCheck]:checked');
+    const reviewIdx = document.querySelectorAll('.reviewIdx');
+
+    if (listChecked.length == 0) {
+        alert('리뷰를 선택해 주세요.');
+    } else {
+        const msg = confirm('리뷰를 삭제하시겠습니까?');
+        if (msg) {
+            for (let i = 0; i < listCheck.length; i++) {
+                if (listCheck[i].checked) {
+                    formData.append('idx', reviewIdx[i].value);
+                }
+            }
+            fetchApi('/admin/manage/review/delete/multi', 'post', formData, '삭제되었습니다.');
+        }
+    }
+};
