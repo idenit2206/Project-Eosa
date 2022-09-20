@@ -4,5 +4,6 @@ public interface GetUsersInfoByUsersAccountEntity {
     Long getUsersIdx();
     String getUsersAccount();
     String getUsersName();
+    String getUsersNick();
     String getUsersRole();
 }

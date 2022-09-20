@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,6 +26,8 @@ import com.eosa.web.users.entity.Users;
 import com.eosa.web.users.repository.UsersRepository;
 
 import lombok.extern.slf4j.Slf4j;
+
+import javax.transaction.Transactional;
 
 @Slf4j
 @Service
@@ -189,6 +193,11 @@ public class UsersService implements UsersRepository {
 
     public String selectUsersAccountByUsersIdx(Long usersIdx) {
         return usersRepository.selectUsersAccountByUsersIdx(usersIdx);
+    }
+
+    @Override
+    public int updateUsersPass(String usersEmail, String encodedCode) {
+        return usersRepository.updateUsersPass(usersEmail, encodedCode);
     }
 
     @Override
@@ -376,5 +385,5 @@ public class UsersService implements UsersRepository {
         // TODO Auto-generated method stub
         return null;
     }
-    
+
 }

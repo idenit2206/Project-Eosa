@@ -56,7 +56,8 @@ public class TempUserController {
             log.info("[signIn]로그인에 성공했습니다.");
             items.put("usersIdx", selectRows.getUsersIdx());
             items.put("usersEmail", selectRows.getUsersEmail());
-            items.put("usersName", "TempUser"+selectRows.getUsersIdx());
+            items.put("usersName", "user"+selectRows.getUsersIdx());
+            items.put("usersNick", "user"+selectRows.getUsersIdx());
             items.put("usersRole", selectRows.getUsersRole());
 
             result.setStatusCode(HttpStatus.OK.value());

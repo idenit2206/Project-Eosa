@@ -5,6 +5,7 @@ import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.mail.internet.InternetAddress;
 import javax.servlet.ServletException;
@@ -14,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.eosa.web.users.entity.*;
 import com.eosa.web.users.service.SmsCertificationService;
+import com.eosa.web.util.mail.MailEntity;
+import com.eosa.web.util.mail.MailService;
 import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
 import net.nurigo.sdk.message.response.SingleMessageSentResponse;
@@ -26,6 +29,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -66,6 +70,8 @@ public class UsersController {
     @Autowired private SmsCertificationService smsCertificationService;
     @Autowired private UsersService usersService;
     @Autowired private TerminateUserService terminateUserService;
+    @Autowired private MailService mailService;
+    @Autowired private BCryptPasswordEncoder passwordEncoder;
 
     @Value("${my.service.domain}") private String myDomain;
     @Value("${my.ui.port}") private String myUiPort;
@@ -562,7 +568,34 @@ public class UsersController {
         return result;
     }
 
-//    @PostMapping("/findUsersAccountByUsersEmail")
+    @PostMapping("/findUsersAccountByUsersEmail")
+    public void findUsersAccountByUsersEmail(@RequestParam("usersEmail") String usersEmail, MailEntity me) {
+        CustomResponseData result = new CustomResponseData();
+        log.info("[findUsersAccountByUsersEmail] usersEmail: {}", usersEmail);
+        String usersAccount = usersService.accountMailSend(usersEmail);
+
+        me.setAddress(usersEmail);
+        me.setTitle("도와조 고객센터 입니다. 신청하신 계정 정보를 발송합니다.");
+        me.setMessage("안녕하세요. 선택의 기준, 도와줘 고객센터 입니다.\n회원님의 아이디는 " + usersAccount + " 입니다.\n감사합니다.");
+        mailService.mailSend(me);
+
+//        return result;
+    }
+
+    @PostMapping("/resetUsersPassByUsersEmail")
+    public void resetUsersPassByUsersEmail(@RequestParam("usersEmail") String usersEmail, MailEntity me) {
+        String code = UUID.randomUUID().toString();
+        code = code.substring(0, 8);
+        String encodedCode = passwordEncoder.encode(code);
+
+        int updateUsers = usersService.updateUsersPass(usersEmail, encodedCode);
+        log.debug("[resetUsersPassByUsersEmail] result New: {}", updateUsers);
+//
+//        me.setAddress(usersEmail);
+//        me.setTitle("도와조 고객센터 입니다. 신청하신 계정 정보를 발송합니다.");
+//        me.setMessage("안녕하세요. 선택의 기준, 도와줘 고객센터 입니다.\n회원님의 새로운 비밀번호는 " + encodedCode + " 입니다.\n로그인 후 반드시 비밀번호를 재설정 하시기 바랍니다.");
+//        mailService.mailSend(me);
+    }
 
 
     // Apple SignIn
