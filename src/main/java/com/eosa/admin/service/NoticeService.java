@@ -52,4 +52,8 @@ public class NoticeService {
         return noticeMapper.insertNotice(noticeDTO);
     }
 
+    public int deleteByNoticeIdx(Long idx) {
+        return 1;
+    }
+
 }

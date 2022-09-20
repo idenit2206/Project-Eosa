@@ -47,27 +47,27 @@
                     </tbody>
 
                     <tbody th:if="${count} ne 0">
-                    <tr th:each="list : ${noticeList}" class="js-modalShow notice-btn" data-modal="review">
+                    <tr th:each="list : ${noticeList}" class="js-modalShow notice-btn" data-modal="notice">
                         <td class="check"><input type="checkbox" name="listCheck"></td>
                         <td>
-                            <span th:text="${list.idx}"></span>
+                            <span class="noticeIdx" th:text="${list.idx}"></span>
                         </td>
                         <td>
-                            <span th:text="${list.title}"></span>
+                            <span class="noticeTitle" th:text="${list.title}"></span>
                         </td>
                         <td>
                             <div class="review-wrap" th:if="${list.content.length > 15}">
-                                <span th:text="${list.content.substring(0, 15)}"></span>
+                                <span class="noticeContent" th:text="${list.content.substring(0, 15)}"></span>
                             </div>
                             <div class="review-wrap" th:unless="${list.content.length > 15}">
-                                <span th:text="${list.content}"></span>
+                                <span class="noticeContent" th:text="${list.content}"></span>
                             </div>
                         </td>
                         <td>
-                            <span th:text="${list.author}"></span>
+                            <span class="noticeAuthor" th:text="${list.author}"></span>
                         </td>
                         <td>
-                            <span th:text="${list.postDate}"></span>
+                            <span class="noticePostDate" th:text="${list.postDate}"></span>
 <!--                            <span th:text="${#dates.format(list.postDate, 'yyyy-MM-dd')}"></span>-->
                         </td>
                     </tr>
@@ -112,16 +112,23 @@
                     <div class="modal-notice">
                     <fieldset class="fieldset">
                         <div class="input-wrap">
+                            <label class="label">글 번호</label>
+                            <input type="text" id="idx" class="input" readonly/>
+                        </div>
+                        <div class="input-wrap">
                             <label class="label">제목<i class="required">*</i></label>
                             <input type="text" id="title" class="input" spellcheck="false" placeholder="제목 입력">
                         </div>
                         <div class="input-wrap">
                             <label class="label">작성자<i class="required">*</i></label>
-                            <input type="text" id="author" class="input" spellcheck="false" th:value="${usersName}" readonly>
+                            <input type="text" id="author" class="input" spellcheck="false" readonly>
                         </div>
                         <div class="input-wrap">
                             <label class="label">내용</label>
-                            <textarea id="content" class="textarea">[[${content}]]</textarea>
+                            <textarea id="content" class="textarea"></textarea>
+                        </div>
+                        <div class="hidden">
+                            <input type="text" id="postDate" class="input" readonly>
                         </div>
                     </fieldset>
                     </div>
