@@ -549,6 +549,10 @@ select:focus {
   content: "";
   background-color: #4C956C;
 }
+.policy-hr {
+  margin: 30px 0;
+  border: 1px solid #e8effa;
+}
 .fieldset__hr {
   margin: 24px 0;
   border: 0;
@@ -1083,8 +1087,8 @@ option {
   align-items: center;
   justify-content: space-between;
   padding: 0 8px;
+  height: 48px;
 }
-
 .tab-wrap input {
   padding: 0 8px;
   text-align: right;
@@ -1093,7 +1097,24 @@ option {
 .tab-wrap label {
   font-weight: 500;
 }
-
+.review-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.review-wrap span {
+  width: 400px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.m-b-30 {
+  margin-bottom: 30px;
+}
+.w-550 {
+  width: 550px;
+}
 .tab-wrap span {
   color: #999;
 }
@@ -2526,6 +2547,59 @@ body.modal-overlayed::after {
 .section-users .mail-form {
   width: calc(100% - 200px);
 }
+.modal-review.w-760 {
+  width: 760px;
+}
+.score-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 14px;
+}
+.score-wrap .average-wrap {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border-right: 2px solid #dbdbdb;
+}
+.score-wrap .average-wrap .average-label {
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -1px;
+}
+.score-wrap .average-wrap .average-score {
+  color: #4C956C;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+.score-wrap .s-wrap {
+  width: 50%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.score-wrap .s-wrap .star-wrap {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+.score-wrap .s-wrap .star-wrap .star-label {
+  width: 70px;
+  text-align: right;
+  font-weight: 500;
+  letter-spacing: -1px;
+}
+.score-wrap .s-wrap .star-wrap .star-img {
+  width: 130px;
+}
 .modal .report table,
 .modal .filter table {
   border: 1px solid #dbdbdb;
@@ -2635,7 +2709,7 @@ body.modal-overlayed::after {
   overflow-y: auto;
   display: none;
 }
-.modal-details .table, .modal-reason .table, .modal-terminate .table, .modal-request .table, .modal-form .table {
+.modal-details .table, .modal-reason .table, .modal-terminate .table, .modal-request .table, .modal-form .table, .modal-review .table {
   margin-top: 40px;
   border: 1px solid #dfdfdf;
   border-bottom: none;
