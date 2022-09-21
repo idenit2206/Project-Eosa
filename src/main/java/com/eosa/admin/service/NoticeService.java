@@ -3,6 +3,8 @@ package com.eosa.admin.service;
 import com.eosa.admin.dto.NoticeDTO;
 import com.eosa.admin.mapper.NoticeMapper;
 import com.eosa.admin.pagination.Pagination;
+import com.eosa.web.board.entity.Notice;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 public class NoticeService {
 
@@ -52,8 +55,14 @@ public class NoticeService {
         return noticeMapper.insertNotice(noticeDTO);
     }
 
+    public int updateNoticeByNoticeIdx(NoticeDTO noticeDTO) {
+        log.debug("[updateNoticeByNoticeIdx] noticeDto: {}", noticeDTO.toString());
+        return noticeMapper.updateNoticeByNoticeIdx(noticeDTO);
+    }
+
     public int deleteByNoticeIdx(Long idx) {
-        return 1;
+        int deleteRows = noticeMapper.deleteByNoticeIdx(idx);
+        return deleteRows;
     }
 
 }

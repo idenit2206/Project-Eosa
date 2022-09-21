@@ -135,8 +135,8 @@ public class CompanysService implements CompanysRepository {
     }
 
     @Override
-    public List<Long> selectCompanysByFilter2(String companysCategory, String companysRegion1, String companysRegion2) {
-        return companysRepository.selectCompanysByFilter2(companysCategory, companysRegion1, companysRegion2);
+    public List<Long> selectCompanysByFilter2(String companysCategory, String companysRegion1) {
+        return companysRepository.selectCompanysByFilter2(companysCategory, companysRegion1);
     }
 
     // 안심번호

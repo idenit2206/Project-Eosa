@@ -202,6 +202,7 @@ function updateUser() {
     const email = document.querySelector('.user-email');
     const age = document.querySelector('.user-age');
     const region01 = document.querySelector('#region01');
+    const region02 = document.querySelector('#region02');
     const gender = document.querySelector('input[name=gender]:checked');
 
     if (name.value == '') {
@@ -222,6 +223,9 @@ function updateUser() {
         formData.set('usersEmail', email.value);
         formData.set('usersAge', age.value);
         formData.set('usersRegion1', region01.value);
+        if (region01.value == '서울') {
+            formData.set('usersRegion2', region02.value);
+        }
         formData.set('usersGender', gender.value);
 
         fetchApi('/admin/manage/user/update', 'post', formData, '수정되었습니다.');
@@ -320,6 +324,7 @@ function insertUser() {
     const gender = document.querySelector('input[name=gender]:checked');
     const age = document.querySelector('.user-age');
     const region01 = document.querySelector('#region01');
+    const region02 = document.querySelector('#region02');
 
     if (account.value == '') {
         alertFocus('아이디를 입력해 주세요.', account);
@@ -351,6 +356,9 @@ function insertUser() {
         formData.set('usersRole', role.value);
         formData.set('usersAge', age.value);
         formData.set('usersRegion1', region01.value);
+        if (region01.value == '서울') {
+            formData.set('usersRegion2', region02.value);
+        }
         formData.set('usersGender', gender.value);
 
         fetchApi('/admin/manage/user/insert', 'post', formData, '회원이 등록되었습니다.', '/admin/manage/user/list');
@@ -454,6 +462,7 @@ async function updateCompany() {
             formData.set('companysComment', document.querySelector('.c-comment').value);
             formData.set('companysSpec', document.querySelector('.c-spec').value);
             formData.set('companysRegion1', region01.value);
+            if (region01.value == '서울') formData.set('companysRegion2', document.querySelector('#region02').value);
             formData.set('companysRegion3', document.querySelector('.c-region3').value);
             formData.set('companysBankName', document.querySelector('.c-bank').value);
             formData.set('companysBankNumber', document.querySelector('.c-bank-num').value);
@@ -566,6 +575,7 @@ function requestFlag() {
             formData.set('companysName', document.querySelector('.f-name').textContent);
             formData.set('companysCeoName', document.querySelector('.f-ceo').textContent);
             formData.set('companysFlagRegion1', region.value);
+            if (region.value == '서울') formData.set('companysFlagRegion2', document.querySelector('#region06').value);
 
             for (let i = 0; i < category.length; i++) {
                 formData.append('companysFlagCategory', category[i].value);
@@ -624,6 +634,7 @@ function modifyFlag() {
 
             formData.set('companysFlagIdx', document.querySelector('.companysFlagIdx').value);
             formData.set('companysFlagRegion1', region.value);
+            if (region.value == '서울') formData.set('companysFlagRegion2', document.querySelector('#region04').value);
 
             for (let i = 0; i < category.length; i++) {
                 formData.append('companysFlagCategory', category[i].value);
@@ -687,8 +698,7 @@ function insertNotice() {
 
         fetchApi('/admin/manage/notice/insert', 'post', formData, '공지사항이 등록되었습니다.', '/admin/manage/notice/list')
     }
-};
-
+}
 /**
  * 리뷰 삭제
  */
@@ -766,3 +776,7 @@ function deleteReportMulti() {
         }
     }
 };
+
+/**
+ * 공지사항
+ */

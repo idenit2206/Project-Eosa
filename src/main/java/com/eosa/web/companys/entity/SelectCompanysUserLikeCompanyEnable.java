@@ -12,7 +12,7 @@ public interface SelectCompanysUserLikeCompanyEnable {
     String getCompanysSpec();
     String getCompanysPhone();
     String getCompanysRegion1();
-    String getCompanysRegion2();
+//    String getCompanysRegion2();
     String getCompanysRegion3();
     String getCompanysRegistCerti();
     String getCompanysRegistCertiName();

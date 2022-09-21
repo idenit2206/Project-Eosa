@@ -21,7 +21,8 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         "C.companysIdx, C.companysName, C.companysCeoIdx, C.companysCeoName, " +
         "C.companysComment, C.companysSpec, C.companysPhone, " +
         "C.companysDummyPhone, C.companysMemo, " +
-        "C.companysRegion1, C.companysRegion2, C.companysRegion3, " +
+//        "C.companysRegion1, C.companysRegion2, C.companysRegion3, " +
+        "C.companysRegion1, C.companysRegion3, " +
         "C.companysRegistCerti, C.companysRegistCertiName, " +
         "C.companysLicense, C.companysLicenseName, " +
         "C.companysProfileImage, C.companysProfileImageName, " +
@@ -49,7 +50,8 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         "SELECT " +
         "C.companysIdx, C.companysName, C.companysCeoIdx, C.companysCeoName, " +
         "C.companysComment, C.companysSpec, C.companysPhone, " +
-        "C.companysRegion1, C.companysRegion2, C.companysRegion3, " +
+//        "C.companysRegion1, C.companysRegion2, C.companysRegion3, " +
+        "C.companysRegion1, C.companysRegion3, " +
         "C.companysRegistCerti, C.companysRegistCertiName, " +
         "C.companysLicense, C.companysLicenseName, " +
         "C.companysProfileImage, C.companysProfileImageName, " +
@@ -116,7 +118,8 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
     @Query(value=
         "UPDATE Companys " +
         "SET companysName = :#{#Companys.companysName}, companysComment = :#{#Companys.companysComment}, " +
-        "companysRegion1 = :#{#Companys.companysRegion1}, companysRegion2 = :#{#Companys.companysRegion2}, companysRegion3 = :#{#Companys.companysRegion3}, " +
+//        "companysRegion1 = :#{#Companys.companysRegion1}, companysRegion2 = :#{#Companys.companysRegion2}, companysRegion3 = :#{#Companys.companysRegion3}, " +
+        "companysRegion1 = :#{#Companys.companysRegion1}, companysRegion3 = :#{#Companys.companysRegion3}, " +
         "companysRegistCerti = :#{#Companys.companysRegistCerti}, companysLicense = :#{#Companys.companysLicense}, companysProfileImage = :#{#Companys.companysProfileImage}, " +
         "companysRegistCertiName = :#{#Companys.companysRegistCertiName}, companysLicenseName = :#{#Companys.companysLicenseName}, companysProfileImageName = :#{#Companys.companysProfileImageName}, " +
         "companysBankName = :#{#Companys.companysBankName}, companysBankNumber = :#{#Companys.companysBankNumber} " +
@@ -155,7 +158,8 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         "C.companysIdx, C.companysName, C.companysCeoIdx, C.companysCeoName, " +
         "C.companysComment, C.companysSpec, C.companysPhone, " +
         "C.companysDummyPhone, C.companysMemo, " +
-        "C.companysRegion1, C.companysRegion2, C.companysRegion3, " +
+//        "C.companysRegion1, C.companysRegion2, C.companysRegion3, " +
+        "C.companysRegion1, C.companysRegion3, " +
         "C.companysRegistCerti, C.companysRegistCertiName, " +
         "C.companysLicense, C.companysLicenseName, " +
         "C.companysProfileImage, C.companysProfileImageName, " +
@@ -272,7 +276,8 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         value="SELECT " +
         "c.companysIdx, c.companysName, c.companysCeoIdx, c.companysCeoName, " +
         "c.companysComment, c.companysSpec, c.companysPhone, " +
-        "c.companysRegion1, c.companysRegion2, c.companysRegion3, " +
+//        "c.companysRegion1, c.companysRegion2, c.companysRegion3, " +
+        "c.companysRegion1, c.companysRegion3, " +
         "c.companysRegistCerti, c.companysLicense, c.companysProfileImage, " +
         "c.companysRegistCertiName, c.companysLicenseName, c.companysProfileImageName, " +
         "c.companysBankName, c.companysBankNumber, c.companysPremium, c.companysLocalPremium, " +
@@ -318,11 +323,11 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         "WHERE CC.companysCategoryValue LIKE CONCAT('%', ?1, '%') " +
         "AND " +
         "C.companysRegion1 LIKE CONCAT('%', ?2,'%') " +
-        "AND " +
-        "C.companysRegion2 LIKE CONCAT('%', ?3, '%') " +
+//        "AND " +
+//        "C.companysRegion2 LIKE CONCAT('%', ?3, '%') " +
         "GROUP BY C.companysIdx"
         ,nativeQuery = true
     )
-    List<Long> selectCompanysByFilter2(String companysCategory, String companysRegion1, String companysRegion2);
+    List<Long> selectCompanysByFilter2(String companysCategory, String companysRegion1);
     
 }

@@ -15,4 +15,8 @@ public interface NoticeMapper {
 
     int insertNotice(NoticeDTO noticeDTO);
 
+    int updateNoticeByNoticeIdx(NoticeDTO noticeDTo);
+
+    int deleteByNoticeIdx(Long idx);
+
 }
