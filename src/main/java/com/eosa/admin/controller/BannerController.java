@@ -41,6 +41,7 @@ public class BannerController {
             }
         }
 
+        model.addAttribute("items", items);
         model.addAttribute("pc", pc);
         model.addAttribute("mobile", mobile);
         

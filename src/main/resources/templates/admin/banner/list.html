@@ -15,9 +15,13 @@
                     <div class="top-wrap">
                         <div class="header-wrap">
                             <table>
-                                <tbody>
-                                    <tr>
-                                        <td class="imgPreviewDesktop">
+                                <tbody th:if="${pc != null}">
+                                    <tr class="imgPreviewDesktopList">
+                                        <td th:each="list : ${pc}" class="imgPreviewDesktop">
+                                            <p>배너</p>
+                                            <img class="imgPreviewBodyDesktop" th:src="${list.bannerFileLink}" />
+                                        </td>
+                                        <!-- <td class="imgPreviewDesktop">
                                             <p>배너1</p>
                                             <img class="imgPreviewBodyDesktop"/>
                                         </td>
@@ -36,10 +40,10 @@
                                         <td class="imgPreviewDesktop">
                                             <p>배너5</p>
                                             <img class="imgPreviewBodyDesktop"/>
-                                        </td>
+                                        </td> -->
                                     </tr>
                                     <tr>
-                                        <td class="imgPreviewMobile">
+                                        <!-- <td class="imgPreviewMobile">
                                             <p>배너1_Mobile</p>
                                             <img class="imgPreviewBodyMobile"/>
                                         </td>
@@ -58,16 +62,27 @@
                                         <td class="imgPreviewMobile">
                                             <p>배너5_Mobile</p>
                                             <img class="imgPreviewBodyMobile"/>
-                                        </td>
+                                        </td> -->
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                         <div>
                             <table>
-                                <tbody>
-                                    <tr>
-                                        <td>
+                                <tbody th:if="${pc != null}">
+                                    <tr class="bannerInputList">
+                                        <td class="bannerInputItem" th:each="item : ${pc}">
+                                            <div>
+                                                <label for="banner">배너</label>
+                                                <input type="file" class="fileInputDesktop" th:id="${item.idx}" th:value="${item.bannerFileLink}" accept="image/jpeg, image/png" />
+                                                <span class="fileRemoveBtnDesktop">x</span>
+                                                <br/>
+                                                <label for="bannerUrl">URL</label>
+                                                <input type="text" class="bannerUrlDesktop" th:id="${item.idx}" th:value="${item.bannerFileLink}" />
+                                            </div>
+                                        </td>                                        
+                                    </tr>
+                                    <!-- <td>
                                             <div>
                                                 <label for="banner1">배너1 - 데스크탑</label>
                                                 <input type="file" class="fileInputDesktop" id="banner1" name="banner1" accept="image/jpeg, image/png" />
@@ -160,14 +175,14 @@
                                                 <label for="banner5Murl">URL</label>
                                                 <input type="text" class="bannerUrlMobile" id="banner5Murl" name="banner5Murl" />
                                             </div>
-                                        </td>
-                                    </tr>
+                                        </td> -->
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
                 <div class="table__action">
+                    <button type="button" class="btn-normal banner-add-item">배너 추가하기</button> 
                     <button type="button" class="btn-normal banner-update-btn">등록하기</button>
                 </div>
             </div>
@@ -182,6 +197,7 @@
             highlightMenu();
             // pageOn();
             // listCheck();
+            bannerAddItem();
             bannerFileHandler();
             inputFileRemove();
             bannerUpdate();

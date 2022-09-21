@@ -1,5 +1,69 @@
 "use strict";
 
+const bannerAddItem = () => {
+    const bannerAddItemBtn = document.querySelector(".banner-add-item");
+    const previewDesktopList = document.querySelector(".imgPreviewDesktopList");
+    const bannerInputList = document.querySelector(".bannerInputList");
+    let count = document.querySelectorAll(".bannerInputItem").length + 1;
+    // let count = bannerInputList.length;
+    
+    bannerAddItemBtn.addEventListener("click", () => {
+        console.log("count: ", count);
+        if(count < 6) {
+            // previewDesktopList add Item
+            const previewTdElement = document.createElement("td");
+            const previewPelement = document.createElement("p");
+            const previewImgElement = document.createElement("img");
+
+            previewTdElement.setAttribute("class", "imgPreviewDesktop");
+            previewPelement.innerHTML = "배너";
+            previewImgElement.setAttribute("class", "imgPreviewBodyDesktop");
+
+            previewTdElement.appendChild(previewPelement);
+            previewTdElement.appendChild(previewImgElement);
+
+            previewDesktopList.appendChild(previewTdElement);
+
+
+            // bannerInputList add Item
+            const tdElement = document.createElement("td");
+            const divElement = document.createElement("div");
+            const labelElement = document.createElement("label");
+            const inputFileElement = document.createElement("input");
+            const spanElement = document.createElement("span");
+            const brElement = document.createElement("br");
+            const labelElement2 = document.createElement("label");
+            const inputFileElement2 = document.createElement("input");
+
+            inputFileElement2.setAttribute("type", "text");
+            inputFileElement2.setAttribute("class", "bannerUrlDesktop");
+            labelElement2.setAttribute("for", "bannerUrl");
+            labelElement2.innerHTML = "URL";
+            spanElement.setAttribute("class", "fileRemoveBtnDesktop");
+            spanElement.innerHTML = "x";
+            inputFileElement.setAttribute("type", "file");
+            inputFileElement.setAttribute("class", "fileInputDesktop");
+            labelElement.setAttribute("for", "banner");
+            labelElement.innerHTML = "배너";
+
+            divElement.appendChild(labelElement);
+            divElement.appendChild(inputFileElement);
+            divElement.appendChild(spanElement);
+            divElement.appendChild(brElement);
+            divElement.appendChild(labelElement2);
+            divElement.appendChild(inputFileElement2);
+
+            tdElement.appendChild(divElement);
+            tdElement.setAttribute("class", "bannerInputItem");
+
+            bannerInputList.appendChild(tdElement);
+            count++;
+        } else {
+            alert("더 이상 배너를 추가할 수 없습니다.");
+        }
+    })
+}
+
 /**
  * 공지 상세
  */
