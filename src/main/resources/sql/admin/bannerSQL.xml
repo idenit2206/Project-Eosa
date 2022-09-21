@@ -1,33 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.eosa.admin.mapper.BannerMapperMapper">
+<mapper namespace="com.eosa.admin.mapper.BannerMapper">
 
-<!--    <insert id="insertNotice" parameterType="NoticeDTO">-->
-<!--        INSERT INTO Notice (title,-->
-<!--                            content,-->
-<!--                            author,-->
-<!--                            postDate)-->
-<!--        VALUES (#{title},-->
-<!--                #{content},-->
-<!--                #{author},-->
-<!--                NOW())-->
-<!--    </insert>-->
+    <insert id="insertBanner" parameterType="BannerDTO">
+        INSERT INTO AdminBannerManage
+            (bannerTag, bannerFileName, bannerFileLink)
+        VALUES (#{bannerTag}, #{bannerFileName}, #{bannerFileLink})
+    </insert>
 
 <!--    <select id="countNoticeList" resultType="int">-->
 <!--        SELECT COUNT(*)-->
 <!--        FROM Notice N-->
-<!--    </select>-->
+<!--    </select> -->
 
-<!--    <select id="selectNoticeList" resultType="NoticeDTO" parameterType="hashmap">-->
-<!--        SELECT-->
-<!--            N.idx,-->
-<!--            N.title,-->
-<!--            N.content,-->
-<!--            N.author,-->
-<!--            N.postDate-->
-<!--        FROM Notice N-->
-<!--        ORDER BY N.postDate DESC LIMIT #{startIndex}, #{pageSize}-->
-<!--    </select>-->
+    <select id="bannerList" resultType="BannerDTO">
+        SELECT
+        B.idx,
+        B.bannerTag,
+        B.bannerFileName,
+        B.bannerFileLink
+        FROM AdminBannerManage B
+    </select>
 <!--    -->
 <!--    <update id="updateNoticeByNoticeIdx" parameterType="NoticeDTO">-->
 <!--        UPDATE Notice N SET N.title = #{title}, N.content = #{content} WHERE N.idx = #{idx}-->

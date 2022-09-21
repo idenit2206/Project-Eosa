@@ -9,11 +9,11 @@ import java.util.Map;
 @Mapper
 public interface NoticeMapper {
 
+    int insertNotice(NoticeDTO noticeDTO);
+
     int countNoticeList();
 
-    List<NoticeDTO> selectNoticeList(Map<String, Object> map);
-
-    int insertNotice(NoticeDTO noticeDTO);
+    List<NoticeDTO> selectNoticeList(Map<String, Object> map);    
 
     int updateNoticeByNoticeIdx(NoticeDTO noticeDTo);
 
