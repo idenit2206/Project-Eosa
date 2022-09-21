@@ -28,8 +28,8 @@ function bannerFileHandler() {
                 imgPreviewBodyDesktop[i].setAttribute("src", imgSrc);
             }
             else if(e.target.value == "") {
-                console.log("file neq whitespace");
-                console.log(e.target.value);
+                // console.log("file neq whitespace");
+                // console.log(e.target.value);
                 fileRemoveBtnDesktop[i].style.visibility = "hidden";
                 inputURLDesktop[i].value = "";
                 inputURLDesktop[i].readOnly = false;
@@ -56,8 +56,8 @@ function bannerFileHandler() {
                 imgPreviewBodyMobile[i].setAttribute("src", imgSrc);
             }
             else if(e.target.value == "") {
-                console.log("file neq whitespace");
-                console.log(e.target.value);
+                // console.log("file neq whitespace");
+                // console.log(e.target.value);
                 fileRemoveBtnMobile[i].style.visibility = "hidden";
                 inputURLMobile[i].value = "";
                 inputURLMobile[i].readOnly = false;
@@ -87,7 +87,7 @@ const FileUpProcess = (file, tag, index) => {
     }
 
     fileReader.onloadend = (e2) => {
-        console.log('lonloadend', e2.target.result);
+        // console.log('lonloadend', e2.target.result);
         if(tag == "Desktop") {
             imgPreviewBodyDesktop[index].setAttribute("src", e2.target.result);
         }
@@ -147,7 +147,22 @@ function inputFileRemove() {
 */
 const bannerUpdate = () => {
     const bannerUpdateBtn = document.querySelector(".banner-update-btn");
+    const fileInputDesktop = document.querySelectorAll(".fileInputDesktop");
+    const bannerUrlDesktop = document.querySelectorAll(".bannerUrlDesktop");
+
+    const fileInputMobile = document.querySelectorAll(".fileInputMobile");
+    const bannerUrlMobile = document.querySelectorAll(".bannerUrlMobile");
+
     bannerUpdateBtn.addEventListener("click", () => {
-        alert("업데이트 합니다.");
+        let formData = new FormData();
+        let fileForDesktop = [];
+
+        for(let i = 0; i < fileInputDesktop.length; i++) {
+            if(fileInputDesktop[i].files[0] != null) {
+                fileForDesktop.push(fileInputDesktop[i].files[0]);
+            }
+        }
+        console.log(fileForDesktop);
+
     })
 }

@@ -1,6 +1,7 @@
 package com.eosa.web.users.repository;
 
 import com.eosa.web.companys.entity.SelectCompanys;
+import com.eosa.web.companys.entity.SelectCompanysUserLikeCompanyEnable;
 import com.eosa.web.users.entity.UserLikeCompany;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -57,6 +58,6 @@ public interface UserLikeCompanyRepository extends JpaRepository<UserLikeCompany
         "C.companysEnabled, C.companysDelete, ULC.userLikeCompanyEnable, U.usersIdx",
         nativeQuery = true
     )
-    List<SelectCompanys> selectLikeCompanysListByUsersIdx(Long usersIdx);
+    List<SelectCompanysUserLikeCompanyEnable> selectLikeCompanysListByUsersIdx(Long usersIdx);
 
 }

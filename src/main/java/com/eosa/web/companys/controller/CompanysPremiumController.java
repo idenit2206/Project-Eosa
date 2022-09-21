@@ -29,8 +29,6 @@ public class CompanysPremiumController {
 //        Long companysIdx = companysService.selectCompanyIdxByComapnysNameAndCompanysCeoName(companysName.trim(), companysCeoName.trim());
 //        log.debug("[insertCompanyPremium] companysIdx: {}", String.valueOf(companysIdx));
 
-
-
         if(!companysName.equals("") || !companysName.equals(null) && !companysCeoName.equals("") || !companysCeoName.equals(null)) {
             CompanysPremium entity = new CompanysPremium();
             entity.setCompanysName(companysName);

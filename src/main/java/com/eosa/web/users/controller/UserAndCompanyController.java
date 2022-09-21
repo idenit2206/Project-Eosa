@@ -2,6 +2,7 @@ package com.eosa.web.users.controller;
 
 import com.eosa.web.companys.entity.SelectAllCompanysList;
 import com.eosa.web.companys.entity.SelectCompanys;
+import com.eosa.web.companys.entity.SelectCompanysUserLikeCompanyEnable;
 import com.eosa.web.companys.service.CompanysService;
 import com.eosa.web.users.entity.UserLikeCompany;
 import com.eosa.web.users.entity.UserRecentCompany;
@@ -85,7 +86,7 @@ public class UserAndCompanyController {
     public CustomResponseData selectLikeCompanysListByUsersIdx(@RequestParam("usersIdx") Long usersIdx) {
         CustomResponseData result = new CustomResponseData();
 
-        List<SelectCompanys> items = userLikeCompanyService.selectLikeCompanysListByUsersIdx(usersIdx);
+        List<SelectCompanysUserLikeCompanyEnable> items = userLikeCompanyService.selectLikeCompanysListByUsersIdx(usersIdx);
 
         if(items != null) {
             result.setStatusCode(HttpStatus.OK.value());
