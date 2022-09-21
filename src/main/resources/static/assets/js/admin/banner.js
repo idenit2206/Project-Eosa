@@ -155,14 +155,20 @@ const bannerUpdate = () => {
 
     bannerUpdateBtn.addEventListener("click", () => {
         let formData = new FormData();
-        let fileForDesktop = [];
+        let fileForDesktop = new Array();
 
         for(let i = 0; i < fileInputDesktop.length; i++) {
             if(fileInputDesktop[i].files[0] != null) {
                 fileForDesktop.push(fileInputDesktop[i].files[0]);
             }
         }
-        console.log(fileForDesktop);
+        formData.append("fileForDesktop", fileForDesktop);
+
+        console.log("Desktop Banner file List: ", fileForDesktop);
+
+        fetch("/admin/manage/banner/update", { method: "PUT", body: formData})
+            .then(response => response)
+            .then(data => console.log(data))
 
     })
 }

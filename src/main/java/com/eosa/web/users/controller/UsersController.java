@@ -569,32 +569,60 @@ public class UsersController {
     }
 
     @PostMapping("/findUsersAccountByUsersEmail")
-    public void findUsersAccountByUsersEmail(@RequestParam("usersEmail") String usersEmail, MailEntity me) {
+    public CustomResponseData findUsersAccountByUsersEmail(@RequestParam("usersEmail") String usersEmail, MailEntity me) {
         CustomResponseData result = new CustomResponseData();
         log.info("[findUsersAccountByUsersEmail] usersEmail: {}", usersEmail);
         String usersAccount = usersService.accountMailSend(usersEmail);
 
-        me.setAddress(usersEmail);
-        me.setTitle("도와조 고객센터 입니다. 신청하신 계정 정보를 발송합니다.");
-        me.setMessage("안녕하세요. 선택의 기준, 도와줘 고객센터 입니다.\n회원님의 아이디는 " + usersAccount + " 입니다.\n감사합니다.");
-        mailService.mailSend(me);
+        if(usersAccount != null) {
+            me.setAddress(usersEmail);
+            me.setTitle("도와조 고객센터 입니다. 신청하신 계정 정보를 발송합니다.");
+            me.setMessage("안녕하세요. 선택의 기준, 도와줘 고객센터 입니다.\n회원님의 아이디는 " + usersAccount + " 입니다.\n감사합니다.");
+            mailService.mailSend(me);
 
-//        return result;
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(true);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(false);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        return result;
     }
 
+    /**
+     * 비밀번호를 분실 했을 때
+     * @param usersAccount
+     * @param usersEmail
+     * @param me
+     */
     @PostMapping("/resetUsersPassByUsersEmail")
-    public void resetUsersPassByUsersEmail(@RequestParam("usersAccount") String usersAccount, @RequestParam("usersEmail") String usersEmail, MailEntity me) {
+    public CustomResponseData resetUsersPassByUsersEmail(@RequestParam("usersAccount") String usersAccount, @RequestParam("usersEmail") String usersEmail, MailEntity me) {
+        CustomResponseData result = new CustomResponseData();
         String code = UUID.randomUUID().toString();
         code = code.substring(0, 8);
         String encodedCode = passwordEncoder.encode(code);
 
         int updateUsers = usersService.updateUsersPass(usersAccount, usersEmail, encodedCode);
 //        log.debug("[resetUsersPassByUsersEmail] result New code: {}", code);
+        if(updateUsers == 1) {
+            me.setAddress(usersEmail);
+            me.setTitle("도와조 고객센터 입니다. 신청하신 계정 정보를 발송합니다.");
+            me.setMessage("안녕하세요. 선택의 기준, 도와줘 고객센터 입니다.\n회원님의 새로운 비밀번호는 " + code + " 입니다.\n로그인 후 반드시 비밀번호를 재설정 하시기 바랍니다.");
+            mailService.mailSend(me);
 
-        me.setAddress(usersEmail);
-        me.setTitle("도와조 고객센터 입니다. 신청하신 계정 정보를 발송합니다.");
-        me.setMessage("안녕하세요. 선택의 기준, 도와줘 고객센터 입니다.\n회원님의 새로운 비밀번호는 " + code + " 입니다.\n로그인 후 반드시 비밀번호를 재설정 하시기 바랍니다.");
-        mailService.mailSend(me);
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(true);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(false);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        return result;
     }
 
 
