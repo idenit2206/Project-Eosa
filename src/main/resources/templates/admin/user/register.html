@@ -105,18 +105,6 @@
                                 <option value="광주/전남">광주/전남</option>
                                 <option value="제주">제주</option>
                             </select>
-                            <select class="select" id="region02">
-                                <option value="" selected disabled>구/군</option>
-                                <option value="서초">서초</option>
-                                <option value="강남">강남</option>
-                                <option value="강동/송파">강동/송파</option>
-                                <option value="강서/양천/영등포/구로">강서/양천/영등포/구로</option>
-                                <option value="도봉/강북/성북/노원">도봉/강북/성북/노원</option>
-                                <option value="동대문/성동/광진/중랑">동대문/성동/광진/중랑</option>
-                                <option value="종로/중구/용산">종로/중구/용산</option>
-                                <option value="서대문/마포/은평">서대문/마포/은평</option>
-                                <option value="동작/관악/금천">동작/관악/금천</option>
-                            </select>
                         </div>
                     </div>
 
@@ -139,7 +127,6 @@
         window.addEventListener('DOMContentLoaded', () => {
             highlightMenu('register');
             onlyNum();
-            regionSelect();
             new PwdValidation();
 
             // 아이디 중복확인

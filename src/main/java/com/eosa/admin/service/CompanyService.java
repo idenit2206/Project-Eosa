@@ -1,6 +1,7 @@
 package com.eosa.admin.service;
 
 import com.eosa.admin.dto.CompanysDTO;
+import com.eosa.admin.dto.ReportDTO;
 import com.eosa.admin.dto.ReviewDTO;
 import com.eosa.admin.mapper.CompanyMapper;
 import com.eosa.admin.pagination.Pagination;
@@ -420,20 +421,23 @@ public class CompanyService {
         BigDecimal processScore = new BigDecimal("0.00");
         BigDecimal specialityScore = new BigDecimal("0.00");
 
-        for (int i = 0; i < list.size(); i++) {
-            total = total.add(list.get(i).getAverage());
-            resultScore = resultScore.add(BigDecimal.valueOf(list.get(i).getResultScore()));
-            communicationScore = communicationScore.add(BigDecimal.valueOf(list.get(i).getCommunicationScore()));
-            processScore = processScore.add(BigDecimal.valueOf(list.get(i).getProcessScore()));
-            specialityScore = specialityScore.add(BigDecimal.valueOf(list.get(i).getSpecialityScore()));
-        }
+        if (list.size() > 0) {
+            for (int i = 0; i < list.size(); i++) {
+                total = total.add(list.get(i).getAverage());
+                resultScore = resultScore.add(BigDecimal.valueOf(list.get(i).getResultScore()));
+                communicationScore = communicationScore.add(BigDecimal.valueOf(list.get(i).getCommunicationScore()));
+                processScore = processScore.add(BigDecimal.valueOf(list.get(i).getProcessScore()));
+                specialityScore = specialityScore.add(BigDecimal.valueOf(list.get(i).getSpecialityScore()));
+            }
 
-        BigDecimal review = new BigDecimal(String.valueOf(count.get(0)));
-        total = total.divide(review);
-        resultScore = resultScore.divide(review);
-        communicationScore = communicationScore.divide(review);
-        processScore = processScore.divide(review);
-        specialityScore = specialityScore.divide(review);
+            BigDecimal review = new BigDecimal(String.valueOf(count.get(0)));
+            total = total.divide(review);
+            resultScore = resultScore.divide(review);
+            communicationScore = communicationScore.divide(review);
+            processScore = processScore.divide(review);
+            specialityScore = specialityScore.divide(review);
+
+        }
 
         model.addAttribute("reviewList", list);
         model.addAttribute("pagination", pagination);
@@ -446,6 +450,48 @@ public class CompanyService {
         model.addAttribute("specialityScore", specialityScore);
 
         return "admin/company/review";
+    }
+
+    /**
+     * 업체 신고 조회 서비스
+     *
+     * @param model
+     * @param companysIdx
+     * @param state
+     * @param page
+     * @return String
+     */
+    public String companyReport(Model model, long companysIdx, String state, int page) {
+
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("companysIdx", companysIdx);
+
+        List<Integer> count = companyMapper.countReviewReport(map);
+
+        if (state != null) {
+            if (!state.equals("")) {
+                map.put("state", state);
+            }
+        }
+
+        int reportCount = companyMapper.countCompanysReport(map);
+
+        Pagination pagination = new Pagination(reportCount, page);
+
+        map.put("startIndex", pagination.getStartIndex());
+        map.put("pageSize", pagination.getPageSize());
+
+        List<ReportDTO> list = companyMapper.selectCompanysReport(map);
+
+        model.addAttribute("reportList", list);
+        model.addAttribute("pagination", pagination);
+        model.addAttribute("count", count);
+        model.addAttribute("reportCount", reportCount);
+        model.addAttribute("companysIdx", companysIdx);
+        model.addAttribute("state", state);
+
+        return "admin/company/report";
     }
 
 }

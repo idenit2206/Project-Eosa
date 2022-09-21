@@ -54,7 +54,7 @@
                             <span th:text="${list.tempUserGender} eq 0 ? '남성' : '여성'"></span>
                         </td>
                         <td>
-                            <span th:text="|${list.tempUserRegion1} ${list.tempUserRegion2}|"></span>
+                            <span th:text="${list.tempUserRegion1}"></span>
                         </td>
                         <td>
                             <span th:text="${#dates.format(list.tempUserRegistDate, 'yyyy-MM-dd')}"></span>

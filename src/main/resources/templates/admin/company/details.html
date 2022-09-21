@@ -14,11 +14,11 @@
                 <div class="t-top-wrap">
                     <div>
                         <a class="btn-review" th:href="@{/admin/manage/company/review(companysIdx=${details.companysIdx})}"></a>
-                        <label class="badge" th:if="${details.reviewCount} ne null" th:text="${details.reviewCount}"></label>
+                        <label class="badge" th:text="${details.reviewCount} eq null ? 0 : ${details.reviewCount}"></label>
                     </div>
                     <div>
-                        <a class="btn-report"></a>
-                        <label class="badge" th:if="${details.reportCount} ne null" th:text="${details.reportCount}"></label>
+                        <a class="btn-report" th:href="@{/admin/manage/company/report(companysIdx=${details.companysIdx})}"></a>
+                        <label class="badge" th:text="${details.reportCount} eq null ? 0 : ${details.reportCount}"></label>
                     </div>
                 </div>
             </div>
@@ -86,18 +86,6 @@
                                                     <option value="부산/울산/경남" th:selected="${details.companysRegion1} eq '부산/울산/경남'">부산/울산/경남</option>
                                                     <option value="광주/전남" th:selected="${details.companysRegion1} eq '광주/전남'">광주/전남</option>
                                                     <option value="제주" th:selected="${details.companysRegion1} eq '제주'">제주</option>
-                                                </select>
-                                                <select class="select select-sm" id="region02" th:disabled="${details.companysRegion1} ne '서울'">
-                                                    <option value="" disabled>선택</option>
-                                                    <option value="서초" th:selected="${details.companysRegion2} eq '서초'">서초</option>
-                                                    <option value="강남" th:selected="${details.companysRegion2} eq '강남'">강남</option>
-                                                    <option value="강동/송파" th:selected="${details.companysRegion2} eq '강동/송파'">강동/송파</option>
-                                                    <option value="강서/양천/영등포/구로" th:selected="${details.companysRegion2} eq '강서/양천/영등포/구로'">강서/양천/영등포/구로</option>
-                                                    <option value="도봉/강북/성북/노원" th:selected="${details.companysRegion2} eq '도봉/강북/성북/노원'">도봉/강북/성북/노원</option>
-                                                    <option value="동대문/성동/광진/중랑" th:selected="${details.companysRegion2} eq '동대문/성동/광진/중랑'">동대문/성동/광진/중랑</option>
-                                                    <option value="종로/중구/용산" th:selected="${details.companysRegion2} eq '종로/중구/용산'">종로/중구/용산</option>
-                                                    <option value="서대문/마포/은평" th:selected="${details.companysRegion2} eq '서대문/마포/은평'">서대문/마포/은평</option>
-                                                    <option value="동작/관악/금천" th:selected="${details.companysRegion2} eq '동작/관악/금천'">동작/관악/금천</option>
                                                 </select>
                                             </div>
                                             <div class="input-wrap">
@@ -408,18 +396,6 @@
                                             <option value="광주/전남" th:selected="${details.companysFlagRegion1} eq '광주/전남'">광주/전남</option>
                                             <option value="제주" th:selected="${details.companysFlagRegion1} eq '제주'">제주</option>
                                         </select>
-                                        <select class="select select-sm" id="region04" th:disabled="${details.companysFlagRegion1} ne '서울'">
-                                            <option value="" disabled>선택</option>
-                                            <option value="서초" th:selected="${details.companysFlagRegion2} eq '서초'">서초</option>
-                                            <option value="강남" th:selected="${details.companysFlagRegion2} eq '강남'">강남</option>
-                                            <option value="강동/송파" th:selected="${details.companysFlagRegion2} eq '강동/송파'">강동/송파</option>
-                                            <option value="강서/양천/영등포/구로" th:selected="${details.companysFlagRegion2} eq '강서/양천/영등포/구로'">강서/양천/영등포/구로</option>
-                                            <option value="도봉/강북/성북/노원" th:selected="${details.companysFlagRegion2} eq '도봉/강북/성북/노원'">도봉/강북/성북/노원</option>
-                                            <option value="동대문/성동/광진/중랑" th:selected="${details.companysFlagRegion2} eq '동대문/성동/광진/중랑'">동대문/성동/광진/중랑</option>
-                                            <option value="종로/중구/용산" th:selected="${details.companysFlagRegion2} eq '종로/중구/용산'">종로/중구/용산</option>
-                                            <option value="서대문/마포/은평" th:selected="${details.companysFlagRegion2} eq '서대문/마포/은평'">서대문/마포/은평</option>
-                                            <option value="동작/관악/금천" th:selected="${details.companysFlagRegion2} eq '동작/관악/금천'">동작/관악/금천</option>
-                                        </select>
                                     </div>
                                 </td>
                             </tr>
@@ -540,18 +516,6 @@
                                             <option value="광주/전남">광주/전남</option>
                                             <option value="제주">제주</option>
                                         </select>
-                                        <select class="select select-sm" id="region06" disabled>
-                                            <option value="" selected disabled>선택</option>
-                                            <option value="서초">서초</option>
-                                            <option value="강남">강남</option>
-                                            <option value="강동/송파">강동/송파</option>
-                                            <option value="강서/양천/영등포/구로">강서/양천/영등포/구로</option>
-                                            <option value="도봉/강북/성북/노원">도봉/강북/성북/노원</option>
-                                            <option value="동대문/성동/광진/중랑">동대문/성동/광진/중랑</option>
-                                            <option value="종로/중구/용산">종로/중구/용산</option>
-                                            <option value="서대문/마포/은평">서대문/마포/은평</option>
-                                            <option value="동작/관악/금천">동작/관악/금천</option>
-                                        </select>
                                     </div>
                                 </td>
                             </tr>
@@ -627,7 +591,7 @@
                     </div>
                     <div class="form__action bottom">
                         <a class="btn-normal js-modalClose">닫기</a>
-                        <button class="btn-prime approval-flag">신청하기</button>
+                        <button class="btn-prime request-flag">신청하기</button>
                     </div>
                 </div>
             </div>
@@ -641,9 +605,6 @@
         window.addEventListener('load', function () {
             highlightMenu('list');
             onlyNum();
-            regionSelect();
-            appRegionSelect();
-            modalRegionSelect();
 
             const flagIdx = document.querySelector('.companysFlagIdx');
             // 신청서 모달
@@ -706,7 +667,7 @@
             if (canPremium != null) canPremium.addEventListener('click', cancelPremium);
 
             // 마패 신청
-            const reqFlag = document.querySelector('.approval-flag');
+            const reqFlag = document.querySelector('.request-flag');
             if (reqFlag != null) reqFlag.addEventListener('click', requestFlag);
 
             // 마패 등록

@@ -26,7 +26,6 @@
                C.companysPhone,
                C.companysDummyPhone,
                C.companysRegion1,
-               C.companysRegion2,
                C.companysRegion3,
                C.companysRegistDate,
                C.companysPremium,
@@ -61,7 +60,6 @@
                C.companysSpec,
                C.companysPhone,
                C.companysRegion1,
-               C.companysRegion2,
                C.companysRegion3,
                C.companysRegistCerti,
                C.companysRegistCertiName,
@@ -95,7 +93,6 @@
                B.flagEndDate,
                B.companysFlagEnabled,
                B.companysFlagRegion1,
-               B.companysFlagRegion2,
                B.companysFlagCategory,
                RV.reviewCount,
                RF.reportCount
@@ -119,7 +116,6 @@
                                          F.flagEndDate,
                                          F.companysFlagEnabled,
                                          CR.companysFlagRegion1,
-                                         CR.companysFlagRegion2,
                                          FCT.companysFlagCategory
                                   FROM CompanysFlag F
                                            JOIN CompanysFlagRegion CR on F.companysFlagIdx = CR.companysFlagIdx
@@ -147,7 +143,6 @@
             companysSpec       = #{companysSpec},
             companysPhone      = #{companysPhone},
             companysRegion1    = #{companysRegion1},
-            companysRegion2    = #{companysRegion2},
             companysRegion3    = #{companysRegion3},
             companysBankName   = #{companysBankName},
             companysBankNumber = #{companysBankNumber},
@@ -269,23 +264,15 @@
     <!-- 업체 마패 지역 등록 -->
     <insert id="insertFlagRegion" parameterType="CompanysDTO">
         INSERT INTO CompanysFlagRegion (companysFlagIdx,
-                                        companysFlagRegion1,
-                                        companysFlagRegion2)
+                                        companysFlagRegion1)
         VALUES (#{companysFlagIdx},
-                #{companysFlagRegion1},
-                #{companysFlagRegion2})
+                #{companysFlagRegion1})
     </insert>
 
     <!-- 업체 마패 지역 수정 -->
     <update id="updateFlagRegion" parameterType="CompanysDTO">
         UPDATE CompanysFlagRegion
-        SET companysFlagRegion1 = #{companysFlagRegion1},
-            <if test="companysFlagRegion1 == '서울'">
-                companysFlagRegion2 = #{companysFlagRegion2}
-            </if>
-            <if test="companysFlagRegion1 != '서울'">
-                companysFlagRegion2 = NULL
-            </if>
+        SET companysFlagRegion1 = #{companysFlagRegion1}
         WHERE companysFlagIdx = #{companysFlagIdx}
     </update>
 
@@ -376,8 +363,7 @@
                F.flagStartDate,
                F.flagEndDate,
                F.companysFlagEnabled,
-               R.companysFlagRegion1,
-               R.companysFlagRegion2
+               R.companysFlagRegion1
         FROM CompanysFlag F
                  JOIN Companys C on F.companysIdx = C.companysIdx
                  JOIN CompanysFlagRegion R ON R.companysFlagIdx = F.companysFlagIdx
@@ -420,6 +406,36 @@
                  JOIN Companys C ON R.reviewCompanysIdx = C.companysIdx
         WHERE R.reviewCompanysIdx = #{companysIdx}
         ORDER BY R.reviewDate DESC LIMIT #{startIndex}, #{pageSize}
+    </select>
+
+    <!-- 업체 신고 개수 조회 -->
+    <select id="countCompanysReport" resultType="int" parameterType="hashmap">
+        SELECT COUNT(*)
+        FROM ReportForm R
+        WHERE R.companysIdx = #{companysIdx}
+        <if test="state != null">
+            AND R.reportCheckState = #{state}
+        </if>
+    </select>
+
+    <!-- 업체 신고 조회 -->
+    <select id="selectCompanysReport" resultType="ReportDTO" parameterType="hashmap">
+        SELECT R.idx,
+               R.companysIdx,
+               R.reportDetail,
+               R.reportCheckState,
+               R.reportDate,
+               R.reportCheckDate,
+               U.usersAccount,
+               C.companysName
+        FROM ReportForm R
+                 JOIN Users U ON R.usersIdx = U.usersIdx
+                 JOIN Companys C ON R.companysIdx = C.companysIdx
+        WHERE R.companysIdx = #{companysIdx}
+        <if test="state != null">
+            AND R.reportCheckState = #{state}
+        </if>
+        ORDER BY R.reportDate DESC LIMIT #{startIndex}, #{pageSize}
     </select>
 
 </mapper>

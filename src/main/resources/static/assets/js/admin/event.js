@@ -739,5 +739,44 @@ function deleteReviewMulti() {
 };
 
 /**
+ * 신고 삭제
+ */
+function deleteReport() {
+
+    const msg = confirm('신고 내역을 삭제하시겠습니까?');
+    if (msg) {
+        const formData = new FormData();
+        formData.set('idx', document.querySelector('.modal-report .modal-id').value);
+
+        fetchApi('/admin/manage/report/delete', 'post', formData, '신고 내역이 삭제되었습니다.');
+    }
+
+};
+
+/**
+ * 신고 다중 삭제
+ */
+function deleteReportMulti() {
+    const formData = new FormData();
+    const listCheck = document.querySelectorAll('input[name=listCheck]');
+    const listChecked = document.querySelectorAll('input[name=listCheck]:checked');
+    const reportIdx = document.querySelectorAll('.reportIdx');
+
+    if (listChecked.length == 0) {
+        alert('신고 내역을 선택해 주세요.');
+    } else {
+        const msg = confirm('신고 내역을 삭제하시겠습니까?');
+        if (msg) {
+            for (let i = 0; i < listCheck.length; i++) {
+                if (listCheck[i].checked) {
+                    formData.append('idx', reportIdx[i].value);
+                }
+            }
+            fetchApi('/admin/manage/report/delete/multi', 'post', formData, '삭제되었습니다.');
+        }
+    }
+};
+
+/**
  * 공지사항
  */

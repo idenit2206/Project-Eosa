@@ -254,4 +254,22 @@ public class CompanyController {
         return companyService.companyReview(model, companysIdx, page);
     }
 
+    /**
+     * 업체 신고 조회 컨트롤러
+     *
+     * @param model
+     * @param companysIdx
+     * @param state
+     * @param page
+     * @return String
+     */
+    @GetMapping("/report")
+    public String companyReport(Model model,
+                                @RequestParam long companysIdx,
+                                @RequestParam(required = false) String state,
+                                @RequestParam(defaultValue = "1") int page) {
+
+        return companyService.companyReport(model, companysIdx, state, page);
+    }
+
 }

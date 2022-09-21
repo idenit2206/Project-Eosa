@@ -29,7 +29,6 @@
                U.usersEmail,
                U.usersAge,
                U.usersRegion1,
-               U.usersRegion2,
                U.usersGender,
                U.usersJoinDate
         FROM Users U
@@ -58,7 +57,6 @@
                U.usersRole,
                U.usersAge,
                U.usersRegion1,
-               U.usersRegion2,
                U.usersGender,
                U.usersJoinDate,
                U.usersNotice,
@@ -80,12 +78,6 @@
             usersEmail   = #{usersEmail},
             usersAge     = #{usersAge},
             usersRegion1 = #{usersRegion1},
-            <if test="usersRegion2 == null">
-                usersRegion2 = NULL,
-            </if>
-            <if test="usersRegion2 != null">
-                usersRegion2 = #{usersRegion2},
-            </if>
             usersGender  = #{usersGender}
         WHERE usersIdx = #{usersIdx}
     </update>
@@ -118,7 +110,6 @@
                U.usersRole,
                U.usersAge,
                U.usersRegion1,
-               U.usersRegion2,
                U.usersGender,
                U.usersJoinDate,
                T.terminateRequestDate,
@@ -185,7 +176,6 @@
                A.tempUserGender,
                A.tempUserAge,
                A.tempUserRegion1,
-               A.tempUserRegion2,
                A.tempUserRegistDate
         FROM (SELECT @ROWNUM := @ROWNUM + 1 NUM,
              T.tempUserIdx,
@@ -193,7 +183,6 @@
              T.tempUserGender,
              T.tempUserAge,
              T.tempUserRegion1,
-             T.tempUserRegion2,
              T.tempUserRegistDate
               FROM TempUser T,
                   (SELECT @ROWNUM := 0) R
@@ -222,7 +211,6 @@
                            usersRole,
                            usersAge,
                            usersRegion1,
-                           usersRegion2,
                            usersGender,
                            usersJoinDate,
                            usersNotice,
@@ -237,7 +225,6 @@
                 #{usersRole},
                 #{usersAge},
                 #{usersRegion1},
-                #{usersRegion2},
                 #{usersGender},
                 NOW(),
                 0,
