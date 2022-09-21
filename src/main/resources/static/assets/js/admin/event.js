@@ -737,3 +737,7 @@ function deleteReviewMulti() {
         }
     }
 };
+
+/**
+ * 공지사항
+ */

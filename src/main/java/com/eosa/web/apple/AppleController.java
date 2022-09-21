@@ -21,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
@@ -48,6 +49,7 @@ public class AppleController {
     @Value("${my.ui.port}") private String myUiPort;
 
     @PostMapping("/api/user/apple/redirect")
+    @ResponseBody
     public void appleLoginCallBack(
         @RequestBody String apple_data,
         HttpServletResponse response

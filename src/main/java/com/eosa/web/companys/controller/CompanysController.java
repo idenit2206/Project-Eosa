@@ -210,41 +210,37 @@ public class CompanysController {
             result.setResponseDateTime(LocalDateTime.now());
         }
 
-        if(companysCategory.size() == 0 && companysRegion1.size() != 0 && companysRegion2.size() == 0) {
+        if(companysCategory.size() == 0 && companysRegion1.size() != 0) {
             for(int i = 0; i < companysRegion1.size(); i++) {
-                companysIdxSet.addAll(companysService.selectCompanysByFilter2("", companysRegion1.get(i), ""));
+                companysIdxSet.addAll(companysService.selectCompanysByFilter2("", companysRegion1.get(i)));
             }
         }
 
-        if(companysCategory.size() == 0 && companysRegion1.size() != 0 && companysRegion2.size() != 0) {
+        if(companysCategory.size() == 0 && companysRegion1.size() != 0) {
             for(int i = 0; i < companysRegion1.size(); i++) {
-                for(int j = 0; j < companysRegion2.size(); j++) {
-                    companysIdxSet.addAll(companysService.selectCompanysByFilter2("", companysRegion1.get(i), companysRegion2.get(j)));
-                }
+                companysIdxSet.addAll(companysService.selectCompanysByFilter2("", companysRegion1.get(i)));
             }
         }
 
-        if(companysCategory.size() != 0 && companysRegion1.size() == 0 && companysRegion2.size() == 0) {
+        if(companysCategory.size() != 0 && companysRegion1.size() == 0) {
             // Set<Long> list = new HashSet<>();
             for(int i = 0; i < companysCategory.size(); i++) {
-                companysIdxSet.addAll(companysService.selectCompanysByFilter2(companysCategory.get(i), "", ""));
+                companysIdxSet.addAll(companysService.selectCompanysByFilter2(companysCategory.get(i), ""));
             }
         }
 
-        if(companysCategory.size() != 0 && companysRegion1.size() != 0 && companysRegion2.size() == 0) {
+        if(companysCategory.size() != 0 && companysRegion1.size() != 0) {
             for(int i = 0; i < companysCategory.size(); i++) {
                 for(int j = 0; j < companysRegion1.size(); j++) {
-                    companysIdxSet.addAll(companysService.selectCompanysByFilter2(companysCategory.get(i), companysRegion1.get(j), ""));
+                    companysIdxSet.addAll(companysService.selectCompanysByFilter2(companysCategory.get(i), companysRegion1.get(j)));
                 }
             }
         }
 
-        if(companysCategory.size() != 0 && companysRegion1.size() != 0 && companysRegion2.size() != 0) {
+        if(companysCategory.size() != 0 && companysRegion1.size() != 0) {
             for(int i = 0; i < companysCategory.size(); i++) {
                 for(int j = 0; j < companysRegion1.size(); j++) {
-                    for(int k = 0; k < companysRegion2.size(); k++) {
-                        companysIdxSet.addAll(companysService.selectCompanysByFilter2(companysCategory.get(i), companysRegion1.get(j), companysRegion2.get(k)));
-                    }                    
+                    companysIdxSet.addAll(companysService.selectCompanysByFilter2(companysCategory.get(i), companysRegion1.get(j)));
                 }
             }
         }

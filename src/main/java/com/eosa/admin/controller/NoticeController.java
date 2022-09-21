@@ -39,10 +39,18 @@ public class NoticeController {
         return noticeService.insertNotice(noticeDTO);
     }
 
-    @DeleteMapping("/deleteByNoticeIdx")
     @ResponseBody
+    @PutMapping("/updateByNoticeIdx")
+    public int updateNoticeByNoticeIdx(NoticeDTO noticeDTO) {
+        return noticeService.updateNoticeByNoticeIdx(noticeDTO);
+    }
+
+
+    @ResponseBody
+    @DeleteMapping("/deleteByNoticeIdx")
     public void deleteByNoticeIdx(@RequestParam("noticeIdx") Long idx) {
-        int deleteRow =  noticeService.deleteByNoticeIdx(idx);        
+        int deleteRow =  noticeService.deleteByNoticeIdx(idx);
+        log.debug("[deleteByNoticeIdx] delete result: {}", deleteRow);
     }
 
 }
