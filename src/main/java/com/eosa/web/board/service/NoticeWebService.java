@@ -27,6 +27,11 @@ public class NoticeWebService implements NoticeRepository {
     }
 
     @Override
+    public Notice selectNoticeByNoticeIdx(Long idx) {
+        return noticeRepository.selectNoticeByNoticeIdx(idx);
+    }
+
+    @Override
     public List<Notice> findAll(Sort sort) {
         return null;
     }

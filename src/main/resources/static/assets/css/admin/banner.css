@@ -1,0 +1,15 @@
+.imgPreviewDesktop, .imgPreviewMobile {
+    /*width: 150px !important;*/
+    height: 150px !important;
+    /*background-color: #66c971 !important;*/
+}
+
+.imgPreviewBodyDesktop, .imgPreviewBodyMobile {
+    width: 120px !important;
+    height: 120px !important;
+}
+
+.fileRemoveBtnDesktop, .fileRemoveBtnMobile {
+    display: inline-block !important;
+    visibility: hidden;
+}

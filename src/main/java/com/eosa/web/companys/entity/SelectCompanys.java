@@ -34,4 +34,7 @@ public interface SelectCompanys {
     int getCompanysDelete();
     List<String> getActiveRegion();
     List<String> getCompanysCategoryValue();
+
+    int getUserLikeCompanyEnable();
+    Long getUsersIdx();
 }

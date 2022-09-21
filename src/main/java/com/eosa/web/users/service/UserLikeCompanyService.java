@@ -1,5 +1,6 @@
 package com.eosa.web.users.service;
 
+import com.eosa.web.companys.entity.SelectCompanys;
 import com.eosa.web.users.repository.UserLikeCompanyRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,11 @@ public class UserLikeCompanyService implements UserLikeCompanyRepository {
     @Override
     public int selectUserLikeCompanyEnableByCompanysIdx(Long companysIdx) {
         return userLikeCompanyRepository.selectUserLikeCompanyEnableByCompanysIdx(companysIdx);
+    }
+
+    @Override
+    public List<SelectCompanys> selectLikeCompanysListByUsersIdx(Long usersIdx) {
+        return userLikeCompanyRepository.selectLikeCompanysListByUsersIdx(usersIdx);
     }
 
     @Override

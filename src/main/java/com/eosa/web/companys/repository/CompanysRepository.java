@@ -180,7 +180,7 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
             "SELECT " +
                     "Companys.companysIdx, Companys.companysName, Companys.companysCeoIdx, Companys.companysCeoName, " +
                     "Companys.companysPhone, Companys.companysComment, Companys.companysSpec, Companys.companysRegistDate, " +
-                    "Companys.companysRegion1, Companys.companysProfileImage, Companys.companysEnabled, " +
+                    "Companys.companysRegion1, Companys.companysProfileImage, Companys.companysProfileImageName, Companys.companysEnabled, " +
                     "Companys.companysPremium, Companys.companysLocalPremium, " +
                     "(SELECT IF(userLikeCompanyEnable IS NULL, 0, 1) FROM UserLikeCompany WHERE UserLikeCompany.usersIdx=?1 AND UserLikeCompany.companysIdx=?2)\n" +
                     "AS userLikeCompanysEnable," +
@@ -229,7 +229,7 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
                 "SELECT " +
                 "Companys.companysIdx, Companys.companysName, Companys.companysCeoIdx, Companys.companysCeoName, " +
                 "Companys.companysPhone, Companys.companysComment, Companys.companysSpec, Companys.companysRegistDate, " +
-                "Companys.companysRegion1, Companys.companysProfileImage, Companys.companysEnabled, " +
+                "Companys.companysRegion1, Companys.companysProfileImage, Companys.companysProfileImageName, Companys.companysEnabled, " +
                 "Companys.companysPremium, Companys.companysLocalPremium, " +
                 "(SELECT GROUP_CONCAT(CompanysCategory.companysCategoryValue) FROM CompanysCategory WHERE CompanysCategory.companysIdx = ?1) " +
                 "AS CompanysCategory FROM Companys WHERE Companys.companysIdx = ?1 ",
@@ -241,7 +241,7 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         "SELECT " +
         "Companys.companysIdx, Companys.companysName, Companys.companysCeoIdx, Companys.companysCeoName, " +
         "Companys.companysPhone, Companys.companysComment, Companys.companysSpec, Companys.companysRegistDate, " +
-        "Companys.companysRegion1, Companys.companysProfileImage, Companys.companysEnabled, " +
+        "Companys.companysRegion1, Companys.companysProfileImage, Companys.companysProfileImageName, Companys.companysEnabled, " +
         "Companys.companysPremium, Companys.companysLocalPremium, " +
         "UserLikeCompany.userLikeCompanyEnable, " +
         "(SELECT GROUP_CONCAT(CompanysCategory.companysCategoryValue) FROM CompanysCategory WHERE CompanysCategory.companysIdx = ?1) " +

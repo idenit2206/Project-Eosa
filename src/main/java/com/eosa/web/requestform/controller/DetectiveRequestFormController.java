@@ -156,7 +156,7 @@ public class DetectiveRequestFormController {
             updateRows = detectiveRequestFormService.updateRequestFormStatusByRequestFormIdx(requestFormIdx, requestFormStatus, requestFormRejectMessage);
         }
 
-        if(requestFormStatus.equals("임무대기")) {
+        if(requestFormStatus.equals("임무진행")) {
             updateRows = detectiveRequestFormService.updateRequestFormStatusByRequestFormIdx(requestFormIdx, requestFormStatus, requestFormRejectMessage);
         }
 

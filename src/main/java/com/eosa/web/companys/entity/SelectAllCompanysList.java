@@ -15,8 +15,11 @@ public interface SelectAllCompanysList {
     LocalDateTime getCompanysRegistDate();
     String getCompanysRegion1();
     String getCompanysRegistCerti();
+    String getCompanysRegistCertiName();
     String getCompanysLicense();
+    String getCompanysLicenseName();
     String getCompanyProfileImage();
+    String getCompanysProfileImageName();
     int getCompanysEnabled();
     int getCompanysPremium();
     int getCompanysLocalPremium();

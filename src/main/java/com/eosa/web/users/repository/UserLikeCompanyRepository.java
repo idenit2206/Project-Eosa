@@ -1,5 +1,6 @@
 package com.eosa.web.users.repository;
 
+import com.eosa.web.companys.entity.SelectCompanys;
 import com.eosa.web.users.entity.UserLikeCompany;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -7,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository
 public interface UserLikeCompanyRepository extends JpaRepository<UserLikeCompany, Long> {
@@ -24,5 +26,37 @@ public interface UserLikeCompanyRepository extends JpaRepository<UserLikeCompany
         value="SELECT userLikeCompanyEnable FROM UserLikeCompany WHERE companysIdx = ?1", nativeQuery = true
     )
     int selectUserLikeCompanyEnableByCompanysIdx(Long companysIdx);
+
+    @Query(value=
+        "SELECT " +
+        "C.companysIdx, C.companysName, C.companysCeoIdx, C.companysCeoName, " +
+        "C.companysComment, C.companysSpec, C.companysPhone, " +
+        "C.companysDummyPhone, C.companysMemo, " +
+        "C.companysRegion1, C.companysRegion2, C.companysRegion3, " +
+        "C.companysRegistCerti, C.companysRegistCertiName, " +
+        "C.companysLicense, C.companysLicenseName, " +
+        "C.companysProfileImage, C.companysProfileImageName, " +
+        "C.companysBankName, C.companysBankNumber, C.companysRegistDate, " +
+        "C.companysPremium, C.companysLocalPremium, " +
+        "C.companysEnabled, C.companysDelete, " +
+        "ULC.userLikeCompanyEnable, " +
+        "U.usersIdx, " +
+        "GROUP_CONCAT(DISTINCT CAR.activeRegion) AS activeRegion, " +
+        "GROUP_CONCAT(DISTINCT CC.companysCategoryValue) AS companysCategoryValue " +
+        "FROM Companys C " +
+        "LEFT JOIN CompanysActiveRegion CAR on C.companysIdx = CAR.companysIdx " +
+        "LEFT JOIN CompanysCategory CC on C.companysIdx = CC.companysIdx " +
+        "RIGHT JOIN UserLikeCompany ULC on CC.companysIdx = ULC.companysIdx " +
+        "LEFT JOIN Users U ON U.usersIdx = ULC.usersIdx " +
+        "WHERE U.usersIdx = ?1 " +
+        "GROUP BY C.companysIdx, C.companysName, C.companysCeoIdx, C.companysCeoName, " +
+        "C.companysComment, C.companysSpec, C.companysPhone, C.companysDummyPhone, C.companysMemo, " +
+        "C.companysRegion1, C.companysRegion2, C.companysRegion3, " +
+        "C.companysRegistCerti, C.companysRegistCertiName, C.companysLicense, C.companysLicenseName, C.companysProfileImage, C.companysProfileImageName, " +
+        "C.companysBankName, C.companysBankNumber, C.companysRegistDate, C.companysPremium, C.companysLocalPremium, " +
+        "C.companysEnabled, C.companysDelete, ULC.userLikeCompanyEnable, U.usersIdx",
+        nativeQuery = true
+    )
+    List<SelectCompanys> selectLikeCompanysListByUsersIdx(Long usersIdx);
 
 }

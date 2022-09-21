@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -28,6 +29,25 @@ public class NoticeWebController {
         if(items != null) {
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem(items);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
+
+    @GetMapping("/selectNoticeByNoticeIdx")
+    public CustomResponseData selectNoticeByNoticeIdx(@RequestParam("idx") Long idx) {
+        CustomResponseData result = new CustomResponseData();
+        Notice item = noticeWebService.selectNoticeByNoticeIdx(idx);
+
+        if(item != null) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(item);
             result.setResponseDateTime(LocalDateTime.now());
         }
         else {

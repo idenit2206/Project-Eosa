@@ -1,6 +1,7 @@
 package com.eosa.web.users.controller;
 
 import com.eosa.web.companys.entity.SelectAllCompanysList;
+import com.eosa.web.companys.entity.SelectCompanys;
 import com.eosa.web.companys.service.CompanysService;
 import com.eosa.web.users.entity.UserLikeCompany;
 import com.eosa.web.users.entity.UserRecentCompany;
@@ -74,6 +75,29 @@ public class UserAndCompanyController {
             result.setResultItem("FALSE");
             result.setResponseDateTime(LocalDateTime.now());
         }
+        return result;
+    }
+
+    /**
+     * usersIdx 사용자의 좋아요 목록 출력하기
+     */
+    @GetMapping("/selectLikeCompanysListByUsersIdx")
+    public CustomResponseData selectLikeCompanysListByUsersIdx(@RequestParam("usersIdx") Long usersIdx) {
+        CustomResponseData result = new CustomResponseData();
+
+        List<SelectCompanys> items = userLikeCompanyService.selectLikeCompanysListByUsersIdx(usersIdx);
+
+        if(items != null) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(items);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
         return result;
     }
 
