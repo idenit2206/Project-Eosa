@@ -24,8 +24,16 @@ public class BannerController {
 
     @ResponseBody
     @PutMapping("/update")
-    public void bannerUpdate(@RequestParam(value="fileForDesktop")List<MultipartFile> fileForDesktop) {
-        log.debug(fileForDesktop.toString());
+    public void bannerUpdate(
+        @RequestParam(name="fileForDesktop", required = false) List<MultipartFile> fileForDesktop,
+        @RequestParam(name="fileForMobile", required = false) List<MultipartFile> fileForMobile,
+        @RequestParam(name="bannerUrlDesktop", required = false) List<String> bannerUrlDesktop,
+        @RequestParam(name="bannerUrlMobile", required = false) List<String> bannerUrlMobile
+    ) {
+        if(fileForDesktop != null) { log.debug("[bannerUpdate] fileForDesktop: {}", fileForDesktop.toString()); }
+        if(fileForMobile != null) { log.debug("[bannerUpdate] fileForMobile: {}", fileForMobile.toString()); }
+        if(bannerUrlDesktop != null) { log.debug("[bannerUpdate] bannerUrlDesktop: {}", bannerUrlDesktop.toString()); }
+        if(bannerUrlMobile != null) { log.debug("[bannerUpdate] bannerUrlMobile: {}", bannerUrlMobile.toString()); }
     }
 
 }

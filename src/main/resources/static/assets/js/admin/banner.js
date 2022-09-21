@@ -155,16 +155,32 @@ const bannerUpdate = () => {
 
     bannerUpdateBtn.addEventListener("click", () => {
         let formData = new FormData();
-        let fileForDesktop = new Array();
+        let bannerUrlDesktopList = new Array();
+        let bannerUrlMobileList = new Array();
 
         for(let i = 0; i < fileInputDesktop.length; i++) {
             if(fileInputDesktop[i].files[0] != null) {
-                fileForDesktop.push(fileInputDesktop[i].files[0]);
+                formData.append("fileForDesktop", fileInputDesktop[i].files[0]);
             }
         }
-        formData.append("fileForDesktop", fileForDesktop);
+        for(let i = 0; i < bannerUrlDesktop.length; i++) {
+            if(bannerUrlDesktop[i].value != "") {
+                bannerUrlDesktopList.push(bannerUrlDesktop[i].value);
+            }
+        }
+        for(let i = 0; i < fileInputMobile.length; i++) {
+            if(fileInputMobile[i].files[0] != null) {
+                formData.append("fileForMobile", fileInputMobile[i].files[0]);
+            }
+        }
+        for(let i = 0; i < bannerUrlMobile.length; i++) {
+            if(bannerUrlMobile[i].value != "") {
+                bannerUrlMobileList.push(bannerUrlMobile[i].value);
+            }
+        }
 
-        console.log("Desktop Banner file List: ", fileForDesktop);
+        formData.append("bannerUrlDesktop", bannerUrlDesktopList);
+        formData.append("bannerUrlMobile", bannerUrlMobileList);
 
         fetch("/admin/manage/banner/update", { method: "PUT", body: formData})
             .then(response => response)
