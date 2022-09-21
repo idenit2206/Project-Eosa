@@ -31,9 +31,8 @@ public class ReviewDTO {
     private Timestamp reviewDate;           // 리뷰 등록일
 
     private BigDecimal average;             // 평점
-    
+
     private String usersAccount;            // 작성자의 계정
-    
     private String companysName;            // 업체의 이름
-    
+
 }

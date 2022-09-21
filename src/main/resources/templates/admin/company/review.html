@@ -7,18 +7,18 @@
 
     <th:block th:replace="admin/fragments/aside :: asideFragment"></th:block>
 
-    <main id="main" data-category="company">
+    <main id="main" class="main-list" data-category="company">
         <section class="section section-users">
 
             <div class="form form--xxl form-menu">
                 <div class="t-top-wrap">
                     <div>
-                        <a class="btn-review"></a>
-                        <label class="badge" th:if="${count[0]} ne 0" th:text="${count[0]}"></label>
+                        <a class="btn-review on" th:href="@{/admin/manage/company/details(companysIdx=${companysIdx})}"></a>
+                        <label class="badge" th:text="${count[0]}"></label>
                     </div>
                     <div>
-                        <a class="btn-report"></a>
-                        <label class="badge" th:if="${count[1]} ne 0" th:text="${count[1]}"></label>
+                        <a class="btn-report" th:href="@{/admin/manage/company/report(companysIdx=${companysIdx})}"></a>
+                        <label class="badge" th:text="${count[1]}"></label>
                     </div>
                 </div>
             </div>
@@ -129,6 +129,7 @@
             <div class="form form--xxl details-form">
                 <div>
                     <div class= "form__action bottom">
+                        <a th:href="@{/admin/manage/company/list}" class="btn-normal">목록가기</a>
                         <a th:href="@{/admin/manage/company/details(companysIdx=${companysIdx})}" class="btn-normal">업체정보</a>
                     </div>
                 </div>
@@ -140,7 +141,7 @@
         <div class="modal__inner">
             <div class="modal-head">
                 <span class="modal__title"></span>
-                <a class="modal-c ross js-modalClose"></a>
+                <a class="modal-cross js-modalClose"></a>
             </div>
             <div class="write">
                 <input type="hidden" class="modal-id">
@@ -194,7 +195,18 @@
     <script>
         window.addEventListener('load', function () {
             highlightMenu('list');
+            pageOn();
+            listCheck();
             reviewDetailsModal();
+            new Table(document.querySelector('#main table'));
+
+            // 리뷰 삭제
+            const modalDeleteBtn = document.querySelector('.modal-review .review-delete');
+            modalDeleteBtn.addEventListener('click', deleteReview);
+
+            // 리뷰 다중 삭제
+            const deleteBtn = document.querySelector('.btn-delete');
+            deleteBtn.addEventListener('click', deleteReviewMulti);
         });
     </script>
 </th:block>

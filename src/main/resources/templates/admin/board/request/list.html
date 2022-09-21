@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/fragments/layout}">
+
+<th:block layout:fragment="content">
+
+    <th:block th:replace="admin/fragments/aside :: asideFragment"></th:block>
+
+    <main id="main" class="main-list" data-category="request">
+        <section class="section section-users">
+            <h2 class="section_title">의뢰 목록</h2>
+            <div class="table">
+                <div class="table__top">
+                    <div class="top-wrap">
+                        <div class="header-wrap">
+                            <span class="table__count">전체<i class="value" th:text="${count}"></i></span>
+                            <form class="table__search">
+                                <select class="select" name="state">
+                                    <option value="" th:selected="${state} eq ''">전체</option>
+                                    <option value="상담대기" th:selected="${state} eq '상담대기'">상담대기</option>
+                                    <option value="상담완료" th:selected="${state} eq '상담완료'">상담완료</option>
+                                    <option value="의뢰대기" th:selected="${state} eq '의뢰대기'">의뢰대기</option>
+                                    <option value="의뢰거절" th:selected="${state} eq '의뢰거절'">의뢰거절</option>
+                                    <option value="임무진행" th:selected="${state} eq '임무진행'">임무진행</option>
+                                    <option value="임무완료" th:selected="${state} eq '임무완료'">임무완료</option>
+                                </select>
+                                <select class="select" name="sort">
+                                    <option value="client" th:selected="${sort} eq 'client'">의뢰인</option>
+                                    <option value="company" th:selected="${sort} eq 'company'">업체</option>
+                                </select>
+                                <input class="input" name="search" type="text" th:value="${search}" placeholder="검색어 입력">
+                                <button type="submit" class="btn-prime check-btn">검색</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>구분</th>
+                        <th>업체명</th>
+                        <th>의뢰인</th>
+                        <th>지역</th>
+                        <th class="w-550">분야</th>
+                        <th>상태</th>
+                        <th>의뢰요청일</th>
+                    </tr>
+                    </thead>
+
+                    <tbody th:if="${count} eq 0">
+                    <tr>
+                        <td colspan="7">
+                            <span>등록된 의뢰가가 없습니다.</span>
+                        </td>
+                    </tr>
+                    </tbody>
+
+                    <tbody th:if="${count} ne 0">
+                    <tr th:each="list : ${requestList}" class="js-modalShow request-btn" data-modal="request">
+
+                        <input type="hidden" class="requestFormIdx" th:value="${list.requestFormIdx}">
+                        <input type="hidden" class="requestCategory" th:value="${list.requestFormCategoryValue}">
+
+                        <td>
+                            <span th:text="${list.requestFormChannel}"></span>
+                        </td>
+                        <td>
+                            <span class="companysName" th:text="${list.companysName}"></span>
+                        </td>
+                        <td>
+                            <span class="usersAccount" th:text="${list.usersAccount}"></span>
+                        </td>
+                        <td>
+                            <div>
+                                <span class="region01" th:text="${list.requestFormRegion1}"></span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="review-wrap">
+                                <span th:text="${#strings.replace(list.requestFormCategoryValue, '|', ', ')}"></span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="requestState" th:text="${list.requestFormStatus}"></span>
+                        </td>
+                        <td>
+                            <span class="requestDate" th:text="${#dates.format(list.requestFormDate, 'yyyy-MM-dd')}"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="table__paging">
+                    <ul>
+                        <li><a class="first" th:href="@{/admin/manage/request/list(state=${state}, sort=${sort}, search=${search}, page=1)}"></a></li>
+                        <li><a class="prev" th:href="@{/admin/manage/request/list(state=${state}, sort=${sort}, search=${search}, page=${pagination.prevBlock})}"></a></li>
+
+                        <th:block th:with="start = ${pagination.startPage}, end = ${pagination.endPage}">
+                            <li th:each="pageButton : ${#numbers.sequence(start, end)}"><a class="pageNum" th:href="@{/admin/manage/request/list(state=${state}, sort=${sort}, search=${search}, page=${pageButton})}" th:text="${pageButton}"></a></li>
+                        </th:block>
+
+                        <li><a class="next" th:href="@{/admin/manage/request/list(state=${state}, sort=${sort}, search=${search}, page=${pagination.nextBlock})}"></a></li>
+                        <li><a class="last" th:href="@{/admin/manage/request/list(state=${state}, sort=${sort}, search=${search}, page=${pagination.totalPageCnt eq 0 ? 1 : pagination.totalPageCnt})}"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="modal modal-request" data-modal="request">
+        <div class="modal__inner">
+            <div class="modal-head">
+                <span class="modal__title">의뢰 내역</span>
+                <a class="modal-cross js-modalClose"></a>
+            </div>
+            <div class="details">
+                <input type="hidden" class="modal-id">
+                <div class="details-body">
+                    <div class="table">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td class="modal-th">의뢰일</td>
+                                <td class="modal-td r-date"></td>
+                            </tr>
+                            <tr>
+                                <td class="modal-th">의뢰인</td>
+                                <td class="modal-td r-client"></td>
+                            </tr>
+                            <tr>
+                                <td class="modal-th">업체명</td>
+                                <td class="modal-td r-company"></td>
+                            </tr>
+                            <tr>
+                                <td class="modal-th">의뢰 지역</td>
+                                <td class="modal-td">
+                                    <div class="select-wrap">
+                                        <select class="select select-sm" id="region01">
+                                            <option value="서울">서울</option>
+                                            <option value="경기">경기</option>
+                                            <option value="대전/충남/세종">대전/충남/세종</option>
+                                            <option value="인천/부천">인천/부천</option>
+                                            <option value="강원">강원</option>
+                                            <option value="전주/전북">전주/전북</option>
+                                            <option value="청주/충북">청주/충북</option>
+                                            <option value="대구/경북">대구/경북</option>
+                                            <option value="부산/울산/경남">부산/울산/경남</option>
+                                            <option value="광주/전남">광주/전남</option>
+                                            <option value="제주">제주</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="modal-th">의뢰 분야</td>
+                                <td class="modal-td">
+                                    <div class="checkbox-wrap">
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="r-category1" name="r-category" value="가정문제">
+                                            <label for="r-category1">가정문제</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="r-category2" name="r-category" value="기업문제">
+                                            <label for="r-category2">기업문제</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="r-category3" name="r-category" value="안전분야 조사">
+                                            <label for="r-category3">안전분야 조사</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="r-category4" name="r-category" value="사기/분쟁">
+                                            <label for="r-category4">사기/분쟁</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="r-category5" name="r-category" value="스토킹">
+                                            <label for="r-category5">스토킹</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="r-category6" name="r-category" value="의료/보험">
+                                            <label for="r-category6">의료/보험</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="r-category7" name="r-category" value="부동산">
+                                            <label for="r-category7">부동산</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="r-category8" name="r-category" value="금융/사이버">
+                                            <label for="r-category8">금융/사이버</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="r-category9" name="r-category" value="민원대행">
+                                            <label for="r-category9">민원대행</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="r-category10" name="r-category" value="불법기기탐지">
+                                            <label for="r-category10">불법기기탐지</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="r-category11" name="r-category" value="경호/경비">
+                                            <label for="r-category11">경호/경비</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="r-category12" name="r-category" value="일반조사">
+                                            <label for="r-category12">일반조사</label>
+                                        </div>
+                                        <div class="dt-check-wrap">
+                                            <input type="checkbox" id="r-category13" name="r-category" value="해외조사">
+                                            <label for="r-category13">해외조사</label>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="modal-th">상태</td>
+                                <td class="modal-td">
+                                    <div class="select-wrap">
+                                        <select class="select select-sm r-state">
+                                            <option value="상담대기">상담대기</option>
+                                            <option value="상담완료">상담완료</option>
+                                            <option value="의뢰대기">의뢰대기</option>
+                                            <option value="의뢰거절">의뢰거절</option>
+                                            <option value="임무진행">임무진행</option>
+                                            <option value="임무완료">임무완료</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="form__action bottom">
+                        <a class="btn-del">삭제하기</a>
+                        <button class="btn-prime request-update">수정하기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+
+<th:block layout:fragment="script">
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            highlightMenu();
+            pageOn();
+            requestDetailsModel();
+            new Table(document.querySelector('#main table'));
+        });
+    </script>
+</th:block>
+
+</html>

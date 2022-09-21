@@ -76,13 +76,16 @@
                             <span th:text="|(${list.companysBankName}) ${list.companysBankNumber}|"></span>
                         </td>
                         <td>
-                            <span th:text="|${list.companysFlagRegion1} ${list.companysFlagRegion2 eq null ? '' : ', ' + list.companysFlagRegion2}|"></span>
+                            <span th:text="${list.companysFlagRegion1}"></span>
                         </td>
                         <td>
                             <span th:if="${list.companysFlagEnabled} eq 1" th:text="${#dates.format(list.flagStartDate, 'yyyy-MM-dd')} + ' ~ ' + ${#dates.format(list.flagEndDate, 'yyyy-MM-dd')}"></span>
                         </td>
                         <td>
-                            <span th:text="${list.companysFlagEnabled} eq 0 ? '신청' : '적용'"></span>
+                            <div class="icon-wrap">
+                                <img class="stat" th:if="${list.companysFlagEnabled} eq 1" th:src="@{/assets/images/ico/ico-check.svg}">
+                                <img class="stat" th:if="${list.companysFlagEnabled} eq 0" th:src="@{/assets/images/ico/ico-wait.svg}">
+                            </div>
                         </td>
                         <td>
                             <span th:text="${#dates.format(list.flagReqDate, 'yyyy-MM-dd')}"></span>

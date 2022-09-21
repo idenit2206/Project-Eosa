@@ -51,3 +51,108 @@ function reviewDetailsModal() {
 
     new Modal({modal: '.modal-review', name: 'review'});
 };
+
+/**
+ * 신고 상세
+ */
+function reportDetailsModal() {
+
+    const modal = document.querySelector('.modal-report');
+    const mId = modal.querySelector('.modal-id');
+    const mUser = modal.querySelector('.r-user');
+    const mCompany = modal.querySelector('.r-name');
+    const mState = modal.querySelector('.r-state');
+    const mDate = modal.querySelector('.r-date');
+    const mDetails = modal.querySelector('.r-details');
+    const mBtn = modal.querySelector('.redirect-company');
+
+    const btn = document.querySelectorAll('.report-btn');
+    const id = document.querySelectorAll('.reportIdx');
+    const cId = document.querySelectorAll('.companyIdx');
+    const cName = document.querySelectorAll('.companysName');
+    const user = document.querySelectorAll('.usersAccount');
+    const details = document.querySelectorAll('.reportDetail');
+    const state = document.querySelectorAll('.reportState');
+    const checkDate = document.querySelectorAll('.checkDate');
+    const reportDate = document.querySelectorAll('.reportDate');
+
+    for (let i = 0; i < btn.length; i++) {
+        btn[i].addEventListener('click', e => {
+            mId.value = id[i].value;
+            mUser.innerHTML = user[i].textContent;
+            mCompany.innerHTML = cName[i].textContent;
+
+            if (state[i].textContent == 0) {
+                mState.innerHTML = '처리대기';
+            } else {
+                mState.innerHTML = checkDate[i].textContent;
+            }
+
+            while (mDetails.hasChildNodes()) {
+                mDetails.removeChild(mDetails.firstChild);
+            }
+
+            const detail = details[i].textContent.split('/');
+            for (let j = 0; j < detail.length; j++) {
+                const span = document.createElement('span');
+                span.innerHTML = detail[j];
+
+                mDetails.append(span);
+            }
+
+            mDate.innerHTML = reportDate[i].textContent;
+            mDetails.value = details[i].textContent;
+
+            mBtn.addEventListener('click', e => {
+                location.href = '/admin/manage/company/details?companysIdx=' + cId[i].value;
+            });
+        });
+    };
+
+    new Modal({modal: '.modal-report', name: 'report'});
+};
+/**
+ * 의뢰 상세
+ */
+function requestDetailsModel() {
+
+    const modal = document.querySelector('.modal-request');
+    const mId = modal.querySelector('.modal-id');
+    const mDate = modal.querySelector('.r-date');
+    const mClient = modal.querySelector('.r-client');
+    const mCompany = modal.querySelector('.r-company');
+    const mRegion = modal.querySelector('#region01');
+    const mCategory = modal.querySelector('input[name=r-category]');
+    const mState = modal.querySelector('.r-state');
+
+    const id = document.querySelectorAll('.requestFormIdx');
+    const category = document.querySelectorAll('.requestCategory');
+    const company = document.querySelectorAll('.companysName');
+    const client = document.querySelectorAll('.usersAccount');
+    const region = document.querySelectorAll('.region01');
+    const state = document.querySelectorAll('.requestState');
+    const date = document.querySelectorAll('.requestDate');
+    const btn = document.querySelectorAll('.request-btn');
+
+    for (let i = 0; i < btn.length; i++) {
+        btn[i].addEventListener('click', e => {
+            mId.value = id[i].value;
+            mDate.innerHTML = date[i].textContent;
+            mClient.innerHTML = client[i].textContent;
+            mCompany.innerHTML = company[i].textContent;
+
+            for (let j = 0; j < mRegion.options.length; j++) {
+                if (mRegion.options[j].value == region[i].textContent) {
+                    mRegion.options[j].selected = true;
+                }
+            }
+            for (let j = 0; j < mState.options.length; j++) {
+                if (mState.options[j].value == state[i].textContent) {
+                    mState.options[j].selected = true;
+                }
+            }
+        });
+    };
+
+    new Modal({modal: '.modal-request', name: 'request'});
+};

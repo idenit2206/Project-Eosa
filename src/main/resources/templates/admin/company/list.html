@@ -78,7 +78,7 @@
                             <span th:text="${#strings.replace(list.companysCategoryValue, '|', ', ')}" class="table-overflow"></span>
                         </td>
                         <td>
-                            <span th:text="|${list.companysRegion1 + ','} ${list.companysRegion1 eq '서울' ? list.companysRegion2 + ',' : ''} ${list.companysRegion3}|" class="table-overflow"></span>
+                            <span th:text="|${list.companysRegion1 + ','} ${list.companysRegion3}|" class="table-overflow"></span>
                         </td>
                         <td th:if="${enabled} eq 1">
                             <div class="icon-wrap">

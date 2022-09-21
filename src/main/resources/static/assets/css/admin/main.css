@@ -113,6 +113,7 @@ select:focus {
 }
 .dt-table .select-sm {
   padding: 4px;
+  width: 100%;
 }
 .dt-table .width-100-per {
   width: 100%;
@@ -260,11 +261,23 @@ select:focus {
   height: 40px;
   background: center/auto 40px url(../../images/ico/ico-review.svg) no-repeat;
 }
+.btn-review.on {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  background: center/auto 40px url(../../images/ico/ico-review-gr.svg) no-repeat;
+}
 .btn-report {
   display: inline-block;
   width: 40px;
   height: 40px;
   background: center/auto 40px url(../../images/ico/ico-report.svg) no-repeat;
+}
+.btn-report.on {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  background: center/auto 40px url(../../images/ico/ico-report-gr.svg) no-repeat;
 }
 .t-top-wrap .badge {
   display: inline-flex;
@@ -2396,18 +2409,22 @@ body.modal-overlayed::after {
     margin-left: 0;
   }
 }
-progress {
-  -webkit-appearance: none;
+meter {
+  width: 200px;
 }
-::-webkit-progress-bar {
-  background: #E0E0E0;
-  border-radius: 3px;
-  height: 6px;
+meter::-webkit-meter-bar {
+  max-width: 200px;
+  border: 0;
+  background-color: #E0E0E0;
 }
-::-webkit-progress-value {
-  background: #4C956C;
-  border-radius: 3px;
-  height: 6px;
+meter::-webkit-meter-even-less-good-value {
+  background-color: #4C956C;
+}
+meter::-webkit-meter-suboptimum-value {
+  background-color: #4C956C;
+}
+meter::-webkit-meter-optimum-value {
+  background-color: #4C956C;
 }
 .section {
   padding: 16px;
@@ -2568,7 +2585,7 @@ progress {
 .modal-review.w-760 {
   width: 760px;
 }
-.review-body {
+.review-body, .report-body {
   margin-top: 40px;
 }
 .score-wrap {
@@ -2765,7 +2782,7 @@ progress {
   overflow-y: auto;
   display: none;
 }
-.modal-details .table, .modal-reason .table, .modal-terminate .table, .modal-request .table, .modal-form .table, .modal-review .table {
+.modal-details .table, .modal-reason .table, .modal-terminate .table, .modal-request .table, .modal-form .table, .modal-review .table, .modal-report .table {
   margin-top: 40px;
   border: 1px solid #dfdfdf;
   border-bottom: none;
@@ -2828,6 +2845,23 @@ progress {
   width: 100%;
   font-size: 14px;
 }
+.modal-report .input-wrap .textarea {
+  height: 100%;
+  font-size: 14px;
+}
+.modal-report .r-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  height: 100%;
+  padding: 14px;
+  border: 2px solid #eee;
+  overflow-y: scroll;
+}
+.modal-report .r-details span {
+  border-bottom: 1px solid #dbdbdb;
+}
 .note-modal {
   width: 700px;
 }
@@ -2863,7 +2897,7 @@ progress {
   text-align: start;
 }
 .modal-td .select-wrap .select {
-  width: 50%;
+  width: 100%;
 }
 .modal-details .table .modal-contents, .modal-details .table .modal-memo {
   padding: 20px;

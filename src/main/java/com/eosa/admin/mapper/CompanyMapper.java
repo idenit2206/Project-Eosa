@@ -1,6 +1,7 @@
 package com.eosa.admin.mapper;
 
 import com.eosa.admin.dto.CompanysDTO;
+import com.eosa.admin.dto.ReportDTO;
 import com.eosa.admin.dto.ReviewDTO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -227,5 +228,21 @@ public interface CompanyMapper {
      * @return ReviewDTO
      */
     List<ReviewDTO> selectCompanysReview(Map<String, Object> map);
+
+    /**
+     * 업체 신고 개수 조회 매퍼
+     *
+     * @param map
+     * @return int
+     */
+    int countCompanysReport(Map<String, Object> map);
+
+    /**
+     * 업체 신고 조회 매퍼
+     *
+     * @param map
+     * @return ReportDTO
+     */
+    List<ReportDTO> selectCompanysReport(Map<String, Object> map);
 
 }

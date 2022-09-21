@@ -78,7 +78,10 @@
                             <span th:if="${list.companysPremiumEnabled} eq 1" th:text="${#dates.format(list.premiumStartDate, 'yyyy-MM-dd')} + ' ~ ' + ${#dates.format(list.premiumEndDate, 'yyyy-MM-dd')}"></span>
                         </td>
                         <td>
-                            <span th:text="${list.companysPremiumEnabled} eq 0 ? '신청' : '적용'"></span>
+                            <div class="icon-wrap">
+                                <img class="stat" th:if="${list.companysPremiumEnabled} eq 1" th:src="@{/assets/images/ico/ico-check.svg}">
+                                <img class="stat" th:if="${list.companysPremiumEnabled} eq 0" th:src="@{/assets/images/ico/ico-wait.svg}">
+                            </div>
                         </td>
                         <td>
                             <span th:text="${#dates.format(list.premiumReqDate, 'yyyy-MM-dd')}"></span>
