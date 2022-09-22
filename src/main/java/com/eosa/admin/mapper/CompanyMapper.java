@@ -1,5 +1,6 @@
 package com.eosa.admin.mapper;
 
+import com.eosa.admin.dto.ChartDTO;
 import com.eosa.admin.dto.CompanysDTO;
 import com.eosa.admin.dto.ReportDTO;
 import com.eosa.admin.dto.ReviewDTO;
@@ -244,5 +245,21 @@ public interface CompanyMapper {
      * @return ReportDTO
      */
     List<ReportDTO> selectCompanysReport(Map<String, Object> map);
+
+    /**
+     * 통계 목록 개수 조회 매퍼
+     *
+     * @param map
+     * @return int
+     */
+    int countChartList(Map<String, Object> map);
+
+    /**
+     * 통계 목록 조회 매퍼
+     *
+     * @param map
+     * @return ChartDTO
+     */
+    List<ChartDTO> selectChartList(Map<String, Object> map);
 
 }

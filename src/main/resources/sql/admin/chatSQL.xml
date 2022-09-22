@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eosa.admin.mapper.ChatMapper">
+
+    <!-- 채팅 목록 개수 조회 -->
+    <select id="countChatList" resultType="int" parameterType="hashmap">
+        SELECT COUNT(*)
+        FROM ChatRoom CR
+                 LEFT JOIN Users U ON CR.usersIdx = U.usersIdx
+        <where>
+            <if test="sort == 'client'">
+                AND CONCAT(U.usersAccount) REGEXP #{search}
+            </if>
+            <if test="sort == 'company'">
+                AND CONCAT(CR.roomName) REGEXP #{search}
+            </if>
+        </where>
+    </select>
+
+    <!-- 채팅 목록 조회 -->
+    <select id="selectChatList" resultType="ChatDTO" parameterType="hashmap">
+        SELECT CR.idx,
+               CR.roomName,
+               CR.companysIdx,
+               CR.createdDate,
+               U.usersAccount,
+               U.usersRole
+        FROM ChatRoom CR
+                 LEFT JOIN Users U ON CR.usersIdx = U.usersIdx
+        <where>
+            <if test="sort == 'client'">
+                AND CONCAT(U.usersAccount) REGEXP #{search}
+            </if>
+            <if test="sort == 'company'">
+                AND CONCAT(CR.roomName) REGEXP #{search}
+            </if>
+        </where>
+        ORDER BY CR.createdDate DESC LIMIT #{startIndex}, #{pageSize}
+    </select>
+
+</mapper>

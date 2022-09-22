@@ -7,7 +7,7 @@
 
     <th:block th:replace="admin/fragments/aside :: asideFragment"></th:block>
 
-    <main id="main" class="main-list" data-category="notice">
+    <main id="main" class="main-list" data-category="board">
         <section class="section section-users">
             <h2 class="section_title">공지사항 목록</h2>
             <div class="table">
@@ -146,7 +146,7 @@
 <th:block layout:fragment="script">
     <script>
         window.addEventListener('DOMContentLoaded', () => {
-            highlightMenu();
+            highlightMenu('notice');
             pageOn();
             listCheck();
             noticeDetailsModal();

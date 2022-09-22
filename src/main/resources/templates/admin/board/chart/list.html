@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/fragments/layout}">
+
+<th:block layout:fragment="content">
+
+    <th:block th:replace="admin/fragments/aside :: asideFragment"></th:block>
+
+    <main id="main" class="main-list" data-category="company">
+        <section class="section section-users">
+            <h2 class="section_title">통계 목록</h2>
+            <div class="table">
+                <div class="table__top">
+                    <div class="top-wrap">
+                        <div class="header-wrap">
+                            <div class="top-btn">
+                                <button type="button" class="btn-normal">전체통계</button>
+                            </div>
+                            <form class="table__search">
+                                <select class="select" name="sort">
+                                    <option value="company" selected>업체</option>
+                                </select>
+                                <input class="input" name="search" type="text" th:value="${search}" placeholder="검색어 입력">
+                                <button type="submit" class="btn-prime check-btn">검색</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>번호</th>
+                        <th>업체명</th>
+                        <th>의뢰건수</th>
+                        <th>업체평점</th>
+                        <th class="width-250">활동지역</th>
+                        <th>등록일</th>
+                    </tr>
+                    </thead>
+
+                    <tbody th:if="${count} eq 0">
+                    <tr>
+                        <td colspan="6">
+                            <span>등록된 업체가 없습니다.</span>
+                        </td>
+                    </tr>
+                    </tbody>
+
+                    <tbody th:if="${count} ne 0">
+                    <tr th:each="list : ${chartList}">
+
+                        <td>
+                            <span class="companysIdx" th:text="${list.companysIdx}"></span>
+                        </td>
+                        <td>
+                            <span class="companysName" th:text="${list.companysName}"></span>
+                        </td>
+                        <td>
+                            <span class="usersAccount" th:text="${list.requestCount}"></span>
+                        </td>
+                        <td>
+                            <div>
+                                <span class="region01" th:text="${list.average} eq null ? '0.00' : ${list.average}"></span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="review-wrap">
+                                <span th:text="${#strings.replace(list.activeRegion, '|', ', ')}"></span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="requestDate" th:text="${#dates.format(list.companysRegistDate, 'yyyy-MM-dd')}"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="table__paging">
+                    <ul>
+                        <li><a class="first" th:href="@{/admin/manage/company/chart(sort=${sort}, search=${search}, page=1)}"></a></li>
+                        <li><a class="prev" th:href="@{/admin/manage/company/chart(sort=${sort}, search=${search}, page=${pagination.prevBlock})}"></a></li>
+
+                        <th:block th:with="start = ${pagination.startPage}, end = ${pagination.endPage}">
+                            <li th:each="pageButton : ${#numbers.sequence(start, end)}"><a class="pageNum" th:href="@{/admin/manage/company/chart(sort=${sort}, search=${search}, page=${pageButton})}" th:text="${pageButton}"></a></li>
+                        </th:block>
+
+                        <li><a class="next" th:href="@{/admin/manage/company/chart(sort=${sort}, search=${search}, page=${pagination.nextBlock})}"></a></li>
+                        <li><a class="last" th:href="@{/admin/manage/company/chart(sort=${sort}, search=${search}, page=${pagination.totalPageCnt eq 0 ? 1 : pagination.totalPageCnt})}"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+</th:block>
+
+<th:block layout:fragment="script">
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            highlightMenu('chart');
+            pageOn();
+            new Table(document.querySelector('#main table'));
+        });
+    </script>
+</th:block>
+
+</html>

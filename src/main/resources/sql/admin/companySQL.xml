@@ -438,4 +438,44 @@
         ORDER BY R.reportDate DESC LIMIT #{startIndex}, #{pageSize}
     </select>
 
+    <!-- 통계 목록 개수 조회 -->
+    <select id="countChartList" resultType="int" parameterType="hashmap">
+        SELECT COUNT(*)
+        FROM Companys C
+        <where>
+            <if test="sort == 'company'">
+                AND CONCAT(C.companysName) REGEXP #{search}
+            </if>
+        </where>
+    </select>
+
+    <!-- 통계 목록 조회 -->
+    <select id="selectChartList" resultType="ChartDTO" parameterType="hashmap">
+        SELECT C.companysIdx,
+               C.companysName,
+               C.companysRegistDate,
+               CR.activeRegion,
+               RQ.requestCount,
+               RV.average
+        FROM Companys C
+                 JOIN (SELECT CAR.companysIdx,
+                              GROUP_CONCAT(CAR.activeRegion SEPARATOR '|') activeRegion
+                       FROM CompanysActiveRegion CAR
+                       GROUP BY CAR.companysIdx) CR ON C.companysIdx = CR.companysIdx
+                 LEFT JOIN (SELECT RF.companysIdx,
+                                   COUNT(RF.companysIdx) requestCount
+                            FROM RequestForm RF
+                            GROUP BY RF.companysIdx) RQ ON C.companysIdx = RQ.companysIdx
+                 LEFT JOIN (SELECT UR.reviewCompanysIdx,
+                                   ROUND(SUM((UR.resultScore + UR.communicationScore + UR.processScore + UR.specialityScore) / 4) / COUNT(*), 2) average
+                            FROM UsersReview UR
+                            GROUP BY UR.reviewCompanysIdx) RV ON C.companysIdx = RV.reviewCompanysIdx
+        <where>
+            <if test="sort == 'company'">
+                AND CONCAT(C.companysName) REGEXP #{search}
+            </if>
+        </where>
+        ORDER BY C.companysRegistDate DESC LIMIT #{startIndex}, #{pageSize}
+    </select>
+
 </mapper>

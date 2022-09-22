@@ -1,5 +1,6 @@
 package com.eosa.admin.service;
 
+import com.eosa.admin.dto.ChartDTO;
 import com.eosa.admin.dto.CompanysDTO;
 import com.eosa.admin.dto.ReportDTO;
 import com.eosa.admin.dto.ReviewDTO;
@@ -492,6 +493,44 @@ public class CompanyService {
         model.addAttribute("state", state);
 
         return "admin/company/report";
+    }
+
+    /**
+     * 통계 목록 조회 서비스
+     *
+     * @param model
+     * @param sort
+     * @param search
+     * @param page
+     * @return String
+     */
+    public String chartList(Model model, String sort, String search, int page) {
+
+        Map<String, Object> map = new HashMap<>();
+
+        if (!search.equals("")) {
+            if (sort.equals("company")) {
+                map.put("sort", sort);
+            }
+            map.put("search", search);
+        }
+
+        int count = companyMapper.countChartList(map);
+
+        Pagination pagination = new Pagination(count, page);
+
+        map.put("startIndex", pagination.getStartIndex());
+        map.put("pageSize", pagination.getPageSize());
+
+        List<ChartDTO> list = companyMapper.selectChartList(map);
+
+        model.addAttribute("chartList", list);
+        model.addAttribute("pagination", pagination);
+        model.addAttribute("count", count);
+        model.addAttribute("sort", sort);
+        model.addAttribute("search", search);
+
+        return "admin/board/chart/list";
     }
 
 }
