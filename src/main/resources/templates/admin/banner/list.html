@@ -21,9 +21,9 @@
 <!--                                        <p>배너</p>-->
 <!--                                        <img class="imgPreviewBodyDesktop" th:src="${item.bannerFileLink}"/>-->
 <!--                                    </td>-->
-                                    <td class="imgPreviewDesktop">
+                                    <td class="imgPreviewDesktop" th:if="${items[0] ne null}">
                                         <p>배너1</p>
-                                        <img class="imgPreviewBodyDesktop"/>
+                                        <img class="imgPreviewBodyDesktop" th:src="${items[0].bannerFileLink}"/>
                                     </td>
                                     <td class="imgPreviewDesktop">
                                         <p>배너2</p>
@@ -95,14 +95,24 @@
                             <table>
                                 <tbody th:if="${#lists.size(items) > 0}">
                                 <tr>
-                                    <td th:each="item : ${items}"> <!-- th:if="${item ne null}"> -->
+                                    <td th:if="${items[0] ne null}"> <!-- th:if="${item ne null}"> -->
                                         <div>
                                             <label for="banner">배너 - 데스크탑</label>
-                                            <input type="file" class="fileInputDesktop" id="banner" name="banner1" accept="image/jpeg, image/png" th:src="${item.bannerFileLink}"/>
+                                            <input type="file" class="fileInputDesktop" id="banner" name="banner1" accept="image/jpeg, image/png" th:src="${items[0].bannerFileLink}"/>
                                             <span class="fileRemoveBtnDesktop" id="bannerRemoveMark">x</span>
                                             <br/>
                                             <label for="bannerurl">URL</label>
-                                            <input type="text" class="bannerUrlDesktop" id="bannerurl" name="banner1url" th:value="${item.bannerFileName}" />
+                                            <input type="text" class="bannerUrlDesktop" id="bannerurl" name="banner1url" th:value="${items[0].bannerFileName}" />
+                                        </div>
+                                    </td>
+                                    <td th:if="${items[1] ne null}"> <!-- th:if="${item ne null}"> -->
+                                        <div>
+                                            <label for="banner">배너 - 데스크탑</label>
+                                            <input type="file" class="fileInputDesktop" id="banner" name="banner1" accept="image/jpeg, image/png" th:src="${items[1].bannerFileLink}"/>
+                                            <span class="fileRemoveBtnDesktop" id="bannerRemoveMark">x</span>
+                                            <br/>
+                                            <label for="bannerurl">URL</label>
+                                            <input type="text" class="bannerUrlDesktop" id="bannerurl" name="banner1url" th:value="${items[0].bannerFileName}" />
                                         </div>
                                     </td>
                                 </tr>
