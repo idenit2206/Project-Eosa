@@ -122,7 +122,7 @@ function requestDetailsModel() {
     const mClient = modal.querySelector('.r-client');
     const mCompany = modal.querySelector('.r-company');
     const mRegion = modal.querySelector('#region01');
-    const mCategory = modal.querySelector('input[name=r-category]');
+    const mCategory = modal.querySelectorAll('input[name=r-category]');
     const mState = modal.querySelector('.r-state');
 
     const id = document.querySelectorAll('.requestFormIdx');
@@ -149,6 +149,20 @@ function requestDetailsModel() {
             for (let j = 0; j < mState.options.length; j++) {
                 if (mState.options[j].value == state[i].textContent) {
                     mState.options[j].selected = true;
+                }
+            }
+
+            mCategory.forEach(c => {
+                c.checked = false;
+            })
+
+            const cate = category[i].value.split('|');
+            for (let j = 0; j < cate.length; j++) {
+                for (let k = 0; k < mCategory.length; k++) {
+
+                    if (mCategory[k].value == cate[j]) {
+                        mCategory[k].checked = true;
+                    }
                 }
             }
         });

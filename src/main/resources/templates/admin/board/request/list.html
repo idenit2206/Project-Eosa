@@ -51,7 +51,7 @@
                     <tbody th:if="${count} eq 0">
                     <tr>
                         <td colspan="7">
-                            <span>등록된 의뢰가가 없습니다.</span>
+                            <span>등록된 의뢰가 없습니다.</span>
                         </td>
                     </tr>
                     </tbody>
@@ -230,7 +230,7 @@
                         </table>
                     </div>
                     <div class="form__action bottom">
-                        <a class="btn-del">삭제하기</a>
+                        <a class="btn-del request-delete">삭제하기</a>
                         <button class="btn-prime request-update">수정하기</button>
                     </div>
                 </div>
@@ -247,6 +247,14 @@
             pageOn();
             requestDetailsModel();
             new Table(document.querySelector('#main table'));
+
+            // 의뢰 삭제
+            const deleteBtn = document.querySelector('.request-delete');
+            deleteBtn.addEventListener('click', deleteRequest);
+
+            // 의뢰 수정
+            const updateBtn = document.querySelector('.request-update');
+            updateBtn.addEventListener('click', updateRequest);
         });
     </script>
 </th:block>

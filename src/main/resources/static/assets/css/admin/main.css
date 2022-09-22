@@ -149,12 +149,79 @@ select:focus {
   justify-content: center;
   gap: 8px;
 }
+.msg-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.msg-form .msg-top {
+  width: 70%;
+  height: 90px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #dbdbdb;
+  border-radius: 10px 10px 0 0;
+}
+.msg-form .msg-top .msg-company {
+  font-size: 18px;
+  font-weight: 500;
+  color: #424242;
+  letter-spacing: -1px;
+}
+.msg-form .msg-top .msg-client {
+  font-size: 14px;
+  font-weight: 500;
+  color: #616161;
+  letter-spacing: -1px;
+}
+.msg-form .msg-body {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  height: 660px;
+  border: 1px solid #dbdbdb;
+  border-top: 0;
+  border-radius: 0 0 10px 10px;
+  background: #FAFAFA;
+}
+.msg-form .msg-body .msg-date {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.msg-form .msg-body .msg-date hr {
+  width: 30%;
+}
 .company-profile-wrap {
   display: flex;
   gap: 22px;
 }
+.company-profile-wrap .p-wrap {
+  width: 35%;
+  height: 245px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid #cbcbcb;
+}
 .company-profile-img {
-  height: 200px;
+  width: 100%;
+}
+.company-profile-img.profile-link {
+  cursor: pointer;
+}
+.e-wrap {
+  display: none;
+}
+.editor-details-wrap {
+  height: 140px;
+}
+#eEditor {
+  height: 350px;
 }
 .company-description-wrap {
   display: flex;
@@ -181,6 +248,9 @@ select:focus {
   padding: 10px;
   height: 150px;
   overflow-y: scroll;
+}
+.input-wrap .c-comment {
+  border: 1px solid #cbcbcb;
 }
 .mape-wrap {
   display: flex;

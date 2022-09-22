@@ -460,14 +460,15 @@ async function updateCompany() {
             formData.set('companysIdx', document.querySelector('.companysIdx').value);
             formData.set('companysName', name.value);
             formData.set('companysComment', document.querySelector('.c-comment').value);
-            formData.set('companysSpec', document.querySelector('.c-spec').value);
+            formData.set('companysSpec', document.querySelector('#editor .ql-editor').innerHTML);
             formData.set('companysRegion1', region01.value);
             if (region01.value == '서울') formData.set('companysRegion2', document.querySelector('#region02').value);
             formData.set('companysRegion3', document.querySelector('.c-region3').value);
             formData.set('companysBankName', document.querySelector('.c-bank').value);
             formData.set('companysBankNumber', document.querySelector('.c-bank-num').value);
             formData.set('companysEnabled', enabled.value);
-            formData.set('companysMemo', document.querySelector('.c-memo').value);
+            const memo = document.querySelector('#eEditor .ql-editor');
+            if (memo.innerText != '\n') formData.set('companysMemo', memo.innerHTML);
 
             fetchApi('/admin/manage/company/update', 'post', formData, '수정되었습니다.');
         }
@@ -778,5 +779,43 @@ function deleteReportMulti() {
 };
 
 /**
- * 공지사항
+ * 의뢰 삭제
  */
+function deleteRequest() {
+
+    const msg = confirm('의뢰 내역을 삭제하시겠습니까?');
+    if (msg) {
+        const formData = new FormData();
+        formData.set('requestFormIdx', document.querySelector('.modal-id').value);
+
+        fetchApi('/admin/manage/request/delete', 'post', formData, '의뢰 내역이 삭제되었습니다.');
+    }
+
+};
+
+/**
+ * 의뢰 수정
+ */
+function updateRequest() {
+
+    const check = document.querySelectorAll('input[name=r-category]:checked');
+
+    if (check.length == 0) {
+        alert('의뢰 분야를 선택해 주세요.');
+    } else {
+        const msg = confirm('의뢰 내역을 수정하시겠습니까?');
+        if (msg) {
+            const formData = new FormData();
+            formData.set('requestFormIdx', document.querySelector('.modal-id').value);
+            formData.set('requestFormRegion1', document.querySelector('#region01').value);
+            formData.set('requestFormStatus', document.querySelector('.r-state').value);
+
+            for (let i = 0; i < check.length; i++) {
+                formData.append('requestFormCategoryValue', check[i].value);
+            }
+
+            fetchApi('/admin/manage/request/update', 'post', formData, '의뢰 내역이 수정되었습니다.');
+        }
+    }
+
+};

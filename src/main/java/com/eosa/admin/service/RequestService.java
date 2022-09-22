@@ -72,4 +72,36 @@ public class RequestService {
         return "admin/board/request/list";
     }
 
+    /**
+     * 의뢰 삭제 서비스
+     *
+     * @param requestFormIdx
+     * @return int
+     */
+    public int deleteRequest(long requestFormIdx) {
+
+        requestMapper.deleteRequestCategory(requestFormIdx);
+
+        return requestMapper.deleteRequest(requestFormIdx);
+    }
+
+    /**
+     * 의뢰 수정 서비스
+     *
+     * @param requestDTO
+     * @return int
+     */
+    public int updateRequest(RequestDTO requestDTO) {
+
+        requestMapper.deleteRequestCategory(requestDTO.getRequestFormIdx());
+
+        String category[] = requestDTO.getRequestFormCategoryValue().split(",");
+        for (int i = 0; i < category.length; i++) {
+            requestDTO.setRequestFormCategoryValue(category[i]);
+            requestMapper.insertRequestCategory(requestDTO);
+        }
+
+        return requestMapper.updateRequest(requestDTO);
+    }
+
 }

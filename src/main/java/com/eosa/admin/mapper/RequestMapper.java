@@ -36,4 +36,36 @@ public interface RequestMapper {
      */
     List<RequestDTO> selectRequestList(Map<String, Object> map);
 
+    /**
+     * 의뢰 삭제 매퍼
+     *
+     * @param requestFormIdx
+     * @return int
+     */
+    int deleteRequest(long requestFormIdx);
+
+    /**
+     * 의뢰 분야 삭제 매퍼
+     *
+     * @param requestFormIdx
+     * @return int
+     */
+    int deleteRequestCategory(long requestFormIdx);
+
+    /**
+     * 의뢰 수정 매퍼
+     *
+     * @param requestDTO
+     * @return int
+     */
+    int updateRequest(RequestDTO requestDTO);
+
+    /**
+     * 의뢰 분야 등록 매퍼
+     *
+     * @param requestDTO
+     * @return int
+     */
+    int insertRequestCategory(RequestDTO requestDTO);
+
 }

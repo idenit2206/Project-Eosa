@@ -32,14 +32,16 @@
                                     <td colspan="4">
                                         <input type="hidden" class="companysIdx" th:value="${details.companysIdx}">
                                         <div class="company-profile-wrap">
-                                            <img th:if="${details.companysProfileImage} eq null" class="company-profile-img" th:src="@{/assets/images/ico/ico-mape.svg}">
-                                            <img th:if="${details.companysProfileImage} ne null" class="company-profile-img" th:src="@{${details.companysProfileImage}}">
+                                            <div class="p-wrap">
+                                                <img th:if="${details.companysProfileImage} eq null" class="company-profile-img" th:src="@{/assets/images/ico/ico-logo.svg}">
+                                                <img th:if="${details.companysProfileImage} ne null" class="company-profile-img profile-link" th:onclick="|window.open('@{${details.companysProfileImage}}')|" th:src="@{${details.companysProfileImage}}">
+                                            </div>
                                             <div class="company-description-wrap">
                                                 <div class="input-wrap">
                                                     <input type="text" spellcheck="false" class="input c-comment" th:value="${details.companysComment}">
                                                 </div>
-                                                <div class="text-wrap">
-                                                    <textarea class="textarea c-spec" spellcheck="false" th:text="${details.companysSpec}"></textarea>
+                                                <div class="text-wrap editor-details-wrap e-wrap">
+                                                    <div id="editor" th:utext="${details.companysSpec}"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -256,10 +258,10 @@
                                     <td th:text="${#dates.format(details.companysRegistDate, 'yyyy-MM-dd')}"></td>
                                 </tr>
                                 <tr>
-                                    <th>메모</th>
+                                    <th>어사인증</th>
                                     <td colspan="3">
-                                        <div class="text-wrap">
-                                            <textarea class="textarea c-memo" spellcheck="false" th:text="${details.companysMemo}"></textarea>
+                                        <div class="text-wrap e-wrap">
+                                            <div id="eEditor" th:utext="${details.companysMemo}"></div>
                                         </div>
                                     </td>
                                 </tr>
@@ -601,10 +603,21 @@
 </th:block>
 
 <th:block layout:fragment="script">
+    <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="https://unpkg.com/quill-image-compress@1.2.11/dist/quill.imageCompressor.min.js"></script>
+    <script th:src="@{/assets/js/admin/editor.js}"></script>
     <script>
         window.addEventListener('load', function () {
             highlightMenu('list');
             onlyNum();
+
+            const editorWrap = document.querySelectorAll('.e-wrap');
+            setTimeout(e => {
+                editorWrap[0].style.display = 'block';
+                editorWrap[1].style.display = 'block';
+            }, 500)
+            createEditor();
 
             const flagIdx = document.querySelector('.companysFlagIdx');
             // 신청서 모달

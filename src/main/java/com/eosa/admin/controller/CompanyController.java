@@ -272,4 +272,22 @@ public class CompanyController {
         return companyService.companyReport(model, companysIdx, state, page);
     }
 
+    /**
+     * 통계 목록 조회 컨트롤러
+     *
+     * @param model
+     * @param sort
+     * @param search
+     * @param page
+     * @return String
+     */
+    @GetMapping("/chart")
+    public String chartList(Model model,
+                            @RequestParam(defaultValue = "company") String sort,
+                            @RequestParam(defaultValue = "") String search,
+                            @RequestParam(defaultValue = "1") int page) {
+
+        return companyService.chartList(model, sort, search, page);
+    }
+
 }

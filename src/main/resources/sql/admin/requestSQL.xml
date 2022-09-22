@@ -54,4 +54,34 @@
         ORDER BY R.requestFormDate DESC LIMIT #{startIndex}, #{pageSize}
     </select>
 
+    <!-- 의뢰 삭제 -->
+    <delete id="deleteRequest" parameterType="long">
+        DELETE
+        FROM RequestForm
+        WHERE requestFormIdx = #{requestFormIdx}
+    </delete>
+
+    <!-- 의뢰 분야 삭제 -->
+    <delete id="deleteRequestCategory" parameterType="long">
+        DELETE
+        FROM RequestFormCategory
+        WHERE requestFormIdx = #{requestFormIdx}
+    </delete>
+
+    <!-- 의뢰 수정 -->
+    <update id="updateRequest" parameterType="RequestDTO">
+        UPDATE RequestForm
+        SET requestFormRegion1 = #{requestFormRegion1},
+            requestFormStatus  = #{requestFormStatus}
+        WHERE requestFormIdx = #{requestFormIdx}
+    </update>
+
+    <!-- 의뢰 분야 등록 -->
+    <insert id="insertRequestCategory" parameterType="RequestDTO">
+        INSERT INTO RequestFormCategory (requestFormIdx,
+                                         requestFormCategoryValue)
+        VALUES (#{requestFormIdx},
+                #{requestFormCategoryValue})
+    </insert>
+
 </mapper>

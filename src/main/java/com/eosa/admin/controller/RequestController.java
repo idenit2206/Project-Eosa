@@ -1,12 +1,11 @@
 package com.eosa.admin.controller;
 
+import com.eosa.admin.dto.RequestDTO;
 import com.eosa.admin.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * packageName    : com.eosa.admin.controller
@@ -44,6 +43,32 @@ public class RequestController {
                               @RequestParam(defaultValue = "1") int page) {
 
         return requestService.requestList(model, state, sort, search, page);
+    }
+
+    /**
+     * 의뢰 삭제 컨트롤러
+     *
+     * @param requestFormIdx
+     * @return int
+     */
+    @ResponseBody
+    @PostMapping("/delete")
+    public int deleteRequest(@RequestParam long requestFormIdx) {
+
+        return requestService.deleteRequest(requestFormIdx);
+    }
+
+    /**
+     * 의뢰 수정 컨트롤러
+     *
+     * @param requestDTO
+     * @return int
+     */
+    @ResponseBody
+    @PostMapping("/update")
+    public int updateRequest(RequestDTO requestDTO) {
+
+        return requestService.updateRequest(requestDTO);
     }
 
 }

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/fragments/layout}">
+
+<th:block layout:fragment="content">
+
+    <th:block th:replace="admin/fragments/aside :: asideFragment"></th:block>
+
+    <main id="main" class="main-list" data-category="chat">
+        <section class="section section-users">
+            <h2 class="section_title">채팅 목록</h2>
+            <div class="table">
+                <div class="table__top">
+                    <div class="top-wrap">
+                        <div class="header-wrap">
+                            <span class="table__count">전체<i class="value" th:text="${count}"></i></span>
+                            <form class="table__search">
+                                <select class="select" name="sort">
+                                    <option value="client" th:selected="${sort} eq 'client'">의뢰인</option>
+                                    <option value="company" th:selected="${sort} eq 'company'">업체</option>
+                                </select>
+                                <input class="input" name="search" type="text" th:value="${search}" placeholder="검색어 입력">
+                                <button type="submit" class="btn-prime check-btn">검색</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>번호</th>
+                        <th>의뢰인</th>
+                        <th>업체</th>
+                        <th>구분</th>
+                        <th>채팅일</th>
+                    </tr>
+                    </thead>
+
+                    <tbody th:if="${count} eq 0">
+                    <tr>
+                        <td colspan="5">
+                            <span>등록된 채팅방이 없습니다.</span>
+                        </td>
+                    </tr>
+                    </tbody>
+
+                    <tbody th:if="${count} ne 0">
+                    <tr th:each="list : ${chatList}" th:onclick="|linkTo(event,'/admin/manage/chat/details?usersIdx=${list.usersIdx}')|">
+
+                        <td>
+                            <span th:text="${list.idx}"></span>
+                        </td>
+                        <td>
+                            <span th:text="${list.usersAccount}"></span>
+                        </td>
+                        <td>
+                            <div>
+                                <span th:text="${list.roomName}"></span>
+                            </div>
+                        </td>
+                        <td>
+                            <span th:text="${list.usersRole} eq 'CLIENT' ? '회원' : (${list.usersRole} eq 'DETECTIVE' ? '탐정' : '비회원')"></span>
+                        </td>
+                        <td>
+                            <span th:text="${#dates.format(list.createdDate, 'yyyy-MM-dd')}"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="table__paging">
+                    <ul>
+                        <li><a class="first" th:href="@{/admin/manage/chat/list(sort=${sort}, search=${search}, page=1)}"></a></li>
+                        <li><a class="prev" th:href="@{/admin/manage/chat/list(sort=${sort}, search=${search}, page=${pagination.prevBlock})}"></a></li>
+
+                        <th:block th:with="start = ${pagination.startPage}, end = ${pagination.endPage}">
+                            <li th:each="pageButton : ${#numbers.sequence(start, end)}"><a class="pageNum" th:href="@{/admin/manage/chat/list(sort=${sort}, search=${search}, page=${pageButton})}" th:text="${pageButton}"></a></li>
+                        </th:block>
+
+                        <li><a class="next" th:href="@{/admin/manage/chat/list(sort=${sort}, search=${search}, page=${pagination.nextBlock})}"></a></li>
+                        <li><a class="last" th:href="@{/admin/manage/chat/list(sort=${sort}, search=${search}, page=${pagination.totalPageCnt eq 0 ? 1 : pagination.totalPageCnt})}"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+</th:block>
+
+<th:block layout:fragment="script">
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            highlightMenu();
+            pageOn();
+            new Table(document.querySelector('#main table'));
+        });
+    </script>
+</th:block>
+
+</html>

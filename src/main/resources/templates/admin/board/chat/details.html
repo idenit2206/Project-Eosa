@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/fragments/layout}">
+
+<th:block layout:fragment="content">
+
+    <th:block th:replace="admin/fragments/aside :: asideFragment"></th:block>
+
+    <main id="main" data-category="chat">
+        <section class="section section-users">
+
+            <h2 class="section_title">메시지</h2>
+
+            <div class="form form--xxl">
+                <div class="tab_cont">
+                    <fieldset class="fieldset">
+                        <div class="msg-form">
+                            <div class="msg-top">
+                                <span class="msg-company">아이덴잇 탐정 사무소</span>
+                                <span class="msg-client">testAccount112</span>
+                            </div>
+                            <div class="msg-body">
+                                <div class="msg-date">
+                                    <hr>
+                                    <span>2022.06.22</span>
+                                    <hr>
+                                </div>
+                                <div class="msg-date">
+                                    <hr>
+                                    <span>2022.06.23</span>
+                                    <hr>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="form__action bottom">
+                        <a th:href="@{/admin/manage/chat/list}" class="btn-normal">목록가기</a>
+                        <a th:href="@{/admin/manage/company/details(companysIdx=12)}" class="btn-prime">업체 바로가기</a>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+</th:block>
+
+<th:block layout:fragment="script">
+    <script>
+        window.addEventListener('load', function () {
+            highlightMenu();
+        });
+    </script>
+</th:block>
+
+</html>
