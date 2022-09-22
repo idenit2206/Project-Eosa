@@ -25,21 +25,9 @@
                                         <p>배너1</p>
                                         <img class="imgPreviewBodyDesktop" th:src="${items[0].bannerFileLink}"/>
                                     </td>
-                                    <td class="imgPreviewDesktop">
-                                        <p>배너2</p>
-                                        <img class="imgPreviewBodyDesktop"/>
-                                    </td>
-                                    <td class="imgPreviewDesktop">
-                                        <p>배너3</p>
-                                        <img class="imgPreviewBodyDesktop"/>
-                                    </td>
-                                    <td class="imgPreviewDesktop">
-                                        <p>배너4</p>
-                                        <img class="imgPreviewBodyDesktop"/>
-                                    </td>
-                                    <td class="imgPreviewDesktop">
-                                        <p>배너5</p>
-                                        <img class="imgPreviewBodyDesktop"/>
+                                    <td class="imgPreviewDesktop" th:if="${items[0] ne null}">
+                                        <p>배너1</p>
+                                        <img class="imgPreviewBodyDesktop" th:src="${items[0].bannerFileLink}"/>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -112,7 +100,7 @@
                                             <span class="fileRemoveBtnDesktop" id="bannerRemoveMark">x</span>
                                             <br/>
                                             <label for="bannerurl">URL</label>
-                                            <input type="text" class="bannerUrlDesktop" id="bannerurl" name="banner1url" th:value="${items[0].bannerFileName}" />
+                                            <input type="text" class="bannerUrlDesktop" id="bannerurl" name="banner1url" th:value="${items[1].bannerFileName}" />
                                         </div>
                                     </td>
                                 </tr>

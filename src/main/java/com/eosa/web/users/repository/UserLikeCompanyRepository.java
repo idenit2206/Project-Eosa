@@ -34,8 +34,8 @@ public interface UserLikeCompanyRepository extends JpaRepository<UserLikeCompany
         "C.companysComment, C.companysSpec, C.companysPhone, " +
         "C.companysDummyPhone, C.companysMemo, " +
         "C.companysRegion1, C.companysRegion2, C.companysRegion3, " +
-        "C.companysRegistCerti, C.companysRegistCertiName, " +
-        "C.companysLicense, C.companysLicenseName, " +
+        "C.companysRegistCerti, C.companysRegistCertiName, C.companysRegistCertiCheck, " +
+        "C.companysLicense, C.companysLicenseName, C.companysLicenseCheck, " +
         "C.companysProfileImage, C.companysProfileImageName, " +
         "C.companysBankName, C.companysBankNumber, C.companysRegistDate, " +
         "C.companysPremium, C.companysLocalPremium, " +
