@@ -178,7 +178,7 @@ public class UsersController {
             int usersAge = Integer.parseInt(prevUsersAge.substring(0, 2));
             paramUsers.setUsersAge(usersAge);
             paramUsers.setUsersRegion1(jsonObject.get("usersRegion1").getAsString());
-            paramUsers.setUsersRegion2(jsonObject.get("usersRegion2").getAsString());
+//            paramUsers.setUsersRegion2(jsonObject.get("usersRegion2").getAsString());
             if(jsonObject.get("usersGender").getAsString().equals("남자")) {
                 paramUsers.setUsersGender(0);
             } else {
@@ -197,7 +197,7 @@ public class UsersController {
 
         CustomResponseData result = new CustomResponseData();
         
-        String[] targets = {"usersAccount", "usersPass", "usersName", "usersNick", "usersPhone", "usersEmail", "usersRole", "usersAge", "usersRegion1", "usersRegion2", "usersGender", "usersNotice"};        
+        String[] targets = {"usersAccount", "usersPass", "usersName", "usersNick", "usersPhone", "usersEmail", "usersRole", "usersAge", "usersRegion1", "usersGender", "usersNotice"};
         Map<String, Object> checkItem = nullCheck.ObjectNullCheck(paramUsers, targets);
         
         if(checkItem.get("result") == "SUCCESS") {
@@ -470,7 +470,7 @@ public class UsersController {
         
         String[] targets = {
             "usersIdx", "usersPass", "usersNick", "usersEmail", 
-            "usersRegion1", "usersRegion2", "usersGender"
+            "usersRegion1", "usersGender"
         };
         Map<String, Object> checkItem = nullCheck.ObjectNullCheck(param, targets);        
 
