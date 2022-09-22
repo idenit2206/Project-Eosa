@@ -23,8 +23,8 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         "C.companysDummyPhone, C.companysMemo, " +
 //        "C.companysRegion1, C.companysRegion2, C.companysRegion3, " +
         "C.companysRegion1, C.companysRegion3, " +
-        "C.companysRegistCerti, C.companysRegistCertiName, " +
-        "C.companysLicense, C.companysLicenseName, " +
+        "C.companysRegistCerti, C.companysRegistCertiName, C.companysRegistCertiCheck, " +
+        "C.companysLicense, C.companysLicenseName, C.companysLicenseCheck, " +
         "C.companysProfileImage, C.companysProfileImageName, " +
         "C.companysBankName, C.companysBankNumber, C.companysRegistDate, " +
         "C.companysPremium, C.companysLocalPremium, " +
@@ -50,10 +50,11 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         "SELECT " +
         "C.companysIdx, C.companysName, C.companysCeoIdx, C.companysCeoName, " +
         "C.companysComment, C.companysSpec, C.companysPhone, " +
+        "C.companysDummyPhone, C.companysMemo, " +
 //        "C.companysRegion1, C.companysRegion2, C.companysRegion3, " +
         "C.companysRegion1, C.companysRegion3, " +
-        "C.companysRegistCerti, C.companysRegistCertiName, " +
-        "C.companysLicense, C.companysLicenseName, " +
+        "C.companysRegistCerti, C.companysRegistCertiName, C.companysRegistCertiCheck, " +
+        "C.companysLicense, C.companysLicenseName, C.companysLicenseCheck, " +
         "C.companysProfileImage, C.companysProfileImageName, " +
         "C.companysBankName, C.companysBankNumber, C.companysRegistDate, " +
         "C.companysPremium, C.companysLocalPremium, " +
@@ -160,8 +161,8 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         "C.companysDummyPhone, C.companysMemo, " +
 //        "C.companysRegion1, C.companysRegion2, C.companysRegion3, " +
         "C.companysRegion1, C.companysRegion3, " +
-        "C.companysRegistCerti, C.companysRegistCertiName, " +
-        "C.companysLicense, C.companysLicenseName, " +
+        "C.companysRegistCerti, C.companysRegistCertiName, C.companysRegistCertiCheck, " +
+        "C.companysLicense, C.companysLicenseName, C.companysLicenseCheck, " +
         "C.companysProfileImage, C.companysProfileImageName, " +
         "C.companysBankName, C.companysBankNumber, C.companysRegistDate, " +
         "C.companysPremium, C.companysLocalPremium, " +
@@ -278,6 +279,7 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         "c.companysComment, c.companysSpec, c.companysPhone, " +
 //        "c.companysRegion1, c.companysRegion2, c.companysRegion3, " +
         "c.companysRegion1, c.companysRegion3, " +
+        "c.companysRegistCertCheck, c.companysLicenseCheck, " +
         "c.companysRegistCerti, c.companysLicense, c.companysProfileImage, " +
         "c.companysRegistCertiName, c.companysLicenseName, c.companysProfileImageName, " +
         "c.companysBankName, c.companysBankNumber, c.companysPremium, c.companysLocalPremium, " +

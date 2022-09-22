@@ -1,10 +1,9 @@
-package com.eosa.web.util.callmix.service;
+package com.eosa.admin.mapper.encode;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * ORIGIN
  * packageName    : idenit.ansim
  * fileName       : SHA256
  * author         : Jihun Kim

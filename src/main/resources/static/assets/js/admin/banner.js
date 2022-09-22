@@ -1,94 +1,107 @@
 "use strict";
+// /**
+// * 배너 요소 추가하기
+// */
+// const bannerAddItem = () => {
+//     const bannerAddItemBtn = document.querySelector(".banner-add-item");
+//     const previewDesktopList = document.querySelector(".imgPreviewDesktopList");
+//     const bannerInputList = document.querySelector(".bannerInputList");
+//     let count = document.querySelectorAll(".bannerInputItem").length + 1;
+//     // let count = bannerInputList.length;
+//
+//     bannerAddItemBtn.addEventListener("click", () => {
+//         console.log("count: ", count);
+//         if(count < 6) {
+//             // previewDesktopList add Item
+//             const previewTdElement = document.createElement("td");
+//             const previewSpanElement = document.createElement("span");
+//             const previewPelement = document.createElement("p");
+//             const previewImgElement = document.createElement("img");
+//
+//             previewTdElement.setAttribute("class", "imgPreviewDesktop");
+//             previewSpanElement.setAttribute("class", "removeBannterItem");
+//             previewSpanElement.innerHTML = "제거";
+//             previewPelement.innerHTML = "배너";
+//             previewImgElement.setAttribute("class", "imgPreviewBodyDesktop");
+//
+//             previewTdElement.appendChild(previewSpanElement);
+//             previewTdElement.appendChild(previewPelement);
+//             previewTdElement.appendChild(previewImgElement);
+//             previewDesktopList.appendChild(previewTdElement);
+//
+//
+//             // bannerInputList add Item
+//             const tdElement = document.createElement("td");
+//             const divElement = document.createElement("div");
+//             const labelElement = document.createElement("label");
+//             const inputFileElement = document.createElement("input");
+//             const spanElement = document.createElement("span");
+//             const brElement = document.createElement("br");
+//             const labelElement2 = document.createElement("label");
+//             const inputFileElement2 = document.createElement("input");
+//
+//             inputFileElement2.setAttribute("type", "text");
+//             inputFileElement2.setAttribute("class", "bannerUrlDesktop");
+//             labelElement2.setAttribute("for", "bannerUrl");
+//             labelElement2.innerHTML = "URL";
+//             spanElement.setAttribute("class", "fileRemoveBtnDesktop");
+//             spanElement.innerHTML = "x";
+//             inputFileElement.setAttribute("type", "file");
+//             inputFileElement.setAttribute("class", "fileInputDesktop");
+//             labelElement.setAttribute("for", "banner");
+//             labelElement.innerHTML = "배너";
+//
+//             divElement.appendChild(labelElement);
+//             divElement.appendChild(inputFileElement);
+//             divElement.appendChild(spanElement);
+//             divElement.appendChild(brElement);
+//             divElement.appendChild(labelElement2);
+//             divElement.appendChild(inputFileElement2);
+//
+//             tdElement.appendChild(divElement);
+//             tdElement.setAttribute("class", "bannerInputItem");
+//
+//             bannerInputList.appendChild(tdElement);
+//             count++;
+//         } else {
+//             alert("더 이상 배너를 추가할 수 없습니다.");
+//         }
+//     })
+// }
 
-const bannerAddItem = () => {
-    const bannerAddItemBtn = document.querySelector(".banner-add-item");
-    const previewDesktopList = document.querySelector(".imgPreviewDesktopList");
-    const bannerInputList = document.querySelector(".bannerInputList");
-    let count = document.querySelectorAll(".bannerInputItem").length + 1;
-    // let count = bannerInputList.length;
-    
-    bannerAddItemBtn.addEventListener("click", () => {
-        console.log("count: ", count);
-        if(count < 6) {
-            // previewDesktopList add Item
-            const previewTdElement = document.createElement("td");
-            const previewPelement = document.createElement("p");
-            const previewImgElement = document.createElement("img");
-
-            previewTdElement.setAttribute("class", "imgPreviewDesktop");
-            previewPelement.innerHTML = "배너";
-            previewImgElement.setAttribute("class", "imgPreviewBodyDesktop");
-
-            previewTdElement.appendChild(previewPelement);
-            previewTdElement.appendChild(previewImgElement);
-
-            previewDesktopList.appendChild(previewTdElement);
-
-
-            // bannerInputList add Item
-            const tdElement = document.createElement("td");
-            const divElement = document.createElement("div");
-            const labelElement = document.createElement("label");
-            const inputFileElement = document.createElement("input");
-            const spanElement = document.createElement("span");
-            const brElement = document.createElement("br");
-            const labelElement2 = document.createElement("label");
-            const inputFileElement2 = document.createElement("input");
-
-            inputFileElement2.setAttribute("type", "text");
-            inputFileElement2.setAttribute("class", "bannerUrlDesktop");
-            labelElement2.setAttribute("for", "bannerUrl");
-            labelElement2.innerHTML = "URL";
-            spanElement.setAttribute("class", "fileRemoveBtnDesktop");
-            spanElement.innerHTML = "x";
-            inputFileElement.setAttribute("type", "file");
-            inputFileElement.setAttribute("class", "fileInputDesktop");
-            labelElement.setAttribute("for", "banner");
-            labelElement.innerHTML = "배너";
-
-            divElement.appendChild(labelElement);
-            divElement.appendChild(inputFileElement);
-            divElement.appendChild(spanElement);
-            divElement.appendChild(brElement);
-            divElement.appendChild(labelElement2);
-            divElement.appendChild(inputFileElement2);
-
-            tdElement.appendChild(divElement);
-            tdElement.setAttribute("class", "bannerInputItem");
-
-            bannerInputList.appendChild(tdElement);
-            count++;
-        } else {
-            alert("더 이상 배너를 추가할 수 없습니다.");
-        }
-    })
-}
+// /**
+// * 배너 요소 제거하기
+// */
+// const bannerDeleteItem = () => {
+//     const tdItem = document.querySelectorAll(".imgPreviewDesktop");
+//     const deleteSpan = document.querySelectorAll(".removeBannerItem");
+// }
 
 /**
- * 공지 상세
+ * 배너 파일 처리
  */
 function bannerFileHandler() {
     const imgPreviewBodyDesktop = document.querySelectorAll(".imgPreviewBodyDesktop");
-    const imgPreviewBodyMobile = document.querySelectorAll(".imgPreviewBodyMobile");
+    // const imgPreviewBodyMobile = document.querySelectorAll(".imgPreviewBodyMobile");
 
     const inputFilesDesktop = document.querySelectorAll(".fileInputDesktop");
     const fileRemoveBtnDesktop = document.querySelectorAll(".fileRemoveBtnDesktop");
     const inputURLDesktop = document.querySelectorAll(".bannerUrlDesktop");
 
-    const inputFilesMobile = document.querySelectorAll(".fileInputMobile");
-    const fileRemoveBtnMobile = document.querySelectorAll(".fileRemoveBtnMobile");
-    const inputURLMobile = document.querySelectorAll(".bannerUrlMobile");
+    // const inputFilesMobile = document.querySelectorAll(".fileInputMobile");
+    // const fileRemoveBtnMobile = document.querySelectorAll(".fileRemoveBtnMobile");
+    // const inputURLMobile = document.querySelectorAll(".bannerUrlMobile");
 
     for(let i = 0; i < inputFilesDesktop.length; i++) {
         inputFilesDesktop[i].addEventListener("change", async (e) => {
             if(e.target.value != null) {
                 // console.log(e.target);
                 // console.log(e.target.nodeName);
-                // console.log(e.target.value);
+                console.log(`inputFilesDesktop[${i}]`, e.target.value);
                 fileRemoveBtnDesktop[i].style.visibility = "visible";
                 inputURLDesktop[i].value = "";
                 inputURLDesktop[i].readOnly = true;
-                let imgSrc = await FileUpProcess(e.target.files[0], "Desktop", i);
+                let imgSrc = await FileUpProcess(e.target.files[0], "pc", i);
                 imgPreviewBodyDesktop[i].setAttribute("src", imgSrc);
             }
             else if(e.target.value == "") {
@@ -107,38 +120,39 @@ function bannerFileHandler() {
         }
     }
 
-    for(let i = 0; i < inputFilesMobile.length; i++) {
-        inputFilesMobile[i].addEventListener("change", async (e) => {
-            if(e.target.value != null) {
-                // console.log(e.target);
-                // console.log(e.target.nodeName);
-                // console.log(e.target.value);
-                fileRemoveBtnMobile[i].style.visibility = "visible";
-                inputURLMobile[i].value = "";
-                inputURLMobile[i].readOnly = true;
-                let imgSrc = await FileUpProcess(e.target.files[0], "Mobile", i);
-                imgPreviewBodyMobile[i].setAttribute("src", imgSrc);
-            }
-            else if(e.target.value == "") {
-                // console.log("file neq whitespace");
-                // console.log(e.target.value);
-                fileRemoveBtnMobile[i].style.visibility = "hidden";
-                inputURLMobile[i].value = "";
-                inputURLMobile[i].readOnly = false;
-            }
-        })
-    }
-
-    for(let i = 0; i < inputURLMobile.length; i++) {
-        if(inputURLMobile[i].value != "") {
-            inputFilesMobile[i].disabled = true;
-        }
-    }
+    // for(let i = 0; i < inputFilesMobile.length; i++) {
+    //     inputFilesMobile[i].addEventListener("change", async (e) => {
+    //         if(e.target.value != null) {
+    //             // console.log(e.target);
+    //             // console.log(e.target.nodeName);
+    //             // console.log(e.target.value);
+    //             fileRemoveBtnMobile[i].style.visibility = "visible";
+    //             inputURLMobile[i].value = "";
+    //             inputURLMobile[i].readOnly = true;
+    //             let imgSrc = await FileUpProcess(e.target.files[0], "Mobile", i);
+    //             imgPreviewBodyMobile[i].setAttribute("src", imgSrc);
+    //         }
+    //         else if(e.target.value == "") {
+    //             // console.log("file neq whitespace");
+    //             // console.log(e.target.value);
+    //             fileRemoveBtnMobile[i].style.visibility = "hidden";
+    //             inputURLMobile[i].value = "";
+    //             inputURLMobile[i].readOnly = false;
+    //         }
+    //     })
+    // }
+    //
+    // for(let i = 0; i < inputURLMobile.length; i++) {
+    //     if(inputURLMobile[i].value != "") {
+    //         inputFilesMobile[i].disabled = true;
+    //     }
+    // }
 }
 
 const FileUpProcess = (file, tag, index) => {
+    console.log(`FileUpProcess input parameter: file - ${file}, tag - ${tag}, index = ${index}`);
     const imgPreviewBodyDesktop = document.querySelectorAll(".imgPreviewBodyDesktop");
-    const imgPreviewBodyMobile = document.querySelectorAll(".imgPreviewBodyMobile");
+    // const imgPreviewBodyMobile = document.querySelectorAll(".imgPreviewBodyMobile");
 
     // let result = "";
     let fileReader = new FileReader();
@@ -152,13 +166,13 @@ const FileUpProcess = (file, tag, index) => {
 
     fileReader.onloadend = (e2) => {
         // console.log('lonloadend', e2.target.result);
-        if(tag == "Desktop") {
+        if(tag == "pc") {
             imgPreviewBodyDesktop[index].setAttribute("src", e2.target.result);
         }
 
-        if(tag == "Mobile") {
-            imgPreviewBodyMobile[index].setAttribute("src", e2.target.result);
-        }
+        // if(tag == "mobile") {
+        //     imgPreviewBodyMobile[index].setAttribute("src", e2.target.result);
+        // }
         // result = e2.target.result;
 
     }
@@ -166,10 +180,12 @@ const FileUpProcess = (file, tag, index) => {
 
 }
 
-
+/**
+*   input[type=file]에 입력받은 파일을 제거
+*/
 function inputFileRemove() {
     const imgPreviewBodyDesktop = document.querySelectorAll(".imgPreviewBodyDesktop");
-    const imgPreviewBodyMobile = document.querySelectorAll(".imgPreviewBodyMobile");
+    // const imgPreviewBodyMobile = document.querySelectorAll(".imgPreviewBodyMobile");
 
     const fileRemoveBtnDesktop = document.querySelectorAll(".fileRemoveBtnDesktop");
     const bannerUrlDesktop = document.querySelectorAll(".bannerUrlDesktop");
@@ -188,22 +204,22 @@ function inputFileRemove() {
         })
     }
 
-    const fileRemoveBtnMobile = document.querySelectorAll(".fileRemoveBtnMobile");
-    const bannerUrlMobile = document.querySelectorAll(".bannerUrlMobile");
-    for(let i = 0; i < fileRemoveBtnMobile.length; i++) {
-        fileRemoveBtnMobile[i].addEventListener("click", (e) => {
-            // console.log(e.target.previousSibling.previousSibling);
-            e.target.previousSibling.previousSibling.value = "";
-            e.target.style.visibility = "hidden";
-            bannerUrlMobile[i].readOnly = false;
-            let deleteImgElement = document.querySelectorAll(".imgPreviewBodyMobile");
-            imgPreviewBodyMobile[i].removeAttribute("src");
-            // const elementP = document.createElement("p");
-            // elementP.innerHTML = "배너"+(i+1)+"_Mobile";
-            // imgPreviewMobile[i].appendChild(elementP)
-            // e.target.nextSibling.nextSibling.nextSibling.nextSibling.readOnly = false;
-        })
-    }
+    // const fileRemoveBtnMobile = document.querySelectorAll(".fileRemoveBtnMobile");
+    // const bannerUrlMobile = document.querySelectorAll(".bannerUrlMobile");
+    // for(let i = 0; i < fileRemoveBtnMobile.length; i++) {
+    //     fileRemoveBtnMobile[i].addEventListener("click", (e) => {
+    //         // console.log(e.target.previousSibling.previousSibling);
+    //         e.target.previousSibling.previousSibling.value = "";
+    //         e.target.style.visibility = "hidden";
+    //         bannerUrlMobile[i].readOnly = false;
+    //         let deleteImgElement = document.querySelectorAll(".imgPreviewBodyMobile");
+    //         imgPreviewBodyMobile[i].removeAttribute("src");
+    //         // const elementP = document.createElement("p");
+    //         // elementP.innerHTML = "배너"+(i+1)+"_Mobile";
+    //         // imgPreviewMobile[i].appendChild(elementP)
+    //         // e.target.nextSibling.nextSibling.nextSibling.nextSibling.readOnly = false;
+    //     })
+    // }
 }
 
 /**

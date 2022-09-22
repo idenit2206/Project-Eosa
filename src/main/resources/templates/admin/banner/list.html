@@ -15,174 +15,199 @@
                     <div class="top-wrap">
                         <div class="header-wrap">
                             <table>
-                                <tbody th:if="${pc != null}">
-                                    <tr class="imgPreviewDesktopList">
-                                        <td th:each="list : ${pc}" class="imgPreviewDesktop">
-                                            <p>배너</p>
-                                            <img class="imgPreviewBodyDesktop" th:src="${list.bannerFileLink}" />
-                                        </td>
-                                        <!-- <td class="imgPreviewDesktop">
-                                            <p>배너1</p>
-                                            <img class="imgPreviewBodyDesktop"/>
-                                        </td>
-                                        <td class="imgPreviewDesktop">
-                                            <p>배너2</p>
-                                            <img class="imgPreviewBodyDesktop"/>
-                                        </td>
-                                        <td class="imgPreviewDesktop">
-                                            <p>배너3</p>
-                                            <img class="imgPreviewBodyDesktop"/>
-                                        </td>
-                                        <td class="imgPreviewDesktop">
-                                            <p>배너4</p>
-                                            <img class="imgPreviewBodyDesktop"/>
-                                        </td>
-                                        <td class="imgPreviewDesktop">
-                                            <p>배너5</p>
-                                            <img class="imgPreviewBodyDesktop"/>
-                                        </td> -->
-                                    </tr>
-                                    <tr>
-                                        <!-- <td class="imgPreviewMobile">
-                                            <p>배너1_Mobile</p>
-                                            <img class="imgPreviewBodyMobile"/>
-                                        </td>
-                                        <td class="imgPreviewMobile">
-                                            <p>배너2_Mobile</p>
-                                            <img class="imgPreviewBodyMobile"/>
-                                        </td>
-                                        <td class="imgPreviewMobile">
-                                            <p>배너3_Mobile</p>
-                                            <img class="imgPreviewBodyMobile"/>
-                                        </td>
-                                        <td class="imgPreviewMobile">
-                                            <p>배너4_Mobile</p>
-                                            <img class="imgPreviewBodyMobile"/>
-                                        </td>
-                                        <td class="imgPreviewMobile">
-                                            <p>배너5_Mobile</p>
-                                            <img class="imgPreviewBodyMobile"/>
-                                        </td> -->
-                                    </tr>
+                                <tbody th:if="${#lists.size(items) > 0}">
+                                <tr> <!-- th:if="${#lists.size(Model Object) > 0}" -->
+<!--                                    <td class="imgPreviewDesktop" th:each="item : ${items}"> &lt;!&ndash; th:if="${item ne null}"> &ndash;&gt;-->
+<!--                                        <p>배너</p>-->
+<!--                                        <img class="imgPreviewBodyDesktop" th:src="${item.bannerFileLink}"/>-->
+<!--                                    </td>-->
+                                    <td class="imgPreviewDesktop" th:if="${items[0] ne null}">
+                                        <p>배너1</p>
+                                        <img class="imgPreviewBodyDesktop" th:src="${items[0].bannerFileLink}"/>
+                                    </td>
+                                    <td class="imgPreviewDesktop" th:if="${items[0] ne null}">
+                                        <p>배너1</p>
+                                        <img class="imgPreviewBodyDesktop" th:src="${items[0].bannerFileLink}"/>
+                                    </td>
+                                </tr>
+                                </tbody>
+                                <tbody th:unless="${#lists.size(items) > 0}">
+                                <tr>
+                                    <td class="imgPreviewDesktop">
+                                        <p>배너1</p>
+                                        <img class="imgPreviewBodyDesktop"/>
+                                    </td>
+                                    <td class="imgPreviewDesktop">
+                                        <p>배너2</p>
+                                        <img class="imgPreviewBodyDesktop"/>
+                                    </td>
+                                    <td class="imgPreviewDesktop">
+                                        <p>배너3</p>
+                                        <img class="imgPreviewBodyDesktop"/>
+                                    </td>
+                                    <td class="imgPreviewDesktop">
+                                        <p>배너4</p>
+                                        <img class="imgPreviewBodyDesktop"/>
+                                    </td>
+                                    <td class="imgPreviewDesktop">
+                                        <p>배너5</p>
+                                        <img class="imgPreviewBodyDesktop"/>
+                                    </td>
+                                </tr>
+<!--                                <tr>-->
+<!--                                    <td class="imgPreviewMobile">-->
+<!--                                        <p>배너1_Mobile</p>-->
+<!--                                        <img class="imgPreviewBodyMobile"/>-->
+<!--                                    </td>-->
+<!--                                    <td class="imgPreviewMobile">-->
+<!--                                        <p>배너2_Mobile</p>-->
+<!--                                        <img class="imgPreviewBodyMobile"/>-->
+<!--                                    </td>-->
+<!--                                    <td class="imgPreviewMobile">-->
+<!--                                        <p>배너3_Mobile</p>-->
+<!--                                        <img class="imgPreviewBodyMobile"/>-->
+<!--                                    </td>-->
+<!--                                    <td class="imgPreviewMobile">-->
+<!--                                        <p>배너4_Mobile</p>-->
+<!--                                        <img class="imgPreviewBodyMobile"/>-->
+<!--                                    </td>-->
+<!--                                    <td class="imgPreviewMobile">-->
+<!--                                        <p>배너5_Mobile</p>-->
+<!--                                        <img class="imgPreviewBodyMobile"/>-->
+<!--                                    </td>-->
+<!--                                </tr>-->
                                 </tbody>
                             </table>
                         </div>
                         <div>
                             <table>
-                                <tbody th:if="${pc != null}">
-                                    <tr class="bannerInputList">
-                                        <td class="bannerInputItem" th:each="item : ${pc}">
-                                            <div>
-                                                <label for="banner">배너</label>
-                                                <input type="file" class="fileInputDesktop" th:id="${item.idx}" th:value="${item.bannerFileLink}" accept="image/jpeg, image/png" />
-                                                <span class="fileRemoveBtnDesktop">x</span>
-                                                <br/>
-                                                <label for="bannerUrl">URL</label>
-                                                <input type="text" class="bannerUrlDesktop" th:id="${item.idx}" th:value="${item.bannerFileLink}" />
-                                            </div>
-                                        </td>                                        
-                                    </tr>
-                                    <!-- <td>
-                                            <div>
-                                                <label for="banner1">배너1 - 데스크탑</label>
-                                                <input type="file" class="fileInputDesktop" id="banner1" name="banner1" accept="image/jpeg, image/png" />
-                                                <span class="fileRemoveBtnDesktop" id="banner1RemoveMark">X</span>
-                                                <br/>
-                                                <label for="banner1url">URL</label>
-                                                <input type="text" class="bannerUrlDesktop" id="banner1url" name="banner1url" />
-                                            </div>
-                                            <div>
-                                                <label for="banner1M">배너1 - 모바일</label>
-                                                <input type="file" class="fileInputMobile" id="banner1M" name="banner1M" accept="image/jpeg, image/png" />
-                                                <span class="fileRemoveBtnMobile" id="banner1MRemoveMark">X</span>
-                                                <br/>
-                                                <label for="banner1Murl">URL</label>
-                                                <input type="text" class="bannerUrlMobile" id="banner1Murl" name="banner1Murl" />
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div>
-                                                <label for="banner2">배너2 - 데스크탑</label>
-                                                <input type="file" class="fileInputDesktop" id="banner2" name="banner2" accept="image/jpeg, image/png" />
-                                                <span class="fileRemoveBtnDesktop" id="">X</span>
-                                                <br/>
-                                                <label for="banner2url">URL</label>
-                                                <input type="text" class="bannerUrlDesktop" id="banner2url" name="banner2url" />
-                                            </div>
-                                            <div>
-                                                <label for="banner2M">배너2 - 모바일</label>
-                                                <input type="file" id="banner2M" class="fileInputMobile" name="banner2M" accept="image/jpeg, image/png" />
-                                                <span class="fileRemoveBtnMobile" id="">X</span>
-                                                <br/>
-                                                <label for="banner2Murl">URL</label>
-                                                <input type="text" class="bannerUrlMobile" id="banner2Murl" name="banner2Murl" />
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div>
-                                                <label for="banner3">배너3 - 데스크탑</label>
-                                                <input type="file" class="fileInputDesktop" id="banner3" name="banner3" accept="image/jpeg, image/png" />
-                                                <span class="fileRemoveBtnDesktop" id="">X</span>
-                                                <br/>
-                                                <label for="banner3url">URL</label>
-                                                <input type="text" class="bannerUrlDesktop" id="banner3url" name="banner3url" />
-                                            </div>
-                                            <div>
-                                                <label for="banner3M">배너3 - 모바일</label>
-                                                <input type="file" class="fileInputMobile" id="banner3M" name="banner3M" accept="image/jpeg, image/png" />
-                                                <span class="fileRemoveBtnMobile" id="">X</span>
-                                                <br/>
-                                                <label for="banner3Murl">URL</label>
-                                                <input type="text" class="bannerUrlMobile" id="banner3Murl" name="banner3Murl" />
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div>
-                                                <label for="banner4">배너4 - 데스크탑</label>
-                                                <input type="file" class="fileInputDesktop" id="banner4" name="banner4" accept="image/jpeg, image/png" />
-                                                <span class="fileRemoveBtnDesktop" id="">X</span>
-                                                <br/>
-                                                <label for="banner4url">URL</label>
-                                                <input type="text" class="bannerUrlDesktop" id="banner4url" name="banner4url" />
-                                            </div>
-                                            <div>
-                                                <label for="banner4M">배너4 - 모바일</label>
-                                                <input type="file" class="fileInputMobile" id="banner4M" name="banner4M" accept="image/jpeg, image/png" />
-                                                <span class="fileRemoveBtnMobile" id="">X</span>
-                                                <br/>
-                                                <label for="banner4Murl">URL</label>
-                                                <input type="text" class="bannerUrlMobile" id="banner4Murl" name="banner4Murl" />
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div>
-                                                <label for="banner5">배너5 - 데스크탑</label>
-                                                <input type="file" class="fileInputDesktop" id="banner5" name="banner5" accept="image/jpeg, image/png" />
-                                                <span class="fileRemoveBtnDesktop" id="">X</span>
-                                                <br/>
-                                                <label for="banner5url">URL</label>
-                                                <input type="text" class="bannerUrlDesktop" id="banner5url" name="banner5url" />
-                                            </div>
-                                            <div>
-                                                <label for="banner5M">배너5 - 모바일</label>
-                                                <input type="file" class="fileInputMobile" id="banner5M" name="banner5M" accept="image/jpeg, image/png" />
-                                                <span class="fileRemoveBtnMobile" id="">X</span>
-                                                <br/>
-                                                <label for="banner5Murl">URL</label>
-                                                <input type="text" class="bannerUrlMobile" id="banner5Murl" name="banner5Murl" />
-                                            </div>
-                                        </td> -->
+                                <tbody th:if="${#lists.size(items) > 0}">
+                                <tr>
+                                    <td th:if="${items[0] ne null}"> <!-- th:if="${item ne null}"> -->
+                                        <div>
+                                            <label for="banner">배너 - 데스크탑</label>
+                                            <input type="file" class="fileInputDesktop" id="banner" name="banner1" accept="image/jpeg, image/png" th:src="${items[0].bannerFileLink}"/>
+                                            <span class="fileRemoveBtnDesktop" id="bannerRemoveMark">x</span>
+                                            <br/>
+                                            <label for="bannerurl">URL</label>
+                                            <input type="text" class="bannerUrlDesktop" id="bannerurl" name="banner1url" th:value="${items[0].bannerFileName}" />
+                                        </div>
+                                    </td>
+                                    <td th:if="${items[1] ne null}"> <!-- th:if="${item ne null}"> -->
+                                        <div>
+                                            <label for="banner">배너 - 데스크탑</label>
+                                            <input type="file" class="fileInputDesktop" id="banner" name="banner1" accept="image/jpeg, image/png" th:src="${items[1].bannerFileLink}"/>
+                                            <span class="fileRemoveBtnDesktop" id="bannerRemoveMark">x</span>
+                                            <br/>
+                                            <label for="bannerurl">URL</label>
+                                            <input type="text" class="bannerUrlDesktop" id="bannerurl" name="banner1url" th:value="${items[1].bannerFileName}" />
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                                <tbody th:unless="${#lists.size(items) > 0}">
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <label for="banner1">배너 - 데스크탑</label>
+                                            <input type="file" class="fileInputDesktop" id="banner1" name="banner1" accept="image/jpeg, image/png"/>
+                                            <span class="fileRemoveBtnDesktop" id="banner1RemoveMark">x</span>
+                                            <br/>
+                                            <label for="banner1url">URL</label>
+                                            <input type="text" class="bannerUrlDesktop" id="banner1url" name="banner1url"/>
+                                        </div>
+<!--                                        <div>-->
+<!--                                            <label for="banner1M">배너1 - 모바일</label>-->
+<!--                                            <input type="file" class="fileInputMobile" id="banner1M" name="banner1M" accept="image/jpeg, image/png" />-->
+<!--                                            <span class="fileRemoveBtnMobile" id="banner1MRemoveMark">X</span>-->
+<!--                                            <br/>-->
+<!--                                            <label for="banner1Murl">URL</label>-->
+<!--                                            <input type="text" class="bannerUrlMobile" id="banner1Murl" name="banner1Murl" />-->
+<!--                                        </div>-->
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <label for="banner2">배너2 - 데스크탑</label>
+                                            <input type="file" class="fileInputDesktop" id="banner2" name="banner2" accept="image/jpeg, image/png" />
+                                            <span class="fileRemoveBtnDesktop" id="">X</span>
+                                            <br/>
+                                            <label for="banner2url">URL</label>
+                                            <input type="text" class="bannerUrlDesktop" id="banner2url" name="banner2url" />
+                                        </div>
+<!--                                        <div>-->
+<!--                                            <label for="banner2M">배너2 - 모바일</label>-->
+<!--                                            <input type="file" id="banner2M" class="fileInputMobile" name="banner2M" accept="image/jpeg, image/png" />-->
+<!--                                            <span class="fileRemoveBtnMobile" id="">X</span>-->
+<!--                                            <br/>-->
+<!--                                            <label for="banner2Murl">URL</label>-->
+<!--                                            <input type="text" class="bannerUrlMobile" id="banner2Murl" name="banner2Murl" />-->
+<!--                                        </div>-->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <label for="banner3">배너3 - 데스크탑</label>
+                                            <input type="file" class="fileInputDesktop" id="banner3" name="banner3" accept="image/jpeg, image/png" />
+                                            <span class="fileRemoveBtnDesktop" id="">X</span>
+                                            <br/>
+                                            <label for="banner3url">URL</label>
+                                            <input type="text" class="bannerUrlDesktop" id="banner3url" name="banner3url" />
+                                        </div>
+<!--                                        <div>-->
+<!--                                            <label for="banner3M">배너3 - 모바일</label>-->
+<!--                                            <input type="file" class="fileInputMobile" id="banner3M" name="banner3M" accept="image/jpeg, image/png" />-->
+<!--                                            <span class="fileRemoveBtnMobile" id="">X</span>-->
+<!--                                            <br/>-->
+<!--                                            <label for="banner3Murl">URL</label>-->
+<!--                                            <input type="text" class="bannerUrlMobile" id="banner3Murl" name="banner3Murl" />-->
+<!--                                        </div>-->
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <label for="banner4">배너4 - 데스크탑</label>
+                                            <input type="file" class="fileInputDesktop" id="banner4" name="banner4" accept="image/jpeg, image/png" />
+                                            <span class="fileRemoveBtnDesktop" id="">X</span>
+                                            <br/>
+                                            <label for="banner4url">URL</label>
+                                            <input type="text" class="bannerUrlDesktop" id="banner4url" name="banner4url" />
+                                        </div>
+<!--                                        <div>-->
+<!--                                            <label for="banner4M">배너4 - 모바일</label>-->
+<!--                                            <input type="file" class="fileInputMobile" id="banner4M" name="banner4M" accept="image/jpeg, image/png" />-->
+<!--                                            <span class="fileRemoveBtnMobile" id="">X</span>-->
+<!--                                            <br/>-->
+<!--                                            <label for="banner4Murl">URL</label>-->
+<!--                                            <input type="text" class="bannerUrlMobile" id="banner4Murl" name="banner4Murl" />-->
+<!--                                        </div>-->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <label for="banner5">배너5 - 데스크탑</label>
+                                            <input type="file" class="fileInputDesktop" id="banner5" name="banner5" accept="image/jpeg, image/png" />
+                                            <span class="fileRemoveBtnDesktop" id="">X</span>
+                                            <br/>
+                                            <label for="banner5url">URL</label>
+                                            <input type="text" class="bannerUrlDesktop" id="banner5url" name="banner5url" />
+                                        </div>
+<!--                                        <div>-->
+<!--                                            <label for="banner5M">배너5 - 모바일</label>-->
+<!--                                            <input type="file" class="fileInputMobile" id="banner5M" name="banner5M" accept="image/jpeg, image/png" />-->
+<!--                                            <span class="fileRemoveBtnMobile" id="">X</span>-->
+<!--                                            <br/>-->
+<!--                                            <label for="banner5Murl">URL</label>-->
+<!--                                            <input type="text" class="bannerUrlMobile" id="banner5Murl" name="banner5Murl" />-->
+<!--                                        </div>-->
+                                    </td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
                 <div class="table__action">
-                    <button type="button" class="btn-normal banner-add-item">배너 추가하기</button> 
                     <button type="button" class="btn-normal banner-update-btn">등록하기</button>
                 </div>
             </div>
@@ -197,7 +222,6 @@
             highlightMenu();
             // pageOn();
             // listCheck();
-            bannerAddItem();
             bannerFileHandler();
             inputFileRemove();
             bannerUpdate();

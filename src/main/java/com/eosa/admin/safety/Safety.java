@@ -1,6 +1,6 @@
 package com.eosa.admin.safety;
 
-import com.eosa.admin.encode.SHA256;
+import com.eosa.admin.mapper.encode.SHA256;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

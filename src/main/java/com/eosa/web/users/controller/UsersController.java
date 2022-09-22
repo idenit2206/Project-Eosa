@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -569,7 +570,7 @@ public class UsersController {
     }
 
     @PostMapping("/findUsersAccountByUsersEmail")
-    public CustomResponseData findUsersAccountByUsersEmail(@RequestParam("usersEmail") String usersEmail, MailEntity me) {
+    public CustomResponseData findUsersAccountByUsersEmail(@RequestParam("usersEmail") String usersEmail, MailEntity me) throws MessagingException {
         CustomResponseData result = new CustomResponseData();
         log.info("[findUsersAccountByUsersEmail] usersEmail: {}", usersEmail);
         String usersAccount = usersService.accountMailSend(usersEmail);
@@ -599,7 +600,7 @@ public class UsersController {
      * @param me
      */
     @PostMapping("/resetUsersPassByUsersEmail")
-    public CustomResponseData resetUsersPassByUsersEmail(@RequestParam("usersAccount") String usersAccount, @RequestParam("usersEmail") String usersEmail, MailEntity me) {
+    public CustomResponseData resetUsersPassByUsersEmail(@RequestParam("usersAccount") String usersAccount, @RequestParam("usersEmail") String usersEmail, MailEntity me) throws MessagingException {
         CustomResponseData result = new CustomResponseData();
         String code = UUID.randomUUID().toString();
         code = code.substring(0, 8);
