@@ -34,6 +34,19 @@ public class CompanysController {
     @Autowired private UsersRepository usersRepository;
     @Autowired private AwsS3Service awsS3Service;
 
+    /**
+     * companys 등록
+     * @param params
+     * @param companysCategory
+     * @param companysActiveRegions
+     * @param file1
+     * @param file2
+     * @param file3
+     * @return
+     * @throws JSONException
+     * @throws ParseException
+     * @throws IOException
+     */
     @PostMapping("/insertCompanys")
     public CustomResponseData insertCompanys(
 //      @RequestBody String param
@@ -152,6 +165,10 @@ public class CompanysController {
       return result;
     }
 
+    /**
+     * CompanysCategory의 category 전부 조회
+     * @return
+     */
     @GetMapping("/selectAllCategory")
     public CustomResponseData selectAllCategory() {
       CustomResponseData result = new CustomResponseData();
@@ -189,6 +206,13 @@ public class CompanysController {
         return result;
     }
 
+    /**
+     * 업체검색(필터 적용)
+     * @param companysCategory
+     * @param companysRegion1
+     * @param companysRegion2
+     * @return
+     */
     @GetMapping("/selectCompanysByFilter")
     public CustomResponseData selectCompanysByFilter(
 //        @RequestParam(value="companysNormal", required = false, defaultValue = "false") boolean companysNormal,
@@ -371,6 +395,11 @@ public class CompanysController {
 //        return result;
 //    }
 
+    /**
+     * companysIdx와 일치하는 Companys 정보 조회
+     * @param companysIdx
+     * @return
+     */
     @GetMapping("/selectOneCompanyInfoByCompanysIdx")
     public CustomResponseData selectOneCompanyInfoByCompanysIdx(
         @RequestParam("companysIdx") Long companysIdx

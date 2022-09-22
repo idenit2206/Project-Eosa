@@ -2,11 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.eosa.admin.mapper.BannerMapper">
 
-    <insert id="insertBanner" parameterType="BannerDTO">
+    <insert id="bannerUpdate" parameterType="BannerDTO">
         INSERT INTO AdminBannerManage
             (bannerTag, bannerFileName, bannerFileLink)
         VALUES (#{bannerTag}, #{bannerFileName}, #{bannerFileLink})
     </insert>
+
+    <delete id="bannerTruncate">
+        TRUNCATE TABLE AdminBannerManage
+    </delete>
 
 <!--    <select id="countNoticeList" resultType="int">-->
 <!--        SELECT COUNT(*)-->

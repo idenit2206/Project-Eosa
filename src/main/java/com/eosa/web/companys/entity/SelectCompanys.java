@@ -21,8 +21,10 @@ public interface SelectCompanys {
     String getCompanysRegion3();
     String getCompanysRegistCerti();
     String getCompanysRegistCertiName();
+    int getCompanysRegistCertiCheck();
     String getCompanysLicense();
     String getCompanysLicenseName();
+    int getCompanysLicenseCheck();
     String getCompanysProfileImage();
     String getCompanysProfileImageName();
     String getCompanysBankName();
