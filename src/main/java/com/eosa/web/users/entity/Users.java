@@ -65,7 +65,7 @@ public class Users {
     @Column(nullable=false, length=30)
     private String usersRegion1;
 
-    @Column(nullable=false, length=30)
+    @Column(nullable=true, length=30)
     private String usersRegion2;
 
     @Column(nullable=false)

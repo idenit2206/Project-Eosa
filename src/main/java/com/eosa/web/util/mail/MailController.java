@@ -13,6 +13,8 @@ import com.eosa.web.users.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.mail.MessagingException;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/mail")
@@ -28,7 +30,7 @@ public class MailController {
      * @param mailEntity
      */
     @PostMapping("/send")
-    public void mailSend(MailEntity mailEntity) {
+    public void mailSend(MailEntity mailEntity) throws MessagingException {
         mailService.mailSend(mailEntity);
     }
 
@@ -46,7 +48,7 @@ public class MailController {
      * @param usersEmail
      */
     @GetMapping("/sendAccount")
-    public void accountMailSend(@RequestParam("usersEmail") String usersEmail, MailEntity me) {
+    public void accountMailSend(@RequestParam("usersEmail") String usersEmail, MailEntity me) throws MessagingException {
         log.info("# {} 의 계정정보를 메일로 전송 요청 받았습니다.", usersEmail);
         String usersAccount = usersService.accountMailSend(usersEmail);
         log.debug("# usersAccount: {}", usersAccount);
