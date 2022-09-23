@@ -56,17 +56,26 @@ const bannerAddItem = () => {
 }
 
 const bannerInputFile = () => {
+    const bannterTableBody = document.querySelector(".bannerTableBody");
+    const bannerFileInput = document.querySelectorAll(".bannerFileInput");
+    const bannerFileInputRemove = document.querySelectorAll(".bannerFileInputRemove");
+    const bannerUrlInput = document.querySelectorAll(".bannerUrlInput");
+
+    for(let i = 0; i < bannerFileInput.length; i++) {
+        document.getElementsByClassName("bannerFileInput")[i].addEventListener("change", (e) => {
+            FileUpProcess(e.target.files[0], 'banner', i);
+        })
+    }
 
 }
 
 const FileUpProcess = (file, tag, index) => {
     console.log(`FileUpProcess input parameter: file - ${file}, tag - ${tag}, index = ${index}`);
-    const imgPreviewBodyDesktop = document.querySelectorAll(".imgPreviewBodyDesktop");
-    // const imgPreviewBodyMobile = document.querySelectorAll(".imgPreviewBodyMobile");
-
-    // let result = "";
+    const bannerPreview = document.querySelectorAll(".bannerPreview");
     let fileReader = new FileReader();
-    // console.log("OriginFile: ", file);
-
     fileReader.readAsDataURL(file);
+    fileReader.addEventListener("load", (e) => {
+        // console.log(e.target.result);
+        bannerPreview[index].setAttribute("src", e.target.result);
+    })
 }
