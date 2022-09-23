@@ -115,7 +115,7 @@
                T.terminateRequestDate,
                DATE_ADD(T.terminateRequestDate, INTERVAL -30 DAY) terminateCreateDate
         FROM Users U
-                JOIN TerminateUser T ON U.usersIdx = T.usersIdx
+                LEFT JOIN TerminateUser T ON U.usersIdx = T.usersIdx
         WHERE U.usersDelete = 1
         AND U.usersRole != 'ADMIN'
         <if test="id != null">

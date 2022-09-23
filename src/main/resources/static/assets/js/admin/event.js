@@ -109,6 +109,45 @@ function phoneCheck() {
 };
 
 /**
+ * 비밀번호 확인
+ */
+function checkPassword() {
+    const id = document.querySelector('.usersIdx');
+    const pwd = document.querySelector('#nowPwd');
+    const wrap = pwd.parentNode;
+    const formData = new FormData();
+
+    formData.set('usersIdx', id.value);
+    formData.set('usersPass', pwd.value);
+
+    fetch('/admin/manage/password/check', {
+        method: 'post',
+        body: formData,
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data == 0) {
+                pwd.value = '';
+                pwd.focus();
+
+                if (wrap.querySelector('.warning') == null) {
+                    const warn = document.createElement('i');
+                    warn.classList.add('warning');
+                    warn.innerText = '현재 비밀번호가 일치하지 않습니다.';
+                    wrap.append(warn);
+                }
+            } else {
+                if (wrap.querySelector('.warning') != null) {
+                    wrap.removeChild(wrap.lastChild);
+                }
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        })
+};
+
+/**
  * 관리자 등록
  */
 function insertAdmin() {
@@ -160,6 +199,42 @@ function resetPwd() {
         fetchApi('/admin/manage/reset/password', 'post', formData, '비밀번호가 초기화되었습니다.');
     }
 
+};
+
+/**
+ * 관리자 마이페이지 수정
+ */
+function updateMypage() {
+    const now = document.querySelector('#nowPwd');
+    const pwd = document.querySelector('#adminPwd01');
+    const pwdCheck = document.querySelector('#adminPwd02');
+    const name = document.querySelector('#adminName');
+    const tel = document.querySelector('#adminContact');
+    const email = document.querySelector('#adminEmail');
+
+    if (now.value == '') {
+        alertFocus('현재 비밀번호를 입력해 주세요.', now);
+    } else if (pwd.value == '') {
+        alertFocus('새 비밀번호를 입력해 주세요.', pwd);
+    } else if (pwdCheck.value == '') {
+        alertFocus('새 비밀번호를 확인해 주세요.', pwdCheck);
+    } else if (name.value == '') {
+        alertFocus('이름을 입력해 주세요.', name);
+    } else if (tel.value == '') {
+        alertFocus('연락처를 입력해 주세요.', tel);
+    } else if (email.value == '') {
+        alertFocus('이메일을 입력해 주세요.', email);
+    } else {
+        const formData = new FormData();
+
+        formData.set('usersIdx', document.querySelector('.usersIdx').value);
+        formData.set('usersPass', pwd.value);
+        formData.set('usersName', name.value);
+        formData.set('usersPhone', tel.value);
+        formData.set('usersEmail', email.value);
+
+        fetchApi('/admin/manage/mypage/update', 'post', formData, '수정되었습니다.');
+    }
 };
 
 /**

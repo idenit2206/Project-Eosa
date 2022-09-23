@@ -533,4 +533,17 @@ public class CompanyService {
         return "admin/board/chart/list";
     }
 
+    /**
+     * 전체 통계 조회 서비스
+     *
+     * @param model
+     * @return String
+     */
+    public String wholeChart(Model model) {
+
+        model.addAttribute("company", companyMapper.countCompany());
+
+        return "admin/board/chart/whole";
+    }
+
 }

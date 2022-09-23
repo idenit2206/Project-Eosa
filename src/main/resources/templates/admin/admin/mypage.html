@@ -13,9 +13,11 @@
             <div class="form form--sm form-register">
                 <fieldset class="fieldset">
 
+                    <input type="hidden" class="usersIdx" th:value="${details.usersIdx}">
+
                     <div class="input-wrap">
                         <label for="adminAccount" class="label">아이디</label>
-                        <input type="text" id="adminAccount" class="input" value="admin" readonly>
+                        <input type="text" id="adminAccount" class="input" th:value="${details.usersAccount}" readonly>
                     </div>
 
                     <div class="input-wrap">
@@ -35,24 +37,24 @@
 
                     <div class="input-wrap">
                         <label for="adminName" class="label">이름</label>
-                        <input type="text" spellcheck="false" id="adminName" class="input" value="아무개">
+                        <input type="text" spellcheck="false" id="adminName" class="input" th:value="${details.usersName}">
                     </div>
 
                     <div class="input-wrap">
                         <label for="adminContact" class="label">연락처</label>
-                        <input type="text" spellcheck="false" id="adminContact" class="input onlyNum" value="01012345678">
+                        <input type="text" spellcheck="false" id="adminContact" class="input onlyNum user-tel" maxlength="11" th:value="${details.usersPhone}">
                     </div>
 
                     <div class="input-wrap">
                         <label for="adminEmail" class="label">이메일</label>
-                        <input type="email" spellcheck="false" id="adminEmail" class="input" value="eosa@eosa.com">
+                        <input type="email" spellcheck="false" id="adminEmail" class="input" th:value="${details.usersEmail}">
                     </div>
 
                 </fieldset>
 
                 <div class="form__action bottom">
                     <a th:href="@{/admin/manage/member/list}" class="btn-normal">취소</a>
-                    <button type="button" class="btn-prime pwd-modify-btn">수정 하기</button>
+                    <button type="button" class="btn-prime update-my">수정 하기</button>
                 </div>
             </div>
         </section>
@@ -64,6 +66,29 @@
         window.addEventListener('load', function () {
             new PwdValidation();
             onlyNum();
+
+            // 연락처 중복확인
+            const tel = document.querySelector('.user-tel');
+            const telValue = tel.value;
+            tel.addEventListener('change', e => {
+                if(telValue != tel.value) {
+                    phoneCheck();
+                } else {
+                    const wrap = tel.parentNode;
+                    if (wrap.querySelector('.warning') != null) {
+                        wrap.removeChild(wrap.lastChild);
+                    }
+                }
+            });
+
+            // 현재 비밀번호 확인
+            const nowPwd = document.querySelector('#nowPwd');
+            nowPwd.addEventListener('change', checkPassword);
+
+            // 정보 수정
+            const updateBtn = document.querySelector('.update-my');
+            updateBtn.addEventListener('click', updateMypage);
+
         });
     </script>
 </th:block>

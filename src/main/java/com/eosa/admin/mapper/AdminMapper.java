@@ -83,4 +83,20 @@ public interface AdminMapper {
      */
     int countPhone(String usersPhone);
 
+    /**
+     * 비밀번호 확인 매퍼
+     *
+     * @param usersIdx
+     * @return String
+     */
+    String selectPassword(long usersIdx);
+
+    /**
+     * 관리자 마이페이지 수정 매퍼
+     *
+     * @param usersDTO
+     * @return int
+     */
+    int updateMypage(UsersDTO usersDTO);
+
 }

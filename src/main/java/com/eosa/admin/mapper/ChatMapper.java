@@ -36,4 +36,12 @@ public interface ChatMapper {
      */
     List<ChatDTO> selectChatList(Map<String, Object> map);
 
+    /**
+     * 채팅 내역 조회 매퍼
+     *
+     * @param roomId
+     * @return ChatDTO
+     */
+    List<ChatDTO> selectChat(String roomId);
+
 }

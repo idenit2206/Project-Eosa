@@ -478,4 +478,19 @@
         ORDER BY C.companysRegistDate DESC LIMIT #{startIndex}, #{pageSize}
     </select>
 
+    <!-- 업체 개수 조회 -->
+    <select id="countCompany" resultType="int">
+        SELECT COUNT(*)
+        FROM Companys
+    </select>
+
+    <!-- 전체 통계 조회 -->
+    <select id="selectChart" resultType="ChartDTO">
+        SELECT RF.requestFormRegion1,
+               RF.requestFormDate,
+               U.usersAge
+        FROM RequestForm RF
+                 JOIN Users U on RF.usersIdx = U.usersIdx
+    </select>
+
 </mapper>

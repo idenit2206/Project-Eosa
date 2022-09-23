@@ -17,26 +17,30 @@
                     <fieldset class="fieldset">
                         <div class="msg-form">
                             <div class="msg-top">
-                                <span class="msg-company">아이덴잇 탐정 사무소</span>
-                                <span class="msg-client">testAccount112</span>
+                                <span class="msg-company" th:text="${chatList[0].roomName}"></span>
+                                <span class="msg-client" th:text="${chatList[0].usersAccount}"></span>
                             </div>
+
                             <div class="msg-body">
-                                <div class="msg-date">
-                                    <hr>
-                                    <span>2022.06.22</span>
-                                    <hr>
-                                </div>
-                                <div class="msg-date">
-                                    <hr>
-                                    <span>2022.06.23</span>
-                                    <hr>
+                                <div class="msg-wrap" th:if="${chatList[0].message} ne null">
+                                    <div th:each="list : ${chatList}">
+                                        <div class="msg-date" th:if="${list.dateCheck} eq 1">
+                                            <hr>
+                                            <span th:text="${#dates.format(list.sendDate, 'yyyy.MM.dd')}"></span>
+                                            <hr>
+                                        </div>
+                                        <div th:classappend="${list.sender} eq 'client' ? 'msg-right' : 'msg-left'">
+                                            <div class="msg-content" th:text="${list.message}"></div>
+                                            <div class="msg-time" th:text="|${#dates.hour(list.sendDate) < 12 ? '오전' : '오후'} ${#dates.format(list.sendDate, 'h:mm')}|">오후 8:20</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </fieldset>
                     <div class="form__action bottom">
                         <a th:href="@{/admin/manage/chat/list}" class="btn-normal">목록가기</a>
-                        <a th:href="@{/admin/manage/company/details(companysIdx=12)}" class="btn-prime">업체 바로가기</a>
+                        <a th:href="@{/admin/manage/company/details(companysIdx=${chatList[0].companysIdx})}" class="btn-prime">업체 바로가기</a>
                     </div>
                 </div>
             </div>

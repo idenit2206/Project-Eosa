@@ -149,6 +149,21 @@ select:focus {
   justify-content: center;
   gap: 8px;
 }
+.msg-body::-webkit-scrollbar {
+  width: 9px;  /* 스크롤바의 너비 */
+}
+.msg-body::-webkit-scrollbar-thumb {
+  background-clip: padding-box;
+  background-color: transparent;
+  border-radius: 99px;
+  border: 3px solid transparent;
+}
+.msg-body:hover::-webkit-scrollbar-thumb {
+  background-clip: padding-box;
+  background-color: rgba(33,33,33,0.3);
+  border-radius: 99px;
+  border: 3px solid transparent;
+}
 .msg-form {
   display: flex;
   align-items: center;
@@ -156,7 +171,7 @@ select:focus {
   flex-wrap: wrap;
 }
 .msg-form .msg-top {
-  width: 70%;
+  width: 60%;
   height: 90px;
   padding: 24px;
   display: flex;
@@ -180,20 +195,152 @@ select:focus {
 .msg-form .msg-body {
   display: flex;
   flex-direction: column;
-  width: 70%;
+  width: 60%;
   height: 660px;
   border: 1px solid #dbdbdb;
   border-top: 0;
   border-radius: 0 0 10px 10px;
   background: #FAFAFA;
+  overflow-y: auto;
+  padding: 0 4%;
+}
+.msg-form .msg-body .msg-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 0;
+}
+.msg-content-wrap.right {
+  align-self: flex-end;
 }
 .msg-form .msg-body .msg-date {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 10px;
 }
 .msg-form .msg-body .msg-date hr {
-  width: 30%;
+  width: 100%;
+  border: 0;
+  height: 1px;
+  background: #EEEEEE;
+  margin: 20px 0px;
+}
+.msg-form .msg-body .msg-date span {
+  margin: 0 16px;
+  color: #757575;
+  font-size: 14px;
+  letter-spacing: -0.5px;
+}
+.msg-form .msg-body .msg-right {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-end;
+  align-self: flex-end;
+  gap: 10px;
+}
+.msg-form .msg-body .msg-right .msg-content {
+  padding: 16px 12px;
+  border: 1px solid #EEEEEE;
+  border-radius: 10px;
+  font-size: 15px;
+  color: #212121;
+  white-space: pre-line;
+  background: #E8EAF6;
+  max-width: 70%;
+}
+.msg-form .msg-body .msg-right .msg-time {
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 1.6;
+  letter-spacing: -0.5px;
+  color: #757575;
+}
+.msg-form .msg-body .msg-left {
+  display: flex;
+  align-items: flex-end;
+  align-self: flex-start;
+  gap: 10px;
+}
+.msg-form .msg-body .msg-left .msg-content {
+  padding: 16px 12px;
+  border: 1px solid #EEEEEE;
+  border-radius: 10px;
+  font-size: 15px;
+  color: #212121;
+  white-space: pre-line;
+  background: #FFF;
+  max-width: 70%;
+}
+.msg-form .msg-body .msg-left .msg-time {
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 1.6;
+  letter-spacing: -0.5px;
+  color: #757575;
+}
+.w-chart-form {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.w-chart-top {
+  width: 100%;
+  background: #fff;
+  border: 1px solid #EEEEEE;
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+  padding: 20px;
+}
+.w-chart-top .w-chart-count {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.w-label-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.w-label {
+  font-weight: 600;
+}
+.chart-label-wrap {
+  width: 100%;
+}
+.w-select-wrap .select {
+  width: 180px;
+  height: 38px;
+  border: 1px solid #dbdbdb;
+  font-size: 14px;
+  padding: 7px;
+}
+.chart-age-time {
+  display: flex;
+  gap: 40px;
+}
+.chart-age, .chart-time, .chart-area, .chart-category, .chart-month {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  padding: 24px 16px;
+  background: #FFFFFF;
+  border: 1px solid #EEEEEE;
+  width: 100%;
+  gap: 40px;
+}
+.age-wrap {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.chart-wrap-sm {
+  position: relative;
+  width: 100%;
+  height: 200px;
 }
 .company-profile-wrap {
   display: flex;

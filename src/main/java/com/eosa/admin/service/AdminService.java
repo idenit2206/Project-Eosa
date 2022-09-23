@@ -3,6 +3,8 @@ package com.eosa.admin.service;
 import com.eosa.admin.dto.UsersDTO;
 import com.eosa.admin.mapper.AdminMapper;
 import com.eosa.admin.pagination.Pagination;
+import com.eosa.security.CustomPrincipalDetails;
+import com.eosa.web.users.entity.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -48,9 +50,16 @@ public class AdminService {
     /**
      * 관리자 정보 수정 폼 서비스
      *
+     * @param model
+     * @param principalDetails
      * @return String
      */
-    public String adminInfo() {
+    public String adminInfo(Model model, CustomPrincipalDetails principalDetails) {
+
+
+        UsersDTO details = adminMapper.selectAdminDetails(principalDetails.getUsers().getUsersIdx());
+
+        model.addAttribute("details", details);
 
         return "admin/admin/mypage";
     }
@@ -170,6 +179,40 @@ public class AdminService {
     public int phoneCheck(String usersPhone) {
 
         return adminMapper.countPhone(usersPhone);
+    }
+
+    /**
+     * 비밀번호 확인 서비스
+     *
+     * @param usersDTO
+     * @return int
+     */
+    public int selectPassword(UsersDTO usersDTO) {
+
+        String nowPassword = adminMapper.selectPassword(usersDTO.getUsersIdx());
+
+        if (bCryptPasswordEncoder.matches(usersDTO.getUsersPass(), nowPassword)) {
+            return 1;
+        } else {
+            return 0;
+        }
+
+    }
+
+    /**
+     * 관리자 마이페이지 수정 서비스
+     *
+     * @param usersDTO
+     * @return int
+     */
+    public int updateMypage(UsersDTO usersDTO) {
+
+        // 비밀번호 인코딩
+        String rawPassword = usersDTO.getUsersPass();
+        String encPassword = bCryptPasswordEncoder.encode(rawPassword);
+        usersDTO.setUsersPass(encPassword);
+
+        return adminMapper.updateMypage(usersDTO);
     }
 
 }

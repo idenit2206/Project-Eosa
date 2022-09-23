@@ -98,4 +98,21 @@
         WHERE usersPhone = #{usersPhone}
     </select>
 
+    <!-- 비밀번호 확인 -->
+    <select id="selectPassword" resultType="String">
+        SELECT U.usersPass
+        FROM Users U
+        WHERE U.usersIdx = #{usersIdx}
+    </select>
+
+    <!-- 관리자 마이페이지 수정 -->
+    <update id="updateMypage" parameterType="UsersDTO">
+        UPDATE Users
+        SET usersPass  = #{usersPass},
+            usersName  = #{usersName},
+            usersPhone = #{usersPhone},
+            usersEmail = #{usersEmail}
+        WHERE usersIdx = #{usersIdx}
+    </update>
+
 </mapper>
