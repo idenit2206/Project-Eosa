@@ -29,12 +29,18 @@ public class ChatDTO {
 
     private long messageIdx;                // 메시지의 고유 번호
     private String messageType;             // 메시지의 유형
-    private long sender;                    // 메시지 작성자
+    private String sender;                    // 메시지 작성자
     private String message;                 // 메시지 내용
     private String fileMessage;             // 파일 메시지
     private Timestamp sendDate;             // 메시지 작성일
 
     private String usersAccount;            // 회원 계정
     private String usersRole;               // 회원 역할
+
+    private int dateCheck;                  // 날짜 표시 여부
+
+    private String requestFormRegion1;
+    private Timestamp requestFormDate;
+    private int usersAge;
 
 }

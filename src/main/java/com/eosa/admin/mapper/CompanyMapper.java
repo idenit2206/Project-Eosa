@@ -262,4 +262,18 @@ public interface CompanyMapper {
      */
     List<ChartDTO> selectChartList(Map<String, Object> map);
 
+    /**
+     * 업체 개수 조회 매퍼
+     *
+     * @return int
+     */
+    int countCompany();
+
+    /**
+     * 전체 통계 조회 매퍼
+     *
+     * @return ChartDTO
+     */
+    List<ChartDTO> selectChart();
+
 }

@@ -44,10 +44,18 @@ public class ChatController {
         return chatService.chatList(model, sort, search, page);
     }
 
+    /**
+     * 채팅 내역 조회 컨트롤러
+     *
+     * @param model
+     * @param roomId
+     * @return String
+     */
     @GetMapping("/details")
-    public String chatDetails(Model model) {
+    public String chatDetails(Model model,
+                              @RequestParam String roomId) {
 
-        return chatService.chatDetails(model);
+        return chatService.chatDetails(model, roomId);
     }
 
 }

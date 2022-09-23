@@ -2,7 +2,9 @@ package com.eosa.admin.controller;
 
 import com.eosa.admin.dto.UsersDTO;
 import com.eosa.admin.service.AdminService;
+import com.eosa.security.CustomPrincipalDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -39,12 +41,15 @@ public class AdminController {
     /**
      * 관리자 정보 수정 폼 컨트롤러
      *
+     * @param model
+     * @param principalDetails
      * @return String
      */
     @GetMapping("/manage/info")
-    public String adminInfo() {
+    public String adminInfo(Model model,
+                            @AuthenticationPrincipal CustomPrincipalDetails principalDetails) {
 
-        return adminService.adminInfo();
+        return adminService.adminInfo(model, principalDetails);
     }
 
     /**
@@ -148,5 +153,32 @@ public class AdminController {
 
         return adminService.phoneCheck(usersPhone);
     }
+
+    /**
+     * 비밀번호 확인 컨트롤러
+     *
+     * @param usersDTO
+     * @return int
+     */
+    @ResponseBody
+    @PostMapping("/manage/password/check")
+    public int selectPassword(UsersDTO usersDTO) {
+
+        return adminService.selectPassword(usersDTO);
+    }
+
+    /**
+     * 관리자 마이페이지 수정 컨트롤러
+     *
+     * @param usersDTO
+     * @return int
+     */
+    @ResponseBody
+    @PostMapping("/manage/mypage/update")
+    public int updateMypage(UsersDTO usersDTO) {
+
+        return adminService.updateMypage(usersDTO);
+    }
+
 
 }

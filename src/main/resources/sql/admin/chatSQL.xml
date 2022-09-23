@@ -20,6 +20,7 @@
     <!-- 채팅 목록 조회 -->
     <select id="selectChatList" resultType="ChatDTO" parameterType="hashmap">
         SELECT CR.idx,
+               CR.roomId,
                CR.roomName,
                CR.companysIdx,
                CR.createdDate,
@@ -36,6 +37,21 @@
             </if>
         </where>
         ORDER BY CR.createdDate DESC LIMIT #{startIndex}, #{pageSize}
+    </select>
+
+    <!-- 채팅 내역 조회 -->
+    <select id="selectChat" resultType="ChatDTO" parameterType="String">
+        SELECT CR.roomName,
+               CR.companysIdx,
+               U.usersAccount,
+               CM.sender,
+               CM.message,
+               CM.sendDate
+        FROM ChatRoom CR
+                 LEFT JOIN Users U ON CR.usersIdx = U.usersIdx
+                 LEFT JOIN ChatMessage CM ON CR.roomId = CM.roomId
+        WHERE CR.roomId = #{roomId}
+        ORDER BY CM.sendDate
     </select>
 
 </mapper>

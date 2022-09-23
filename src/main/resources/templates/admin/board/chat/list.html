@@ -46,8 +46,7 @@
                     </tbody>
 
                     <tbody th:if="${count} ne 0">
-                    <tr th:each="list : ${chatList}" th:onclick="|linkTo(event,'/admin/manage/chat/details?usersIdx=${list.usersIdx}')|">
-
+                    <tr th:each="list : ${chatList}" th:roomId="'/admin/manage/chat/details?roomId=' + ${list.roomId}" onclick="linkTo(event, this.getAttribute('roomId'))">
                         <td>
                             <span th:text="${list.idx}"></span>
                         </td>

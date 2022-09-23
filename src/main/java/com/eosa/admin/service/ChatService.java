@@ -3,10 +3,12 @@ package com.eosa.admin.service;
 import com.eosa.admin.dto.ChatDTO;
 import com.eosa.admin.mapper.ChatMapper;
 import com.eosa.admin.pagination.Pagination;
+import com.nimbusds.oauth2.sdk.util.date.SimpleDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,7 +68,29 @@ public class ChatService {
         return "admin/board/chat/list";
     }
 
-    public String chatDetails(Model model) {
+    /**
+     * 채팅 내역 조회 서비스
+     *
+     * @param model
+     * @param roomId
+     * @return String
+     */
+    public String chatDetails(Model model, String roomId) {
+
+        List<ChatDTO> list = chatMapper.selectChat(roomId);
+
+        model.addAttribute("chatList", list);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        if (list.size() > 1) {
+            list.get(0).setDateCheck(1);
+            for (int i = 1; i < list.size(); i++) {
+                if(!sdf.format(list.get(i).getSendDate()).equals(sdf.format(list.get(i - 1).getSendDate()))) {
+                    list.get(i).setDateCheck(1);
+                }
+            }
+        }
 
         return "admin/board/chat/details";
     }

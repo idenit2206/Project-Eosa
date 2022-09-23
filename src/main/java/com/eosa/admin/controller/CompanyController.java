@@ -290,4 +290,16 @@ public class CompanyController {
         return companyService.chartList(model, sort, search, page);
     }
 
+    /**
+     * 전체 통계 조회 컨트롤러
+     *
+     * @param model
+     * @return String
+     */
+    @GetMapping("/chart/whole")
+    public String wholeChart(Model model) {
+
+        return companyService.wholeChart(model);
+    }
+
 }
