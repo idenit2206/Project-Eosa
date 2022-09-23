@@ -1,149 +1,105 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="ko" xmlns:th="http://www.thymeleaf.org"-->
-<!--      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"-->
-<!--      layout:decorate="~{admin/fragments/layout}">-->
-
-<!--<th:block layout:fragment="content">-->
-
-<!--    <th:block th:replace="admin/fragments/aside :: asideFragment"></th:block>-->
-
-<!--    <main id="main" class="main-list" data-category="banner">-->
-<!--        <section class="section section-users">-->
-<!--            <h2 class="section_title">배너 관리</h2>-->
-<!--            <div class="table">-->
-<!--                <div class="table__top">-->
-<!--                    <div class="top-wrap">-->
-<!--                        <div class="header-wrap">-->
-<!--                            <table>-->
-<!--                                <tbody class="bannerTableBody">-->
-<!--                                    <tr class="bannerRows">-->
-<!--                                        <td class="bannerPreviewCell">-->
-<!--                                            <img class="bannerPreview"/>-->
-<!--                                        </td>-->
-<!--                                        <td class="bannerInputCell">-->
-<!--                                            <input type="file" class="bannerFileInput" accept="image/jpeg, image/png" />-->
-<!--                                            <span class="bannerFileInputRemove">x</span>-->
-<!--                                            <br/>-->
-<!--                                            <input type="text" class="bannerUrlInput" />-->
-<!--                                        </td>-->
-<!--                                    </tr>-->
-<!--                                </tbody>-->
-<!--                            </table>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="table__action">-->
-<!--                    <button type="button" class="btn-normal banner-add-item">배너 추가하기</button>-->
-<!--                    <button type="button" class="btn-normal banner-update-btn">등록하기</button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </section>-->
-<!--    </main>-->
-
-<!--</th:block>-->
-
-<!--<th:block layout:fragment="script">-->
-<!--    <script>-->
-<!--        window.addEventListener('DOMContentLoaded', () => {-->
-<!--            highlightMenu();-->
-<!--            // pageOn();-->
-<!--            // listCheck();-->
-<!--            bannerAddItem();-->
-<!--            bannerInputFile();-->
-<!--        });-->
-<!--    </script>-->
-<!--</th:block>-->
-
-<!--</html>-->
-<!DOCTYPE html>
+<!DOCTYPE html>-->
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{admin/fragments/layout}">
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{admin/fragments/layout}">
 
 <th:block layout:fragment="content">
-
     <th:block th:replace="admin/fragments/aside :: asideFragment"></th:block>
-
     <main id="main" class="main-list" data-category="banner">
         <section class="section section-users">
             <h2 class="section_title">배너 관리</h2>
-            <div class="table">
-                <div class="table__top">
-                    <div class="top-wrap">
-                        <div class="header-wrap">
-                            <table>
-                                <tbody>
-                                <tr>
-                                    <td class="imgPreviewDesktop" th:each="index : ${#numbers.sequence(0, 5)}">
-                                        <p th:if="${items[index].bannerFileLink ne ''}">배너[[${items[index].bannerFileLink}]]</p>
-                                        <p th:if="${items[index].bannerFileLink eq ''}">ㅅㄷㄴㅅㄴㄷㅁㄷㅂㅁ자ㅗㅓ가너</p>
-                                        
-                                        <!-- <img class="imgPreviewBodyDesktop" th:src="${items[index].bannerFileLink}"/> -->
-                                    </td>
-                                    <!-- <td class="imgPreviewDesktop">
-                                        <p>배너2</p>
-                                        <img class="imgPreviewBodyDesktop"/>
-                                    </td>
-                                    <td class="imgPreviewDesktop">
-                                        <p>배너3</p>
-                                        <img class="imgPreviewBodyDesktop"/>
-                                    </td>
-                                    <td class="imgPreviewDesktop">
-                                        <p>배너4</p>
-                                        <img class="imgPreviewBodyDesktop"/>
-                                    </td>
-                                    <td class="imgPreviewDesktop">
-                                        <p>배너5</p>
-                                        <img class="imgPreviewBodyDesktop"/>
-                                    </td> -->
-                                </tr>
-                                <!-- <tr>
-                                    <td class="imgPreviewMobile">
-                                        <p>배너1_Mobile</p>
-                                        <img class="imgPreviewBodyMobile"/>
-                                    </td>
-                                    <td class="imgPreviewMobile">
-                                        <p>배너2_Mobile</p>
-                                        <img class="imgPreviewBodyMobile"/>
-                                    </td>
-                                    <td class="imgPreviewMobile">
-                                        <p>배너3_Mobile</p>
-                                        <img class="imgPreviewBodyMobile"/>
-                                    </td>
-                                    <td class="imgPreviewMobile">
-                                        <p>배너4_Mobile</p>
-                                        <img class="imgPreviewBodyMobile"/>
-                                    </td>
-                                    <td class="imgPreviewMobile">
-                                        <p>배너5_Mobile</p>
-                                        <img class="imgPreviewBodyMobile"/>
-                                    </td>
-                                </tr> -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="table__action">
-                    <button type="button" class="btn-normal banner-update-btn">등록하기</button>
-                </div>
-            </div>
-        </section>
+            <div class="table"> 
+               <div class="table__top">
+                   <div class="top-wrap">
+                       <div class="header-wrap">
+                           <table>
+                              <tbody class="bannerTableBody">
+                                    <tr class="bannerRows">
+                                        <td class="bannerPreviewCell">
+                                            <img class="bannerPreview" th:src="${items[0].bannerFileLink}"/>
+                                        </td>
+                                        <td class="bannerInputCell">
+                                            <input type="file" class="bannerFileInput" accept="image/jpeg, image/png"/>
+                                            <span class="bannerFileInputRemove">x</span>
+                                            <br/>
+                                            <input type="text" class="bannerUrlInput" th:value="${items[0].bannerFileLink}"/>
+                                        </td>                                       
+                                    </tr>
+                                    <tr class="bannerRows">
+                                        <td class="bannerPreviewCell">
+                                            <img class="bannerPreview" th:src="${items[1].bannerFileLink}"/>
+                                        </td>
+                                        <td class="bannerInputCell">
+                                            <input type="file" class="bannerFileInput" accept="image/jpeg, image/png"/>
+                                            <span class="bannerFileInputRemove">x</span>
+                                            <br/>
+                                            <input type="text" class="bannerUrlInput" th:value="${items[1].bannerFileLink}"/>
+                                        </td>                                       
+                                    </tr>
+                                    <tr class="bannerRows">
+                                        <td class="bannerPreviewCell" th:if="${items[2] ne null}">
+                                            <img class="bannerPreview" th:src="${items[2].bannerFileLink}"/>
+                                        </td>
+                                        <td class="bannerPreviewCell" th:unless="${items[2] ne null}">
+                                            <img class="bannerPreview" />
+                                        </td>
+                                        <td class="bannerInputCell">
+                                            <input type="file" class="bannerFileInput" accept="image/jpeg, image/png"/>
+                                            <span class="bannerFileInputRemove">x</span>
+                                            <br/>
+                                            <input type="text" class="bannerUrlInput" th:value="${items[2].bannerFileLink}"/>
+                                        </td>                                       
+                                    </tr>
+                                    <tr class="bannerRows">
+                                        <td class="bannerPreviewCell">
+                                            <img class="bannerPreview" th:src="${items[3].bannerFileLink}"/>
+                                        </td>
+                                        </td>
+                                        <td class="bannerInputCell">
+                                            <input type="file" class="bannerFileInput" accept="image/jpeg, image/png"/>
+                                            <span class="bannerFileInputRemove">x</span>
+                                            <br/>
+                                            <input type="text" class="bannerUrlInput" th:value="${items[3].bannerFileLink}"/>
+                                        </td>                                       
+                                    </tr>
+                                    <tr class="bannerRows">
+                                        <td class="bannerPreviewCell">
+                                            <img class="bannerPreview" th:src="${items[4].bannerFileLink}"/>
+                                        </td>
+                                        <td class="bannerInputCell">
+                                            <input type="file" class="bannerFileInput" accept="image/jpeg, image/png"/>
+                                            <span class="bannerFileInputRemove">x</span>
+                                            <br/>
+                                            <input type="text" class="bannerUrlInput" th:value="${items[4].bannerFileLink}" />
+                                        </td>                                       
+                                    </tr>
+                               </tbody>
+                           </table>
+                       </div>
+                   </div>
+               </div>
+               <div class="table__action">
+                   <!-- <button type="button" class="btn-normal banner-add-item">배너 추가하기</button> -->
+                   <button type="button" class="btn-normal banner-update-btn">등록하기</button>
+               </div>
+           </div>
+       </section>
     </main>
 
 </th:block>
 
 <th:block layout:fragment="script">
-    <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            highlightMenu();
-            // pageOn();
-            // listCheck();
-            bannerFileHandler();
-            inputFileRemove();
-            bannerUpdate();
-        });
-    </script>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        highlightMenu();
+        pageOn();
+        // listCheck();
+        // bannerAddItem();
+        bannerInputFile();
+        bannerInputFileRemove();
+        bannerUpdate();
+    });
+</script>
 </th:block>
 
 </html>

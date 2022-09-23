@@ -80,7 +80,7 @@ public interface RequestFormRepository extends JpaRepository<RequestForm, Long> 
     "RequestForm.requestFormAcceptDate, RequestForm.requestFormCompDate, RequestForm.requestFormRejectMessage, " +
     "GROUP_CONCAT(RequestFormCategory.requestFormCategoryValue) AS requestFormCategory " +
     "FROM RequestForm INNER JOIN RequestFormCategory ON RequestForm.requestFormIdx = RequestFormCategory.requestFormIdx " +
-    "LEFT JOIN Companys C ON RequestForm.companysIdx = C.companysIdx " +
+    "JOIN Companys C ON RequestForm.companysIdx = C.companysIdx " +
     "WHERE RequestForm.usersIdx = ?1 " +
     "GROUP BY RequestForm.RequestFormIdx " +
     "ORDER BY RequestForm.requestFormDate DESC",
