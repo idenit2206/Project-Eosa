@@ -46,6 +46,9 @@ public class UsersService implements UsersRepository {
         LocalDateTime currentTime = LocalDateTime.now();
         param.setUsersPass(passwordEncoder.encode(param.getUsersPass()));
         param.setUsersEnabled(1);
+        if(param.getProvider().equals("")) {
+            param.setProvider("eosa");
+        }
         param.setUsersJoinDate(currentTime);
 
         try {

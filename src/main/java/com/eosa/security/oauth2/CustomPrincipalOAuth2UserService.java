@@ -56,10 +56,9 @@ public class CustomPrincipalOAuth2UserService extends DefaultOAuth2UserService {
             platform = provider;
             providerId = oAuth2User.getAttribute("sub");
             usersEmail = oAuth2User.getAttribute("email").toString();
-            // log.debug("#[Google] providerId: {}", providerId);
-            // log.debug("#[Google] oAuth2Email: {}", usersEmail);
-            customOAuth2UserInfo = new GoogleUserInfo(oAuth2User.getAttributes());
             log.debug("[loadUser] google 이메일: {}", usersEmail);
+            customOAuth2UserInfo = new GoogleUserInfo(oAuth2User.getAttributes());
+            
         }
         else if(provider.equals("naver")) {
             Map<String, Object> response = oAuth2User.getAttribute("response");
