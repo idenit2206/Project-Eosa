@@ -61,7 +61,7 @@ public class UsersService implements UsersRepository {
     }
 
     @Override
-    public Users selectUsersPhoneCheckByUsersPhone(String usersPhone) {
+    public int selectUsersPhoneCheckByUsersPhone(String usersPhone) {
         return usersRepository.selectUsersPhoneCheckByUsersPhone(usersPhone);
     }
 

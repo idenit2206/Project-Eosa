@@ -31,8 +31,12 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
      * 회원가입시 핸드폰 인증 코드를 발송하기전
      * 핸드폰번호가 기존의 사용중이 번호인지 검사합니다.
      */
-    @Query(value="SELECT * FROM Users WHERE usersPhone = ?1", nativeQuery = true)
-    Users selectUsersPhoneCheckByUsersPhone(String usersPhone);
+    @Query(
+        value="SELECT IFNULL(" +
+            "(SELECT 1 FROM Users WHERE usersPhone = ?1), 0) " +
+        "AS usersPhoneCheck"
+    , nativeQuery = true)
+    int selectUsersPhoneCheckByUsersPhone(String usersPhone);
 
     /**
      * 회원가입을 할 때 아이디가 중복인지 검사하기 위한 메서드
