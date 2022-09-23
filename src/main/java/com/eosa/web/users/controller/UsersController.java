@@ -98,7 +98,7 @@ public class UsersController {
             message.setTo(usersPhone);  // 수신번호
             message.setText("어사 회원가입 핸드폰 인증 단계입니다.\n다음의 번호를 입력해주세요.\n"+authCode); // 발신내용
             log.info("[sendOne] usersPhone: {} 의 SMS 인증코드: {}",usersPhone, authCode);
-            // SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+            SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
             // smsCertificationService.savedAuthCode(usersPhone, authCode);
 
             result.setStatusCode(HttpStatus.OK.value());
@@ -106,6 +106,7 @@ public class UsersController {
             result.setResponseDateTime(LocalDateTime.now());
         }
         else {
+            log.info("[sendOne] 이미 가입된 회원의 휴대폰 번호입니다.");
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem(usersPhoneCheck);
             result.setResponseDateTime(LocalDateTime.now());
@@ -181,7 +182,6 @@ public class UsersController {
             }
             paramUsers.setProvider(jsonObject.get("provider").getAsString());
             paramUsers.setUsersProfile(jsonObject.get("picture").getAsString());
-            // paramUsers.setUsersNotice(element.get("usersNotice").getAsInt());
         // log.debug("paramUsers: {}", paramUsers.toString());
 
         CustomResponseData result = new CustomResponseData();
