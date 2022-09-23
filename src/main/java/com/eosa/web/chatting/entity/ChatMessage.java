@@ -16,9 +16,9 @@ public class ChatMessage {
     @Column private Long messageIdx;
     @Column private MessageType messageType;
     @Column private String roomId;
-    @Column private Long sender;
+    @Column private String sender;
     @Column private String message;
     @Column private String fileMessage;
-    @Column private LocalDateTime sendDate;
+    @Column private String sendDate;
 
 }

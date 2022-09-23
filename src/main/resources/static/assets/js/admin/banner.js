@@ -56,13 +56,13 @@ const bannerAddItem = () => {
 }
 
 const bannerInputFile = () => {
-    const bannterTableBody = document.querySelector(".bannerTableBody");
+    const bannerTableBody = document.querySelector(".bannerTableBody");
     const bannerFileInput = document.querySelectorAll(".bannerFileInput");
     const bannerFileInputRemove = document.querySelectorAll(".bannerFileInputRemove");
     const bannerUrlInput = document.querySelectorAll(".bannerUrlInput");
 
     for(let i = 0; i < bannerFileInput.length; i++) {
-        document.getElementsByClassName("bannerFileInput")[i].addEventListener("change", (e) => {
+        bannerTableBody.addEventListener("change", (e) => {
             FileUpProcess(e.target.files[0], 'banner', i);
         })
     }
