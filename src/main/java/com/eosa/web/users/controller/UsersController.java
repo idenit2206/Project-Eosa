@@ -84,44 +84,34 @@ public class UsersController {
         return myDomain; 
     }
     @PostMapping(value="/sign/sendPhoneCheckMessage")
-    public void sendOne(@RequestParam("usersPhone") String usersPhone) {
+    public CustomResponseData sendOne(@RequestParam("usersPhone") String usersPhone) {
         CustomResponseData result = new CustomResponseData();
         String senderPhone = "01071899972";
+        int usersPhoneCheck = usersService.selectUsersPhoneCheckByUsersPhone(usersPhone);
+        log.debug("usersPhoneCheck result: {}", usersPhoneCheck);
 
-        Message message = new Message();
-        String authCode = smsCertificationService.createCertificationCode(usersPhone);
-        /* 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다. */
-        message.setFrom("01071899972"); // 발신번호
-        message.setTo(usersPhone);  // 수신번호
-        message.setText("어사 회원가입 핸드폰 인증 단계입니다.\n다음의 번호를 입력해주세요.\n"+authCode); // 발신내용
-        log.info("[sendOne] usersPhone: {} 의 SMS 인증코드: {}",usersPhone, authCode);
-        SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
-//          smsCertificationService.savedAuthCode(usersPhone, authCode);
+        if(usersPhoneCheck != 1) {
+            Message message = new Message();
+            String authCode = smsCertificationService.createCertificationCode(usersPhone);
+            /* 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다. */
+            message.setFrom("01071899972"); // 발신번호
+            message.setTo(usersPhone);  // 수신번호
+            message.setText("어사 회원가입 핸드폰 인증 단계입니다.\n다음의 번호를 입력해주세요.\n"+authCode); // 발신내용
+            log.info("[sendOne] usersPhone: {} 의 SMS 인증코드: {}",usersPhone, authCode);
+            SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+            // smsCertificationService.savedAuthCode(usersPhone, authCode);
 
-//        return CustomResponseData()
-//        Users selectResult = usersService.selectUsersPhoneCheckByUsersPhone(usersPhone);
-//
-//        if(selectResult != null) {
-//           result.setStatusCode(HttpStatus.OK.value());
-//           result.setResultItem("FALSE");
-//           result.setResponseDateTime(LocalDateTime.now());
-//        }
-//        else {
-//            Message message = new Message();
-//            String authCode = smsCertificationService.createCertificationCode(usersPhone);
-//            /* 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다. */
-//            message.setFrom("01071899972"); // 발신번호
-//            message.setTo(usersPhone);  // 수신번호
-//            message.setText("어사 회원가입 핸드폰 인증 단계입니다.\n다음의 번호를 입력해주세요.\n"+authCode); // 발신내용
-//            log.info("[sendOne] usersPhone: {} 의 SMS 인증코드: {}",usersPhone, authCode);
-//            SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
-////          smsCertificationService.savedAuthCode(usersPhone, authCode);
-//
-//            result.setStatusCode(HttpStatus.OK.value());
-//            result.setResultItem("TRUE");
-//            result.setResponseDateTime(LocalDateTime.now());
-//        }
-//        return result;
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(usersPhoneCheck);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            log.info("[sendOne] 이미 가입된 회원의 휴대폰 번호입니다.");
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(usersPhoneCheck);
+            result.setResponseDateTime(LocalDateTime.now());
+        }       
+        return result;
     }
 
     @PostMapping(value="/sign/checkMyPhone")
@@ -192,7 +182,6 @@ public class UsersController {
             }
             paramUsers.setProvider(jsonObject.get("provider").getAsString());
             paramUsers.setUsersProfile(jsonObject.get("picture").getAsString());
-            // paramUsers.setUsersNotice(element.get("usersNotice").getAsInt());
         // log.debug("paramUsers: {}", paramUsers.toString());
 
         CustomResponseData result = new CustomResponseData();

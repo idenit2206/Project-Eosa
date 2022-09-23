@@ -1,15 +1,18 @@
-.imgPreviewDesktop, .imgPreviewMobile {
-    /*width: 150px !important;*/
+.bannerRows {
     height: 150px !important;
-    /*background-color: #66c971 !important;*/
 }
 
-.imgPreviewBodyDesktop, .imgPreviewBodyMobile {
-    width: 120px !important;
-    height: 120px !important;
+.bannerPreviewCell {
+    width: 20% !important;
+    height: 100% !important;
 }
 
-.fileRemoveBtnDesktop, .fileRemoveBtnMobile {
-    display: inline-block !important;
+.bannerInputCell {
+    text-align: start !important;
+    height: 100% !important;
+}
+
+.bannerFileInputRemove {
+    display: inline !important;
     visibility: hidden;
 }

@@ -46,6 +46,9 @@ public class UsersService implements UsersRepository {
         LocalDateTime currentTime = LocalDateTime.now();
         param.setUsersPass(passwordEncoder.encode(param.getUsersPass()));
         param.setUsersEnabled(1);
+        if(param.getProvider().equals("")) {
+            param.setProvider("eosa");
+        }
         param.setUsersJoinDate(currentTime);
 
         try {
@@ -61,7 +64,7 @@ public class UsersService implements UsersRepository {
     }
 
     @Override
-    public Users selectUsersPhoneCheckByUsersPhone(String usersPhone) {
+    public int selectUsersPhoneCheckByUsersPhone(String usersPhone) {
         return usersRepository.selectUsersPhoneCheckByUsersPhone(usersPhone);
     }
 
