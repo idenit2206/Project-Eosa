@@ -38,11 +38,4 @@ public class BannerController {
         return bannerService.bannerList(model);
     }
 
-    // @GetMapping("/serviceList")
-    // @ResponseBody
-    // public String serviceBannerList() {
-    //     return bannerService.serviceBannerList();
-    // }
-
-
 }
