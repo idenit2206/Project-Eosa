@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/fragments/layout}">
+
+<th:block layout:fragment="content">
+
+    <th:block th:replace="admin/fragments/aside :: asideFragment"></th:block>
+
+    <main id="main" data-category="hiddencam">
+        <section class="section section-users">
+            <div class="form form--xxl details-form">
+                <div>
+                    <fieldset class="fieldset">
+                        <table class="dt-table">
+                            <tbody>
+                                <tr>
+                                    <th>신청번호</th>
+                                    <td th:text="${details.companysHiddencamIdx}"></td>
+                                    <th>상태</th>
+                                    <td>
+                                        <div class="input-wrap approval-wrap">
+                                            <select class="select width-100-per c-enabled">
+                                                <option value="1" th:selected="${details.companysHiddencamCheckStatus} eq 1">확인</option>
+                                                <option value="0" th:selected="${details.companysHiddencamCheckStatus} eq 0">미확인</option>
+                                                <!-- <option value="-1" th:selected="${details.companysHiddencamCheckStatus} eq -1">반려</option> -->
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>업체명<i class="required">*</i></th>
+                                    <td>
+                                        <div class="input-wrap">
+                                            <input type="text" spellcheck="false" class="input c-name" th:value="${details.companysHiddencamName}">
+                                        </div>
+                                    </td>
+                                    <th>지역</th>
+                                    <td>
+                                        <div class="input-wrap">
+                                            <span th:text="${details.companysHiddencamRegion1}"></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                              
+                                        <!-- <div class="td-flex-wrap">
+                                            <div class="select-wrap">
+                                                <select class="select select-sm" id="region01">
+                                                    <option value="서울" th:selected="${details.companysRegion1} eq '서울'">서울</option>
+                                                    <option value="경기" th:selected="${details.companysRegion1} eq '경기'">경기</option>
+                                                    <option value="대전/충남/세종" th:selected="${details.companysRegion1} eq '대전/충남/세종'">대전/충남/세종</option>
+                                                    <option value="인천/부천" th:selected="${details.companysRegion1} eq '인천/부천'">인천/부천</option>
+                                                    <option value="강원" th:selected="${details.companysRegion1} eq '강원'">강원</option>
+                                                    <option value="전주/전북" th:selected="${details.companysRegion1} eq '전주/전북'">전주/전북</option>
+                                                    <option value="청주/충북" th:selected="${details.companysRegion1} eq '청주/충북'">청주/충북</option>
+                                                    <option value="대구/경북" th:selected="${details.companysRegion1} eq '대구/경북'">대구/경북</option>
+                                                    <option value="부산/울산/경남" th:selected="${details.companysRegion1} eq '부산/울산/경남'">부산/울산/경남</option>
+                                                    <option value="광주/전남" th:selected="${details.companysRegion1} eq '광주/전남'">광주/전남</option>
+                                                    <option value="제주" th:selected="${details.companysRegion1} eq '제주'">제주</option>
+                                                </select>
+                                            </div> -->         
+                                <tr>
+                                    <th>삭제</th>
+                                    <td>
+                                        <div class="input-wrap">
+                                            <button type="button" class="company-delete">삭제</button>
+                                        </div>
+                                    </td>
+                                    <th>신청일</th>
+                                    <!-- <td th:text="${#dates.format(details.companysRegistDate, 'yyyy-MM-dd')}"></td> -->
+                                    <td th:text="${details.companysHiddencamRequestDate}"></td>
+                                </tr>                           
+                            </tbody>
+                        </table>
+                    </fieldset>                   
+                    <hr class="fieldset__hr">                 
+                    <div class="form__action bottom">
+                        <a th:href="@{/admin/manage/companysHiddencam/list}" class="btn-normal">목록가기</a>
+                        <button type="button" class="btn-prime btn-update">수정하기</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+</th:block>
+
+<th:block layout:fragment="script">
+    <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="https://unpkg.com/quill-image-compress@1.2.11/dist/quill.imageCompressor.min.js"></script>
+    <script th:src="@{/assets/js/admin/library.js}"></script>
+    <script>
+        window.addEventListener('load', function () {
+            highlightMenu('list');
+            onlyNum();
+
+            const editorWrap = document.querySelectorAll('.e-wrap');
+            setTimeout(e => {
+                editorWrap[0].style.display = 'block';
+                editorWrap[1].style.display = 'block';
+            }, 500)
+            createEditor();
+
+            // 달력, 시간
+            const datePickers = document.querySelectorAll('.datepicker');
+            for(let datepicker of datePickers) new DatePicker(datepicker);
+
+            // 업체 수정
+            const updateBtn = document.querySelector('.btn-update');
+            updateBtn.addEventListener('click', updateCompany);
+           
+            const deleteBtn = document.querySelector('.company-delete');
+        });
+    </script>
+</th:block>
+
+</html>

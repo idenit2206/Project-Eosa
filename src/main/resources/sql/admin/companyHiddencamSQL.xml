@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eosa.admin.mapper.CompanysHiddencamMapper">
+
+    <select id="countCompanysHiddencamList" resultType="int">
+        SELECT COUNT(*)
+        FROM CompanysHiddencam
+    </select>
+
+    <!-- 업체 목록 조회 -->
+    <select id="selectCompanysHiddencamList" resultType="CompanysHiddencamDTO" parameterType="hashmap">
+        SELECT
+            C.companysHiddencamIdx,
+            C.companysHiddencamRegion1,
+            C.companysHiddencamRegion2,
+            C.companysHiddencamName,
+            C.companysHiddencamRequestDate,
+            C.companysHiddencamCheckStatus
+        FROM CompanysHiddencam C
+        ORDER BY C.companysHiddencamRequestDate DESC LIMIT #{startIndex}, #{pageSize}
+    </select>
+
+    <select id="selectCompanysHiddencamDetails" resultType="CompanysHiddencamDTO">
+        SELECT
+            C.companysHiddencamIdx,
+            C.companysHiddencamName,
+            C.companysHiddencamRegion1,
+            C.companysHiddencamRegion2,
+            C.companysHiddencamRequestDate,
+            C.companysHiddencamCheckStatus
+        FROM CompanysHiddencam C
+        WHERE C.companysHiddencamIdx = #{companysHiddencamIdx}
+    </select>
+
+</mapper>
