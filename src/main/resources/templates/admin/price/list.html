@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/fragments/layout}">
+
+<th:block layout:fragment="content">
+
+    <th:block th:replace="admin/fragments/aside :: asideFragment"></th:block>
+
+    <main id="main" class="main-list" data-category="price">
+        <section class="section section-users">
+            <h2 class="section_title">지역&분야별 가격 관리</h2>
+                <div class="table">              
+                    <table class="regionTable">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>지역명</th>
+                            <th>가격</th>
+                        </tr>
+                        </thead>
+                        <tbody id="regionList">
+                        <tr class="regionTR" th:each="regionlist : ${region}">
+                            <td class="regionIdx">
+                                <input class="regionIdxValue" type="checkbox" th:value="${regionlist.regionIdx}" />
+                            </td>
+                            <td class="regionName">
+                                <input class="regionNameValue" type="text" th:value="${regionlist.regionName}"/>
+                            </td>
+                            <td class="regionPrice">
+                                <input class="regionPriceValue" type="text" th:value="${regionlist.regionPrice}"/>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div>
+                        <input class="btn region-remove-btn" type="button" value="지역 삭제" />
+                        <input class="btn region-add-btn" type="button" value="지역 추가" />
+                        <input class="btn region-modify-btn" type="button" value="지역 수정" />
+                    </div>
+                </div>
+
+                <div class="table">
+                    <table class="categoryTable">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>분야</th>
+                            <th>가격</th>
+                        </tr>
+                        </thead>
+                        <tbody id="categoryList">
+                        <tr class="categoryTR" th:each="categorylist : ${category}">
+                            <td class="categoryIdx">
+                                <input class="categoryIdxValue" type="checkbox" th:value="${categorylist.categoryIdx}" />
+                            </td>
+                            <td class="categoryName">
+                                <input class="categoryNameValue" type="text" th:value="${categorylist.categoryName}"/>
+                            </td>
+                            <td class="categoryPrice">
+                                <input class="categoryPriceValue" type="text" th:value="${categorylist.categoryPrice}"/>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div>
+                        <input class="btn category-remove-btn" type="button" value="분야 삭제"/>
+                        <input class="btn category-add-btn" type="button" value="분야 추가"/>
+                        <input class="btn category-modify-btn" type="button" value="분야 수정"/>
+                    </div>
+                </div>
+        </section>
+    </main>
+</th:block>
+
+<th:block layout:fragment="script">
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            // highlightMenu('list');
+            addRegionItem();
+            modifyRegion();
+            addCategoryItem();
+            modifyCategory();
+        });
+    </script>
+</th:block>
+
+</html>
