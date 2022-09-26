@@ -1,9 +1,6 @@
 package com.eosa.admin.mapper;
 
-import com.eosa.admin.dto.ChartDTO;
-import com.eosa.admin.dto.CompanysDTO;
-import com.eosa.admin.dto.ReportDTO;
-import com.eosa.admin.dto.ReviewDTO;
+import com.eosa.admin.dto.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -275,5 +272,26 @@ public interface CompanyMapper {
      * @return ChartDTO
      */
     List<ChartDTO> selectChart();
+
+    /**
+     * 분야 통계 조회 매퍼
+     *
+     * @return ChartDataDTO
+     */
+    List<ChartDataDTO> selectCategoryChart();
+
+    /**
+     * 업체 통계 조회 매퍼
+     *
+     * @return ChartDTO
+     */
+    List<ChartDTO> selectCompanyChart(long companysIdx);
+
+    /**
+     * 업체 분야 통계 조회 매퍼
+     *
+     * @return ChartDataDTO
+     */
+    List<ChartDataDTO> selectCompanyCategoryChart(long companysIdx);
 
 }

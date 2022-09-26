@@ -10,17 +10,29 @@
     <main id="main" data-category="company">
         <section class="section">
 
-            <h2 class="section_title">어사 통계</h2>
+            <div class="form form--xxl form-menu">
+                <div class="t-top-wrap">
+                    <div>
+                        <a class="btn-chart on" th:href="@{/admin/manage/company/details(companysIdx=${companysIdx})}"></a>
+                    </div>
+                    <div>
+                        <a class="btn-review" th:href="@{/admin/manage/company/review(companysIdx=${companysIdx})}"></a>
+                        <label class="badge" th:text="${count[0]}"></label>
+                    </div>
+                    <div>
+                        <a class="btn-report" th:href="@{/admin/manage/company/report(companysIdx=${companysIdx})}"></a>
+                        <label class="badge" th:text="${count[1]}"></label>
+                    </div>
+                </div>
+            </div>
 
             <div class="form form--xxl">
                 <div class="w-chart-form">
 
+                    <input type="hidden" class="companysIdx" th:value="${companysIdx}">
+
                     <div class="w-chart-top">
                         <div class="w-chart-count">
-                            <div class="w-label-wrap">
-                                <span class="w-label">업체개수</span>
-                                <span th:text="|${company} 개|"></span>
-                            </div>
                             <div class="w-label-wrap">
                                 <span class="w-label">의뢰건수</span>
                                 <span class="requestCount"></span>
@@ -86,8 +98,8 @@
     <script th:src="@{/assets/js/admin/library.js}"></script>
     <script>
         window.addEventListener('load', function () {
-            highlightMenu('chart');
-            createChart('whole');
+            highlightMenu('list');
+            createChart('company');
         });
     </script>
 </th:block>
