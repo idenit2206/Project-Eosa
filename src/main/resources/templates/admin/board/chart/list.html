@@ -48,7 +48,7 @@
                     </tbody>
 
                     <tbody th:if="${count} ne 0">
-                    <tr th:each="list : ${chartList}">
+                    <tr th:each="list : ${chartList}" th:onclick="|linkTo(event,'/admin/manage/company/chart?companysIdx=${list.companysIdx}')|">
 
                         <td>
                             <span class="companysIdx" th:text="${list.companysIdx}"></span>

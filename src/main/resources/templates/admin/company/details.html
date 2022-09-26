@@ -13,6 +13,9 @@
             <div class="form form--xxl form-menu">
                 <div class="t-top-wrap">
                     <div>
+                        <a class="btn-chart" th:href="@{/admin/manage/company/chart(companysIdx=${details.companysIdx})}"></a>
+                    </div>
+                    <div>
                         <a class="btn-review" th:href="@{/admin/manage/company/review(companysIdx=${details.companysIdx})}"></a>
                         <label class="badge" th:text="${details.reviewCount} eq null ? 0 : ${details.reviewCount}"></label>
                     </div>

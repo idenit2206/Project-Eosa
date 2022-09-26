@@ -1,9 +1,6 @@
 package com.eosa.admin.service;
 
-import com.eosa.admin.dto.ChartDTO;
-import com.eosa.admin.dto.CompanysDTO;
-import com.eosa.admin.dto.ReportDTO;
-import com.eosa.admin.dto.ReviewDTO;
+import com.eosa.admin.dto.*;
 import com.eosa.admin.mapper.CompanyMapper;
 import com.eosa.admin.pagination.Pagination;
 import com.eosa.admin.safety.Safety;
@@ -15,9 +12,8 @@ import org.springframework.ui.Model;
 
 import java.math.BigDecimal;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * packageName    : com.eosa.admin.service
@@ -544,6 +540,182 @@ public class CompanyService {
         model.addAttribute("company", companyMapper.countCompany());
 
         return "admin/board/chart/whole";
+    }
+
+    /**
+     * 통계 데이터 조회 서비스
+     *
+     * @return Map
+     */
+    public Map<String, Object> chartData(String sort, long companysIdx) {
+
+        List<ChartDTO> list =  new ArrayList<>();
+        List<ChartDataDTO> cateList = new ArrayList<>();
+
+        if (sort.equals("whole")) {
+            list = companyMapper.selectChart();
+            cateList = companyMapper.selectCategoryChart();
+        } else if (sort.equals("company")) {
+            list = companyMapper.selectCompanyChart(companysIdx);
+            cateList = companyMapper.selectCompanyCategoryChart(companysIdx);
+        }
+
+        int[] age = new int[8];
+        int[] time = new int[12];
+        int[] region = new int[11];
+        int[] month = new int[12];
+        int[] category = new int[13];
+
+        SimpleDateFormat hour = new SimpleDateFormat("hh");
+        SimpleDateFormat mFormat = new SimpleDateFormat("MM");
+
+        for (int i = 0; i < list.size(); i++) {
+
+            // 연령
+            if (list.get(i).getUsersAge() == 10) {
+                age[0] = age[0] + 1;
+            } else if (list.get(i).getUsersAge() == 20) {
+                age[1] = age[1] + 1;
+            } else if (list.get(i).getUsersAge() == 30) {
+                age[2] = age[2] + 1;
+            } else if (list.get(i).getUsersAge() == 40) {
+                age[3] = age[3] + 1;
+            } else if (list.get(i).getUsersAge() == 50) {
+                age[4] = age[4] + 1;
+            } else if (list.get(i).getUsersAge() == 60) {
+                age[5] = age[5] + 1;
+            } else if (list.get(i).getUsersAge() == 70) {
+                age[6] = age[6] + 1;
+            } else if (list.get(i).getUsersAge() == 80) {
+                age[7] = age[7] + 1;
+            }
+
+            // 시간
+            String fTime = hour.format(list.get(i).getRequestFormDate());
+            if (fTime.equals("07") || fTime.equals("08")) {
+                time[0] = time[0] + 1;
+            } else if (fTime.equals("09") || fTime.equals("10")) {
+                time[1] = time[1] + 1;
+            } else if (fTime.equals("11") || fTime.equals("12")) {
+                time[2] = time[2] + 1;
+            } else if (fTime.equals("13") || fTime.equals("14")) {
+                time[3] = time[3] + 1;
+            } else if (fTime.equals("15") || fTime.equals("16")) {
+                time[4] = time[4] + 1;
+            } else if (fTime.equals("17") || fTime.equals("18")) {
+                time[5] = time[5] + 1;
+            } else if (fTime.equals("19") || fTime.equals("20")) {
+                time[6] = time[6] + 1;
+            } else if (fTime.equals("21") || fTime.equals("22")) {
+                time[7] = time[7] + 1;
+            } else if (fTime.equals("23") || fTime.equals("00")) {
+                time[8] = time[8] + 1;
+            } else if (fTime.equals("01") || fTime.equals("02")) {
+                time[9] = time[9] + 1;
+            } else if (fTime.equals("03") || fTime.equals("04")) {
+                time[10] = time[10] + 1;
+            } else if (fTime.equals("05") || fTime.equals("06")) {
+                time[11] = time[11] + 1;
+            }
+
+            // 지역
+            if (list.get(i).getRequestFormRegion1().equals("서울")) {
+                region[0] = region[0] + 1;
+            } else if (list.get(i).getRequestFormRegion1().equals("경기")) {
+                region[1] = region[1] + 1;
+            } else if (list.get(i).getRequestFormRegion1().equals("대전/충남/세종")) {
+                region[2] = region[2] + 1;
+            } else if (list.get(i).getRequestFormRegion1().equals("인천/부천")) {
+                region[3] = region[3] + 1;
+            } else if (list.get(i).getRequestFormRegion1().equals("강원")) {
+                region[4] = region[4] + 1;
+            } else if (list.get(i).getRequestFormRegion1().equals("전주/전북")) {
+                region[5] = region[5] + 1;
+            } else if (list.get(i).getRequestFormRegion1().equals("청주/충북")) {
+                region[6] = region[6] + 1;
+            } else if (list.get(i).getRequestFormRegion1().equals("대구/경북")) {
+                region[7] = region[7] + 1;
+            } else if (list.get(i).getRequestFormRegion1().equals("부산/울산/경남")) {
+                region[8] = region[8] + 1;
+            } else if (list.get(i).getRequestFormRegion1().equals("광주/전남")) {
+                region[9] = region[9] + 1;
+            } else if (list.get(i).getRequestFormRegion1().equals("제주")) {
+                region[10] = region[10] + 1;
+            }
+
+            // 월
+            String fMonth = mFormat.format(list.get(i).getRequestFormDate());
+            if (fMonth.equals("01")) {
+                month[0] = month[0] + 1;
+            } else if (fMonth.equals("02")) {
+                month[1] = month[1] + 1;
+            } else if (fMonth.equals("03")) {
+                month[2] = month[2] + 1;
+            } else if (fMonth.equals("04")) {
+                month[3] = month[3] + 1;
+            } else if (fMonth.equals("05")) {
+                month[4] = month[4] + 1;
+            } else if (fMonth.equals("06")) {
+                month[5] = month[5] + 1;
+            } else if (fMonth.equals("07")) {
+                month[6] = month[6] + 1;
+            } else if (fMonth.equals("08")) {
+                month[7] = month[7] + 1;
+            } else if (fMonth.equals("09")) {
+                month[8] = month[8] + 1;
+            } else if (fMonth.equals("10")) {
+                month[9] = month[9] + 1;
+            } else if (fMonth.equals("11")) {
+                month[10] = month[10] + 1;
+            } else if (fMonth.equals("12")) {
+                month[11] = month[11] + 1;
+            }
+
+        }
+
+        category[0] = cateList.get(0).getCategory01();
+        category[1] = cateList.get(0).getCategory02();
+        category[2] = cateList.get(0).getCategory03();
+        category[3] = cateList.get(0).getCategory04();
+        category[4] = cateList.get(0).getCategory05();
+        category[5] = cateList.get(0).getCategory06();
+        category[6] = cateList.get(0).getCategory07();
+        category[7] = cateList.get(0).getCategory08();
+        category[8] = cateList.get(0).getCategory09();
+        category[9] = cateList.get(0).getCategory10();
+        category[10] = cateList.get(0).getCategory11();
+        category[11] = cateList.get(0).getCategory12();
+        category[12] = cateList.get(0).getCategory13();
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("size", list.size());
+        map.put("age", age);
+        map.put("time", time);
+        map.put("region", region);
+        map.put("month", month);
+        map.put("category", category);
+
+        return map;
+    }
+
+    /**
+     * 업체 통계 조회 서비스
+     *
+     * @param model
+     * @param companysIdx
+     * @return String
+     */
+    public String chart(Model model, long companysIdx) {
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("companysIdx", companysIdx);
+
+        List<Integer> count = companyMapper.countReviewReport(map);
+
+        model.addAttribute("count", count);
+        model.addAttribute("companysIdx", companysIdx);
+
+        return "admin/company/chart";
     }
 
 }

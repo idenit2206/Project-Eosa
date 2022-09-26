@@ -493,4 +493,141 @@
                  JOIN Users U on RF.usersIdx = U.usersIdx
     </select>
 
+    <!-- 분야 통계 조회 -->
+    <select id="selectCategoryChart" resultType="ChartDataDTO">
+        SELECT (SELECT COUNT(requestFormCategoryValue)
+                FROM RequestFormCategory
+                WHERE requestFormCategoryValue = '가정문제')    category01,
+               (SELECT COUNT(requestFormCategoryValue)
+                FROM RequestFormCategory
+                WHERE requestFormCategoryValue = '기업문제')    category02,
+               (SELECT COUNT(requestFormCategoryValue)
+                FROM RequestFormCategory
+                WHERE requestFormCategoryValue = '안전분야 조사') category03,
+               (SELECT COUNT(requestFormCategoryValue)
+                FROM RequestFormCategory
+                WHERE requestFormCategoryValue = '사기/분쟁')   category04,
+               (SELECT COUNT(requestFormCategoryValue)
+                FROM RequestFormCategory
+                WHERE requestFormCategoryValue = '스토킹')     category05,
+               (SELECT COUNT(requestFormCategoryValue)
+                FROM RequestFormCategory
+                WHERE requestFormCategoryValue = '의료/보험')   category06,
+               (SELECT COUNT(requestFormCategoryValue)
+                FROM RequestFormCategory
+                WHERE requestFormCategoryValue = '부동산')     category07,
+               (SELECT COUNT(requestFormCategoryValue)
+                FROM RequestFormCategory
+                WHERE requestFormCategoryValue = '금융/사이버')  category08,
+               (SELECT COUNT(requestFormCategoryValue)
+                FROM RequestFormCategory
+                WHERE requestFormCategoryValue = '민원대행')    category09,
+               (SELECT COUNT(requestFormCategoryValue)
+                FROM RequestFormCategory
+                WHERE requestFormCategoryValue = '불법기기탐지')  category10,
+               (SELECT COUNT(requestFormCategoryValue)
+                FROM RequestFormCategory
+                WHERE requestFormCategoryValue = '경호/경비')   category11,
+               (SELECT COUNT(requestFormCategoryValue)
+                FROM RequestFormCategory
+                WHERE requestFormCategoryValue = '일반조사')    category12,
+               (SELECT COUNT(requestFormCategoryValue)
+                FROM RequestFormCategory
+                WHERE requestFormCategoryValue = '해외조사')    category13
+            LIMIT 1
+    </select>
+
+    <!-- 업체 통계 조회 -->
+    <select id="selectCompanyChart" resultType="ChartDTO" parameterType="long">
+        SELECT RF.requestFormRegion1,
+               RF.requestFormDate,
+               U.usersAge
+        FROM RequestForm RF
+                 JOIN Users U on RF.usersIdx = U.usersIdx
+        WHERE RF.companysIdx = #{companysIdx}
+    </select>
+
+    <!-- 업체 분야 통계 조회 -->
+    <select id="selectCompanyCategoryChart" resultType="ChartDataDTO" parameterType="long">
+        SELECT (SELECT COUNT(RC.requestFormCategoryValue)
+                FROM RequestFormCategory RC
+                         LEFT JOIN RequestForm RF ON RC.requestFormIdx = RF.requestFormIdx
+                         LEFT JOIN Companys C ON RF.companysIdx = C.companysIdx
+                WHERE C.companysIdx = #{companysIdx}
+                  AND RC.requestFormCategoryValue = '가정문제')    category01,
+               (SELECT COUNT(RC.requestFormCategoryValue)
+                FROM RequestFormCategory RC
+                         LEFT JOIN RequestForm RF ON RC.requestFormIdx = RF.requestFormIdx
+                         LEFT JOIN Companys C ON RF.companysIdx = C.companysIdx
+                WHERE C.companysIdx = #{companysIdx}
+                  AND RC.requestFormCategoryValue = '기업문제')    category02,
+               (SELECT COUNT(RC.requestFormCategoryValue)
+                FROM RequestFormCategory RC
+                         LEFT JOIN RequestForm RF ON RC.requestFormIdx = RF.requestFormIdx
+                         LEFT JOIN Companys C ON RF.companysIdx = C.companysIdx
+                WHERE C.companysIdx = #{companysIdx}
+                  AND RC.requestFormCategoryValue = '안전분야 조사') category03,
+               (SELECT COUNT(RC.requestFormCategoryValue)
+                FROM RequestFormCategory RC
+                         LEFT JOIN RequestForm RF ON RC.requestFormIdx = RF.requestFormIdx
+                         LEFT JOIN Companys C ON RF.companysIdx = C.companysIdx
+                WHERE C.companysIdx = #{companysIdx}
+                  AND RC.requestFormCategoryValue = '사기/분쟁')   category04,
+               (SELECT COUNT(RC.requestFormCategoryValue)
+                FROM RequestFormCategory RC
+                         LEFT JOIN RequestForm RF ON RC.requestFormIdx = RF.requestFormIdx
+                         LEFT JOIN Companys C ON RF.companysIdx = C.companysIdx
+                WHERE C.companysIdx = #{companysIdx}
+                  AND RC.requestFormCategoryValue = '스토킹')     category05,
+               (SELECT COUNT(RC.requestFormCategoryValue)
+                FROM RequestFormCategory RC
+                         LEFT JOIN RequestForm RF ON RC.requestFormIdx = RF.requestFormIdx
+                         LEFT JOIN Companys C ON RF.companysIdx = C.companysIdx
+                WHERE C.companysIdx = #{companysIdx}
+                  AND RC.requestFormCategoryValue = '의료/보험')   category06,
+               (SELECT COUNT(RC.requestFormCategoryValue)
+                FROM RequestFormCategory RC
+                         LEFT JOIN RequestForm RF ON RC.requestFormIdx = RF.requestFormIdx
+                         LEFT JOIN Companys C ON RF.companysIdx = C.companysIdx
+                WHERE C.companysIdx = #{companysIdx}
+                  AND RC.requestFormCategoryValue = '부동산')     category07,
+               (SELECT COUNT(RC.requestFormCategoryValue)
+                FROM RequestFormCategory RC
+                         LEFT JOIN RequestForm RF ON RC.requestFormIdx = RF.requestFormIdx
+                         LEFT JOIN Companys C ON RF.companysIdx = C.companysIdx
+                WHERE C.companysIdx = #{companysIdx}
+                  AND RC.requestFormCategoryValue = '금융/사이버')  category08,
+               (SELECT COUNT(RC.requestFormCategoryValue)
+                FROM RequestFormCategory RC
+                         LEFT JOIN RequestForm RF ON RC.requestFormIdx = RF.requestFormIdx
+                         LEFT JOIN Companys C ON RF.companysIdx = C.companysIdx
+                WHERE C.companysIdx = #{companysIdx}
+                  AND RC.requestFormCategoryValue = '민원대행')    category09,
+               (SELECT COUNT(RC.requestFormCategoryValue)
+                FROM RequestFormCategory RC
+                         LEFT JOIN RequestForm RF ON RC.requestFormIdx = RF.requestFormIdx
+                         LEFT JOIN Companys C ON RF.companysIdx = C.companysIdx
+                WHERE C.companysIdx = #{companysIdx}
+                  AND RC.requestFormCategoryValue = '불법기기탐지')  category10,
+               (SELECT COUNT(RC.requestFormCategoryValue)
+                FROM RequestFormCategory RC
+                         LEFT JOIN RequestForm RF ON RC.requestFormIdx = RF.requestFormIdx
+                         LEFT JOIN Companys C ON RF.companysIdx = C.companysIdx
+                WHERE C.companysIdx = #{companysIdx}
+                  AND RC.requestFormCategoryValue = '경호/경비')   category11,
+               (SELECT COUNT(RC.requestFormCategoryValue)
+                FROM RequestFormCategory RC
+                         LEFT JOIN RequestForm RF ON RC.requestFormIdx = RF.requestFormIdx
+                         LEFT JOIN Companys C ON RF.companysIdx = C.companysIdx
+                WHERE C.companysIdx = #{companysIdx}
+                  AND RC.requestFormCategoryValue = '일반조사')    category12,
+               (SELECT COUNT(RC.requestFormCategoryValue)
+                FROM RequestFormCategory RC
+                         LEFT JOIN RequestForm RF ON RC.requestFormIdx = RF.requestFormIdx
+                         LEFT JOIN Companys C ON RF.companysIdx = C.companysIdx
+                WHERE C.companysIdx = #{companysIdx}
+                  AND RC.requestFormCategoryValue = '해외조사')    category13
+            LIMIT 1
+    </select>
+
 </mapper>

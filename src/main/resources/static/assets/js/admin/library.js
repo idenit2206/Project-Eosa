@@ -37,89 +37,103 @@ function createEditor() {
     });
 };
 
-function createChart() {
-    const age = document.getElementById('ageChart').getContext('2d');
-    const ageChart = new Chart(age, {
-        type: 'bar',
-        data: {
-            labels: ['10대', '20대', '30대', '40대', '50대', '60대', '70대', '80대 이상'],
-            datasets: [{
-                label: '연령',
-                data: [
-                    2,12,7,0,3,1,10,5.5
-                ],
-                backgroundColor: "#64B5F6",
-                barThickness: 7,
-            }]
-        },
-        options: option,
-    });
+function createChart(sort) {
 
-    const time = document.getElementById('timeChart').getContext('2d');
-    const timeChart = new Chart(time, {
-        type: 'bar',
-        data: {
-            labels: ['8시', '10시', '12시', '14시', '16시', '18시', '20시', '22시', '24시', '2시', '4시', '6시'],
-            datasets: [{
-                label: '시간',
-                data: [
-                    1,4,1,0,2,5,2,3,4,1,0,0
-                ],
-                backgroundColor: "#64B5F6",
-                barThickness: 7,
-            }]
-        },
-        options: option,
-    });
+    const formData = new FormData();
+    formData.set('sort', sort);
 
-    const area = document.getElementById('areaChart').getContext('2d');
-    const areaChart = new Chart(area, {
-        type: 'bar',
-        data: {
-            labels: ['서울', '경기', '대전/충남/세종', '인천/부천', '강원', '전주/전북', '청주/충북', '대구/경북', '부산/울산/경남', '광주/전남', '제주'],
-            datasets: [{
-                label: '시간',
-                data: [
-                    1,4,1,0,2,5,2,3,4,1,0
-                ],
-                backgroundColor: "#64B5F6",
-                barThickness: 7,
-            }]
-        },
-        options: option,
-    });
+    if (sort == 'company') {
+        formData.set('companysIdx', document.querySelector('.companysIdx').value);
+    } else {
+        formData.set('companysIdx', 0);
+    }
 
-    const category = document.getElementById('categoryChart').getContext('2d');
-    const categoryChart = new Chart(category, {
-        type: 'bar',
-        data: {
-            labels: ['가정문제', '기업문제', '안전분야조사', '사기/분쟁', '스토킹', '의료/보험', '부동산', '금융/사이버', '민원대행', '불법기기탐지', '경호/경비', '일반조사', '해외조사'],
-            datasets: [{
-                data: [
-                    1,4,1,0,2,5,2,3,4,1,0,5,9
-                ],
-                backgroundColor: "#64B5F6",
-                barThickness: 7,
-            }]
-        },
-        options: option,
-    });
+    fetch('/admin/manage/company/chart/whole/data', {
+        method: 'post',
+        body: formData,
+    })
+        .then(res => res.json())
+        .then(data => {
+            document.querySelector('.requestCount').innerHTML = data.size + ' 건';
 
-    const month = document.getElementById('monthChart').getContext('2d');
-    const monthChart = new Chart(month, {
-        type: 'bar',
-        data: {
-            labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-            datasets: [{
-                data: [
-                    1,4,1,0,2,5,2,3,4,11,0,5
-                ],
-                backgroundColor: "#64B5F6",
-                barThickness: 7,
-            }]
-        },
-        options: option,
-    });
+            const age = document.getElementById('ageChart').getContext('2d');
+            const ageChart = new Chart(age, {
+                type: 'bar',
+                data: {
+                    labels: ['10대', '20대', '30대', '40대', '50대', '60대', '70대', '80대 이상'],
+                    datasets: [{
+                        label: '연령',
+                        data: data.age,
+                        backgroundColor: "#64B5F6",
+                        barThickness: 7,
+                    }]
+                },
+                options: option,
+            });
+
+            const time = document.getElementById('timeChart').getContext('2d');
+            const timeChart = new Chart(time, {
+                type: 'bar',
+                data: {
+                    labels: ['8시', '10시', '12시', '14시', '16시', '18시', '20시', '22시', '24시', '2시', '4시', '6시'],
+                    datasets: [{
+                        label: '시간',
+                        data: data.time,
+                        backgroundColor: "#64B5F6",
+                        barThickness: 7,
+                    }]
+                },
+                options: option,
+            });
+
+            const area = document.getElementById('areaChart').getContext('2d');
+            const areaChart = new Chart(area, {
+                type: 'bar',
+                data: {
+                    labels: ['서울', '경기', '대전/충남/세종', '인천/부천', '강원', '전주/전북', '청주/충북', '대구/경북', '부산/울산/경남', '광주/전남', '제주'],
+                    datasets: [{
+                        label: '지역',
+                        data: data.region,
+                        backgroundColor: "#64B5F6",
+                        barThickness: 7,
+                    }]
+                },
+                options: option,
+            });
+
+            const category = document.getElementById('categoryChart').getContext('2d');
+            const categoryChart = new Chart(category, {
+                type: 'bar',
+                data: {
+                    labels: ['가정문제', '기업문제', '안전분야조사', '사기/분쟁', '스토킹', '의료/보험', '부동산', '금융/사이버', '민원대행', '불법기기탐지', '경호/경비', '일반조사', '해외조사'],
+                    datasets: [{
+                        label: '분야',
+                        data: data.category,
+                        backgroundColor: "#64B5F6",
+                        barThickness: 7,
+                    }]
+                },
+                options: option,
+            });
+
+            const month = document.getElementById('monthChart').getContext('2d');
+            const monthChart = new Chart(month, {
+                type: 'bar',
+                data: {
+                    labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                    datasets: [{
+                        label: '월',
+                        data: data.month,
+                        backgroundColor: "#64B5F6",
+                        barThickness: 7,
+                    }]
+                },
+                options: option,
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        })
 
 };
 

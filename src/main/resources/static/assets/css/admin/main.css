@@ -472,6 +472,18 @@ select:focus {
   gap: 40px;
   padding: 10px 30px 20px;
 }
+.btn-chart {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  background: center/auto 40px url(../../images/ico/ico-chart.svg) no-repeat;
+}
+.btn-chart.on {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  background: center/auto 40px url(../../images/ico/ico-chart-gr.svg) no-repeat;
+}
 .btn-review {
   display: inline-block;
   width: 40px;
@@ -616,30 +628,6 @@ select:focus {
   border: 0;
   color: #FFF;
   font-size: 14px;
-}
-.btn-chart {
-  display: flex;
-  align-items: center;
-  height: 36px;
-  padding: 8px 16px;
-  background: rgba(40,44,52,.05);
-  border: 1px solid transparent;
-  border-radius: 6px;
-  font-family: 'Noto Sans KR';
-  font-size: 14px;
-  color: #3080d0;
-  user-select: none;
-  transition: background .25s,border-color .25s;
-}
-.btn-chart:hover {
-  background: rgba(48,128,208,.15);
-  border-color: rgba(48,128,208,.2);
-  color: #3080d0;
-}
-.btn-chart.on {
-  background: rgba(48,128,208,.15);
-  border-color: rgba(48,128,208,.2);
-  color: #3080d0;
 }
 .chart-btn-wrap {
   width: 100%;

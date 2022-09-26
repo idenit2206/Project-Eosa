@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * packageName    : com.eosa.admin.controller
@@ -281,7 +283,7 @@ public class CompanyController {
      * @param page
      * @return String
      */
-    @GetMapping("/chart")
+    @GetMapping("/chart/list")
     public String chartList(Model model,
                             @RequestParam(defaultValue = "company") String sort,
                             @RequestParam(defaultValue = "") String search,
@@ -300,6 +302,31 @@ public class CompanyController {
     public String wholeChart(Model model) {
 
         return companyService.wholeChart(model);
+    }
+
+    /**
+     * 통계 데이터 조회 컨트롤러
+     *
+     * @return Map
+     */
+    @ResponseBody
+    @PostMapping("/chart/whole/data")
+    public Map<String, Object> chartData(@RequestParam String sort, @RequestParam long companysIdx) {
+
+        return companyService.chartData(sort, companysIdx);
+    }
+
+    /**
+     * 업체 통계 조회 컨트롤러
+     *
+     * @param model
+     * @param companysIdx
+     * @return String
+     */
+    @GetMapping("/chart")
+    public String chart(Model model, @RequestParam long companysIdx) {
+
+        return companyService.chart(model, companysIdx);
     }
 
 }
