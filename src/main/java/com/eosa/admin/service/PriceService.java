@@ -1,5 +1,6 @@
 package com.eosa.admin.service;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,14 @@ import com.eosa.admin.dto.CategoryDTO;
 import com.eosa.admin.dto.RegionDTO;
 import com.eosa.admin.mapper.CategoryMapper;
 import com.eosa.admin.mapper.RegionMapper;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class PriceService {
     
@@ -28,15 +36,81 @@ public class PriceService {
         return "admin/price/list";
     }
 
-    public String priceUpdate(
-        @RequestParam List<RegionDTO> region,
-        @RequestParam List<CategoryDTO> category,
+    public String priceUpdateRegion(
+        String region,
+        // @RequestParam List<CategoryDTO> category,
         Model model
     ) {
+        // log.debug("[priceUpdateRegion] param String: {}",region.toString());
+        JsonParser parser = new JsonParser();
+        JsonArray regionObject = (JsonArray) parser.parse(region);  
+
+        for(int i = 0; i < regionObject.size(); i++) {
+            // log.debug(regionObject.get(i).toString());
+            JsonElement el = regionObject.get(i);
+            Long regionIdx = el.getAsJsonObject().get("regionIdx").getAsLong();
+            String regionName = el.getAsJsonObject().get("regionName").getAsString();
+            int regionPrice = el.getAsJsonObject().get("regionPrice").getAsInt();
+            RegionDTO regionDTO = new RegionDTO(regionIdx, regionName, regionPrice);
+            log.debug("[updateRegionPrice] regionDTO: {}", regionDTO.toString());
+            regionMapper.priceUpdateRegion(regionDTO);
+        }
+        
         List<RegionDTO> regionList = regionMapper.selectRegion();
         List<CategoryDTO> categoryList = categoryMapper.selectCategory();
+        model.addAttribute("region", regionList);
+        model.addAttribute("category", categoryList);
+        return "admin/price/list";
+    }
+
+    public String priceUpdateCategory(
+        String category,
+        Model model
+    ) {
+        log.debug("[priceUpdateCategory] param String: {}", category.toString());
+        JsonParser parser2 = new JsonParser();
+        JsonArray categoryObject = (JsonArray) parser2.parse(category);
+
+        for(int i = 0; i < categoryObject.size(); i++) {
+            // log.debug(categoryObject.get(i).toString());
+            JsonElement el = categoryObject.get(i);
+            Long categoryIdx = el.getAsJsonObject().get("categoryIdx").getAsLong();
+            String categoryName = el.getAsJsonObject().get("categoryName").getAsString();
+            int categoryPrice = el.getAsJsonObject().get("categoryPrice").getAsInt();
+            
+            CategoryDTO categoryDTO = new CategoryDTO(categoryIdx, categoryName, categoryPrice);
+            categoryMapper.priceUpdateCategory(categoryDTO);
+        }
+        
+        List<RegionDTO> regionList = regionMapper.selectRegion();
+        List<CategoryDTO> categoryList = categoryMapper.selectCategory();
+        model.addAttribute("region", regionList);
+        model.addAttribute("category", categoryList);
+        return "admin/price/list";
+    }
+
+    public String deleteRegion(List<Long> regionIdx, Model model) {
+        log.debug("[deleteRegion]: {}",regionIdx.toString());
+        for(int i = 0; i < regionIdx.size(); i++) {
+            regionMapper.deleteRegion(Long.valueOf(regionIdx.get(i)));
+        }
         
 
+        List<RegionDTO> regionList = regionMapper.selectRegion();
+        List<CategoryDTO> categoryList = categoryMapper.selectCategory();
+        model.addAttribute("region", regionList);
+        model.addAttribute("category", categoryList);
+        return "admin/price/list";
+    }
+
+    public String deleteCategory(List<Long> categoryIdx, Model model) {
+        log.debug("[deleteRegion]: {}", categoryIdx.toString());
+        for(int i = 0; i < categoryIdx.size(); i++) {
+            categoryMapper.deleteCategory(Long.valueOf(categoryIdx.get(i)));
+        }
+
+        List<RegionDTO> regionList = regionMapper.selectRegion();
+        List<CategoryDTO> categoryList = categoryMapper.selectCategory();
         model.addAttribute("region", regionList);
         model.addAttribute("category", categoryList);
         return "admin/price/list";

@@ -9,4 +9,10 @@ public class CategoryDTO {
     private String categoryName;
     private int categoryPrice;
 
+    public CategoryDTO(Long categoryIdx, String categoryName, int categoryPrice) {
+        this.categoryIdx = categoryIdx;
+        this.categoryName = categoryName;
+        this.categoryPrice = categoryPrice;
+    }
+    
 }

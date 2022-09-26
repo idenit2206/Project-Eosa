@@ -10,4 +10,15 @@
         FROM Category C
     </select>
 
+    <insert id="priceUpdateCategory" parameterType="CategoryDTO">
+        INSERT INTO Category(categoryIdx, categoryName, categoryPrice)
+        VALUES(#{categoryIdx}, #{categoryName}, #{categoryPrice})
+        ON DUPLICATE KEY UPDATE categoryPrice = #{categoryPrice}
+    </insert>
+
+    <delete id="deleteCategory" parameterType="Long">
+        DELETE FROM Category
+        WHERE categoryIdx = #{categoryIdx}
+    </delete>
+
 </mapper>

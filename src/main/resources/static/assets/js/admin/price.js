@@ -1,5 +1,67 @@
 "use strict";
 
+const removeRegionItem = () => {
+    const regionRemoveBtn = document.querySelector(".region-remove-btn");
+    regionRemoveBtn.addEventListener("click", () => {
+        const regionIdxValue = document.querySelectorAll(".regionIdxValue")
+        let regionIdxValueList = [];
+        for(let i = 0; i < regionIdxValue.length; i++) {
+            if(regionIdxValue[i].checked == true) {
+                // console.log(regionIdxValue[i].value);
+                regionIdxValueList.push(regionIdxValue[i].value);
+            }
+        }
+        let formData = new FormData();
+        formData.append("regionIdxList", regionIdxValueList);
+        fetch(`/admin/manage/price/deleteRegion`, {
+            "method": "DELETE",
+            "body": formData
+        })
+        .then(result => result)
+        .then(data => {
+            if(data.status == 200) {
+                alert("삭제 되었습니다.")
+                window.location.reload();
+            }
+            else {
+                alert("다시 시도해주세요.")
+                window.location.reload();
+            } 
+        })
+    });
+}
+
+const removeCategoryItem = () => {
+    const categoryRemoveBtn = document.querySelector(".category-remove-btn");
+    categoryRemoveBtn.addEventListener("click", () => {
+        const categoryIdxValue = document.querySelectorAll(".categoryIdxValue")
+        let categoryIdxValueList = [];
+        for(let i = 0; i < categoryIdxValue.length; i++) {
+            if(categoryIdxValue[i].checked == true) {
+                // console.log(regionIdxValue[i].value);
+                categoryIdxValueList.push(categoryIdxValue[i].value);
+            }
+        }
+        let formData = new FormData();
+        formData.append("categoryIdxList", categoryIdxValueList);
+        fetch(`/admin/manage/price/deleteCategory`, {
+            "method": "DELETE",
+            "body": formData
+        })
+        .then(result => result)
+        .then(data => {
+            if(data.status == 200) {
+                alert("삭제 되었습니다.")
+                window.location.reload();
+            }
+            else {
+                alert("다시 시도해주세요.")
+                window.location.reload();
+            } 
+        })
+    });
+}
+
 const addRegionItem = () => {
     const regionAddBtn = document.querySelector(".region-add-btn");
     const regionList = document.querySelector("#regionList");
@@ -92,15 +154,10 @@ const modifyRegion = () => {
         for(let i = 0; i < regionTR.length; i++) {
             let array
             let region = new Object();
-            // let region = {
-            //     regionIdx: "",
-            //     regionName: "",
-            //     regionPrice: ""
-            // };
-            region.regionIdx = regionIdxValue[i].value;
+           
+            region.regionIdx = i + 1;
             region.regionName = regionNameValue[i].value;
-            region.regionPrice = regionPriceValue[i].value;
-            
+            region.regionPrice = regionPriceValue[i].value;            
             
             // formData.append("region", JSON.stringify(region));
             // formData.append("region", region);
@@ -111,6 +168,17 @@ const modifyRegion = () => {
         fetch(`/admin/manage/price/updateRegion`, {
             "method": "POST",
             "body": formData
+        })
+        .then(result => result)
+        .then(data => {
+            if(data.status == 200) {
+                alert("변경 되었습니다.")
+                window.location.reload();
+            }
+            else {
+                alert("다시 시도해주세요.")
+                window.location.reload();
+            } 
         })
     })
 }
@@ -133,23 +201,34 @@ const modifyCategory = () => {
                 categoryName: "",
                 categoryPrice: ""
             };
-            category.categoryIdx = categoryIdxValue[i].value;
+            category.categoryIdx = i + 1;
             category.categoryName = categoryNameValue[i].value;
             category.categoryPrice = categoryPriceValue[i].value;
             // console.log(`regionName: ${region.regionName}`);
-            categoryList.push(JSON.stringify(category));
+            categoryList.push(category);
         }
-        formData.append("category", categoryList);
-        // for (let key of formData.keys()) {
-        //     console.log(key);
-        //   }
-        for (let value of formData.values()) {
-            console.log(value);
+        formData.append("category", new Blob([JSON.stringify(categoryList)]));
+        for (let key of formData.keys()) {
+            console.log(key);
         }
+        // for (let value of formData.values()) {
+        //     console.log(value);
+        // }
 
         fetch(`/admin/manage/price/updateCategory`, {
             "method": "POST",
             "body": formData,
+        })
+        .then(result => result)
+        .then(data => {
+            if(data.status == 200) {
+                alert("변경 되었습니다.")
+                window.location.reload();
+            }
+            else {
+                alert("다시 시도해주세요.")
+                window.location.reload();
+            } 
         })
     })
 }

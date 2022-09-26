@@ -9,4 +9,15 @@ public class RegionDTO {
     private String regionName;
     private int regionPrice;
 
+    public RegionDTO(String regionName, int regionPrice) {
+        this.regionName = regionName;
+        this.regionPrice = regionPrice;
+    }
+    
+    public RegionDTO(Long regionIdx, String regionName, int regionPrice) {
+        this.regionIdx = regionIdx;
+        this.regionName = regionName;
+        this.regionPrice = regionPrice;
+    }
+
 }
