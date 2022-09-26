@@ -75,7 +75,7 @@ public class ChatRoomController {
         @RequestParam("usersIdx") Long usersIdx
     ) {
         CustomResponseData result = new CustomResponseData();
-        log.debug("채팅방 생성을 요청 합니다. 요청한 사용자의 인덱스: {}, 대상 회사의 인덱스: {}, 생성된 시간: {}", usersIdx, companysIdx, LocalDateTime.now());
+        log.debug("관리자와의 채팅을 요청 합니다. 요청한 사용자의 인덱스: {} 생성된 시간: {}", usersIdx, LocalDateTime.now());
         ChatRoom entity = new ChatRoom();
             entity.setUsersIdx(usersIdx);
             entity.setCompanysIdx(Long.valueOf(0));
