@@ -548,6 +548,8 @@ public class UsersController {
         item.setUsersAccount(rows.getUsersAccount());
         item.setUsersNick(rows.getUsersNick());
         item.setUsersEmail(rows.getUsersEmail());
+        item.setUsersPhone(rows.getUsersPhone());
+        item.setUsersProfile(rows.getUsersProfile());
         item.setUsersRole(rows.getUsersRole());
 
         if(rows != null) {
