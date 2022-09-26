@@ -71,6 +71,11 @@ public class CompanysService implements CompanysRepository {
     }
 
     @Override
+    public List<SelectCompanys> selectAllCompanysRandom() {
+        return companysRepository.selectAllCompanysRandom();   
+    }
+
+    @Override
     public List<SelectAllCompanysList> selectAllCompanysListByUsersIdxAndCompanysIdx(Long usersIdx, Long companysIdx) {
         return companysRepository.selectAllCompanysListByUsersIdxAndCompanysIdx(usersIdx, companysIdx);
     }

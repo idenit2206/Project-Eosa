@@ -227,6 +227,24 @@ public class CompanysController {
         return result;
     }
 
+    @GetMapping("/selectAllCompanysRandom")
+    public CustomResponseData selectAllCompanysRandom() {
+        CustomResponseData result = new CustomResponseData();
+        List<SelectCompanys> items = companysService.selectAllCompanysRandom();
+        if(items != null) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(items);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
+
     /**
      * 업체검색(필터 적용)
      * 
