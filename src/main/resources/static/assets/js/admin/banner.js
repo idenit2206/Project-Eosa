@@ -1,5 +1,6 @@
 "use strict";
 
+let currentBannerRows = document.querySelectorAll(".bannerRows");
 let currentBannerRowsCount = document.querySelectorAll(".bannerRows").length;
 
 const bannerAddItem = () => {
@@ -108,7 +109,7 @@ const bannerUpdate = () => {
     let bannerFile = [];
 
     bannerUpdateBtn.addEventListener("click", () => {
-        console.log(`bannerRows: count: ${currentBannerRowsCount}`);
+        console.log(`bannerRows: count: ${currentBannerRows.length + 1}`);
         for(let i = 0; i < bannerInputCell.length; i++) {
             console.log(i);
             // console.log(`bannerFileInput[${i}]: ${bannerFileInput[i].files[0]}`);

@@ -546,9 +546,15 @@ public class UsersController {
         Users item = new Users();
         item.setProvider(rows.getProvider());
         item.setUsersAccount(rows.getUsersAccount());
+        item.setUsersName(rows.getUsersName());
         item.setUsersNick(rows.getUsersNick());
+        item.setUsersAge(rows.getUsersAge());
+        item.setUsersRegion1(rows.getUsersRegion1());
+        item.setUsersRegion2(rows.getUsersRegion2());
+        item.setUsersGender(rows.getUsersGender());
         item.setUsersEmail(rows.getUsersEmail());
         item.setUsersPhone(rows.getUsersPhone());
+        item.setUsersNotice(rows.getUsersNotice());
         item.setUsersProfile(rows.getUsersProfile());
         item.setUsersRole(rows.getUsersRole());
 
