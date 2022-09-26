@@ -1,6 +1,8 @@
 package com.eosa.admin.controller;
 
+import com.eosa.admin.dto.BannerDTO;
 import com.eosa.admin.service.BannerService;
+import com.eosa.web.banner.Banner;
 import com.eosa.web.util.file.AwsS3Service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -22,16 +24,13 @@ public class BannerController {
     @PutMapping("/update")
     public String bannerUpdate(
         @RequestParam(name="bannerFile", required = false) List<MultipartFile> bannerFile,
-        // @RequestParam(name="fileForDesktop", required = false) List<MultipartFile> fileForDesktop,
-        // @RequestParam(name="fileForMobile", required = false) List<MultipartFile> fileForMobile,
-        // @RequestParam(name="bannerUrlDesktop", required = false) List<String> bannerUrlDesktop,
-        // @RequestParam(name="bannerUrlMobile", required = false) List<String> bannerUrlMobile,
+        @RequestPart(name="bannerItem", required = false) String bannerItem,
         Model model
     ) {
-        log.debug("[bannerUpdate] param: {}", bannerFile.get(0).toString());
-        // String result = bannerService.bannerUpdate(bannerFile, model);
-
-        return "admin/banner/list";
+        if(bannerFile != null) { log.debug("[bannerUpdate] bannerFile[0]: {}", bannerFile.get(0).getOriginalFilename()); }
+        if(bannerItem != null) { log.debug("[bannerUpdate] bannerItem: {}", bannerItem); }
+        return bannerService.bannerUpdate(bannerFile, bannerItem, model);
+        // return "/admin/banner/list";
     }
 
     @GetMapping("/list")

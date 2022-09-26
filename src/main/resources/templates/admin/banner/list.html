@@ -14,65 +14,22 @@
                        <div class="header-wrap">
                            <table>
                               <tbody class="bannerTableBody">
-                                    <tr class="bannerRows" th:each="item : ${items}">
-                                        <td class="bannerPreviewCell">
+                                    <tr class="bannerRows" th:each="item, index : ${items}">
+                                        <td class="bannerPreviewCell" th:id="${item.idx}">
                                             <img class="bannerPreview" th:src="${item.bannerFileLink}"/>
                                         </td>
                                         <td class="bannerInputCell">
-                                            <input type="file" class="bannerFileInput" accept="image/jpeg, image/png"/>
+                                            <input type="file" class="bannerFileInput" accept="image/jpeg, image/png"
+                                                th:id="${item.bannerFileName}"
+                                                th:onchange="FileUpProcess(this, [[${index.index}]])"/>
                                             <span class="bannerFileInputRemove">x</span>
                                             <br/>
                                             <input type="text" class="bannerUrlInput" th:value="${item.bannerFileLink}"/>
-                                        </td>                                       
-                                    </tr>
-                                <!-- <tr class="bannerRows">
-                                        <td class="bannerPreviewCell">
-                                            <img class="bannerPreview" th:src="${items[1].bannerFileLink}"/>
                                         </td>
-                                        <td class="bannerInputCell">
-                                            <input type="file" class="bannerFileInput" accept="image/jpeg, image/png"/>
-                                            <span class="bannerFileInputRemove">x</span>
-                                            <br/>
-                                            <input type="text" class="bannerUrlInput" th:value="${items[1].bannerFileLink}"/>
-                                        </td>                                       
-                                    </tr>
-                                    <tr class="bannerRows">
-                                        <td class="bannerPreviewCell" th:if="${items[2] ne null}">
-                                            <img class="bannerPreview" th:src="${items[2].bannerFileLink}"/>
-                                        </td>
-                                        <td class="bannerPreviewCell" th:unless="${items[2] ne null}">
-                                            <img class="bannerPreview" />
-                                        </td>
-                                        <td class="bannerInputCell">
-                                            <input type="file" class="bannerFileInput" accept="image/jpeg, image/png"/>
-                                            <span class="bannerFileInputRemove">x</span>
-                                            <br/>
-                                            <input type="text" class="bannerUrlInput" th:value="${items[2].bannerFileLink}"/>
-                                        </td>                                       
-                                    </tr>
-                                    <tr class="bannerRows">
-                                        <td class="bannerPreviewCell">
-                                            <img class="bannerPreview" th:src="${items[3].bannerFileLink}"/>
-                                        </td>
-                                        </td>
-                                        <td class="bannerInputCell">
-                                            <input type="file" class="bannerFileInput" accept="image/jpeg, image/png"/>
-                                            <span class="bannerFileInputRemove">x</span>
-                                            <br/>
-                                            <input type="text" class="bannerUrlInput" th:value="${items[3].bannerFileLink}"/>
-                                        </td>                                       
-                                    </tr>
-                                    <tr class="bannerRows">
-                                        <td class="bannerPreviewCell">
-                                            <img class="bannerPreview" th:src="${items[4].bannerFileLink}"/>
-                                        </td>
-                                        <td class="bannerInputCell">
-                                            <input type="file" class="bannerFileInput" accept="image/jpeg, image/png"/>
-                                            <span class="bannerFileInputRemove">x</span>
-                                            <br/>
-                                            <input type="text" class="bannerUrlInput" th:value="${items[4].bannerFileLink}" />
-                                        </td>                                       
-                                    </tr> -->
+                                        <td class="bannerCellRemove">
+                                            삭제
+                                        </td>                                     
+                                    </tr>                              
                                </tbody>
                            </table>
                        </div>
@@ -95,8 +52,10 @@
         pageOn();
         // listCheck();
         bannerAddItem();
-        bannerInputFile();
+        bannerRemoveItem();
+        // bannerInputFile();
         bannerInputFileRemove();
+        IsShowbannerInputFileRemove();
         bannerUpdate();
     });
 </script>

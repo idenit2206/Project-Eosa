@@ -10,4 +10,14 @@ public class BannerDTO {
     private String bannerFileName;
     private String bannerFileLink;
 
+    public BannerDTO() {
+    }
+
+    public BannerDTO(int idx, String bannerTag, String bannerFileName, String bannerFileLink) {
+        this.idx = idx;
+        this.bannerTag = bannerTag;
+        this.bannerFileName = bannerFileName;
+        this.bannerFileLink = bannerFileLink;
+    }
+    
 }

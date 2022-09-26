@@ -5,7 +5,13 @@ import com.eosa.admin.mapper.BannerMapper;
 
 import java.util.*;
 
+import com.eosa.web.banner.Banner;
 import com.eosa.web.util.file.AwsS3Service;
+import com.fasterxml.jackson.core.io.JsonEOFException;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,18 +28,36 @@ public class BannerService {
 
     public String bannerUpdate(
         List<MultipartFile> bannerFile,
+        String bannerItem,
         Model model
     ) {
-        for(int i = 0; i < bannerFile.size(); i++) {
-            List<String> file = awsS3Service.uploadSingleFile(bannerFile.get(i), "banner", Long.valueOf(i));
-            String fileName = file.get(0);
-            String fileUrl = file.get(1);
-            BannerDTO bannerDTO = new BannerDTO();
-            bannerDTO.setIdx(i+1);
-            bannerDTO.setBannerTag("banner");
-            bannerDTO.setBannerFileName(fileName);
-            bannerDTO.setBannerFileLink(fileUrl);
-            int insertRow = bannerMapper.bannerUpdate(bannerDTO);
+        JsonParser parser = new JsonParser();
+        JsonArray bannerItemArray = (JsonArray) parser.parse(bannerItem);
+        int fileIndex = 0;
+        List<BannerDTO> bannerDTOList = new ArrayList<>();
+
+        // for(int i = 0; i < bannerItemArray.size(); i++) {
+        //     JsonElement el = bannerItemArray.get(i);
+        //     int idx = el.getAsJsonObject().get("idx").getAsInt();
+        //     String bannerFileName = el.getAsJsonObject().get("bannerFileName").getAsString();
+        //     String bannerFileUrl = el.getAsJsonObject().get("bannerFileUrl").getAsString();
+        //     BannerDTO b = new BannerDTO(idx, "banner", bannerFileName, bannerFileUrl);
+        //     bannerDTOList.add(b);
+        // }
+
+        if(bannerFile != null) {
+            bannerMapper.bannerTruncate();
+            for(int i = 0; i < bannerFile.size(); i++) {
+                List<String> file = awsS3Service.uploadSingleFile(bannerFile.get(i), "banner", Long.valueOf(i));
+                String fileName = file.get(0);
+                String fileUrl = file.get(1);
+                BannerDTO bannerDTO = new BannerDTO();
+                bannerDTO.setIdx(i+1);
+                bannerDTO.setBannerTag("banner");
+                bannerDTO.setBannerFileName(fileName);
+                bannerDTO.setBannerFileLink(fileUrl);
+                bannerMapper.bannerUpdate(bannerDTO);
+            }
         }
         return "admin/banner/list";
     }

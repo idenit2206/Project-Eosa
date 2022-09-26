@@ -28,7 +28,8 @@ const bannerAddItem = () => {
         inputFile.setAttribute("type", "file");
         inputFile.setAttribute("class", "bannerFileInput")
         inputFile.setAttribute("accept", "image/jpeg, image/png");
-
+        inputFile.setAttribute("onchange", `FileUpProcess(this, ${currentBannerRowsCount})`);
+        
         const spanEl = document.createElement("span");
         spanEl.setAttribute("class", "bannerFileInputRemove");
         spanEl.innerHTML = "x";
@@ -39,15 +40,19 @@ const bannerAddItem = () => {
         inputText.setAttribute("type", "text");
         inputText.setAttribute("class", "bannerUrlInput");
 
+        const bannerCellRemove = document.createElement("td");
+        bannerCellRemove.innerHTML = "삭제"
+
         bannerPreviewCell.appendChild(bannerPreview);
         
         bannerInputCell.appendChild(inputFile);
         bannerInputCell.appendChild(spanEl);
         bannerInputCell.appendChild(brEl);
         bannerInputCell.appendChild(inputText);
-
+        
         bannersRows.appendChild(bannerPreviewCell);
         bannersRows.appendChild(bannerInputCell);
+        bannersRows.appendChild(bannerCellRemove);
 
         bannerTableBody.appendChild(bannersRows);
         currentBannerRowsCount++;
@@ -58,77 +63,110 @@ const bannerAddItem = () => {
     })
 }
 
-const bannerInputFile = () => {
-    const bannerTableBody = document.querySelector(".bannerTableBody");
-    const bannerFileInput = document.querySelectorAll(".bannerFileInput");
-    const bannerFileInputRemove = document.querySelectorAll(".bannerFileInputRemove");
-    const bannerUrlInput = document.querySelectorAll(".bannerUrlInput");
+const bannerRemoveItem = () => {
+    const bannerCellRemove = document.querySelectorAll(".bannerCellRemove");
+    const currentBannerRows = document.querySelectorAll(".bannerRows");
+    for(let i = 0; i < bannerCellRemove.length; i++) {
+        bannerCellRemove[i].addEventListener("click", () => {
+            currentBannerRows[i].remove();
+        })
+    }    
+}
 
+const bannerInputFile = () => {
+    const bannerFileInput = document.querySelectorAll(".bannerFileInput");    
     for(let i = 0; i < bannerFileInput.length; i++) {
         bannerFileInput[i].addEventListener("change", (e) => {
-            FileUpProcess(e.target.files[0], 'banner', i);
+            FileUpProcess(e.target.files[0], i);
         })
     }
 }
 
-const FileUpProcess = (file, tag, index) => {
-    console.log(`FileUpProcess input parameter: file - ${file}, tag - ${tag}, index = ${index}`);
+//file, tag, index
+const FileUpProcess = (file, index) => {
+    console.log(`FileUpProcess input parameter: file - ${file}, index = ${index}`);
+    console.log(file.files)
     const bannerPreview = document.querySelectorAll(".bannerPreview");
-    const bannerFileInputRemove = document.querySelectorAll(".bannerFileInputRemove");
+    const bannerFileInputRemove = document.querySelectorAll(".bannerFileInputRemove");   
     let fileReader = new FileReader();
-    fileReader.readAsDataURL(file);
-    fileReader.addEventListener("load", (e) => {
-        // console.log(e.target.result);
+    fileReader.readAsDataURL(file.files.length > 0 && file.files[0]);
+    fileReader.onloadend = function (e) {
+        console.log(bannerPreview[index].getAttribute("src"));
+        bannerPreview[index].removeAttribute("src");              
         bannerPreview[index].setAttribute("src", e.target.result);
-        bannerFileInputRemove[index].style.visibility = "visible";
-    })
+        bannerFileInputRemove[index].style.visibility = "visible";     
+    };
+
 }
 
 const bannerInputFileRemove = () => {
     const bannerPreview = document.querySelectorAll(".bannerPreview");
+    const bannerFileInput = document.querySelectorAll(".bannerFileInput");
+    const bannerUrlInput = document.querySelectorAll(".bannerUrlInput");
     const bannerFileInputRemove = document.querySelectorAll(".bannerFileInputRemove");
     for(let i = 0; i < bannerPreview.length; i++) {
-        bannerFileInputRemove[i].style.visibility = "hidden";
+        bannerFileInputRemove[i].addEventListener("click", () => {
+            bannerPreview[i].setAttribute("src", "");
+            bannerFileInput[i].value = "";
+            bannerUrlInput[i].value = "";
+            bannerFileInputRemove[i].style.visibility = "hidden";
+        })
+        
+    }
+}
+
+const IsShowbannerInputFileRemove = () => {
+    const bannerPreview = document.querySelectorAll(".bannerPreview");
+    const bannerFileInputRemove = document.querySelectorAll(".bannerFileInputRemove");
+    for(let i = 0; i < bannerPreview.length; i++) {
+        if(bannerPreview[i].getAttribute("src") != null) {
+            bannerFileInputRemove[i].style.visibility = "visible";
+        }
     }
 }
 
 const bannerUpdate = () => {
     const bannerUpdateBtn = document.querySelector(".banner-update-btn");
-
-    const bannerRows = document.querySelectorAll(".bannerRows");
-
-    const bannerInputCell = document.querySelectorAll(".bannerInputCell");
-
-
-    const bannerTableBody = document.querySelector(".bannerTableBody");
-    const bannerFileInput = document.querySelectorAll(".bannerFileInput");
-    const bannerFileInputRemove = document.querySelectorAll(".bannerFileInputRemove");
-    const bannerUrlInput = document.querySelectorAll(".bannerUrlInput");
-
     let formData = new FormData();
     let bannerFile = [];
 
     bannerUpdateBtn.addEventListener("click", () => {
-        console.log(`bannerRows: count: ${currentBannerRows.length + 1}`);
-        for(let i = 0; i < bannerInputCell.length; i++) {
-            console.log(i);
-            // console.log(`bannerFileInput[${i}]: ${bannerFileInput[i].files[0]}`);
-            // formData.append("bannerFile", bannerFileInput[i].files[0]);
-            // bannerFile.push(bannerFileInput[i].files[0]);
-        }        
-        // for (let value of formData.values()) {
+        // const test = document.querySelectorAll('.bannerRows');
+        // console.log(`bannerRows: count: ${test.length}`);
+        
+        let count = 0;
+        const bannerPreviewCell = document.querySelectorAll(".bannerPreviewCell");
+        const bannerFileInput = document.querySelectorAll(".bannerFileInput");
+        const bannerUrlInput = document.querySelectorAll(".bannerUrlInput");
+        let bannerItems = [];
+        
+        for(let i = 0; i < bannerFileInput.length; i++) {        
+            formData.append("bannerFile", bannerFileInput[i].files[0]);
+           
+            bannerItems.push({ 
+                idx: bannerPreviewCell[i].getAttribute("id"),
+                bannerFileName: bannerFileInput[i].getAttribute("id"),
+                bannerFileLink: bannerUrlInput[i].value
+            });
+            count++;
+        }
+        // for (let value of formData.keys()) {
         //     console.log(value);
         // }
-        // console.log(bannerFile);
-        // formData.append("bannerFile", bannerFile);
-        // fetch(`/admin/manage/banner/update`, { method: "PUT", body: formData })
-        // if(bannerFileInput.length == 5) {
-        //     fetch(`/admin/manage/banner/update`, { method: "PUT", body: formData })
-        // }
-        // else {
-        //     alert("배너는 5개의 파일을 업로드 해야합니다.");
-        // }
-        
+        // console.log(bannerItems);
+        formData.append("bannerItem", new Blob([JSON.stringify(bannerItems)]));
+        if(count < 1) {
+            alert("최소 한개의 배너가 필요합니다.");
+            window.location.reload();
+        }
+        fetch(`/admin/manage/banner/update`, { method: "PUT", body: formData })
+            .then(response => response)
+            .then(data => {
+                if(data.status == 200) {
+                    alert("변경을 완료했습니다.");
+                    window.location.reload();
+                }
+            })
     })
 
     
