@@ -156,9 +156,23 @@ public class UsersController {
         JsonObject jsonObject = (JsonObject) JsonParser.parseString(param).getAsJsonObject();
         // log.info("{}", jsonObject.toString());
         log.info("[doSignUp] jsonObject: {}", jsonObject.toString());
+       
         Users paramUsers = new Users();
-            paramUsers.setUsersAccount(jsonObject.get("usersAccount").getAsString().toLowerCase());
-            paramUsers.setUsersPass(jsonObject.get("usersPass").getAsString());
+            if(jsonObject.get("usersAccount") == null) {
+                paramUsers.setUsersAccount(null);                
+            }
+            else {
+                // paramUsers.setUsersAccount(jsonObject.get("usersEmail").getAsString().toLowerCase().split("@")[0]);
+                paramUsers.setUsersAccount(jsonObject.get("usersAccount").getAsString().toLowerCase());
+            }
+            
+            if(jsonObject.get("usersPass") == null) {
+                paramUsers.setUsersPass(null);
+            }
+            else {
+                paramUsers.setUsersPass(jsonObject.get("usersPass").getAsString());
+            }
+           
             paramUsers.setUsersName(jsonObject.get("usersName").getAsString());
             paramUsers.setUsersNick(jsonObject.get("usersNick").getAsString());
             paramUsers.setUsersPhone(jsonObject.get("usersPhone").getAsString());
@@ -186,7 +200,7 @@ public class UsersController {
 
         CustomResponseData result = new CustomResponseData();
         
-        String[] targets = {"usersAccount", "usersPass", "usersName", "usersNick", "usersPhone", "usersEmail", "usersRole", "usersAge", "usersRegion1", "usersGender", "usersNotice"};
+        String[] targets = {"usersName", "usersNick", "usersPhone", "usersEmail", "usersRole", "usersAge", "usersRegion1", "usersGender", "usersNotice"};
         Map<String, Object> checkItem = nullCheck.ObjectNullCheck(paramUsers, targets);
         
         if(checkItem.get("result") == "SUCCESS") {

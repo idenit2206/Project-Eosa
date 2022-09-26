@@ -78,6 +78,8 @@ public class CustomPrincipalOAuth2UserService extends DefaultOAuth2UserService {
         if(user != null) {
             // DB에 데이터가 존재하는 경우(기존회원)
             result = new CustomPrincipalDetails(user, oAuth2User.getAttributes(), provider);
+            // log.info("[loadUser 81] {} and {}", user.toString(), oAuth2User.getAttributes());
+            // log.info("SNS로그인 회원 기존회원: {}", result.toString());
             log.info("[loadUser] 사용자 {} 가 {} 을 활용해 로그인 합니다.", user.getUsersAccount(), provider);
         }
         else {

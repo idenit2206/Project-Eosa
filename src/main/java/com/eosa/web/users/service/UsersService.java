@@ -44,11 +44,19 @@ public class UsersService implements UsersRepository {
     public int userSave(Users param) {
         int result = 0;
         LocalDateTime currentTime = LocalDateTime.now();
-        param.setUsersPass(passwordEncoder.encode(param.getUsersPass()));
-        param.setUsersEnabled(1);
-        if(param.getProvider().equals("")) {
-            param.setProvider("eosa");
+        String prevPass = param.getUsersPass();
+        if(prevPass != null) {
+            param.setUsersPass(passwordEncoder.encode(param.getUsersPass()));
         }
+        else {
+            param.setUsersPass(passwordEncoder.encode("DkftndjqtsmsRoqkfwk"));
+        }
+        param.setUsersEnabled(1);
+        if(param.getProvider().equals(null)) {
+            param.setProvider("local");
+        }
+
+        param.setUsersProfile(null);
         param.setUsersJoinDate(currentTime);
 
         try {
@@ -85,7 +93,9 @@ public class UsersService implements UsersRepository {
      * @return Users
      */
     public Users findByUsersAccount(String usersAccount) {
-        return usersRepository.findByUsersAccount(usersAccount);
+        Users result = usersRepository.findByUsersAccount(usersAccount);
+        log.debug("[findByUsersAccount]: {}", result.toString());
+        return result;
     }
    
     /**
