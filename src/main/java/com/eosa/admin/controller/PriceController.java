@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,9 +35,7 @@ public class PriceController {
 
     @GetMapping("/list")
     public String priceList(Model model) {
-
         return priceService.priceList(model);
-
     }
 
     @PostMapping("/updateRegion")
@@ -44,38 +43,32 @@ public class PriceController {
         // @RequestParam(name="region", required = false) String region,
         @RequestPart String region,
         Model model
-    ) {        
-        log.debug("[priceUpdateRegion] param String: {}",region.toString());
-        JsonParser parser = new JsonParser();
-        JsonArray regionObject = (JsonArray) parser.parse(region);
-        log.debug("[priceUpdateRegion] {}", regionObject.get(0));
-       
-        // JsonObject regionObject =  (JsonObject) jsonParser.parse(region);
-        // for(int i = 0; i < region.size(); i++) {
-        //     log.debug(region.get(i).toString());
-        // }
-      
-        // for(int i = 0; i < region.size(); i++) {
-        //    log.debug("region[{}]: {}", i, region.get(i).toString());
-        //     // log.debug(jsonParser.parse(region.get(i)).toString());
-        // }
-        
-        // log.debug(regionElement.getAsJsonObject().get("region").toString());
-        
-        
-        return "admin/price/list";
-        // return priceService.priceUpdate(region, category, model);
-
+    ) {
+        return priceService.priceUpdateRegion(region, model);
     }
 
     @PostMapping("/updateCategory")
     public String priceUpdateCategory(
-        @RequestParam(name="category", required = false) List<String> category,
+        @RequestPart String category,
         Model model
     ) {
-        log.debug(category.toString());
+        return priceService.priceUpdateCategory(category, model);
+    }
 
-        return "admin/price/list";
+    @DeleteMapping("/deleteRegion")
+    public String deleteRegion(
+        @RequestParam List<Long> regionIdxList,
+        Model model
+    ) {
+        return priceService.deleteRegion(regionIdxList, model);
+    }
+
+    @DeleteMapping("/deleteCategory")
+    public String deleteCategory(
+        @RequestParam List<Long> categoryIdxList,
+        Model model
+    ) {
+        return priceService.deleteCategory(categoryIdxList, model);
     }
     
 }

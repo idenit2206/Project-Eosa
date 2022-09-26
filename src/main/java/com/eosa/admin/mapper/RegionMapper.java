@@ -9,6 +9,10 @@ import com.eosa.admin.dto.RegionDTO;
 @Mapper
 public interface RegionMapper {
 
-    List<RegionDTO> selectRegion();    
+    List<RegionDTO> selectRegion();
+
+    int priceUpdateRegion(RegionDTO regionDTO);
+
+    int deleteRegion(Long regionIdx);
 
 }

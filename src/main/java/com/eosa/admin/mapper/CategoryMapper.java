@@ -9,6 +9,10 @@ import com.eosa.admin.dto.CategoryDTO;
 @Mapper
 public interface CategoryMapper {
 
-    List<CategoryDTO> selectCategory();    
+    List<CategoryDTO> selectCategory();
+
+    int priceUpdateCategory(CategoryDTO categoryDTO);
+
+    int deleteCategory(Long categoryIdx);
 
 }

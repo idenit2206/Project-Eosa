@@ -9,5 +9,16 @@
             R.regionPrice
         FROM Region R
     </select>
+    
+    <insert id="priceUpdateRegion" parameterType="RegionDTO">
+        INSERT INTO Region(regionIdx, regionName, regionPrice)
+        VALUES(#{regionIdx}, #{regionName}, #{regionPrice})
+        ON DUPLICATE KEY UPDATE regionPrice = #{regionPrice}
+    </insert>
+
+    <delete id="deleteRegion" parameterType="Long">
+        DELETE FROM Region
+        WHERE regionIdx = #{regionIdx}
+    </delete>
 
 </mapper>
