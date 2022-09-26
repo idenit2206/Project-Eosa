@@ -64,6 +64,37 @@ public class ChatRoomController {
     }
 
     /**
+     * 관리자와 채팅하기
+     * @param usersIdx
+     * @param companysIdx
+     * @return
+     */
+    @GetMapping("/createRoomWithAdmin")
+    @ResponseBody
+    public CustomResponseData createRoomWithAdmin(
+        @RequestParam("usersIdx") Long usersIdx
+    ) {
+        CustomResponseData result = new CustomResponseData();
+        log.debug("채팅방 생성을 요청 합니다. 요청한 사용자의 인덱스: {}, 대상 회사의 인덱스: {}, 생성된 시간: {}", usersIdx, companysIdx, LocalDateTime.now());
+        ChatRoom entity = new ChatRoom();
+            entity.setUsersIdx(usersIdx);
+            entity.setCompanysIdx(Long.valueOf(0));
+        ChatRoom createRow = chatRoomService.save(entity);
+
+        if(createRow != null) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(createRow);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        return result;
+    }
+
+    /**
      * usersIdx가 참가한 모든 채팅방의 목록을 출력합니다.
      * @param usersIdx
      * @return

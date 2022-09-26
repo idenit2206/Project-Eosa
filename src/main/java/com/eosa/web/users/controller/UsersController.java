@@ -339,7 +339,7 @@ public class UsersController {
 
         Users user = usersService.selectByUsersEmail(usersEmail);
         if(user != null) {    
-            Cookie cookieAccount = new Cookie("usersAccount", usersAccount);
+            Cookie cookieAccount = new Cookie("usersAccount", sns+"/"+usersAccount+"/"+picture);
             cookieAccount.setPath("/");
             response.addCookie(cookieAccount);
             response.sendRedirect("http://" + myDomain + ":" + myUiPort + "/");
