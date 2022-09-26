@@ -543,10 +543,16 @@ public class UsersController {
     public CustomResponseData selectUsersByUsersIdx(@RequestParam("usersIdx") Long usersIdx) {
         CustomResponseData result = new CustomResponseData();
         Users rows = usersService.selectUsersByUsersIdx(usersIdx);
+        Users item = new Users();
+        item.setProvider(rows.getProvider());
+        item.setUsersAccount(rows.getUsersAccount());
+        item.setUsersNick(rows.getUsersNick());
+        item.setUsersEmail(rows.getUsersEmail());
+        item.setUsersRole(rows.getUsersRole());
 
         if(rows != null) {
             result.setStatusCode(HttpStatus.OK.value());
-            result.setResultItem(rows);
+            result.setResultItem(item);
             result.setResponseDateTime(LocalDateTime.now());
         }
         else {

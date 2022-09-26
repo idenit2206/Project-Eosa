@@ -14,18 +14,18 @@
                        <div class="header-wrap">
                            <table>
                               <tbody class="bannerTableBody">
-                                    <tr class="bannerRows">
+                                    <tr class="bannerRows" th:each="item : ${items}">
                                         <td class="bannerPreviewCell">
-                                            <img class="bannerPreview" th:src="${items[0].bannerFileLink}"/>
+                                            <img class="bannerPreview" th:src="${item.bannerFileLink}"/>
                                         </td>
                                         <td class="bannerInputCell">
                                             <input type="file" class="bannerFileInput" accept="image/jpeg, image/png"/>
                                             <span class="bannerFileInputRemove">x</span>
                                             <br/>
-                                            <input type="text" class="bannerUrlInput" th:value="${items[0].bannerFileLink}"/>
+                                            <input type="text" class="bannerUrlInput" th:value="${item.bannerFileLink}"/>
                                         </td>                                       
                                     </tr>
-                                    <tr class="bannerRows">
+                                <!-- <tr class="bannerRows">
                                         <td class="bannerPreviewCell">
                                             <img class="bannerPreview" th:src="${items[1].bannerFileLink}"/>
                                         </td>
@@ -72,14 +72,14 @@
                                             <br/>
                                             <input type="text" class="bannerUrlInput" th:value="${items[4].bannerFileLink}" />
                                         </td>                                       
-                                    </tr>
+                                    </tr> -->
                                </tbody>
                            </table>
                        </div>
                    </div>
                </div>
                <div class="table__action">
-                   <!-- <button type="button" class="btn-normal banner-add-item">배너 추가하기</button> -->
+                   <button type="button" class="btn-normal banner-add-item">배너 추가하기</button>
                    <button type="button" class="btn-normal banner-update-btn">등록하기</button>
                </div>
            </div>
@@ -94,7 +94,7 @@
         highlightMenu();
         pageOn();
         // listCheck();
-        // bannerAddItem();
+        bannerAddItem();
         bannerInputFile();
         bannerInputFileRemove();
         bannerUpdate();

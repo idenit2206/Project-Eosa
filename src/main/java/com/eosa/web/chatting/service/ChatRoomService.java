@@ -77,18 +77,29 @@ public class ChatRoomService implements ChatRoomRepository {
      */
     @Override
     public <S extends ChatRoom> S save(S entity) {
-        SelectAllCompanysList companys =  companysService.selectCompanysByCompanysIdx(entity.getCompanysIdx());
-//        log.debug("[save] companys: {}", companys.toString());
-        String companysName = companys.getCompanysName();
+        if(entity.getCompanysIdx() == 0) {
+            entity.setRoomId(UUID.randomUUID().toString());
+            entity.setRoomName("ADMIN");
+            entity.setDataInfo("");
+            entity.setCreatedDate(LocalDateTime.now());
+            entity.setUsable(1);
+            chatRooms.put(entity.getRoomName(), entity);
+            log.info("[save] insertRoomInfo: {}", entity.toString());
+            return (S) chatRoomRepository.save(entity);
+        } else {
+            SelectAllCompanysList companys =  companysService.selectCompanysByCompanysIdx(entity.getCompanysIdx());
+    //        log.debug("[save] companys: {}", companys.toString());
+            String companysName = companys.getCompanysName();
 
-        entity.setRoomId(UUID.randomUUID().toString());
-        entity.setRoomName(companysName);
-        entity.setDataInfo("");
-        entity.setCreatedDate(LocalDateTime.now());
-        entity.setUsable(1);
-        chatRooms.put(entity.getRoomName(), entity);
-        log.info("[save] insertRoomInfo: {}", entity.toString());
-        return (S) chatRoomRepository.save(entity);
+            entity.setRoomId(UUID.randomUUID().toString());
+            entity.setRoomName(companysName);
+            entity.setDataInfo("");
+            entity.setCreatedDate(LocalDateTime.now());
+            entity.setUsable(1);
+            chatRooms.put(entity.getRoomName(), entity);
+            log.info("[save] insertRoomInfo: {}", entity.toString());
+            return (S) chatRoomRepository.save(entity);
+        }
     }
 
     @Override

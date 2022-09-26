@@ -28,9 +28,10 @@ public class BannerController {
         // @RequestParam(name="bannerUrlMobile", required = false) List<String> bannerUrlMobile,
         Model model
     ) {
-        String result = bannerService.bannerUpdate(bannerFile, model);
+        log.debug("[bannerUpdate] param: {}", bannerFile.get(0).toString());
+        // String result = bannerService.bannerUpdate(bannerFile, model);
 
-        return result;
+        return "admin/banner/list";
     }
 
     @GetMapping("/list")

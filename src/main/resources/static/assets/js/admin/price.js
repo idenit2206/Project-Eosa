@@ -208,9 +208,9 @@ const modifyCategory = () => {
             categoryList.push(category);
         }
         formData.append("category", new Blob([JSON.stringify(categoryList)]));
-        for (let key of formData.keys()) {
-            console.log(key);
-        }
+        // for (let key of formData.keys()) {
+        //     console.log(key);
+        // }
         // for (let value of formData.values()) {
         //     console.log(value);
         // }
