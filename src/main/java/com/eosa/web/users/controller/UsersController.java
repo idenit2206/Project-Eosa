@@ -154,23 +154,21 @@ public class UsersController {
     ) throws JSONException, ParseException {
         String requester = req.getLocalAddr();       
         JsonObject jsonObject = (JsonObject) JsonParser.parseString(param).getAsJsonObject();
-        // log.info("{}", jsonObject.toString());
-        log.info("[doSignUp] jsonObject: {}", jsonObject.toString());
+        // log.info("[doSignUp] jsonObject: {}", jsonObject.toString());
        
         Users paramUsers = new Users();
-            // if(jsonObject.get("usersAccount") == null) {
-            //     paramUsers.setUsersAccount(null);                
-            // }
-            // else {
-            paramUsers.setUsersAccount(jsonObject.get("usersEmail").getAsString().split("@")[0].toLowerCase());
-            // paramUsers.setUsersAccount(jsonObject.get("usersAccount").getAsString().toLowerCase());
-            // }
-            
-            if(jsonObject.get("usersPass") == null) {
-                paramUsers.setUsersPass(null);
+            if(jsonObject.get("provider").getAsString().equals("")) {
+                paramUsers.setUsersAccount(jsonObject.get("usersAccount").getAsString());                
             }
             else {
+                paramUsers.setUsersAccount(jsonObject.get("usersEmail").getAsString().split("@")[0].toLowerCase());
+            }
+            
+            if(jsonObject.get("provider").getAsString().equals("")) {
                 paramUsers.setUsersPass(jsonObject.get("usersPass").getAsString());
+            }
+            else {
+                paramUsers.setUsersPass(null);                
             }
            
             paramUsers.setUsersName(jsonObject.get("usersName").getAsString());
@@ -196,7 +194,7 @@ public class UsersController {
             }
             paramUsers.setProvider(jsonObject.get("provider").getAsString());
             paramUsers.setUsersProfile(jsonObject.get("picture").getAsString());
-        // log.debug("paramUsers: {}", paramUsers.toString());
+        log.debug("[dosignUp] paramUsers: {}", paramUsers.toString());
 
         CustomResponseData result = new CustomResponseData();
         
