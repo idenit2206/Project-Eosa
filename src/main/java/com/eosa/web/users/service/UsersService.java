@@ -94,8 +94,13 @@ public class UsersService implements UsersRepository {
      */
     public Users findByUsersAccount(String usersAccount) {
         Users result = usersRepository.findByUsersAccount(usersAccount);
-        log.debug("[findByUsersAccount]: {}", result.toString());
-        return result;
+        if(result != null) {
+            log.debug("[findByUsersAccount]: {}", result.toString());
+            return result;
+        } else {
+            log.error("[findByUsersAccount] 해당 사용자가 존재하지 않습니다.");
+            return null;
+        }
     }
    
     /**

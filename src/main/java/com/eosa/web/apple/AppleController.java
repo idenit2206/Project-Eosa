@@ -55,9 +55,8 @@ public class AppleController {
         HttpServletResponse response
     ) throws JOSEException, ParseException, IOException {
 
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        ModelAndView mv = new ModelAndView();
+        // ObjectMapper objectMapper = new ObjectMapper();
+        // ModelAndView mv = new ModelAndView();
 
         log.info("===================================================");
         log.warn(apple_data);
@@ -86,13 +85,12 @@ public class AppleController {
         // 애플 정보조회 성공
         //애플 정보 디코딩 후 계정 공개
         JSONObject user = decodeFromIdToken(id_token);
-
-
+        
         //apple 계정 정보 삽입
         String appleUniqueNo = user.get("sub").toString();
-
         String appleName = "";
-        String appleEmail = user.get("email").toString();
+        String appleEmail = "";
+        if(user.get("email") != null) { appleEmail = user.get("email").toString(); }
 
         if (appleUser != null) {
             appleEmail = appleUser.getEmail();
@@ -101,17 +99,21 @@ public class AppleController {
 
         String provider = "apple";
         String providerId = appleUniqueNo;
-        String username = provider + "_" + providerId;
-        String memberPassword = bCryptPasswordEncoder.encode("wexport_abc");
+        // String username = provider + "_" + providerId;
+        String username = appleEmail.split("@")[0];
+        String memberPassword = bCryptPasswordEncoder.encode("eosa_sns_password");
         String memberEmail = appleEmail;
         String memberName = appleName;
+
+        log.debug("username: {}  memberEmail: {}", username, memberEmail);
 
         //회원정보 확인
 //        MemberDTO memberDTO = memberMapper.findByOAuthUsername(username);
 //        PrincipalDetails principalDetails = new PrincipalDetails(memberDTO);
 
         Users memberDTO = usersService.findByUsersAccount(username);
-        CustomPrincipalDetails principalDetails = new CustomPrincipalDetails(memberDTO);
+        // log.debug("[113] memberDTO: {}", memberDTO.toString());
+        // CustomPrincipalDetails principalDetails = new CustomPrincipalDetails(memberDTO);
 
         //회원정보 없을 시 회원가입
         if (memberDTO == null) {
@@ -125,13 +127,13 @@ public class AppleController {
 //
 //            mv.setViewName("redirect:/sns-signup");
 //            return mv;
-            Cookie cookieProvider = new Cookie("provider", provider+"/"+memberEmail+"/"+"");
+            Cookie cookieProvider = new Cookie("usersAccount", provider+"/"+username+"/"+provider);
             cookieProvider.setPath("/");
             response.addCookie(cookieProvider);
-            response.sendRedirect("https://" + myDomain + ":" + myUiPort + "/user/register");
+            response.sendRedirect("http://" + myDomain + ":" + myUiPort + "/user/register");
             response.flushBuffer();
 
-        } else if (!principalDetails.isEnabled()) {
+        } else if (memberDTO != null) {
 //            MVC pattern
 //            String msg = "msg-approval";
 //            msg = URLEncoder.encode(msg, "UTF-8");
@@ -140,25 +142,25 @@ public class AppleController {
 //            return mv;
         }
         else {
-            Cookie cookieAccount = new Cookie("usersAccount", memberEmail);
+            Cookie cookieAccount = new Cookie("usersAccount", provider+"/"+username+"/"+provider);
             cookieAccount.setPath("/");
             response.addCookie(cookieAccount);
-            response.sendRedirect("https://" + myDomain + ":" + myUiPort + "/");
+            response.sendRedirect("http://" + myDomain + ":" + myUiPort + "/");
         }
 
-        // 로그인 세션에 들어갈 권한을 설정합니다.
-        Collection<GrantedAuthority> collectors = new ArrayList<>();
+        // // 로그인 세션에 들어갈 권한을 설정합니다.
+        // Collection<GrantedAuthority> collectors = new ArrayList<>();
 
-        collectors.add(() -> {
-            return "CLIENT";
-        });
+        // collectors.add(() -> {
+        //     return "CLIENT";
+        // });
 
-        Authentication auth = new UsernamePasswordAuthenticationToken(principalDetails, provider, collectors);
+        // Authentication auth = new UsernamePasswordAuthenticationToken(principalDetails, provider, collectors);
 
-        SecurityContextHolder.getContext().setAuthentication(auth);
+        // SecurityContextHolder.getContext().setAuthentication(auth);
 
-//        mv.setViewName("redirect:/");
-//        return mv;
+        // mv.setViewName("redirect:/");
+        // return mv;
     }
 
     public JSONObject decodeFromIdToken(String id_token) {
@@ -166,9 +168,9 @@ public class AppleController {
         try {
             SignedJWT signedJWT = SignedJWT.parse(id_token);
             JWTClaimsSet getPayload = signedJWT.getJWTClaimsSet();
-
             ObjectMapper objectMapper = new ObjectMapper();
             JSONObject payload = objectMapper.readValue(getPayload.toString(), JSONObject.class);
+            log.debug("payload: {}", payload.toString());
             return payload;
         } catch (Exception e) {
             e.printStackTrace();
