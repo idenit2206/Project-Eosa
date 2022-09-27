@@ -127,10 +127,10 @@ public class AppleController {
 //
 //            mv.setViewName("redirect:/sns-signup");
 //            return mv;
-            Cookie cookieProvider = new Cookie("usersAccount", provider+"/"+username+"/"+provider);
+            Cookie cookieProvider = new Cookie("usersAccount", provider+"/"+memberEmail+"/");
             cookieProvider.setPath("/");
             response.addCookie(cookieProvider);
-            response.sendRedirect("http://" + myDomain + ":" + myUiPort + "/user/register");
+            response.sendRedirect("https://dowajo.co.kr/user/register");
             response.flushBuffer();
 
         } else if (memberDTO != null) {
@@ -138,14 +138,17 @@ public class AppleController {
 //            String msg = "msg-approval";
 //            msg = URLEncoder.encode(msg, "UTF-8");
 //            mv.setViewName("redirect:/login/error?msg="+msg);
-//
 //            return mv;
-        }
-        else {
-            Cookie cookieAccount = new Cookie("usersAccount", provider+"/"+username+"/"+provider);
+            Cookie cookieAccount = new Cookie("provider", provider+"/"+memberEmail+"/");
             cookieAccount.setPath("/");
             response.addCookie(cookieAccount);
-            response.sendRedirect("http://" + myDomain + ":" + myUiPort + "/");
+            response.sendRedirect("https://dowajo.co.kr/");
+        }
+        else {
+            Cookie cookieAccount = new Cookie("provider", provider+"/"+memberEmail+"/");
+            cookieAccount.setPath("/");
+            response.addCookie(cookieAccount);
+            response.sendRedirect("https://dowajo.co.kr/");
         }
 
         // // 로그인 세션에 들어갈 권한을 설정합니다.
