@@ -48,7 +48,7 @@ public class AppleController {
     @Value("${my.service.domain}") private String myDomain;
     @Value("${my.ui.port}") private String myUiPort;
 
-    @PostMapping("/api/user/apple/redirect")
+    @PostMapping("/api/user/apple/loginCallBack")
     @ResponseBody
     public void appleLoginCallBack(
         @RequestBody String apple_data,

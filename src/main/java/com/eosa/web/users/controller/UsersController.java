@@ -158,13 +158,13 @@ public class UsersController {
         log.info("[doSignUp] jsonObject: {}", jsonObject.toString());
        
         Users paramUsers = new Users();
-            if(jsonObject.get("usersAccount") == null) {
-                paramUsers.setUsersAccount(null);                
-            }
-            else {
-                // paramUsers.setUsersAccount(jsonObject.get("usersEmail").getAsString().toLowerCase().split("@")[0]);
-                paramUsers.setUsersAccount(jsonObject.get("usersAccount").getAsString().toLowerCase());
-            }
+            // if(jsonObject.get("usersAccount") == null) {
+            //     paramUsers.setUsersAccount(null);                
+            // }
+            // else {
+            paramUsers.setUsersAccount(jsonObject.get("usersEmail").getAsString().split("@")[0].toLowerCase());
+            // paramUsers.setUsersAccount(jsonObject.get("usersAccount").getAsString().toLowerCase());
+            // }
             
             if(jsonObject.get("usersPass") == null) {
                 paramUsers.setUsersPass(null);
