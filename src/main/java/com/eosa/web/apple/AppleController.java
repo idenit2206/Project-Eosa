@@ -1,6 +1,5 @@
 package com.eosa.web.apple;
 
-import com.eosa.security.CustomPrincipalDetails;
 import com.eosa.web.users.entity.Users;
 import com.eosa.web.users.service.UsersService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,27 +11,19 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Collection;
 
 @Controller
 @Slf4j
@@ -58,9 +49,9 @@ public class AppleController {
         // ObjectMapper objectMapper = new ObjectMapper();
         // ModelAndView mv = new ModelAndView();
 
-        log.info("===================================================");
-        log.warn(apple_data);
-        log.info("===================================================");
+        log.debug("===================================================");
+        log.debug(apple_data);
+        log.debug("===================================================");
 
         String[] datas = apple_data.split("&");
 
@@ -127,7 +118,7 @@ public class AppleController {
 //
 //            mv.setViewName("redirect:/sns-signup");
 //            return mv;
-            Cookie cookieProvider = new Cookie("usersAccount", provider+"/"+memberEmail+"/");
+            Cookie cookieProvider = new Cookie("provider", provider+"/"+memberEmail+"/");
             cookieProvider.setPath("/");
             response.addCookie(cookieProvider);
             response.sendRedirect("https://dowajo.co.kr/user/register");
@@ -173,7 +164,7 @@ public class AppleController {
             JWTClaimsSet getPayload = signedJWT.getJWTClaimsSet();
             ObjectMapper objectMapper = new ObjectMapper();
             JSONObject payload = objectMapper.readValue(getPayload.toString(), JSONObject.class);
-            log.debug("payload: {}", payload.toString());
+            log.debug("after decode payload: {}", payload.toString());
             return payload;
         } catch (Exception e) {
             e.printStackTrace();
