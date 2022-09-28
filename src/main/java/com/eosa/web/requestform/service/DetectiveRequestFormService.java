@@ -49,6 +49,12 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
     @Override
     public int updateRequestFormByEntity(RequestForm entity) {
         if(entity.getRequestFormStatus().equals("의뢰거절")) { entity.setRequestFormCompDate(LocalDateTime.now()); }
+        else if(entity.getRequestFormStatus().equals("임무진행")) { entity.setRequestFormAcceptDate(LocalDateTime.now()); }
+        else if(entity.getRequestFormStatus().equals("임무완료")) { 
+            LocalDateTime requestFormAcceptDate = detectiveRequestFormRepository.selectRequestFormByRequestFormIdx(entity.getRequestFormIdx()).getRequestFormAcceptDate();
+            entity.setRequestFormAcceptDate(requestFormAcceptDate);
+            entity.setRequestFormCompDate(LocalDateTime.now()); 
+        }
         return detectiveRequestFormRepository.updateRequestFormByEntity(entity);
     }
 
@@ -209,6 +215,12 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
 
     @Override
     public <S extends RequestForm, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
+        return null;
+    }
+
+    @Override
+    public RequestForm selectRequestFormByRequestFormIdx(Long requestFormIdx) {
+        // TODO Auto-generated method stub
         return null;
     }
 }

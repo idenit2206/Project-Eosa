@@ -71,6 +71,19 @@ public interface DetectiveRequestFormRepository extends JpaRepository<RequestFor
     )
     RequestForm selectDetectiveRequestFormInfoByRequestFormIdx(Long requestFormIdx);
 
+    @Query(
+        value =
+        "SELECT R.requestFormIdx, R.usersIdx, R.companysIdx, R.requestFormRegion1, R.requestFormChannel, R.requestFormStatus, " +
+        "R.requestFormDate, R.requestConsultDate, R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage, " +
+        "GROUP_CONCAT(RFC.requestFormCategoryValue) AS requestFormCategoryValue " +
+        "FROM RequestForm R " +
+        "LEFT JOIN RequestFormCategory RFC on R.requestFormIdx = RFC.requestFormIdx " +
+        "WHERE R.requestFormIdx = ?1 " +
+        "GROUP BY R.requestFormIdx, R.usersIdx, R.companysIdx, R.requestFormRegion1, R.requestFormChannel, R.requestFormStatus, R.requestFormDate, R.requestConsultDate, R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage"
+        ,nativeQuery = true
+    )
+    RequestForm selectRequestFormByRequestFormIdx(Long requestFormIdx);
+
     @Transactional
     @Modifying
     @Query(value=

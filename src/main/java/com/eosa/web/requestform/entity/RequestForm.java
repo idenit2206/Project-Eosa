@@ -29,7 +29,7 @@ public class RequestForm {
 
     @Column(nullable=false) private String requestFormRegion1;
 
-    @Column(nullable=false) private String requestFormRegion2;
+    // @Column(nullable=true) private String requestFormRegion2;
 
     @Column(nullable=false) private String requestFormChannel;
 

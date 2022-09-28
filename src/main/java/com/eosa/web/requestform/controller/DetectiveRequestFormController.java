@@ -166,6 +166,12 @@ public class DetectiveRequestFormController {
         else if(entity.getRequestFormStatus().equals("의뢰거절")) {
             updateRows = detectiveRequestFormService.updateRequestFormByEntity(entity);
         }
+        else if(entity.getRequestFormStatus().equals("임무진행")) {
+            updateRows = detectiveRequestFormService.updateRequestFormByEntity(entity);
+        }
+        else if(entity.getRequestFormStatus().equals("임무완료")) {
+            updateRows = detectiveRequestFormService.updateRequestFormByEntity(entity);
+        }
 
         // if (requestFormStatus.equals("의뢰대기")) {
         //     updateRows = detectiveRequestFormService.updateRequestFormStatusByRequestFormIdx(requestFormIdx,
