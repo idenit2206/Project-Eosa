@@ -61,9 +61,9 @@ public class Companys {
     @Column(nullable=false)
     private int companysLicenseCheck;
 
-    @Column(nullable=true, length=255)
+    @Column(nullable=true)
     private String companysProfileImage;
-    @Column(nullable=true, length=255)
+    @Column(nullable=true)
     private String companysProfileImageName;
 
     @Column private String companysBankName;

@@ -18,7 +18,7 @@ public interface SelectAllCompanysList {
     String getCompanysRegistCertiName();
     String getCompanysLicense();
     String getCompanysLicenseName();
-    String getCompanyProfileImage();
+    String getCompanysProfileImage();
     String getCompanysProfileImageName();
     int getCompanysEnabled();
     int getCompanysPremium();

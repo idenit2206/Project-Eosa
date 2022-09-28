@@ -20,6 +20,11 @@ public class PushNotificationController {
 
     @Autowired private PushNotificationService pushNotificationService;
     
+    /**
+     * CLIENT 회원의 알림 조회(상담,의뢰 대상)
+     * @param usersIdx
+     * @return
+     */
     @GetMapping("/selectPushNotification")
     public CustomResponseData selectPushNotificationByUsersIdx(
         @RequestParam("usersIdx") Long usersIdx
@@ -27,6 +32,32 @@ public class PushNotificationController {
         CustomResponseData result = new CustomResponseData();
 
         List<RequestForm> items = pushNotificationService.selectPushNotificationByUsersIdx(usersIdx);
+
+        if(items != null) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(items);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        
+        return result;
+    }
+    /**
+     * Detective 회원의 알림 조회(상담,의뢰 대상)
+     * @param usersIdx
+     * @return
+     */
+    @GetMapping("/selectPushNotificationForDetective")
+    public CustomResponseData selectPushNotificationForDetective(
+        @RequestParam("usersIdx") Long usersIdx
+    ) {
+        CustomResponseData result = new CustomResponseData();
+
+        List<RequestForm> items = pushNotificationService.selectPushNotificationForDetective(usersIdx);
 
         if(items != null) {
             result.setStatusCode(HttpStatus.OK.value());

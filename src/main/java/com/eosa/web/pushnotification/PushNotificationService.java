@@ -24,6 +24,13 @@ public class PushNotificationService {
         return items;
     }
 
+    public List<RequestForm> selectPushNotificationForDetective(Long usersIdx) {
+        Long companysIdx =companysService.selectCompanysIdxByUsersIdx(usersIdx);
+        List<RequestForm> items = requestFormRepository.selectPushNotificationForDetective(companysIdx);
+        log.debug("[selectPushNotificationForDetective] 요청한 업체 번호: {} ", companysIdx);
+        return items;
+    }    
+
     public List<RequestForm> selectPushNotificationByCompanysIdx(Long companysIdx) {
         List<RequestForm> items = requestFormRepository.selectRequestFormByCompanysIdx(companysIdx);
         return items;

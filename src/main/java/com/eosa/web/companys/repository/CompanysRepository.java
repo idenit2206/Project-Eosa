@@ -244,17 +244,21 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         // nativeQuery = true)
         // SelectAllCompanysList selectCompanysByCompanysIdx(Long companysIdx);
 
-        @Query(value = "SELECT " +
-                        "Companys.companysIdx, Companys.companysName, Companys.companysCeoIdx, Companys.companysCeoName, "
-                        +
-                        "Companys.companysPhone, Companys.companysComment, Companys.companysSpec, Companys.companysRegistDate, "
-                        +
-                        "Companys.companysRegion1, Companys.companysProfileImage, Companys.companysProfileImageName, Companys.companysEnabled, "
-                        +
-                        "Companys.companysPremium, Companys.companysLocalPremium, " +
-                        "(SELECT GROUP_CONCAT(CompanysCategory.companysCategoryValue) FROM CompanysCategory WHERE CompanysCategory.companysIdx = ?1) "
-                        +
-                        "AS CompanysCategory FROM Companys WHERE Companys.companysIdx = ?1 ", nativeQuery = true)
+        @Query(value = 
+        "SELECT " +
+        "C.companysIdx, C.companysName, C.companysCeoIdx, C.companysCeoName, " +
+        "C.companysPhone, C.companysComment, C.companysSpec, C.companysRegistDate, " +
+        "C.companysRegion1, C.companysProfileImage, C.companysProfileImageName, C.companysEnabled, " +
+        "C.companysPremium, C.companysLocalPremium, " +
+        // "C.companysProfileImage, C.companysProfileImageName, " +
+        "GROUP_CONCAT(companysCategoryValue) AS CompanysCategory FROM Companys C " +
+        "LEFT JOIN CompanysCategory CC on C.companysIdx = CC.companysIdx " +
+        "WHERE C.companysIdx = ?1 " +
+        "GROUP BY C.companysIdx, C.companysName, C.companysCeoIdx, C.companysCeoName, " +
+                "C.companysPhone, C.companysComment, C.companysSpec, C.companysRegistDate, " +
+                "C.companysRegion1, C.companysProfileImage, C.companysProfileImageName, C.companysEnabled, " +
+                "C.companysPremium, C.companysLocalPremium, C.companysProfileImage, C.companysProfileImageName"
+        , nativeQuery = true)
         SelectAllCompanysList selectCompanysByCompanysIdx(Long companysIdx);
 
         @Query(value = "SELECT " +
