@@ -42,11 +42,21 @@ public interface UserLikeCompanyRepository extends JpaRepository<UserLikeCompany
         "C.companysEnabled, C.companysDelete, " +
         "ULC.userLikeCompanyEnable, " +
         "U.usersIdx, " +
-        "GROUP_CONCAT(DISTINCT CAR.activeRegion) AS activeRegion, " +
-        "GROUP_CONCAT(DISTINCT CC.companysCategoryValue) AS companysCategoryValue " +
+        // "GROUP_CONCAT(DISTINCT CAR.activeRegion) AS activeRegion, " +
+        // "GROUP_CONCAT(DISTINCT CC.companysCategoryValue) AS companysCategoryValue " +
+        "CAR.activeRegion AS activeRegion, " +
+        "CC.companysCategoryValue AS companysCategoryValue " +
         "FROM Companys C " +
-        "LEFT JOIN CompanysActiveRegion CAR on C.companysIdx = CAR.companysIdx " +
-        "LEFT JOIN CompanysCategory CC on C.companysIdx = CC.companysIdx " +
+        // "LEFT JOIN CompanysActiveRegion CAR on C.companysIdx = CAR.companysIdx " +
+        // "LEFT JOIN CompanysCategory CC on C.companysIdx = CC.companysIdx " +
+        "LEFT JOIN (SELECT c1.companysIdx, " +
+            "GROUP_CONCAT(c1.activeRegion SEPARATOR ',') AS activeRegion " +
+        "FROM CompanysActiveRegion c1 " +
+        "GROUP BY c1.companysIdx) CAR on C.companysIdx = CAR.companysIdx " +
+        "LEFT JOIN (SELECT c2.companysIdx, " +
+            "GROUP_CONCAT(c2.companysCategoryValue separator ',') AS companysCategoryValue " +
+        "FROM CompanysCategory c2 " +
+        "GROUP BY c2.companysIdx) CC on C.companysIdx = CC.companysIdx " +
         "RIGHT JOIN UserLikeCompany ULC on CC.companysIdx = ULC.companysIdx " +
         "LEFT JOIN Users U ON U.usersIdx = ULC.usersIdx " +
         "WHERE U.usersIdx = ?1 " +

@@ -259,6 +259,12 @@ public class RequestFormService implements RequestFormRepository {
     public int updateReadStateReadDetective(Long requestFormIdx, Long companysIdx) {
         // TODO Auto-generated method stub
         return 0;
+    }
+
+    @Override
+    public List<RequestForm> selectPushNotificationForDetective(Long companysIdx) {
+        // TODO Auto-generated method stub
+        return null;
     }    
 
 }

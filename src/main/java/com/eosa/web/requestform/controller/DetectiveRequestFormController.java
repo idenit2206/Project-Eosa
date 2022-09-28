@@ -157,6 +157,9 @@ public class DetectiveRequestFormController {
                 requestFormIdx, LocalDateTime.now(), requestFormStatus, requestFormRejectMessage
             );
         }
+        else if (entity.getRequestFormStatus().equals("의뢰대기")) {
+            updateRows = detectiveRequestFormService.updateRequestFormByEntity(entity);
+        }
         else if(entity.getRequestFormStatus().equals("의뢰거절")) {
             updateRows = detectiveRequestFormService.updateRequestFormByEntity(entity);
         }
