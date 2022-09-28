@@ -145,6 +145,7 @@ public class DetectiveRequestFormController {
         entity.setRequestFormIdx(requestFormIdx);
         entity.setRequestFormStatus(requestFormStatus);
         entity.setRequestFormRejectMessage(requestFormRejectMessage);
+        entity.setRequestFormClientReadState(0);
 
         log.debug("[updateRequestFormStatusWhereRequestFormIdx]: 의뢰요청서IDX: {}, 의뢰상태: {}, 의뢰관련메시지: {}", 
             entity.getRequestFormIdx(), entity.getRequestFormStatus(), entity.getRequestFormRejectMessage()

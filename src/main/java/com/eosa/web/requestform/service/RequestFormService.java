@@ -235,6 +235,30 @@ public class RequestFormService implements RequestFormRepository {
     public <S extends RequestForm, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public List<RequestForm> selectRequestFormByUsersIdx(Long usersIdx) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<RequestForm> selectRequestFormByCompanysIdx(Long companysIdx) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public int updateReadStateRead(Long requestFormIdx) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public int updateReadStateReadDetective(Long requestFormIdx, Long companysIdx) {
+        // TODO Auto-generated method stub
+        return 0;
     }    
 
 }

@@ -41,7 +41,9 @@ public class RequestForm {
     @Column(nullable=true) private LocalDateTime requestFormCompDate;
     @Column(nullable=true) private String requestFormRejectMessage;  
     @Column(nullable=false) private int requestFormClientReadState;
-    @Column(nullable=false) private int requestFormDetectiveReadState;  
+    @Column private LocalDateTime requestFormClientReadDate;
+    @Column(nullable=false) private int requestFormDetectiveReadState;
+    @Column private LocalDateTime requestFormDetectiveReadDate;
 
 //    @OneToMany(mappedBy = "requestForm")
 //    private List<RequestFormCategory> requestFormCategory = new ArrayList<>();

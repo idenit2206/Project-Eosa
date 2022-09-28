@@ -63,4 +63,27 @@ public class PushNotificationController {
         return result;
     }
 
+    @PutMapping("/readPushNotificationDetective")
+    public CustomResponseData readPushNotificationDetective(
+        @RequestParam("requestFormIdx") Long requestFormIdx,
+        @RequestParam("usersIdx") Long usersIdx
+    ) {
+        CustomResponseData result = new CustomResponseData();
+
+        int item = pushNotificationService.updateReadStateReadDetective(requestFormIdx, usersIdx);
+
+        if(item == 1) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(true);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(false);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
+
 }

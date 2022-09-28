@@ -552,10 +552,11 @@ public class CompanysController {
      */
     @GetMapping("/selectCompanysIdxByUsersIdx")
     public CustomResponseData selectCompanysIdxByUsersIdx(
-            @RequestParam("usersIdx") String usersIdx) {
+        @RequestParam("usersIdx") Long usersIdx
+    ) {
         CustomResponseData result = new CustomResponseData();
 
-        String item = String.valueOf(companysService.selectCompanysIdxByUsersIdx(Long.parseLong(usersIdx)));
+        String item = String.valueOf(companysService.selectCompanysIdxByUsersIdx(usersIdx));
         if (item != null) {
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem(item);

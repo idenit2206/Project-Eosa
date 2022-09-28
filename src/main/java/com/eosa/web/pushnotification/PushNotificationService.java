@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.eosa.web.companys.service.CompanysService;
 import com.eosa.web.requestform.entity.RequestForm;
 import com.eosa.web.requestform.repository.RequestFormRepository;
 
@@ -15,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PushNotificationService {
 
     @Autowired private RequestFormRepository requestFormRepository;
+    @Autowired private CompanysService companysService;
 
     public List<RequestForm> selectPushNotificationByUsersIdx(Long usersIdx) {
         List<RequestForm> items = requestFormRepository.selectRequestFormByUsersIdx(usersIdx);
@@ -28,12 +30,21 @@ public class PushNotificationService {
     }
 
     /**
-     * 읽음 처리
+     * 푸시알림 읽음 처리 Client
      * @param requestFormIdx
      * @return
      */
     public int updateReadStateRead(Long requestFormIdx) {
         return requestFormRepository.updateReadStateRead(requestFormIdx);
+    }
+
+    /**
+     * 푸시알림 읽음 처리 Detective
+     * @return
+     */
+    public int updateReadStateReadDetective(Long requestFormIdx, Long usersIdx) {
+        Long companysIdx = companysService.selectCompanysIdxByUsersIdx(usersIdx);
+        return requestFormRepository.updateReadStateReadDetective(requestFormIdx, companysIdx);
     }
     
 }

@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.amazonaws.Request;
 import com.eosa.web.requestform.entity.RequestForm;
 import com.eosa.web.requestform.entity.SelectRequestFormList;
 
@@ -142,9 +141,19 @@ public interface RequestFormRepository extends JpaRepository<RequestForm, Long> 
     @Modifying
     @Query(value = 
         "UPDATE RequestForm R " + 
-        "SET R.requestFormClientReadState = 1 " + 
+        "SET R.requestFormClientReadState = 1, R.requestFormClientReadDate = now() " + 
         "WHERE R.requestFormIdx = ?1"
         ,nativeQuery = true
     )
     int updateReadStateRead(Long requestFormIdx);
+
+    @Transactional
+    @Modifying
+    @Query(value = 
+        "UPDATE RequestForm R " + 
+        "SET R.requestFormDetectiveReadState = 1, R.requestFormDetectiveReadDate = now() " + 
+        "WHERE R.requestFormIdx = ?1 AND R.companysIdx = ?2"
+        ,nativeQuery = true
+    )
+    int updateReadStateReadDetective(Long requestFormIdx, Long companysIdx);
 }
