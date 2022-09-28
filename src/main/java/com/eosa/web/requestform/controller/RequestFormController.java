@@ -55,7 +55,7 @@ public class RequestFormController {
             entity.setUsersIdx(param.getUsersIdx());
             entity.setCompanysIdx(param.getCompanysIdx());
             entity.setRequestFormRegion1(param.getRequestFormRegion1());
-            entity.setRequestFormRegion2(param.getRequestFormRegion2());
+            // entity.setRequestFormRegion2(param.getRequestFormRegion2());
             entity.setRequestFormChannel("의뢰");
             entity.setRequestFormStatus("상담대기");
             entity.setRequestFormDate(LocalDateTime.now());
@@ -101,7 +101,7 @@ public class RequestFormController {
         entity.setUsersIdx(param.getUsersIdx());
         entity.setCompanysIdx(param.getCompanysIdx());
         entity.setRequestFormRegion1(param.getRequestFormRegion1());
-        entity.setRequestFormRegion2(param.getRequestFormRegion2());
+        // entity.setRequestFormRegion2(param.getRequestFormRegion2());
         entity.setRequestFormChannel("전화");
         entity.setRequestFormStatus("상담대기");
         entity.setRequestFormDate(LocalDateTime.now());
@@ -147,7 +147,7 @@ public class RequestFormController {
         entity.setUsersIdx(param.getUsersIdx());
         entity.setCompanysIdx(param.getCompanysIdx());
         entity.setRequestFormRegion1(param.getRequestFormRegion1());
-        entity.setRequestFormRegion2(param.getRequestFormRegion2());
+        // entity.setRequestFormRegion2(param.getRequestFormRegion2());
         entity.setRequestFormChannel("채팅");
         entity.setRequestFormStatus("상담대기");
         entity.setRequestFormDate(LocalDateTime.now());

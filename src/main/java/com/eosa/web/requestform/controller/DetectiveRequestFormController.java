@@ -1,12 +1,8 @@
 package com.eosa.web.requestform.controller;
 
-import com.eosa.web.requestform.entity.MissionForm;
 import com.eosa.web.requestform.entity.RequestForm;
-import com.eosa.web.requestform.entity.SelectMissionFormList;
 import com.eosa.web.requestform.entity.SelectRequestFormList;
-import com.eosa.web.requestform.repository.RequestFormCategoryRepository;
 import com.eosa.web.requestform.service.DetectiveRequestFormService;
-import com.eosa.web.requestform.service.MissionFormService;
 import com.eosa.web.requestform.service.RequestFormCategoryService;
 import com.eosa.web.users.service.UsersService;
 import com.eosa.web.util.CustomResponseData;
@@ -16,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -27,9 +22,7 @@ public class DetectiveRequestFormController {
     @Autowired
     private DetectiveRequestFormService detectiveRequestFormService;
     @Autowired
-    private RequestFormCategoryService requestFormCategoryService;
-    @Autowired
-    private MissionFormService missionFormService;
+    private RequestFormCategoryService requestFormCategoryService;  
     @Autowired
     private UsersService usersService;
 
@@ -173,61 +166,6 @@ public class DetectiveRequestFormController {
             updateRows = detectiveRequestFormService.updateRequestFormByEntity(entity);
         }
 
-        // if (requestFormStatus.equals("의뢰대기")) {
-        //     updateRows = detectiveRequestFormService.updateRequestFormStatusByRequestFormIdx(requestFormIdx,
-        //             requestFormStatus, requestFormRejectMessage);
-        // }
-
-        // if (requestFormStatus.equals("임무대기")) {
-        //     updateRows = detectiveRequestFormService.updateRequestFormStatusByRequestFormIdx(requestFormIdx,
-        //             requestFormStatus, requestFormRejectMessage);
-        // }
-
-        // if (requestFormStatus.equals("임무완료")) {
-        //     updateRows = detectiveRequestFormService.updateRequestFormStatusByRequestFormIdxCaseMissionComplete(
-        //             requestFormIdx, LocalDateTime.now(), requestFormStatus, requestFormRejectMessage);
-        // }
-        // if(requestFormStatus.equals("의뢰수락")) {
-        // RequestForm rf =
-        // detectiveRequestFormService.selectDetectiveRequestFormInfoByRequestFormIdx(requestFormIdx);
-        // MissionForm mf = new MissionForm();
-        // mf.setUsersIdx(rf.getUsersIdx());
-        // mf.setCompanysIdx(rf.getCompanysIdx());
-        // mf.setMissionFormRegion1(rf.getRequestFormRegion1());
-        // mf.setMissionFormRegion2(rf.getRequestFormRegion2());
-        // mf.setMissionFormStatus("임무수행");
-        // mf.setMissionFormAcceptDate(rf.getRequestFormAcceptDate());
-        // try {
-        // MissionForm insertMf = missionFormService.save(mf);
-        // }
-        // catch(Exception e) {
-        // log.error("[updateRequestFormStatusWhereRequestFormIdx]: MissionForm save
-        // error");
-        // log.error("{}", e);
-        // }
-        // }
-
-        // if(requestFormStatus.equals("임무완료")) {
-        // RequestForm rf =
-        // detectiveRequestFormService.selectDetectiveRequestFormInfoByRequestFormIdx(requestFormIdx);
-        // MissionForm mf = new MissionForm();
-        // mf.setUsersIdx(rf.getUsersIdx());
-        // mf.setCompanysIdx(rf.getCompanysIdx());
-        // mf.setMissionFormRegion1(rf.getRequestFormRegion1());
-        // mf.setMissionFormRegion2(rf.getRequestFormRegion2());
-        // mf.setMissionFormStatus("임무완료");
-        // mf.setMissionFormCompDate(LocalDateTime.now());
-        // mf.setMissionFormAcceptDate(rf.getRequestFormAcceptDate());
-        // try {
-        // MissionForm insertMf = missionFormService.save(mf);
-        // }
-        // catch(Exception e) {
-        // log.error("[updateRequestFormStatusWhereRequestFormIdx]: MissionForm save
-        // error");
-        // log.error("{}", e);
-        // }
-        // }
-
         if (updateRows == 1) {
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem("TRUE");
@@ -241,34 +179,34 @@ public class DetectiveRequestFormController {
         return result;
     }
 
-    // ** MISSION **
+    // // ** MISSION **
 
-    /**
-     * CompanysIdx가 일치하는 모든 MissionForm 조회 날짜기준 내림차순 정렬
-     * 
-     * @param companysIdx
-     * @return
-     */
-    @GetMapping("/selectDetectiveAllMissionFormListByCompanysIdxOrderByDESC")
-    public CustomResponseData selectAllDetectiveMissionFormListByCompanysIdxOrderByDESC(
-            @RequestParam("companysIdx") Long companysIdx) {
-        // log.debug("usersIdx: {}", companysIdx);
-        CustomResponseData result = new CustomResponseData();
-        List<SelectMissionFormList> list = missionFormService
-                .selectAllDetectiveMissionFormListByCompanysIdxOrderByDESC(companysIdx);
+    // /**
+    //  * CompanysIdx가 일치하는 모든 MissionForm 조회 날짜기준 내림차순 정렬
+    //  * 
+    //  * @param companysIdx
+    //  * @return
+    //  */
+    // @GetMapping("/selectDetectiveAllMissionFormListByCompanysIdxOrderByDESC")
+    // public CustomResponseData selectAllDetectiveMissionFormListByCompanysIdxOrderByDESC(
+    //         @RequestParam("companysIdx") Long companysIdx) {
+    //     // log.debug("usersIdx: {}", companysIdx);
+    //     CustomResponseData result = new CustomResponseData();
+    //     List<SelectMissionFormList> list = missionFormService
+    //             .selectAllDetectiveMissionFormListByCompanysIdxOrderByDESC(companysIdx);
 
-        if (list.size() != 0) {
-            result.setStatusCode(HttpStatus.OK.value());
-            result.setResultItem(list);
-            result.setResponseDateTime(LocalDateTime.now());
-        } else {
-            result.setStatusCode(HttpStatus.BAD_REQUEST.value());
-            result.setResultItem(null);
-            result.setResponseDateTime(LocalDateTime.now());
-        }
+    //     if (list.size() != 0) {
+    //         result.setStatusCode(HttpStatus.OK.value());
+    //         result.setResultItem(list);
+    //         result.setResponseDateTime(LocalDateTime.now());
+    //     } else {
+    //         result.setStatusCode(HttpStatus.BAD_REQUEST.value());
+    //         result.setResultItem(null);
+    //         result.setResponseDateTime(LocalDateTime.now());
+    //     }
 
-        return result;
-    }
+    //     return result;
+    // }
     // /**
     // * CompanysIdx가 일치하는 모든 RequestForm 조회 날짜기준 오름차순 정렬
     // * @param companysIdx
@@ -299,29 +237,29 @@ public class DetectiveRequestFormController {
     // return result;
     // }
 
-    /**
-     * missionFormIdx가 일치하는 requestForm 상세보기
-     * 
-     * @param missionFormIdx Long
-     * @return
-     */
-    @GetMapping("/selectDetectiveMissionFormInfoByMissionFormIdx")
-    public CustomResponseData selectDetectiveMissionFormInfoByMissionFormIdx(
-            @RequestParam("missionFormIdx") Long missionFormIdx) {
-        CustomResponseData result = new CustomResponseData();
-        MissionForm entity = missionFormService.selectDetectiveMissionFormInfoByMissionFormIdx(missionFormIdx);
+    // /**
+    //  * missionFormIdx가 일치하는 requestForm 상세보기
+    //  * 
+    //  * @param missionFormIdx Long
+    //  * @return
+    //  */
+    // @GetMapping("/selectDetectiveMissionFormInfoByMissionFormIdx")
+    // public CustomResponseData selectDetectiveMissionFormInfoByMissionFormIdx(
+    //         @RequestParam("missionFormIdx") Long missionFormIdx) {
+    //     CustomResponseData result = new CustomResponseData();
+    //     MissionForm entity = missionFormService.selectDetectiveMissionFormInfoByMissionFormIdx(missionFormIdx);
 
-        if (entity != null) {
-            result.setStatusCode(HttpStatus.OK.value());
-            result.setResultItem(entity);
-            result.setResponseDateTime(LocalDateTime.now());
-        } else {
-            result.setStatusCode(HttpStatus.OK.value());
-            result.setResultItem(null);
-            result.setResponseDateTime(LocalDateTime.now());
-        }
+    //     if (entity != null) {
+    //         result.setStatusCode(HttpStatus.OK.value());
+    //         result.setResultItem(entity);
+    //         result.setResponseDateTime(LocalDateTime.now());
+    //     } else {
+    //         result.setStatusCode(HttpStatus.OK.value());
+    //         result.setResultItem(null);
+    //         result.setResponseDateTime(LocalDateTime.now());
+    //     }
 
-        return result;
-    }
+    //     return result;
+    // }
 
 }

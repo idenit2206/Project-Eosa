@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.amazonaws.Request;
 import com.eosa.web.requestform.entity.RequestForm;
 import com.eosa.web.requestform.entity.SelectRequestFormList;
 
@@ -108,4 +109,42 @@ public interface RequestFormRepository extends JpaRepository<RequestForm, Long> 
     @Query(value = "SELECT * FROM RequestForm WHERE requestFormIdx = ?1", nativeQuery = true)
     RequestForm selectOneRequestFormByRequsetFormIdx(Long requestFormIdx);
 
+
+    // 푸시알림을 위한 조회 쿼리
+
+    @Query(value =
+        "SELECT R.requestFormIdx, R.usersIdx, R.companysIdx, R.requestFormRegion1, R.requestFormChannel, R.requestFormStatus, " +
+        "R.requestFormDate, R.requestConsultDate, R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage, " +
+        "R.requestFormClientReadState, R.requestFormDetectiveReadState, " + 
+        "GROUP_CONCAT(RFC.requestFormCategoryValue) AS requestFormCategoryValue " +
+        "FROM RequestForm R " +
+        "LEFT JOIN RequestFormCategory RFC on R.requestFormIdx = RFC.requestFormIdx " +
+        "WHERE R.usersIdx = ?1 " +
+        "GROUP BY R.requestFormIdx, R.usersIdx, R.companysIdx, R.requestFormRegion1, R.requestFormChannel, R.requestFormStatus, R.requestFormDate, R.requestConsultDate, R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage " +
+        "ORDER BY R.requestFormIdx DESC"
+    ,nativeQuery = true)
+    List<RequestForm> selectRequestFormByUsersIdx(Long usersIdx);
+
+    @Query(value =
+        "SELECT R.requestFormIdx, R.usersIdx, R.companysIdx, R.requestFormRegion1, R.requestFormChannel, R.requestFormStatus, " +
+        "R.requestFormDate, R.requestConsultDate, R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage, " +
+        "R.requestFormClientReadState, R.requestFormDetectiveReadState, " + 
+        "GROUP_CONCAT(RFC.requestFormCategoryValue) AS requestFormCategoryValue " +
+        "FROM RequestForm R " +
+        "LEFT JOIN RequestFormCategory RFC on R.requestFormIdx = RFC.requestFormIdx " +
+        "WHERE R.companysIdx = ?1 " +
+        "GROUP BY R.requestFormIdx, R.usersIdx, R.companysIdx, R.requestFormRegion1, R.requestFormChannel, R.requestFormStatus, R.requestFormDate, R.requestConsultDate, R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage " +
+        "ORDER BY R.requestFormIdx DESC"
+    ,nativeQuery = true)
+    List<RequestForm> selectRequestFormByCompanysIdx(Long companysIdx);
+
+    @Transactional
+    @Modifying
+    @Query(value = 
+        "UPDATE RequestForm R " + 
+        "SET R.requestFormClientReadState = 1 " + 
+        "WHERE R.requestFormIdx = ?1"
+        ,nativeQuery = true
+    )
+    int updateReadStateRead(Long requestFormIdx);
 }
