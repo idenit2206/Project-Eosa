@@ -14,7 +14,7 @@ log*.log
 *.properties
 *.yml
 .gradle
-.zip
+*.zip
 .7z
 build/
 !gradle/wrapper/gradle-wrapper.jar
