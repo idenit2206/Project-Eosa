@@ -2,7 +2,6 @@ package com.eosa.admin.controller;
 
 import java.util.List;
 
-import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,19 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 
-import com.eosa.admin.dto.CategoryDTO;
-import com.eosa.admin.dto.RegionDTO;
+import com.eosa.admin.dto.PriceDTO;
 import com.eosa.admin.service.PriceService;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.nimbusds.jose.shaded.json.JSONObject;
-
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 
-@lombok.extern.slf4j.Slf4j
 @Controller
 @RequestMapping("/admin/manage/price")
 public class PriceController {
@@ -36,6 +26,13 @@ public class PriceController {
     @GetMapping("/list")
     public String priceList(Model model) {
         return priceService.priceList(model);
+    }
+    @PostMapping("/updatePrice")
+    public String updatePrice(
+        PriceDTO priceDTO,
+        Model model
+    ) {
+        return priceService.updatePrice(priceDTO, model);
     }
 
     @PostMapping("/updateRegion")

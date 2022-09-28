@@ -40,7 +40,7 @@
                         <th class="sorting">번호</th>
                         <th>업체명</th>
                         <th>대표명</th>
-                        <th>연락처</th>
+                        <!-- <th>연락처</th> -->
                         <th th:if="${enabled} eq 1">안심번호</th>
                         <th class="width-250">분야</th>
                         <th class="width-250">지역</th>
@@ -68,9 +68,9 @@
                         <td>
                             <span th:text="${list.companysCeoName}"></span>
                         </td>
-                        <td>
+                        <!-- <td>
                             <span th:text="${list.companysPhone}" class="contact"></span>
-                        </td>
+                        </td> -->
                         <td th:if="${enabled} eq 1">
                             <span th:text="${list.companysDummyPhone}" class="safety"></span>
                         </td>
@@ -78,7 +78,8 @@
                             <span th:text="${#strings.replace(list.companysCategoryValue, '|', ', ')}" class="table-overflow"></span>
                         </td>
                         <td>
-                            <span th:text="|${list.companysRegion1 + ','} ${list.companysRegion3}|" class="table-overflow"></span>
+                            <!-- <span th:text="|${list.companysRegion1 + ','} ${list.companysRegion3}|" class="table-overflow"></span> -->
+                            <span th:text="|${list.companysRegion1}|" class="table-overflow"></span>
                         </td>
                         <td th:if="${enabled} eq 1">
                             <div class="icon-wrap">

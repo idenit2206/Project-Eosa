@@ -9,7 +9,49 @@
 
     <main id="main" class="main-list" data-category="price">
         <section class="section section-users">
-            <h2 class="section_title">지역&분야별 가격 관리</h2>
+            <h3 class="section_title">지역&분야별 가격 관리</h3>
+                <div class="table">
+                    <table class="" th:if="${price ne null}">
+                        <thead id="priceIdx" th:value="${price.priceIdx}">
+                            <tr>
+                                <th>은행</th>
+                                <th>계좌번호</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>                           
+                                <td>
+                                    <input id="priceBankName" type="text" th:value="${price.bankName}"/>
+                                </td>
+                                <td>
+                                    <input id="priceBankNumber" type="text" th:value="${price.bankNumber}" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="" th:unless="${price ne null}">
+                        <thead>
+                            <tr>
+                                <th>은행</th>
+                                <th>계좌번호</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input type="text" />
+                                </td>
+                                <td>
+                                    <input type="text" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>                  
+                    <input class="btn price-modify-btn" type="button" value="은행 정보 수정" />
+                </div>
+           
                 <div class="table">              
                     <table class="regionTable">
                         <thead>
@@ -77,6 +119,8 @@
     <script>
         window.addEventListener('DOMContentLoaded', () => {
             // highlightMenu('list');
+            modifyPrice();
+
             removeRegionItem();
             addRegionItem();
             modifyRegion();

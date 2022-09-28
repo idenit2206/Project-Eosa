@@ -1,5 +1,31 @@
 "use strict";
 
+const modifyPrice = () => {
+    const modifyPriceBtn = document.querySelector(".price-modify-btn");
+    modifyPriceBtn.addEventListener("click", () => {
+        const priceIdx = document.querySelector("#priceIdx");
+        const bankName = document.querySelector("#priceBankName");
+        const bankNumber = document.querySelector("#priceBankNumber");
+
+        let formData = new FormData();
+        let PriceDTO = {
+            priceIdx: priceIdx,
+            bankName: bankName,
+            bankNumber: bankNumber
+
+        }
+        formData.append("priceIdx", priceIdx);
+        formData.append("bankName", bankName);
+        formData.append("bankNumber", bankNumber);
+
+        fetch(`/admin/manage/price/updatePrice`, {
+            method: "POST",
+            body: formData
+        })
+            .then(response => console.log(response));
+    })
+}
+
 const removeRegionItem = () => {
     const regionRemoveBtn = document.querySelector(".region-remove-btn");
     regionRemoveBtn.addEventListener("click", () => {

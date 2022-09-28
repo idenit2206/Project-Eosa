@@ -109,31 +109,33 @@ public interface RequestFormRepository extends JpaRepository<RequestForm, Long> 
     RequestForm selectOneRequestFormByRequsetFormIdx(Long requestFormIdx);
 
 
-    // 푸시알림을 위한 조회 쿼리
+    // 알림을 위한 조회 쿼리
 
     @Query(value =
         "SELECT R.requestFormIdx, R.usersIdx, R.companysIdx, R.requestFormRegion1, R.requestFormChannel, R.requestFormStatus, " +
         "R.requestFormDate, R.requestConsultDate, R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage, " +
-        "R.requestFormClientReadState, R.requestFormDetectiveReadState, " + 
+        "R.requestFormClientReadState, R.requestFormClientReadDate, " +
+        "R.requestFormDetectiveReadState, R.requestFormDetectiveReadDate, " +
         "GROUP_CONCAT(RFC.requestFormCategoryValue) AS requestFormCategoryValue " +
         "FROM RequestForm R " +
         "LEFT JOIN RequestFormCategory RFC on R.requestFormIdx = RFC.requestFormIdx " +
         "WHERE R.usersIdx = ?1 " +
         "GROUP BY R.requestFormIdx, R.usersIdx, R.companysIdx, R.requestFormRegion1, R.requestFormChannel, R.requestFormStatus, R.requestFormDate, R.requestConsultDate, R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage " +
-        "ORDER BY R.requestFormIdx DESC"
+        "ORDER BY R.requestFormClientReadDate DESC"
     ,nativeQuery = true)
     List<RequestForm> selectRequestFormByUsersIdx(Long usersIdx);
 
     @Query(value =
         "SELECT R.requestFormIdx, R.usersIdx, R.companysIdx, R.requestFormRegion1, R.requestFormChannel, R.requestFormStatus, " +
         "R.requestFormDate, R.requestConsultDate, R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage, " +
-        "R.requestFormClientReadState, R.requestFormDetectiveReadState, " + 
+        "R.requestFormClientReadState, R.requestFormClientReadDate, " +
+        "R.requestFormDetectiveReadState, R.requestFormDetectiveReadDate, " +
         "GROUP_CONCAT(RFC.requestFormCategoryValue) AS requestFormCategoryValue " +
         "FROM RequestForm R " +
         "LEFT JOIN RequestFormCategory RFC on R.requestFormIdx = RFC.requestFormIdx " +
         "WHERE R.companysIdx = ?1 " +
         "GROUP BY R.requestFormIdx, R.usersIdx, R.companysIdx, R.requestFormRegion1, R.requestFormChannel, R.requestFormStatus, R.requestFormDate, R.requestConsultDate, R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage " +
-        "ORDER BY R.requestFormIdx DESC"
+        "ORDER BY R.requestFormClientReadDate DESC"
     ,nativeQuery = true)
     List<RequestForm> selectRequestFormByCompanysIdx(Long companysIdx);
 

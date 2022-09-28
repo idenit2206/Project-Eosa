@@ -9,8 +9,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.eosa.admin.dto.CategoryDTO;
+import com.eosa.admin.dto.PriceDTO;
 import com.eosa.admin.dto.RegionDTO;
 import com.eosa.admin.mapper.CategoryMapper;
+import com.eosa.admin.mapper.PriceMapper;
 import com.eosa.admin.mapper.RegionMapper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -23,16 +25,31 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class PriceService {
     
+    @Autowired private PriceMapper priceMapper;
     @Autowired private RegionMapper regionMapper;
     @Autowired private CategoryMapper categoryMapper;
 
     public String priceList(Model model) {
+        PriceDTO price = priceMapper.selectPrice();
         List<RegionDTO> regionList = regionMapper.selectRegion();
         List<CategoryDTO> categoryList = categoryMapper.selectCategory();
-
+       
+        model.addAttribute("price", price);
         model.addAttribute("region", regionList);
         model.addAttribute("category", categoryList);
 
+        return "admin/price/list";
+    }
+
+    public String updatePrice(PriceDTO priceDTO, Model model) {
+        log.debug("[updatePrice] priceDTO: {}", priceDTO.toString());
+        PriceDTO price = priceMapper.selectPrice();
+        List<RegionDTO> regionList = regionMapper.selectRegion();
+        List<CategoryDTO> categoryList = categoryMapper.selectCategory();
+
+        model.addAttribute("price", price);
+        model.addAttribute("region", regionList);
+        model.addAttribute("category", categoryList);
         return "admin/price/list";
     }
 
@@ -56,8 +73,10 @@ public class PriceService {
             regionMapper.priceUpdateRegion(regionDTO);
         }
         
+        PriceDTO price = priceMapper.selectPrice();
         List<RegionDTO> regionList = regionMapper.selectRegion();
         List<CategoryDTO> categoryList = categoryMapper.selectCategory();
+        model.addAttribute("price", price);
         model.addAttribute("region", regionList);
         model.addAttribute("category", categoryList);
         return "admin/price/list";
@@ -81,9 +100,11 @@ public class PriceService {
             CategoryDTO categoryDTO = new CategoryDTO(categoryIdx, categoryName, categoryPrice);
             categoryMapper.priceUpdateCategory(categoryDTO);
         }
-        
+
+        PriceDTO price = priceMapper.selectPrice();
         List<RegionDTO> regionList = regionMapper.selectRegion();
         List<CategoryDTO> categoryList = categoryMapper.selectCategory();
+        model.addAttribute("price", price);
         model.addAttribute("region", regionList);
         model.addAttribute("category", categoryList);
         return "admin/price/list";
@@ -95,9 +116,10 @@ public class PriceService {
             regionMapper.deleteRegion(Long.valueOf(regionIdx.get(i)));
         }
         
-
+        PriceDTO price = priceMapper.selectPrice();
         List<RegionDTO> regionList = regionMapper.selectRegion();
         List<CategoryDTO> categoryList = categoryMapper.selectCategory();
+        model.addAttribute("price", price);
         model.addAttribute("region", regionList);
         model.addAttribute("category", categoryList);
         return "admin/price/list";
@@ -109,8 +131,10 @@ public class PriceService {
             categoryMapper.deleteCategory(Long.valueOf(categoryIdx.get(i)));
         }
 
+        PriceDTO price = priceMapper.selectPrice();
         List<RegionDTO> regionList = regionMapper.selectRegion();
         List<CategoryDTO> categoryList = categoryMapper.selectCategory();
+        model.addAttribute("price", price);
         model.addAttribute("region", regionList);
         model.addAttribute("category", categoryList);
         return "admin/price/list";

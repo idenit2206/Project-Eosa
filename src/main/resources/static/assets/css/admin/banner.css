@@ -21,3 +21,8 @@
     display: inline !important;
     visibility: hidden;
 }
+
+
+.hiddenTd {
+    display: none;
+}
