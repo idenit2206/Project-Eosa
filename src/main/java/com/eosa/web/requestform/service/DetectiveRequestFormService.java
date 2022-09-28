@@ -47,6 +47,12 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
     }
 
     @Override
+    public int updateRequestFormByEntity(RequestForm entity) {
+        if(entity.getRequestFormStatus().equals("의뢰거절")) { entity.setRequestFormCompDate(LocalDateTime.now()); }
+        return detectiveRequestFormRepository.updateRequestFormByEntity(entity);
+    }
+
+    @Override
     public int updateRequestFormStatusByRequestFormIdxCaseConsultComplete(Long requestFormIdx, LocalDateTime requestFormAcceptDate, String requestFormStatus, String requestFormRejectMessage) {
         return detectiveRequestFormRepository.updateRequestFormStatusByRequestFormIdxCaseConsultComplete(requestFormIdx, requestFormAcceptDate, requestFormStatus, requestFormRejectMessage);
     }

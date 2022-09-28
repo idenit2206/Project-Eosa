@@ -88,6 +88,19 @@ public interface DetectiveRequestFormRepository extends JpaRepository<RequestFor
 
     @Transactional
     @Modifying
+    @Query(
+        value = 
+        "UPDATE RequestForm " +
+        "SET " +
+        "requestFormStatus = :#{#R.requestFormStatus}, requestFormRejectMessage = :#{#R.requestFormRejectMessage}, " +
+        "requestFormAcceptDate = :#{#R.requestFormAcceptDate}, requestFormCompDate = :#{#R.requestFormCompDate} " +
+        "WHERE requestFormIdx = :#{#R.requestFormIdx}"
+        ,nativeQuery = true
+    )
+    int updateRequestFormByEntity(@Param("R") RequestForm entity);
+
+    @Transactional
+    @Modifying
     @Query(value=
         "UPDATE RequestForm " +
         "SET " +

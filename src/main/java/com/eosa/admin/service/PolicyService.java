@@ -50,4 +50,9 @@ public class PolicyService {
         return policyMapper.updatePolicy(policyDTO);
     }
 
+
+    public List<PolicyDTO> selecPolicyDTO() {
+        return policyMapper.selectPolicy();
+    }
+
 }

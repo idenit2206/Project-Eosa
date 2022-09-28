@@ -148,29 +148,39 @@ public class DetectiveRequestFormController {
             @RequestParam(name = "requestFormStatus") String requestFormStatus,
             @RequestParam(name = "requestFormRejectMessage", required = false) String requestFormRejectMessage) {
         CustomResponseData result = new CustomResponseData();
-        log.debug("[updateRequestFormStatusWhereRequestFormIdx]: 의뢰요청서IDX: {}, 의뢰상태: {}, 의뢰관련메시지: {}", requestFormIdx,
-                requestFormStatus, requestFormRejectMessage);
+        RequestForm entity = new RequestForm();
+        entity.setRequestFormIdx(requestFormIdx);
+        entity.setRequestFormStatus(requestFormStatus);
+        entity.setRequestFormRejectMessage(requestFormRejectMessage);
+
+        log.debug("[updateRequestFormStatusWhereRequestFormIdx]: 의뢰요청서IDX: {}, 의뢰상태: {}, 의뢰관련메시지: {}", 
+            entity.getRequestFormIdx(), entity.getRequestFormStatus(), entity.getRequestFormRejectMessage()
+        );
 
         int updateRows = 0;
-        if (requestFormStatus.equals("상담완료")) {
+        if(requestFormStatus.equals("상담완료")) {
             updateRows = detectiveRequestFormService.updateRequestFormStatusByRequestFormIdxCaseConsultComplete(
-                    requestFormIdx, LocalDateTime.now(), requestFormStatus, requestFormRejectMessage);
+                requestFormIdx, LocalDateTime.now(), requestFormStatus, requestFormRejectMessage
+            );
+        }
+        else if(entity.getRequestFormStatus().equals("의뢰거절")) {
+            updateRows = detectiveRequestFormService.updateRequestFormByEntity(entity);
         }
 
-        if (requestFormStatus.equals("의뢰대기")) {
-            updateRows = detectiveRequestFormService.updateRequestFormStatusByRequestFormIdx(requestFormIdx,
-                    requestFormStatus, requestFormRejectMessage);
-        }
+        // if (requestFormStatus.equals("의뢰대기")) {
+        //     updateRows = detectiveRequestFormService.updateRequestFormStatusByRequestFormIdx(requestFormIdx,
+        //             requestFormStatus, requestFormRejectMessage);
+        // }
 
-        if (requestFormStatus.equals("임무대기")) {
-            updateRows = detectiveRequestFormService.updateRequestFormStatusByRequestFormIdx(requestFormIdx,
-                    requestFormStatus, requestFormRejectMessage);
-        }
+        // if (requestFormStatus.equals("임무대기")) {
+        //     updateRows = detectiveRequestFormService.updateRequestFormStatusByRequestFormIdx(requestFormIdx,
+        //             requestFormStatus, requestFormRejectMessage);
+        // }
 
-        if (requestFormStatus.equals("임무완료")) {
-            updateRows = detectiveRequestFormService.updateRequestFormStatusByRequestFormIdxCaseMissionComplete(
-                    requestFormIdx, LocalDateTime.now(), requestFormStatus, requestFormRejectMessage);
-        }
+        // if (requestFormStatus.equals("임무완료")) {
+        //     updateRows = detectiveRequestFormService.updateRequestFormStatusByRequestFormIdxCaseMissionComplete(
+        //             requestFormIdx, LocalDateTime.now(), requestFormStatus, requestFormRejectMessage);
+        // }
         // if(requestFormStatus.equals("의뢰수락")) {
         // RequestForm rf =
         // detectiveRequestFormService.selectDetectiveRequestFormInfoByRequestFormIdx(requestFormIdx);

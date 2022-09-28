@@ -39,8 +39,17 @@ public class RequestForm {
     @Column(nullable=true) private LocalDateTime requestFormDate;
     @Column(nullable=true) private LocalDateTime requestFormAcceptDate;
     @Column(nullable=true) private LocalDateTime requestFormCompDate;
-    @Column(nullable=true) private String requestFormRejectMessage;
+    @Column(nullable=true) private String requestFormRejectMessage;    
 
 //    @OneToMany(mappedBy = "requestForm")
 //    private List<RequestFormCategory> requestFormCategory = new ArrayList<>();
+
+    public RequestForm() {}
+
+    public RequestForm(Long requestFormIdx, String requestFormStatus, String requestFormRejectMessage) {
+        this.requestFormIdx = requestFormIdx;
+        this.requestFormStatus = requestFormStatus;
+        this.requestFormRejectMessage = requestFormRejectMessage;
+    }
+    
 }
