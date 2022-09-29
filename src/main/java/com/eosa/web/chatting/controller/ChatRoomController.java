@@ -3,13 +3,12 @@ package com.eosa.web.chatting.controller;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import com.eosa.web.chatting.entity.ChatMessage;
 import com.eosa.web.chatting.service.ChatMessageService;
 import com.eosa.web.util.CustomResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -158,24 +157,12 @@ public class ChatRoomController {
      * @param usersName
      * @return
      */
-//    @GetMapping("/room/enter/{roomId}")
-//    @ResponseBody
-//    public ChatRoom roomDetailREST(
-//        @PathVariable String roomId,
-//        @RequestParam(value="usersIdx") String usersName
-//    ) {
-//        // model.addAttribute("roomId", roomId);
-//        log.info("사용자 '{}' 가 RoomId: {} 채팅방에 입장했습니다. 입장시간: {}", usersName, roomId, LocalDateTime.now());
-//        ChatRoom result = chatRoomService.findById(roomId);
-//        return result;
-//    }
     @GetMapping("/room/enter/{roomId}")
     @ResponseBody
     public ChatRoom roomEnterRoomId(
             @PathVariable String roomId,
             @RequestParam(value="usersIdx") String usersName
     ) {
-        // model.addAttribute("roomId", roomId);
         log.info("사용자 '{}' 가 RoomId: {} 채팅방에 입장했습니다. 입장시간: {}", usersName, roomId, LocalDateTime.now());
         ChatRoom result = chatRoomService.findChatRoomByRoomId(roomId);
         log.info("[roomEnterRoomId] result: {}", result.toString());
@@ -200,6 +187,12 @@ public class ChatRoomController {
         return chatRoomService.findAllRoom();
     }
 
+    /**
+     * 서버에서 채팅방을 삭제하는 메서드
+     * @param roomId
+     * @param usersIdx
+     * @return
+     */
     @PutMapping("/deleteRoomByRoomId")
     @ResponseBody
     public List<ChatRoom> deleteRoomByRoomId(
@@ -217,16 +210,18 @@ public class ChatRoomController {
     }   
 
     // TestMethod 현재 존재하는 모든 채팅방 삭제
-    @GetMapping("/testAllFlush")
-    @ResponseBody
-    public void testAllFlush() {
-        log.debug("서버에 존재하는 모든 채팅방을 삭제합니다. 삭제시간: {}", LocalDateTime.now());
-        chatRoomService.testAllFlush();
-    }
+    // @Secured({"CLIENT", "DETECTIVE"})
+    // @GetMapping("/testAllFlush")
+    // @ResponseBody
+    // public void testAllFlush() {
+    //     log.debug("서버에 존재하는 모든 채팅방을 삭제합니다. 삭제시간: {}", LocalDateTime.now());
+    //     chatRoomService.testAllFlush();
+    // }
 
     /**
      * TestMethod 모든 채팅방 목록 반환
     */
+    @Secured({"ADMIN", "SUPER_ADMIN"})
     @GetMapping("/rooms")
     @ResponseBody
     public List<ChatRoom> rooms() {

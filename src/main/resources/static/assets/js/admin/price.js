@@ -14,9 +14,9 @@ const modifyPrice = () => {
             bankNumber: bankNumber
 
         }
-        formData.append("priceIdx", priceIdx);
-        formData.append("bankName", bankName);
-        formData.append("bankNumber", bankNumber);
+        formData.append("priceIdx", priceIdx.value);
+        formData.append("bankName", bankName.value);
+        formData.append("bankNumber", bankNumber.value);
 
         fetch(`/admin/manage/price/updatePrice`, {
             method: "POST",

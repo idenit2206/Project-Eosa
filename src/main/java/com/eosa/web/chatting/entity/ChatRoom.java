@@ -1,15 +1,10 @@
 package com.eosa.web.chatting.entity;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
 
 import javax.persistence.*;
 
-import com.eosa.web.chatting.service.ChatRoomService;
 import lombok.Data;
-import org.springframework.web.socket.WebSocketSession;
 
 @Data
 @Entity
@@ -25,6 +20,8 @@ public class ChatRoom {
     // 방 만든 사람 (회원의 색인 번호)
     @Column private Long usersIdx;
     @Column private Long companysIdx;
+    @Column private int clientReadStatus;
+    @Column private int detectiveReadStatus;
     // 채팅 로그의 위치가 담긴 컬럼
     @Column private String dataInfo;
     // 채팅방이 생성된 타임스탬프

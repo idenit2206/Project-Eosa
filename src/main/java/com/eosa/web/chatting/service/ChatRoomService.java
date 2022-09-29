@@ -1,13 +1,23 @@
 package com.eosa.web.chatting.service;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.UUID;
 import java.util.function.Function;
 
 import javax.annotation.PostConstruct;
 
 import com.eosa.web.chatting.repository.ChatRoomRepository;
-import com.eosa.web.companys.entity.Companys;
 import com.eosa.web.companys.entity.SelectAllCompanysList;
 import com.eosa.web.companys.service.CompanysService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +38,7 @@ public class ChatRoomService implements ChatRoomRepository {
 
     private Map<String, ChatRoom> chatRooms;
     private Set<String> chatRoomIdList;
-
+    
     @PostConstruct
     private void initChatRooms() {
         chatRooms = new LinkedHashMap<>();
@@ -42,7 +52,7 @@ public class ChatRoomService implements ChatRoomRepository {
     public void testAllFlush() {
         chatRooms.clear();
         chatRoomIdList.clear();
-    }
+    }    
 
     @Autowired private ChatRoomRepository chatRoomRepository;
     @Autowired private CompanysService companysService;
@@ -159,16 +169,67 @@ public class ChatRoomService implements ChatRoomRepository {
      * @return
      */
     public List<ChatRoom> findAllRoom() {
-//        List<ChatRoom> result = new ArrayList<>(chatRooms.values());
+        // List<ChatRoom> result = new ArrayList<>(chatRooms.values()); 
         List<ChatRoom> result = null;
         List<ChatRoom> selectRows = chatRoomRepository.findAll();
         for(int i = 0; i < selectRows.size(); i++) {
             chatRooms.put(selectRows.get(i).getRoomId(), selectRows.get(i));
         }
         result = new ArrayList<>(chatRooms.values());
-
         Collections.reverse(result);
         return result;
+    }
+    
+    public int setClientReadStatusUnread(String roomId) {
+        ChatRoom c = null;
+        Iterator<String> keys = chatRooms.keySet().iterator();
+        while(keys.hasNext()) {
+            String key = keys.next();
+            c = chatRooms.get(key);
+            if(c.getRoomId() == roomId) {
+                c.setClientReadStatus(0);
+            }
+        }
+        return c.getClientReadStatus();
+    }
+
+    public int setDetectiveReadStatusUnread(String roomId) {
+        ChatRoom c = null;
+        Iterator<String> keys = chatRooms.keySet().iterator();
+        while(keys.hasNext()) {
+            String key = keys.next();
+            c = chatRooms.get(key);
+            if(c.getRoomId() == roomId) {
+                c.setDetectiveReadStatus(0);
+            }
+        }
+        return c.getDetectiveReadStatus();
+    }
+
+    public int setClientReadStatusRead(String roomId) {
+        ChatRoom c = null;
+        Iterator<String> keys = chatRooms.keySet().iterator();
+        while(keys.hasNext()) {
+            String key = keys.next();
+            c = chatRooms.get(key);
+            if(c.getRoomId() == roomId) {
+                c.setClientReadStatus(1);
+            }
+        }
+        return c.getClientReadStatus();
+    }
+
+    public int setDetectiveReadStatusRead(String roomId) {
+        ChatRoom c = null;
+        Iterator<String> keys = chatRooms.keySet().iterator();
+        while(keys.hasNext()) {
+            String key = keys.next();
+            c = chatRooms.get(key);
+            if(c.getRoomId() == roomId) {
+                c.setDetectiveReadStatus(1);
+            }
+        }
+        return c.getDetectiveReadStatus();
     }
 
     @Override

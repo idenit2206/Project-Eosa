@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.eosa.web.chatting.service.ChatMessageService;
+import com.eosa.web.chatting.service.ChatRoomService;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -33,6 +34,7 @@ public class ChatMessageController {
     private final SimpMessageSendingOperations sendingOperations;
     
     @Autowired private ChatMessageService chatMessageService;
+    @Autowired private ChatRoomService chatRoomService;
 
     List<Object> messageList = new LinkedList<>();
 
@@ -49,6 +51,14 @@ public class ChatMessageController {
             log.debug("sendMessage [TALK]: {}", message.toString());
             chatMessageService.addMessage(message);
             chatMessageService.save(message);
+            if(message.getSender().equals("client")) {
+                chatRoomService.setDetectiveReadStatusUnread(message.getRoomId());
+                chatRoomService.setClientReadStatusRead(message.getRoomId());
+            }
+            else {
+                chatRoomService.setClientReadStatusUnread(message.getRoomId());
+                chatRoomService.setDetectiveReadStatusRead(message.getRoomId());
+            }
         }
 
         if((message.getMessageType()).equals(MessageType.FILE)) {

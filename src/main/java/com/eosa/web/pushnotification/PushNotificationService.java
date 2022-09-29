@@ -20,14 +20,14 @@ public class PushNotificationService {
 
     public List<RequestForm> selectPushNotificationByUsersIdx(Long usersIdx) {
         List<RequestForm> items = requestFormRepository.selectRequestFormByUsersIdx(usersIdx);
-        log.debug("[selectPushNotificationByUsersIdx] 요청한 유저번호: {} ", usersIdx);
+        // log.debug("[selectPushNotificationByUsersIdx] 요청한 유저번호: {} ", usersIdx);
         return items;
     }
 
     public List<RequestForm> selectPushNotificationForDetective(Long usersIdx) {
         Long companysIdx =companysService.selectCompanysIdxByUsersIdx(usersIdx);
         List<RequestForm> items = requestFormRepository.selectPushNotificationForDetective(companysIdx);
-        log.debug("[selectPushNotificationForDetective] 요청한 업체 번호: {} ", companysIdx);
+        // log.debug("[selectPushNotificationForDetective] 요청한 업체 번호: {} ", companysIdx);
         return items;
     }    
 
