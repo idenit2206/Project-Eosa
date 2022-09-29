@@ -18,6 +18,7 @@
                         <div class="msg-form">
                             <div class="msg-top">
                                 <span class="msg-company" th:text="${chatList[0].roomName}"></span>
+                                <span class="msg-roomId" th:text="${chatList[0].roomId}"></span>
                                 <span class="msg-client" th:text="${chatList[0].usersAccount}"></span>
                             </div>
 
@@ -35,6 +36,10 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div th:if="${chatList[0].roomName eq 'ADMIN'}">
+                                    <input type="text">
+                                    <input type="button" value="보내기"/>
+                                </div>
                             </div>
                         </div>
                     </fieldset>
@@ -51,9 +56,25 @@
 </th:block>
 
 <th:block layout:fragment="script">
+    <script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/2.3.3-1/stomp.min.js"></script>
+    <script>
+        let sock;
+        const connectSocket = () => {
+            sock = new SockJS("/ws/chat");
+            let ws = Stomp.over(sock);
+            let reconnect = 0;
+            const roomId = document.querySelector(".msg-roomId")
+
+            ws.connect({}, (frame) => {
+                ws.subscribe(`/topic/chat/room/${roomId.innerHTML}`)
+            })
+        }
+    </script>
     <script>
         window.addEventListener('load', function () {
             highlightMenu();
+            connectSocket();
         });
     </script>
 </th:block>
