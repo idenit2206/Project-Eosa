@@ -509,7 +509,7 @@
                                     <div class="select-wrap">
                                         <select class="select select-sm" id="region05">
                                             <option value="" selected disabled>선택</option>
-                                            <option value="서울">서울</option>
+                                            <!-- <option value="서울">서울</option>
                                             <option value="경기">경기</option>
                                             <option value="대전/충남/세종">대전/충남/세종</option>
                                             <option value="인천/부천">인천/부천</option>
@@ -519,7 +519,7 @@
                                             <option value="대구/경북">대구/경북</option>
                                             <option value="부산/울산/경남">부산/울산/경남</option>
                                             <option value="광주/전남">광주/전남</option>
-                                            <option value="제주">제주</option>
+                                            <option value="제주">제주</option> -->
                                         </select>
                                     </div>
                                 </td>
@@ -528,7 +528,7 @@
                                 <td class="modal-th">광고 분야</td>
                                 <td class="modal-td">
                                     <div class="checkbox-wrap">
-                                        <div class="dt-check-wrap">
+                                        <!-- <div class="dt-check-wrap">
                                             <input type="checkbox" id="f-category1" name="f-category" value="가정문제">
                                             <label for="f-category1">가정문제</label>
                                         </div>
@@ -579,7 +579,7 @@
                                         <div class="dt-check-wrap">
                                             <input type="checkbox" id="f-category13" name="f-category" value="해외조사">
                                             <label for="f-category13">해외조사</label>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </td>
                             </tr>
@@ -682,9 +682,36 @@
             const canPremium = document.querySelector('.cancel-premium');
             if (canPremium != null) canPremium.addEventListener('click', cancelPremium);
 
+            // 마패 신청서 광고 지역, 광고 분야, 계좌번호 정보 불러오기
+            const selectFlagPrice = async() => {
+                const region05 = document.querySelector("#region05");
+                const optionElement = document.createElement("option");
+                
+                let price;
+                let region;
+                let category;
+                await fetch(`/admin/manage/price/selectPrice`)
+                    .then(response => response.json())
+                    .then(data => {
+                        price = data.price;
+                        region = data.region;
+                        category = data.category;
+                    })
+                
+                for(let i = 0; i < region.length; i++) {
+                    const optionRegionElement = document.createElement("option");
+                    optionRegionElement.innerHTML = region[i].regionName;
+                    optionRegionElement.setAttribute("value", region[i].regionPrice);
+                    region05.appendChild(optionRegionElement);
+                }
+            }
+
             // 마패 신청
             const reqFlag = document.querySelector('.request-flag');
-            if (reqFlag != null) reqFlag.addEventListener('click', requestFlag);
+            if (reqFlag != null) {
+                reqFlag.addEventListener('click', requestFlag);
+                selectFlagPrice()
+            }
 
             // 마패 등록
             const appFlag = document.querySelector('.approval-flag');
@@ -700,6 +727,7 @@
 
             // 업체 삭제
             const deleteBtn = document.querySelector('.company-delete');
+            
         });
     </script>
 </th:block>

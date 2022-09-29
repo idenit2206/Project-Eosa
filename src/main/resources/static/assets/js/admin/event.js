@@ -537,7 +537,7 @@ async function updateCompany() {
             formData.set('companysComment', document.querySelector('.c-comment').value);
             formData.set('companysSpec', document.querySelector('#editor .ql-editor').innerHTML);
             formData.set('companysRegion1', region01.value);
-            if (region01.value == '서울') formData.set('companysRegion2', document.querySelector('#region02').value);
+            // if (region01.value == '서울') formData.set('companysRegion2', document.querySelector('#region02').value);
             formData.set('companysRegion3', document.querySelector('.c-region3').value);
             formData.set('companysBankName', document.querySelector('.c-bank').value);
             formData.set('companysBankNumber', document.querySelector('.c-bank-num').value);

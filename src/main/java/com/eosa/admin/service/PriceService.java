@@ -1,7 +1,9 @@
 package com.eosa.admin.service;
 
 import java.math.BigInteger;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +41,20 @@ public class PriceService {
         model.addAttribute("category", categoryList);
 
         return "admin/price/list";
+    }
+
+    public Map<String, Object> selectPrice() {
+        Map<String, Object> result = new HashMap<>();
+
+        PriceDTO price = priceMapper.selectPrice();
+        List<RegionDTO> regionList = regionMapper.selectRegion();
+        List<CategoryDTO> categoryList = categoryMapper.selectCategory();
+
+        result.put("price", price);
+        result.put("region", regionList);
+        result.put("category", categoryList);
+
+        return result;
     }
 
     public String updatePrice(PriceDTO priceDTO, Model model) {

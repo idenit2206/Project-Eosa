@@ -1,6 +1,7 @@
 package com.eosa.admin.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.eosa.admin.dto.PriceDTO;
 import com.eosa.admin.service.PriceService;
@@ -27,6 +29,13 @@ public class PriceController {
     public String priceList(Model model) {
         return priceService.priceList(model);
     }
+
+    @GetMapping("/selectPrice")
+    @ResponseBody
+    public Map<String, Object> selectPrice() {
+        return priceService.selectPrice();
+    }
+
     @PostMapping("/updatePrice")
     public String updatePrice(
         PriceDTO priceDTO,
