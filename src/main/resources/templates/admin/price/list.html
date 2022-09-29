@@ -12,7 +12,7 @@
             <h3 class="section_title">지역&분야별 가격 관리</h3>
                 <div class="table">
                     <table class="" th:if="${price ne null}">
-                        <thead id="priceIdx" th:value="${price.priceIdx}">
+                        <thead th:id="priceIdx" th:class="${price.priceIdx}">
                             <tr>
                                 <th>은행</th>
                                 <th>계좌번호</th>

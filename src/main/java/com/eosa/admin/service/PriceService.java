@@ -42,7 +42,10 @@ public class PriceService {
     }
 
     public String updatePrice(PriceDTO priceDTO, Model model) {
-        log.debug("[updatePrice] priceDTO: {}", priceDTO.toString());
+        // log.debug("[updatePrice] priceDTO: {}", priceDTO.toString());
+        int updateRow = priceMapper.updatePrice(priceDTO);
+        log.debug("{}",updateRow);
+
         PriceDTO price = priceMapper.selectPrice();
         List<RegionDTO> regionList = regionMapper.selectRegion();
         List<CategoryDTO> categoryList = categoryMapper.selectCategory();

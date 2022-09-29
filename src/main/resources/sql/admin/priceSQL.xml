@@ -14,7 +14,7 @@
     <insert id="updatePrice" parameterType="PriceDTO">
         INSERT INTO Price(priceIdx, bankName, bankNumber)
         VALUES(#{priceIdx}, #{bankName}, #{bankNumber})
-        ON DUPLICATE KEY UPDATE priceIdx = #{priceIdx}
+        ON DUPLICATE KEY UPDATE bankName = #{bankName}, bankNumber = #{bankNumber}
     </insert>
 
 

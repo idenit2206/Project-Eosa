@@ -8,13 +8,8 @@ const modifyPrice = () => {
         const bankNumber = document.querySelector("#priceBankNumber");
 
         let formData = new FormData();
-        let PriceDTO = {
-            priceIdx: priceIdx,
-            bankName: bankName,
-            bankNumber: bankNumber
-
-        }
-        formData.append("priceIdx", priceIdx.value);
+        console.log(`priceIdx: ${priceIdx.getAttribute("class")}, bankName: ${bankName.value}, bankNumber: ${bankNumber.value}`);
+        formData.append("priceIdx", priceIdx.getAttribute("class"));
         formData.append("bankName", bankName.value);
         formData.append("bankNumber", bankNumber.value);
 
