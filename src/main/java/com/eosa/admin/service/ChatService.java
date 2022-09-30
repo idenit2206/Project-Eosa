@@ -4,7 +4,11 @@ import com.eosa.admin.dto.ChatDTO;
 import com.eosa.admin.mapper.ChatMapper;
 import com.eosa.admin.pagination.Pagination;
 import com.nimbusds.oauth2.sdk.util.date.SimpleDate;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -24,6 +28,8 @@ import java.util.Map;
  * -----------------------------------------------------------
  * 2022-09-22        Jihun Kim       최초 생성
  */
+
+@Slf4j
 @Service
 public class ChatService {
 
@@ -75,7 +81,8 @@ public class ChatService {
      * @param roomId
      * @return String
      */
-    public String chatDetails(Model model, String roomId) {
+    public String chatDetails(Authentication auth, Model model, String roomId) {
+        log.debug("[chatDetails] auth: {}", auth.getName());
 
         List<ChatDTO> list = chatMapper.selectChat(roomId);
 
