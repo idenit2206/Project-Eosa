@@ -365,7 +365,7 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
                         "LEFT JOIN CompanysCategory CC on C.companysIdx = CC.companysIdx " +
                         "WHERE CC.companysCategoryValue LIKE CONCAT('%', ?1, '%') " +
                         "AND " +
-                        "C.companysPremium " +
+                        "C.companysPremium = 1 " +
                         "AND " +
                         "C.companysRegion1 LIKE CONCAT('%', ?2,'%') " +
                         // "AND " +
