@@ -388,18 +388,9 @@
                                 <td class="modal-th">광고 지역</td>
                                 <td class="modal-td">
                                     <div class="select-wrap">
+                                        <input type="hidden" class="m-region-price" value="0">
                                         <select class="select select-sm" id="region03">
-                                            <option value="서울" th:selected="${details.companysFlagRegion1} eq '서울'">서울</option>
-                                            <option value="경기" th:selected="${details.companysFlagRegion1} eq '경기'">경기</option>
-                                            <option value="대전/충남/세종" th:selected="${details.companysFlagRegion1} eq '대전/충남/세종'">대전/충남/세종</option>
-                                            <option value="인천/부천" th:selected="${details.companysFlagRegion1} eq '인천/부천'">인천/부천</option>
-                                            <option value="강원" th:selected="${details.companysFlagRegion1} eq '강원'">강원</option>
-                                            <option value="전주/전북" th:selected="${details.companysFlagRegion1} eq '전주/전북'">전주/전북</option>
-                                            <option value="청주/충북" th:selected="${details.companysFlagRegion1} eq '청주/충북'">청주/충북</option>
-                                            <option value="대구/경북" th:selected="${details.companysFlagRegion1} eq '대구/경북'">대구/경북</option>
-                                            <option value="부산/울산/경남" th:selected="${details.companysFlagRegion1} eq '부산/울산/경남'">부산/울산/경남</option>
-                                            <option value="광주/전남" th:selected="${details.companysFlagRegion1} eq '광주/전남'">광주/전남</option>
-                                            <option value="제주" th:selected="${details.companysFlagRegion1} eq '제주'">제주</option>
+                                            <option th:each="list : ${regionList}" th:data-price="${list.regionPrice}" th:value="${list.regionName}" th:selected="${list.regionName} eq ${details.companysFlagRegion1}" th:text="${list.regionName}"></option>
                                         </select>
                                     </div>
                                 </td>
@@ -408,64 +399,25 @@
                                 <td class="modal-th">광고 분야</td>
                                 <td class="modal-td">
                                     <div class="checkbox-wrap">
-                                        <div class="dt-check-wrap">
-                                            <input type="checkbox" id="m-category1" name="m-category" value="가정문제" th:checked="${#strings.contains(details.companysFlagCategory, '가정문제')}">
-                                            <label for="m-category1">가정문제</label>
+
+                                        <div class="dt-check-wrap" th:each="list : ${categoryList}">
+                                            <input type="hidden" class="m-category-price-add" th:value="${details.flagPrice}">
+                                            <input type="hidden" class="m-category-price" th:value="${list.categoryPrice}">
+                                            <input type="checkbox" th:id="|m-category${listStat.count}|" name="m-category" th:value="${list.categoryName}" th:checked="${#strings.contains(details.companysFlagCategory, list.categoryName)}">
+                                            <label th:for="|m-category${listStat.count}|" th:text="${list.categoryName}"></label>
                                         </div>
-                                        <div class="dt-check-wrap">
-                                            <input type="checkbox" id="m-category2" name="m-category" value="기업문제" th:checked="${#strings.contains(details.companysFlagCategory, '기업문제')}">
-                                            <label for="m-category2">기업문제</label>
-                                        </div>
-                                        <div class="dt-check-wrap">
-                                            <input type="checkbox" id="m-category3" name="m-category" value="안전분야 조사" th:checked="${#strings.contains(details.companysFlagCategory, '안전분야 조사')}">
-                                            <label for="m-category3">안전분야 조사</label>
-                                        </div>
-                                        <div class="dt-check-wrap">
-                                            <input type="checkbox" id="m-category4" name="m-category" value="사기/분쟁" th:checked="${#strings.contains(details.companysFlagCategory, '사기/분쟁')}">
-                                            <label for="m-category4">사기/분쟁</label>
-                                        </div>
-                                        <div class="dt-check-wrap">
-                                            <input type="checkbox" id="m-category5" name="m-category" value="스토킹" th:checked="${#strings.contains(details.companysFlagCategory, '스토킹')}">
-                                            <label for="m-category5">스토킹</label>
-                                        </div>
-                                        <div class="dt-check-wrap">
-                                            <input type="checkbox" id="m-category6" name="m-category" value="의료/보험" th:checked="${#strings.contains(details.companysFlagCategory, '의료/보험')}">
-                                            <label for="m-category6">의료/보험</label>
-                                        </div>
-                                        <div class="dt-check-wrap">
-                                            <input type="checkbox" id="m-category7" name="m-category" value="부동산" th:checked="${#strings.contains(details.companysFlagCategory, '부동산')}">
-                                            <label for="m-category7">부동산</label>
-                                        </div>
-                                        <div class="dt-check-wrap">
-                                            <input type="checkbox" id="m-category8" name="m-category" value="금융/사이버" th:checked="${#strings.contains(details.companysFlagCategory, '금융/사이버')}">
-                                            <label for="m-category8">금융/사이버</label>
-                                        </div>
-                                        <div class="dt-check-wrap">
-                                            <input type="checkbox" id="m-category9" name="m-category" value="민원대행" th:checked="${#strings.contains(details.companysFlagCategory, '민원대행')}">
-                                            <label for="m-category9">민원대행</label>
-                                        </div>
-                                        <div class="dt-check-wrap">
-                                            <input type="checkbox" id="m-category10" name="m-category" value="불법기기탐지" th:checked="${#strings.contains(details.companysFlagCategory, '불법기기탐지')}">
-                                            <label for="m-category10">불법기기탐지</label>
-                                        </div>
-                                        <div class="dt-check-wrap">
-                                            <input type="checkbox" id="m-category11" name="m-category" value="경호/경비" th:checked="${#strings.contains(details.companysFlagCategory, '경호/경비')}">
-                                            <label for="m-category11">경호/경비</label>
-                                        </div>
-                                        <div class="dt-check-wrap">
-                                            <input type="checkbox" id="m-category12" name="m-category" value="일반조사" th:checked="${#strings.contains(details.companysFlagCategory, '일반조사')}">
-                                            <label for="m-category12">일반조사</label>
-                                        </div>
-                                        <div class="dt-check-wrap">
-                                            <input type="checkbox" id="m-category13" name="m-category" value="해외조사" th:checked="${#strings.contains(details.companysFlagCategory, '해외조사')}">
-                                            <label for="m-category13">해외조사</label>
-                                        </div>
+
                                     </div>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="modal-th">금액</td>
-                                <td class="modal-td" th:text="|${details.flagPrice} 원|"></td>
+                                <td class="modal-td">
+                                    <div class="price-wrap">
+                                        <span id="totalPrice" th:text="${details.flagPrice}"></span>
+                                        <span>원</span>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 <td class="modal-th">계좌번호</td>
@@ -507,19 +459,10 @@
                                 <td class="modal-th">광고 지역</td>
                                 <td class="modal-td">
                                     <div class="select-wrap">
+                                        <input type="hidden" class="region-price" value="0">
                                         <select class="select select-sm" id="region05">
                                             <option value="" selected disabled>선택</option>
-                                            <!-- <option value="서울">서울</option>
-                                            <option value="경기">경기</option>
-                                            <option value="대전/충남/세종">대전/충남/세종</option>
-                                            <option value="인천/부천">인천/부천</option>
-                                            <option value="강원">강원</option>
-                                            <option value="전주/전북">전주/전북</option>
-                                            <option value="청주/충북">청주/충북</option>
-                                            <option value="대구/경북">대구/경북</option>
-                                            <option value="부산/울산/경남">부산/울산/경남</option>
-                                            <option value="광주/전남">광주/전남</option>
-                                            <option value="제주">제주</option> -->
+                                            <option th:each="list : ${regionList}" th:data-price="${list.regionPrice}" th:value="${list.regionName}" th:text="${list.regionName}"></option>
                                         </select>
                                     </div>
                                 </td>
@@ -528,64 +471,25 @@
                                 <td class="modal-th">광고 분야</td>
                                 <td class="modal-td">
                                     <div id="localCategory" class="checkbox-wrap">
-                                        <!-- <div class="dt-check-wrap">
-                                            <input type="checkbox" id="f-category1" name="f-category" value="가정문제">
-                                            <label for="f-category1">가정문제</label>
+
+                                        <div class="dt-check-wrap" th:each="list : ${categoryList}">
+                                            <input type="hidden" class="category-price" th:value="${list.categoryPrice}">
+                                            <input type="hidden" class="category-price-add" value="0">
+                                            <input type="checkbox" th:id="|f-category${listStat.count}|" name="f-category" th:value="${list.categoryName}">
+                                            <label th:for="|f-category${listStat.count}|" th:text="${list.categoryName}"></label>
                                         </div>
-                                        <div class="dt-check-wrap">
-                                            <input type="checkbox" id="f-category2" name="f-category" value="기업문제">
-                                            <label for="f-category2">기업문제</label>
-                                        </div>
-                                        <div class="dt-check-wrap">
-                                            <input type="checkbox" id="f-category3" name="f-category" value="안전분야 조사">
-                                            <label for="f-category3">안전분야 조사</label>
-                                        </div>
-                                        <div class="dt-check-wrap">
-                                            <input type="checkbox" id="f-category4" name="f-category" value="사기/분쟁">
-                                            <label for="f-category4">사기/분쟁</label>
-                                        </div>
-                                        <div class="dt-check-wrap">
-                                            <input type="checkbox" id="f-category5" name="f-category" value="스토킹">
-                                            <label for="f-category5">스토킹</label>
-                                        </div>
-                                        <div class="dt-check-wrap">
-                                            <input type="checkbox" id="f-category6" name="f-category" value="의료/보험">
-                                            <label for="f-category6">의료/보험</label>
-                                        </div>
-                                        <div class="dt-check-wrap">
-                                            <input type="checkbox" id="f-category7" name="f-category" value="부동산">
-                                            <label for="f-category7">부동산</label>
-                                        </div>
-                                        <div class="dt-check-wrap">
-                                            <input type="checkbox" id="f-category8" name="f-category" value="금융/사이버">
-                                            <label for="f-category8">금융/사이버</label>
-                                        </div>
-                                        <div class="dt-check-wrap">
-                                            <input type="checkbox" id="f-category9" name="f-category" value="민원대행">
-                                            <label for="f-category9">민원대행</label>
-                                        </div>
-                                        <div class="dt-check-wrap">
-                                            <input type="checkbox" id="f-category10" name="f-category" value="불법기기탐지">
-                                            <label for="f-category10">불법기기탐지</label>
-                                        </div>
-                                        <div class="dt-check-wrap">
-                                            <input type="checkbox" id="f-category11" name="f-category" value="경호/경비">
-                                            <label for="f-category11">경호/경비</label>
-                                        </div>
-                                        <div class="dt-check-wrap">
-                                            <input type="checkbox" id="f-category12" name="f-category" value="일반조사">
-                                            <label for="f-category12">일반조사</label>
-                                        </div>
-                                        <div class="dt-check-wrap">
-                                            <input type="checkbox" id="f-category13" name="f-category" value="해외조사">
-                                            <label for="f-category13">해외조사</label>
-                                        </div> -->
+
                                     </div>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="modal-th">금액</td>
-                                <td id="localPremiumTotalPrice" class="modal-td f-price">0 원</td>
+                                <td class="modal-td">
+                                    <div class="price-wrap">
+                                        <span id="localPremiumTotalPrice">0</span>
+                                        <span>원</span>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 <td class="modal-th">계좌번호</td>
@@ -611,98 +515,10 @@
     <script src="https://unpkg.com/quill-image-compress@1.2.11/dist/quill.imageCompressor.min.js"></script>
     <script th:src="@{/assets/js/admin/library.js}"></script>
     <script>
-        // 합산 금액
-        let totalCount = 0;
-        const localPremiumTotalPrice = document.querySelector("#localPremiumTotalPrice");
-        // 마패 신청서 광고 지역, 광고 분야, 계좌번호 정보 불러오기
-        const selectFlagPrice = async() => {
-                const region05 = document.querySelector("#region05");
-                const categoryDiv = document.querySelector("#localCategory");
-                const localPremiumBank = document.querySelector("#localPremiumBank");
-                
-                let price;
-                let region;
-                let category;
-                await fetch(`/admin/manage/price/selectPrice`)
-                    .then(response => response.json())
-                    .then(data => {
-                        price = data.price;
-                        region = data.region;
-                        category = data.category;
-                    })
-                
-                for(let i = 0; i < region.length; i++) {
-                    const optionRegionElement = document.createElement("option");
-                    optionRegionElement.innerHTML = region[i].regionName;
-                    optionRegionElement.setAttribute("onclick", "region05OptionsClick(event)");
-                    optionRegionElement.setAttribute("value", region[i].regionPrice);
-                    region05.appendChild(optionRegionElement);
-                }
-
-                for(let i = 0; i < category.length; i++) {
-                    const divCategoryElement = document.createElement("div");
-                    divCategoryElement.setAttribute("class", "dt-check-wrap");
-                    
-                    const inputCheckboxElement = document.createElement("input");
-                    inputCheckboxElement.setAttribute("type", "checkbox");
-                    inputCheckboxElement.setAttribute("id", `f-category${i+1}`);
-                    inputCheckboxElement.setAttribute("class", "localPremiumCategoryCheck");
-                    inputCheckboxElement.setAttribute("name", "f-category");
-                    inputCheckboxElement.setAttribute("value", category[i].categoryPrice);
-
-                    const labelElement = document.createElement("label");
-                    labelElement.setAttribute("for", `f-category${i+1}`);
-                    labelElement.setAttribute("class", "localPremiumCategoryCheckLabel");
-                    labelElement.setAttribute("onclick", `countFlagPrice(event)`);
-                    labelElement.innerHTML = category[i].categoryName;
-
-                    divCategoryElement.appendChild(inputCheckboxElement);
-                    divCategoryElement.appendChild(labelElement);
-
-                    categoryDiv.appendChild(divCategoryElement);                  
-                }
-
-            localPremiumBank.innerHTML = `(${price.bankName}) ${price.bankNumber}`;
-        }
-
-        const region05OptionsClick = (event) => {
-            // alert(event.target.value);
-            // alert(document.querySelector("#region05").value);
-            const region05Select = document.querySelector("#region05");
-            // region05Select.addEventListener("change", (e) => {
-            //     alert(e.target.value);
-            // })
-            
-            // let p = event.target.value;            
-            // totalCount = Number(totalCount) + Number(p);
-            // localPremiumTotalPrice.innerHTML = totalCount;
-        }
-
-        // 마패 금액 적용
-        const countFlagPrice = () => {
-            const localPremiumModal = document.querySelector("#localPremiumModal");
-            const localPremiumCategoryCheck = document.querySelectorAll(".localPremiumCategoryCheck");
-            const localPremiumCategoryCheckLabel = document.querySelectorAll(".localPremiumCategoryCheckLabel");
-
-            for(let i = 0; i < localPremiumCategoryCheck.length; i++) {
-                localPremiumCategoryCheck[i].addEventListener("click", () => {
-                    if(localPremiumCategoryCheck[i].checked === true) {
-                        totalCount = Number(totalCount) + Number(localPremiumCategoryCheck[i].value);
-                        localPremiumTotalPrice.innerHTML = totalCount;
-                    } else {
-                        totalCount = Number(totalCount) - Number(localPremiumCategoryCheck[i].value);
-                        localPremiumTotalPrice.innerHTML = totalCount;
-                    }
-                    
-                })
-            }           
-        }            
-    </script>
-    <script>
         window.addEventListener('load', function () {
             highlightMenu('list');
-            onlyNum();            
-            selectFlagPrice();
+            onlyNum();
+            changePrice();
 
             const editorWrap = document.querySelectorAll('.e-wrap');
             setTimeout(e => {
@@ -769,8 +585,8 @@
 
             // 프리미엄 해지
             const canPremium = document.querySelector('.cancel-premium');
-            if (canPremium != null) canPremium.addEventListener('click', cancelPremium);            
-            
+            if (canPremium != null) canPremium.addEventListener('click', cancelPremium);
+
             // 마패 신청
             const reqFlag = document.querySelector('.request-flag');
             if (reqFlag != null) {
@@ -791,7 +607,7 @@
 
             // 업체 삭제
             const deleteBtn = document.querySelector('.company-delete');
-            
+
         });
     </script>
 </th:block>

@@ -156,6 +156,14 @@ public interface CompanyMapper {
     int updateFlagRegion(CompanysDTO companysDTO);
 
     /**
+     * 업체 마패 가격 수정 매퍼
+     *
+     * @param companysDTO
+     * @return int
+     */
+    int updateFlagPrice(CompanysDTO companysDTO);
+
+    /**
      * 업체 마패 등록 매퍼
      *
      * @param companysDTO

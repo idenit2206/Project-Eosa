@@ -657,7 +657,7 @@ function requestFlag() {
                 formData.append('companysFlagCategory', category[i].value);
             }
 
-            formData.set('flagPrice', document.querySelector('.f-price').textContent.split(' ')[0]);
+            formData.set('flagPrice', document.querySelector('#localPremiumTotalPrice').textContent);
             formData.set('flagPriceBank', document.querySelector('.f-bank').textContent);
 
             fetchApi('/admin/manage/company/flag/request', 'post', formData, '마패가 신청되었습니다.');
@@ -710,11 +710,11 @@ function modifyFlag() {
 
             formData.set('companysFlagIdx', document.querySelector('.companysFlagIdx').value);
             formData.set('companysFlagRegion1', region.value);
-            if (region.value == '서울') formData.set('companysFlagRegion2', document.querySelector('#region04').value);
 
             for (let i = 0; i < category.length; i++) {
                 formData.append('companysFlagCategory', category[i].value);
             }
+            formData.set('flagPrice', document.querySelector('#totalPrice').textContent);
 
             fetchApi('/admin/manage/company/flag/update', 'post', formData, '신청서가 수정되었습니다.');
         }

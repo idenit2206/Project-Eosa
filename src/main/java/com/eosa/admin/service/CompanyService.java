@@ -1,7 +1,10 @@
 package com.eosa.admin.service;
 
 import com.eosa.admin.dto.*;
+import com.eosa.admin.mapper.CategoryMapper;
 import com.eosa.admin.mapper.CompanyMapper;
+import com.eosa.admin.mapper.PriceMapper;
+import com.eosa.admin.mapper.RegionMapper;
 import com.eosa.admin.pagination.Pagination;
 import com.eosa.admin.safety.Safety;
 import org.json.JSONArray;
@@ -31,6 +34,15 @@ public class CompanyService {
 
     @Autowired
     private CompanyMapper companyMapper;
+
+    @Autowired
+    private PriceMapper priceMapper;
+
+    @Autowired
+    private RegionMapper regionMapper;
+
+    @Autowired
+    private CategoryMapper categoryMapper;
 
     /**
      * 업체 목록 조회 서비스
@@ -90,7 +102,15 @@ public class CompanyService {
 
         CompanysDTO details = companyMapper.selectCompanyDetails(companysIdx);
 
+        // 가격 조회
+        PriceDTO price = priceMapper.selectPrice();
+        List<RegionDTO> regionList = regionMapper.selectRegion();
+        List<CategoryDTO> categoryList = categoryMapper.selectCategory();
+
         model.addAttribute("details", details);
+        model.addAttribute("price", price);
+        model.addAttribute("regionList", regionList);
+        model.addAttribute("categoryList", categoryList);
 
         return "admin/company/details";
     }
@@ -297,6 +317,8 @@ public class CompanyService {
             companysDTO.setCompanysFlagCategory(category[i]);
             companyMapper.insertFlagCategory(companysDTO);
         }
+
+        companyMapper.updateFlagPrice(companysDTO);
 
         return companyMapper.updateFlagRegion(companysDTO);
     }
