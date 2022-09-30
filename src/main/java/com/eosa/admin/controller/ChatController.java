@@ -2,6 +2,7 @@ package com.eosa.admin.controller;
 
 import com.eosa.admin.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,9 +53,11 @@ public class ChatController {
      * @return String
      */
     @GetMapping("/details")
-    public String chatDetails(Model model,
-                              @RequestParam String roomId) {
-
+    public String chatDetails(
+        // Authentication auth,
+        Model model,
+        @RequestParam String roomId
+    ) {
         return chatService.chatDetails(model, roomId);
     }
 

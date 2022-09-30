@@ -81,8 +81,8 @@ public class ChatService {
      * @param roomId
      * @return String
      */
-    public String chatDetails(Authentication auth, Model model, String roomId) {
-        log.debug("[chatDetails] auth: {}", auth.getName());
+    public String chatDetails(Model model, String roomId) {
+        // log.debug("[chatDetails] auth: {}", auth.getName());
 
         List<ChatDTO> list = chatMapper.selectChat(roomId);
 
