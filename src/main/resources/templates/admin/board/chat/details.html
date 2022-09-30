@@ -2,7 +2,6 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{admin/fragments/layout}">
-
 <th:block layout:fragment="content">
 
     <th:block th:replace="admin/fragments/aside :: asideFragment"></th:block>
@@ -22,9 +21,9 @@
                                 <span class="msg-client" th:text="${chatList[0].usersAccount}"></span>
                             </div>
 
-                            <div class="msg-body">
-                                <div class="msg-wrap" th:if="${chatList[0].message} ne null">
-                                    <div th:each="list : ${chatList}">
+                            <div class="msg-body chatBody">
+                                <div class="msg-wrap chatMessageBoard2" th:if="${chatList[0].message} ne null">
+                                    <div class="" th:each="list : ${chatList}">
                                         <div class="msg-date" th:if="${list.dateCheck} eq 1">
                                             <hr>
                                             <span th:text="${#dates.format(list.sendDate, 'yyyy.MM.dd')}"></span>
@@ -36,9 +35,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div th:if="${chatList[0].roomName eq 'ADMIN'}">
-                                    <input type="text">
-                                    <input type="button" value="보내기"/>
+                                <div class="chatMessageInput" th:if="${chatList[0].roomName eq 'ADMIN'}">
+                                    <input class="chatTextInput" id="message" type="text">
+                                    <input class="chatSendBtn" id="sendBtn" type="button" onclick="sendMessage()" value="보내기"/>
                                 </div>
                             </div>
                         </div>
@@ -54,20 +53,77 @@
     </main>
 
 </th:block>
+<th:block>
+<style>
+chatMessageBoard {
+    /* width: 80%; */
+    width: 100%;
+    height: 300px;
+    overflow-y: scroll;
+}
+
+.chatMessageInput {
+    width: 100% !important;
+    height: 100px !important;
+}
+</style>
+</th:block>
 
 <th:block layout:fragment="script">
+    <script src="/assets/js/admin/util/CurrentDate.js"></script>
     <script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/2.3.3-1/stomp.min.js"></script>
     <script>
+        const currentDate = new CurrentDate();
         let sock;
-        const connectSocket = () => {
-            sock = new SockJS("/ws/chat");
-            let ws = Stomp.over(sock);
-            let reconnect = 0;
-            const roomId = document.querySelector(".msg-roomId")
+        let messages = [];
+        sock = new SockJS("/ws/chat");
+        let ws = Stomp.over(sock);
+        let reconnect = 0;
 
+        const queryString = window.location.search;
+        const queryParam = new URLSearchParams(queryString);
+        const roomId = queryParam.get("roomId");
+
+        const recvMessage = (recv) => {
+            messages.push({
+                "messageType": recv.messageType,
+                "sender": recv.messageType == "ENTER" ? '[알림]' : 
+                    recv.messageType == "LEAVE" ? "[알림]" : recv.sender,
+                "message": recv.message,
+                "fileMessage": recv.message,
+                "sendDate": recv.sendDate
+            })
+            window.location.reload();
+        }
+
+        const sendMessage = () => {
+            const message = document.querySelector("#message");               
+            if(message.value != "") {
+                ws.send("/app/chat/message", {}, JSON.stringify({
+                    messageType:"TALK", 
+                    roomId: roomId, 
+                    sender: "ADMIN", 
+                    message: message.value,
+                    fileMessage: null,
+                    sendDate: currentDate.ShowCurrentDate()
+                }));
+                message.value = "";
+            }
+        }
+
+        const connectSocket = () => {   
             ws.connect({}, (frame) => {
-                ws.subscribe(`/topic/chat/room/${roomId.innerHTML}`)
+                ws.subscribe(`/topic/chat/room/${roomId}`, (message) => {
+                    let recv = JSON.parse(message.body);
+                    recvMessage(recv);
+                })               
+                // ws.send("/app/chat/message", {}, JSON.stringify({                   
+                //     messageType: "ENTER",
+                //     roomID: roomId,
+                //     sender: "ADMIN",
+                //     sendDate: currentDate.ShowCurrentDate()
+                // }))
             })
         }
     </script>
