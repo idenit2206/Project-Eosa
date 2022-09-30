@@ -276,6 +276,13 @@
         WHERE companysFlagIdx = #{companysFlagIdx}
     </update>
 
+    <!-- 업체 금액 수정 -->
+    <update id="updateFlagPrice" parameterType="CompanysDTO">
+        UPDATE CompanysFlag
+        SET flagPrice = #{flagPrice}
+        WHERE companysFlagIdx = #{companysFlagIdx}
+    </update>
+
     <!-- 업체 마패 등록 -->
     <update id="updateFlag" parameterType="CompanysDTO">
         UPDATE CompanysFlag

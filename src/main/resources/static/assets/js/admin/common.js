@@ -806,3 +806,82 @@ function companyTab() {
     document.querySelector('.enabled-1').classList.add('on');
   }
 };
+
+/* 마패 신청 가격 변경 */
+function changePrice() {
+
+  const category = document.querySelectorAll('input[name=f-category]');
+  const cPrice = document.querySelectorAll('.category-price');
+  const total = document.querySelector('#localPremiumTotalPrice');
+
+  if (category.length > 0) {
+    for (let i = 0; i < category.length; i++) {
+
+      category[i].addEventListener('change', e => {
+
+        const cPriceAdd = document.querySelector('.category-price-add');
+        const regionPrice = document.querySelector('.region-price');
+
+        if (category[i].checked) {
+          cPriceAdd.value = Number(cPriceAdd.value) + Number(cPrice[i].value);
+        } else {
+          cPriceAdd.value = Number(cPriceAdd.value) - Number(cPrice[i].value);
+        }
+        total.innerHTML = Number(cPriceAdd.value) + Number(regionPrice.value);
+      });
+
+    }
+  }
+
+  const region = document.querySelector('#region05');
+
+  if (region != null) {
+    region.addEventListener('change', e => {
+
+      const cPriceAdd = document.querySelector('.category-price-add');
+      const regionPrice = document.querySelector('.region-price');
+
+      const rPrice = region.options[region.selectedIndex].dataset.price;
+      regionPrice.value = rPrice;
+
+      total.innerHTML = Number(cPriceAdd.value) + Number(regionPrice.value);
+    });
+  }
+
+  const mCategory = document.querySelectorAll('input[name=m-category]');
+  const mPrice = document.querySelectorAll('.m-category-price');
+  const mTotal = document.querySelector('#totalPrice');
+
+  if (mCategory.length > 0) {
+    for (let i = 0; i < mCategory.length; i++) {
+      mCategory[i].addEventListener('change', e => {
+
+        const mPriceAdd = document.querySelector('.m-category-price-add');
+        const mRegionPrice = document.querySelector('.m-region-price');
+
+        if (mCategory[i].checked) {
+          mPriceAdd.value = Number(mPriceAdd.value) + Number(mPrice[i].value);
+        } else {
+          mPriceAdd.value = Number(mPriceAdd.value) - Number(mPrice[i].value);
+        }
+        mTotal.innerHTML = Number(mPriceAdd.value) + Number(mRegionPrice.value);
+      });
+    }
+  }
+
+  const mRegion = document.querySelector('#region03');
+
+  if (mRegion != null) {
+    mRegion.addEventListener('change', e => {
+
+      const mPriceAdd = document.querySelector('.m-category-price-add');
+      const mRegionPrice = document.querySelector('.m-region-price');
+
+      const mPrice = mRegion.options[mRegion.selectedIndex].dataset.price;
+      mRegionPrice.value = mPrice;
+
+      mTotal.innerHTML = Number(mPriceAdd.value) + Number(mRegionPrice.value);
+    });
+  }
+
+};
