@@ -55,7 +55,10 @@ public class ChatMessageController {
                 chatRoomService.setDetectiveReadStatusUnread(message.getRoomId());
                 chatRoomService.setClientReadStatusRead(message.getRoomId());
             }
-            else {
+            else if(message.getSender().equals("ADMIN")) {
+                chatRoomService.setClientReadStatusUnread(message.getRoomId());
+            }
+            else if(message.getSender().equals("detective")) {
                 chatRoomService.setClientReadStatusUnread(message.getRoomId());
                 chatRoomService.setDetectiveReadStatusRead(message.getRoomId());
             }

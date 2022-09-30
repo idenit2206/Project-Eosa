@@ -18,7 +18,10 @@ import org.springframework.web.bind.annotation.*;
 import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @RestController
@@ -128,6 +131,73 @@ public class CompanysFlagController {
             result.setResultItem(null);
             result.setResponseDateTime(LocalDateTime.now());
         }
+
+        return result;
+    }
+
+    @GetMapping("/selectCompanysFlagByFilter")
+    public CustomResponseData selectCompanysFlagByFilter(
+        @RequestParam(value = "companysCategory", required = false, defaultValue = "") List<String> companysCategory,
+        @RequestParam(value = "companysRegion1", required = false, defaultValue = "") List<String> companysRegion1
+    ) {
+        CustomResponseData result = new CustomResponseData();
+        List<SelectCompanys> itemList = new ArrayList<>();
+        Set<Long> companysIdxSet = new HashSet<>();
+
+        if (companysCategory.size() == 0 && companysRegion1.size() == 0) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        if (companysCategory.size() == 0 && companysRegion1.size() != 0) {
+            for (int i = 0; i < companysRegion1.size(); i++) {
+                companysIdxSet.addAll(companysService.selectCompanysFlagByFilter("", companysRegion1.get(i)));
+            }
+        }
+
+        if (companysCategory.size() == 0 && companysRegion1.size() != 0) {
+            for (int i = 0; i < companysRegion1.size(); i++) {
+                companysIdxSet.addAll(companysService.selectCompanysFlagByFilter("", companysRegion1.get(i)));
+            }
+        }
+
+        if (companysCategory.size() != 0 && companysRegion1.size() == 0) {
+            // Set<Long> list = new HashSet<>();
+            for (int i = 0; i < companysCategory.size(); i++) {
+                companysIdxSet.addAll(companysService.selectCompanysFlagByFilter(companysCategory.get(i), ""));
+            }
+        }
+
+        if (companysCategory.size() != 0 && companysRegion1.size() != 0) {
+            for (int i = 0; i < companysCategory.size(); i++) {
+                for (int j = 0; j < companysRegion1.size(); j++) {
+                    companysIdxSet.addAll(
+                            companysService.selectCompanysFlagByFilter(companysCategory.get(i), companysRegion1.get(j)));
+                }
+            }
+        }
+
+        if (companysCategory.size() != 0 && companysRegion1.size() != 0) {
+            for (int i = 0; i < companysCategory.size(); i++) {
+                for (int j = 0; j < companysRegion1.size(); j++) {
+                    companysIdxSet.addAll(
+                            companysService.selectCompanysFlagByFilter(companysCategory.get(i), companysRegion1.get(j)));
+                }
+            }
+        }
+
+        Iterator<Long> iter = companysIdxSet.iterator();
+        while (iter.hasNext()) {
+            itemList.add(companysService.selectOneCompanysByCompanysIdxTest(iter.next()));
+        }
+
+        // List<Long> tempIdx = companysService.selectCompanysByFilter2("가정", "서울",
+        // "서초");
+
+        result.setStatusCode(HttpStatus.OK.value());
+        result.setResultItem(itemList);
+        result.setResponseDateTime(LocalDateTime.now());
 
         return result;
     }

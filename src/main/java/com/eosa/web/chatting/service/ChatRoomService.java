@@ -190,7 +190,12 @@ public class ChatRoomService implements ChatRoomRepository {
                 c.setClientReadStatus(0);
             }
         }
-        return c.getClientReadStatus();
+        if(c != null) {
+            return c.getClientReadStatus();
+        }
+        else {
+            return 0;
+        }
     }
 
     public int setDetectiveReadStatusUnread(String roomId) {

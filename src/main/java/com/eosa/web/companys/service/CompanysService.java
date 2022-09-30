@@ -144,6 +144,11 @@ public class CompanysService implements CompanysRepository {
         return companysRepository.selectCompanysByFilter2(companysCategory, companysRegion1);
     }
 
+    @Override
+    public List<Long> selectCompanysFlagByFilter(String companysCategory, String companysRegion1) {
+        return companysRepository.selectCompanysFlagByFilter(companysCategory, companysRegion1);
+    }
+
     // 안심번호
     /**
      * 안심번호 추출 서비스

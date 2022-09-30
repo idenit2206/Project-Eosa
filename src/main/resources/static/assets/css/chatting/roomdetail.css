@@ -17,3 +17,28 @@
 #fileMessage {
     display: none;    
 }
+
+
+/*관리자 페이지 /admin/board/chat/details.html */
+.chatBody {
+    height: 100% !important;
+}
+
+.chatMessageInput {
+    width: 100% !important;
+    height: 100px !important;
+    display: inline-flex;
+}
+
+.chatTextInput {
+    width: 80% !important;
+}
+
+.chatSendBtn {
+    width: 20% !important;
+}
+
+.chatSendBtn:hover {
+    background-color: #333;
+    color: #FFF;
+}
