@@ -431,9 +431,6 @@ function insertUser() {
         formData.set('usersRole', role.value);
         formData.set('usersAge', age.value);
         formData.set('usersRegion1', region01.value);
-        if (region01.value == '서울') {
-            formData.set('usersRegion2', region02.value);
-        }
         formData.set('usersGender', gender.value);
 
         fetchApi('/admin/manage/user/insert', 'post', formData, '회원이 등록되었습니다.', '/admin/manage/user/list');
