@@ -7,8 +7,8 @@
     </delete>
 
     <insert id="bannerUpdate" parameterType="BannerDTO">
-        INSERT INTO AdminBannerManage(idx, bannerTag, bannerFileName, bannerFileLink)
-        VALUES(#{idx}, #{bannerTag}, #{bannerFileName}, #{bannerFileLink})
+        INSERT INTO AdminBannerManage(idx, bannerTag, bannerFileName, bannerFileLink, bannerHref)
+        VALUES(#{idx}, #{bannerTag}, #{bannerFileName}, #{bannerFileLink}, #{bannerHref})
         <!-- ON DUPLICATE KEY UPDATE bannerFileName = #{bannerFileName}, bannerFileLink = #{bannerFileLink} -->
     </insert>
 
@@ -21,7 +21,8 @@
         B.idx,
         B.bannerTag,
         B.bannerFileName,
-        B.bannerFileLink
+        B.bannerFileLink,
+        B.bannerHref
         FROM AdminBannerManage B
         WHERE B.bannerTag = 'banner'
     </select>
@@ -33,8 +34,8 @@
     </delete>
 
     <insert id="detectiveBannerUpdate" parameterType="BannerDTO">
-        INSERT INTO AdminDetectiveBannerManage(idx, bannerTag, bannerFileName, bannerFileLink)
-        VALUES(#{idx}, #{bannerTag}, #{bannerFileName}, #{bannerFileLink})
+        INSERT INTO AdminDetectiveBannerManage(idx, bannerTag, bannerFileName, bannerFileLink, bannerHref)
+        VALUES(#{idx}, #{bannerTag}, #{bannerFileName}, #{bannerFileLink}, #{bannerHref})
         <!-- ON DUPLICATE KEY UPDATE bannerFileName = #{bannerFileName}, bannerFileLink = #{bannerFileLink} -->
     </insert>
 
@@ -43,7 +44,8 @@
         B.idx,
         B.bannerTag,
         B.bannerFileName,
-        B.bannerFileLink
+        B.bannerFileLink,
+        B.bannerHref
         FROM AdminDetectiveBannerManage B
         WHERE B.bannerTag = 'detectivebanner'
     </select>
