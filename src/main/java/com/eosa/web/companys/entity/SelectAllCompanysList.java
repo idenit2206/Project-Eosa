@@ -10,11 +10,14 @@ public interface SelectAllCompanysList {
     Long geCompanysCeoIdx();
     String getCompanysCeoName();
     String getCompanysPhone();
+    String getCompanysDummyPhone();
     String getCompanysComment();
     String getCompanysSpec();
     LocalDateTime getCompanysRegistDate();
     String getCompanysRegion1();
+    String getCompanysRegion3();
     String getCompanysRegistCerti();
+    String getCompanysRegistCertiDate();
     String getCompanysRegistCertiName();
     String getCompanysLicense();
     String getCompanysLicenseName();

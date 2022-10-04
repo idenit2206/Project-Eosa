@@ -47,12 +47,10 @@ public class Companys {
     @Column(nullable=false, length=255)
     private String companysRegion3;
 
-    @Column(nullable=true, length=255)
-    private String companysRegistCerti;
-    @Column(nullable=true, length=255)
-    private String companysRegistCertiName;
-    @Column(nullable=false)
-    private int companysRegistCertiCheck;
+    @Column(nullable=true, length=255) private String companysRegistCerti;
+    @Column(nullable=true, length=100) private String companysRegistCertiDate;
+    @Column(nullable=true, length=255) private String companysRegistCertiName;
+    @Column(nullable=false) private int companysRegistCertiCheck;
 
     @Column(nullable=true, length=255)
     private String companysLicense;
