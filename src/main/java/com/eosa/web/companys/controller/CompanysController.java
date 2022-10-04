@@ -696,6 +696,11 @@ public class CompanysController {
         return result;
     }
 
+    /**
+     * companysIdx 기반의 탐정업체 정보 조회(2)
+     * @param companysIdx
+     * @return
+     */
     @GetMapping("/selectOneCompanysByCompanysIdxTest")
     public CustomResponseData selectOneCompanysByCompanysIdxTest(@RequestParam("companysIdx") Long companysIdx) {
         CustomResponseData result = new CustomResponseData();

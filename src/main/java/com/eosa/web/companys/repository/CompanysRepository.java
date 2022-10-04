@@ -22,7 +22,7 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
                         "C.companysDummyPhone, C.companysMemo, " +
                         // "C.companysRegion1, C.companysRegion2, C.companysRegion3, " +
                         "C.companysRegion1, C.companysRegion3, " +
-                        "C.companysRegistCerti, C.companysRegistCertiName, C.companysRegistCertiCheck, " +
+                        "C.companysRegistCerti, C.companysRegistCertiName, C.companysRegistCertiDate, C.companysRegistCertiCheck, " +
                         "C.companysLicense, C.companysLicenseName, C.companysLicenseCheck, " +
                         "C.companysProfileImage, C.companysProfileImageName, " +
                         "C.companysBankName, C.companysBankNumber, C.companysRegistDate, " +
