@@ -512,6 +512,7 @@ public class CompanysController {
             items.put("companysRegion3", step1.getCompanysRegion3());
             items.put("companysRegistCerti", step1.getCompanysRegistCerti());
             items.put("companysRegistCertiName", step1.getCompanysRegistCertiName());
+            items.put("companysRegistCertiDate", step1.getCompanysRegistCertiDate());
             items.put("companysLicense", step1.getCompanysLicense());
             items.put("companysLicenseName", step1.getCompanysLicenseName());
             items.put("companysProfileImage", step1.getCompanysProfileImage());

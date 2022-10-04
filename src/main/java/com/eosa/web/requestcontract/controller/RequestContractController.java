@@ -19,6 +19,9 @@ import com.eosa.web.requestcontract.entity.RequestContract;
 import com.eosa.web.requestcontract.service.RequestContractService;
 import com.eosa.web.util.CustomResponseData;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @RequestMapping("/api/requestContract")
 public class RequestContractController {
@@ -59,6 +62,19 @@ public class RequestContractController {
     @PostMapping("/insertRequestContract")
     public CustomResponseData insertRequestContract(RequestContract requestContract) {
         CustomResponseData result = new CustomResponseData();
+        // log.debug(requestContract.toString());
+
+        RequestContract saveEntity = requestContractService.save(requestContract);
+        if(saveEntity != null) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(true);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(false);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
 
         return result;
     }

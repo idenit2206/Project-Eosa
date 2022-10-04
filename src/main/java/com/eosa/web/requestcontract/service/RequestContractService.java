@@ -1,9 +1,11 @@
 package com.eosa.web.requestcontract.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +18,14 @@ import com.eosa.web.requestcontract.repository.RequestContractRepository;
 
 @Service
 public class RequestContractService implements RequestContractRepository {
+
+    @Autowired private RequestContractRepository requestContractRepository;
+
+    @Override
+    public <S extends RequestContract> S save(S entity) {
+        entity.setRequestContractCreateDate(LocalDateTime.now());
+        return requestContractRepository.save(entity);
+    }
 
     @Override
     public List<RequestContract> findAll() {
@@ -111,13 +121,7 @@ public class RequestContractService implements RequestContractRepository {
     public Page<RequestContract> findAll(Pageable pageable) {
         // TODO Auto-generated method stub
         return null;
-    }
-
-    @Override
-    public <S extends RequestContract> S save(S entity) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    }   
 
     @Override
     public Optional<RequestContract> findById(Long id) {
