@@ -160,25 +160,27 @@ const bannerUpdate = () => {
             alert("최소 한개의 배너가 필요합니다.");
             window.location.reload();
         }
-        if(mainElement == 'mainbanner') {
-            fetch(`/admin/manage/banner/update`, { method: "PUT", body: formData })
-                .then(response => response)
-                .then(data => {
-                    if(data.status == 200) {
-                        alert("변경을 완료했습니다.");
-                        window.location.reload();
-                    }
-                })
-        }
         else {
-            fetch(`/admin/manage/banner/detectiveBannerUpdate`, { method: "PUT", body: formData })
-                .then(response => response)
-                .then(data => {
-                    if(data.status == 200) {
-                        alert("변경을 완료했습니다.");
-                        window.location.reload();
-                    }
-                })
+            if(mainElement == 'mainbanner') {
+                fetch(`/admin/manage/banner/update`, { method: "PUT", body: formData })
+                    .then(response => response)
+                    .then(data => {
+                        if(data.status == 200) {
+                            alert("변경을 완료했습니다.");
+                            window.location.reload();
+                        }
+                    })
+            }
+            else {
+                fetch(`/admin/manage/banner/detectiveBannerUpdate`, { method: "PUT", body: formData })
+                    .then(response => response)
+                    .then(data => {
+                        if(data.status == 200) {
+                            alert("변경을 완료했습니다.");
+                            window.location.reload();
+                        }
+                    })
+            }
         }
     })
 

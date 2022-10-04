@@ -114,6 +114,7 @@ public class CompanysController {
         entity.setCompanysCeoIdx(params.getCompanysCeoIdx());
         entity.setCompanysComment(params.getCompanysComment());
         entity.setCompanysSpec(params.getCompanysSpec());
+        entity.setCompanysRegistCertiDate(params.getCompanysRegistCertiDate());
         entity.setCompanysRegion1(params.getCompanysRegion1());
         entity.setCompanysRegion2(params.getCompanysRegion2());
         entity.setCompanysRegion3(params.getCompanysRegion3());
@@ -651,6 +652,7 @@ public class CompanysController {
         entity.setCompanysCeoIdx(companyInfo.getCompanysCeoIdx());
         entity.setCompanysComment(companyInfo.getCompanysComment());
         entity.setCompanysSpec(companyInfo.getCompanysSpec());
+        entity.setCompanysRegistCertiDate(companyInfo.getCompanysRegistCertiDate());
         entity.setCompanysRegion1(companyInfo.getCompanysRegion1());
         entity.setCompanysRegion2(companyInfo.getCompanysRegion2());
         entity.setCompanysRegion3(companyInfo.getCompanysRegion3());

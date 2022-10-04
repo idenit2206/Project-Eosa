@@ -252,6 +252,7 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         "C.companysRegistCertiDate, " +
         "C.companysProfileImage, C.companysProfileImageName, C.companysEnabled, " +
         "C.companysPremium, C.companysLocalPremium, " +
+        "C.companysBankName, C.companysBankNumber, " +
         "GROUP_CONCAT(companysCategoryValue) AS CompanysCategory FROM Companys C " +
         "LEFT JOIN CompanysCategory CC on C.companysIdx = CC.companysIdx " +
         "WHERE C.companysIdx = ?1 " +

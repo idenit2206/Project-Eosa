@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.eosa.admin.mapper.BannerMapper">
+<mapper namespace="com.eosa.admin.mapper.BannerMapper">   
+
+    <delete id="mainBannerDelete">
+        DELETE FROM AdminBannerManage WHERE bannerTag = 'banner'
+    </delete>
 
     <insert id="bannerUpdate" parameterType="BannerDTO">
         INSERT INTO AdminBannerManage(idx, bannerTag, bannerFileName, bannerFileLink)
         VALUES(#{idx}, #{bannerTag}, #{bannerFileName}, #{bannerFileLink})
-        ON DUPLICATE KEY UPDATE bannerFileName = #{bannerFileName}, bannerFileLink = #{bannerFileLink}
+        <!-- ON DUPLICATE KEY UPDATE bannerFileName = #{bannerFileName}, bannerFileLink = #{bannerFileLink} -->
     </insert>
 
-    <delete id="bannerTruncate">
+    <!-- <delete id="bannerTruncate">
         TRUNCATE TABLE AdminBannerManage
-    </delete>
-
-<!--    <select id="countNoticeList" resultType="int">-->
-<!--        SELECT COUNT(*)-->
-<!--        FROM Notice N-->
-<!--    </select> -->
+    </delete> -->
 
     <select id="bannerList" resultType="BannerDTO">
         SELECT
@@ -29,10 +28,14 @@
 
 
     <!-- 탐정 페이지 배너 -->
+    <delete id="detectiveBannerDelete">
+        DELETE FROM AdminDetectiveBannerManage WHERE bannerTag = 'detectivebanner'
+    </delete>
+
     <insert id="detectiveBannerUpdate" parameterType="BannerDTO">
-        INSERT INTO AdminBannerManage(idx, bannerTag, bannerFileName, bannerFileLink)
+        INSERT INTO AdminDetectiveBannerManage(idx, bannerTag, bannerFileName, bannerFileLink)
         VALUES(#{idx}, #{bannerTag}, #{bannerFileName}, #{bannerFileLink})
-        ON DUPLICATE KEY UPDATE bannerFileName = #{bannerFileName}, bannerFileLink = #{bannerFileLink}
+        <!-- ON DUPLICATE KEY UPDATE bannerFileName = #{bannerFileName}, bannerFileLink = #{bannerFileLink} -->
     </insert>
 
     <select id="detectivePageBannerList" resultType="BannerDTO">
@@ -41,7 +44,7 @@
         B.bannerTag,
         B.bannerFileName,
         B.bannerFileLink
-        FROM AdminBannerManage B
+        FROM AdminDetectiveBannerManage B
         WHERE B.bannerTag = 'detectivebanner'
     </select>
 

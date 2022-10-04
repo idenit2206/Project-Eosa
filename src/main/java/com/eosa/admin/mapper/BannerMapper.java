@@ -9,11 +9,13 @@ import com.eosa.admin.dto.BannerDTO;
 @Mapper
 public interface BannerMapper {
 
-    int bannerTruncate();
+    int mainBannerDelete();
 
     int bannerUpdate(BannerDTO bannerDTO);    
 
     List<BannerDTO> bannerList();
+
+    int detectiveBannerDelete();
 
     int detectiveBannerUpdate(BannerDTO bannerDTO);
 

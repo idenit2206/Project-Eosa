@@ -37,7 +37,7 @@ public class BannerService {
         List<BannerDTO> bannerDTOList = new ArrayList<>();
 
         if(bannerFile != null) {
-            // bannerMapper.bannerTruncate();
+            bannerMapper.mainBannerDelete();
             for(int i = 0; i < bannerFile.size(); i++) {
                 List<String> file = awsS3Service.uploadSingleFile(bannerFile.get(i), "banner", Long.valueOf(i));
                 String fileName = file.get(0);
@@ -70,6 +70,7 @@ public class BannerService {
     ) {        
 
         if(bannerFile != null) {
+            bannerMapper.detectiveBannerDelete();
             for(int i = 0; i < bannerFile.size(); i++) {
                 List<String> file = awsS3Service.uploadSingleFile(bannerFile.get(i), "detectivebanner", Long.valueOf(i));
                 String fileName = file.get(0);
@@ -89,7 +90,7 @@ public class BannerService {
     public String detectiveBannerList(Model model) {
 
         List<BannerDTO> items = bannerMapper.detectivePageBannerList();
-      
+
         model.addAttribute("items", items);
 
         return "admin/banner/detectivepage/list";
