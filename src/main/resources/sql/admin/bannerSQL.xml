@@ -24,14 +24,25 @@
         B.bannerFileName,
         B.bannerFileLink
         FROM AdminBannerManage B
+        WHERE B.bannerTag = 'banner'
     </select>
-<!--    -->
-<!--    <update id="updateNoticeByNoticeIdx" parameterType="NoticeDTO">-->
-<!--        UPDATE Notice N SET N.title = #{title}, N.content = #{content} WHERE N.idx = #{idx}-->
-<!--    </update>-->
 
-<!--    <delete id="deleteByNoticeIdx" parameterType="Long">-->
-<!--        DELETE FROM Notice WHERE idx = #{idx}-->
-<!--    </delete>-->
+
+    <!-- 탐정 페이지 배너 -->
+    <insert id="detectiveBannerUpdate" parameterType="BannerDTO">
+        INSERT INTO AdminBannerManage(idx, bannerTag, bannerFileName, bannerFileLink)
+        VALUES(#{idx}, #{bannerTag}, #{bannerFileName}, #{bannerFileLink})
+        ON DUPLICATE KEY UPDATE bannerFileName = #{bannerFileName}, bannerFileLink = #{bannerFileLink}
+    </insert>
+
+    <select id="detectivePageBannerList" resultType="BannerDTO">
+        SELECT
+        B.idx,
+        B.bannerTag,
+        B.bannerFileName,
+        B.bannerFileLink
+        FROM AdminBannerManage B
+        WHERE B.bannerTag = 'detectivebanner'
+    </select>
 
 </mapper>

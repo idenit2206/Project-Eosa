@@ -135,6 +135,7 @@ const bannerUpdate = () => {
         // console.log(`bannerRows: count: ${test.length}`);
         
         let count = 0;
+        const mainElement = document.querySelector("#main").getAttribute("data-category");
         const bannerPreviewCell = document.querySelectorAll(".bannerPreviewCell");
         const bannerFileInput = document.querySelectorAll(".bannerFileInput");
         const bannerUrlInput = document.querySelectorAll(".bannerUrlInput");
@@ -159,14 +160,26 @@ const bannerUpdate = () => {
             alert("최소 한개의 배너가 필요합니다.");
             window.location.reload();
         }
-        fetch(`/admin/manage/banner/update`, { method: "PUT", body: formData })
-            .then(response => response)
-            .then(data => {
-                if(data.status == 200) {
-                    alert("변경을 완료했습니다.");
-                    window.location.reload();
-                }
-            })
+        if(mainElement == 'mainbanner') {
+            fetch(`/admin/manage/banner/update`, { method: "PUT", body: formData })
+                .then(response => response)
+                .then(data => {
+                    if(data.status == 200) {
+                        alert("변경을 완료했습니다.");
+                        window.location.reload();
+                    }
+                })
+        }
+        else {
+            fetch(`/admin/manage/banner/detectiveBannerUpdate`, { method: "PUT", body: formData })
+                .then(response => response)
+                .then(data => {
+                    if(data.status == 200) {
+                        alert("변경을 완료했습니다.");
+                        window.location.reload();
+                    }
+                })
+        }
     })
 
     

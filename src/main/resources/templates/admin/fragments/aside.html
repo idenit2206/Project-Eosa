@@ -33,7 +33,13 @@
 
             <li><a th:href="@{/admin/manage/report/list}" data-category="report">신고 관리</a></li>
 
-            <li><a th:href="@{/admin/manage/banner/list}" data-category="banner">배너 관리</a></li>
+            <li class="js-dropdown">
+                <a href="#none" class="js-dropdown__btn" role="button" data-category="banner">배너 관리</a>
+                <ul class="nav-sub js-dropdown__cont">
+                    <li><a th:href="@{/admin/manage/banner/list}" data-category="mainbanner">메인 배너 관리</a></li>
+                    <li><a th:href="@{/admin/manage/banner/detectiveBannerList}" data-category="detectivebanner">탐정찾기 배너 관리</a></li>
+                </ul>
+            </li>           
 
             <li class="js-dropdown">
                 <a href="#none" class="js-dropdown__btn" role="button" data-category="board">게시판 관리</a>

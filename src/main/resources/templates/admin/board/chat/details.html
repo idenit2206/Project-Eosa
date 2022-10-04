@@ -103,7 +103,7 @@ chatMessageBoard {
                 ws.send("/app/chat/message", {}, JSON.stringify({
                     messageType:"TALK", 
                     roomId: roomId, 
-                    sender: "ADMIN", 
+                    sender: "상담사", 
                     message: message.value,
                     fileMessage: null,
                     sendDate: currentDate.ShowCurrentDate()

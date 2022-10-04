@@ -36,17 +36,8 @@ public class BannerService {
         int fileIndex = 0;
         List<BannerDTO> bannerDTOList = new ArrayList<>();
 
-        // for(int i = 0; i < bannerItemArray.size(); i++) {
-        //     JsonElement el = bannerItemArray.get(i);
-        //     int idx = el.getAsJsonObject().get("idx").getAsInt();
-        //     String bannerFileName = el.getAsJsonObject().get("bannerFileName").getAsString();
-        //     String bannerFileUrl = el.getAsJsonObject().get("bannerFileUrl").getAsString();
-        //     BannerDTO b = new BannerDTO(idx, "banner", bannerFileName, bannerFileUrl);
-        //     bannerDTOList.add(b);
-        // }
-
         if(bannerFile != null) {
-            bannerMapper.bannerTruncate();
+            // bannerMapper.bannerTruncate();
             for(int i = 0; i < bannerFile.size(); i++) {
                 List<String> file = awsS3Service.uploadSingleFile(bannerFile.get(i), "banner", Long.valueOf(i));
                 String fileName = file.get(0);
@@ -69,6 +60,39 @@ public class BannerService {
         model.addAttribute("items", items);
 
         return "admin/banner/list";
+    }
+
+    // 탐정 페이지 배너 관리
+    public String detectiveBannerUpdate(
+        List<MultipartFile> bannerFile,
+        String bannerItem,
+        Model model
+    ) {        
+
+        if(bannerFile != null) {
+            for(int i = 0; i < bannerFile.size(); i++) {
+                List<String> file = awsS3Service.uploadSingleFile(bannerFile.get(i), "detectivebanner", Long.valueOf(i));
+                String fileName = file.get(0);
+                String fileUrl = file.get(1);
+                BannerDTO bannerDTO = new BannerDTO();
+                bannerDTO.setIdx(i+1);
+                bannerDTO.setBannerTag("detectivebanner");
+                bannerDTO.setBannerFileName(fileName);
+                bannerDTO.setBannerFileLink(fileUrl);
+                bannerMapper.detectiveBannerUpdate(bannerDTO);
+            }
+        }
+        return "admin/banner/detectivepage/list";
+    }
+
+
+    public String detectiveBannerList(Model model) {
+
+        List<BannerDTO> items = bannerMapper.detectivePageBannerList();
+      
+        model.addAttribute("items", items);
+
+        return "admin/banner/detectivepage/list";
     }
 
 }

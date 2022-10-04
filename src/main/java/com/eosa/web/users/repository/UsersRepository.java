@@ -162,14 +162,28 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     )
     int updateAdminUserInfo(@Param("Users") Users param);
 
+    /**
+     * 회원탈퇴
+     * @param usersIdx
+     * @return
+     */
+    // @Modifying
+    // @Transactional
+    // @Query(
+    //     value="UPDATE Users " +
+    //     "SET usersEnabled=0, " +
+    //     "usersDelete=1 " +
+    //     "WHERE usersIdx=?1"
+    //     ,nativeQuery=true
+    // )
+    // int deleteUserInfo(Long usersIdx);
+
     @Modifying
     @Transactional
     @Query(
-        value="UPDATE Users " +
-        "SET usersEnabled=0, " +
-        "usersDelete=1 " +
-        "WHERE usersIdx=?1"
-        ,nativeQuery=true
+        value="DELETE FROM Users " +
+        "WHERE usersIdx = ?1"
+        ,nativeQuery = true
     )
     int deleteUserInfo(Long usersIdx);
 

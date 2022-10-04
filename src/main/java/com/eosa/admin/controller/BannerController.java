@@ -38,4 +38,22 @@ public class BannerController {
         return bannerService.bannerList(model);
     }
 
+    // 탐정 페이지 배너
+    @PutMapping("/detectiveBannerUpdate")
+    public String detectiveBannerUpdate(
+        @RequestParam(name="bannerFile", required = false) List<MultipartFile> bannerFile,
+        @RequestPart(name="bannerItem", required = false) String bannerItem,
+        Model model
+    ) {
+        if(bannerFile != null) { log.debug("[bannerUpdate] bannerFile[0]: {}", bannerFile.get(0).getOriginalFilename()); }
+        if(bannerItem != null) { log.debug("[bannerUpdate] bannerItem: {}", bannerItem); }
+        return bannerService.detectiveBannerUpdate(bannerFile, bannerItem, model);
+    }
+
+
+    @GetMapping("/detectiveBannerList")
+    public String detectiveBannerList(Model model) {
+        return bannerService.detectiveBannerList(model);
+    }
+
 }
