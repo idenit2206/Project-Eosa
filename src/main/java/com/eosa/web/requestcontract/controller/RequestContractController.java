@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.eosa.web.companys.entity.Companys;
 import com.eosa.web.companys.entity.SelectAllCompanysList;
 import com.eosa.web.companys.service.CompanysService;
+import com.eosa.web.requestcontract.entity.RequestContract;
 import com.eosa.web.requestcontract.service.RequestContractService;
 import com.eosa.web.util.CustomResponseData;
 
@@ -56,7 +57,7 @@ public class RequestContractController {
     }
 
     @PostMapping("/insertRequestContract")
-    public CustomResponseData insertRequestContract() {
+    public CustomResponseData insertRequestContract(RequestContract requestContract) {
         CustomResponseData result = new CustomResponseData();
 
         return result;

@@ -309,7 +309,8 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
                         "c.companysRegion1, c.companysRegion3, " +
                         "c.companysRegistCertCheck, c.companysLicenseCheck, " +
                         "c.companysRegistCerti, c.companysLicense, c.companysProfileImage, " +
-                        "c.companysRegistCertiName, c.companysLicenseName, c.companysProfileImageName, " +
+                        "c.companysRegistCertiName, c.companysRegistCertiDate, " +
+                        "c.companysLicenseName, c.companysProfileImageName, " +
                         "c.companysBankName, c.companysBankNumber, c.companysPremium, c.companysLocalPremium, " +
                         "c.companysEnabled, c.companysDelete, " +
                         "c.companysRegistDate, " +
