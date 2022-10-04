@@ -121,8 +121,9 @@ public interface RequestFormRepository extends JpaRepository<RequestForm, Long> 
         "GROUP_CONCAT(RFC.requestFormCategoryValue) AS requestFormCategoryValue " +
         "FROM RequestForm R " +
         "LEFT JOIN RequestFormCategory RFC on R.requestFormIdx = RFC.requestFormIdx " +
+        "LEFT JOIN Users U ON R.usersIdx = U.usersIdx " +
         // "WHERE R.usersIdx = ?1 AND R.requestFormClientReadState = 0 " +
-        "WHERE R.usersIdx = ?1 " +
+        "WHERE U.usersIdx = ?1 " +
         "GROUP BY R.requestFormIdx, R.usersIdx, R.companysIdx, R.requestFormRegion1, R.requestFormChannel, R.requestFormStatus, R.requestFormDate, R.requestConsultDate, R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage " +
         "ORDER BY R.requestFormClientReadDate DESC"
     ,nativeQuery = true)

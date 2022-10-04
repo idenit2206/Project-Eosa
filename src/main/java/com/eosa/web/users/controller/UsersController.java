@@ -1,6 +1,7 @@
 package com.eosa.web.users.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
@@ -353,11 +354,26 @@ public class UsersController {
         // log.debug("# sns:{}, usersEmail: {}, usersRole: {}",sns, usersEmail, usersRole);
 
         Users user = usersService.selectByUsersEmail(usersEmail);
-        if(user != null) {    
-            Cookie cookieAccount = new Cookie("provider", sns+"/"+usersEmail+"/"+picture);
-            cookieAccount.setPath("/");
-            response.addCookie(cookieAccount);
-            response.sendRedirect("http://" + myDomain + ":" + myUiPort + "/");
+        if(user != null) {
+            if(user.getProvider().equals("local")) {
+                log.info("[oauth2SignInSuccess] 이미 가입된 이메일 주소입니다. 해당 SNS 계정으로는 가입하실 수 없습니다.");
+                Cookie cookieAccount = new Cookie("provider", sns+"/"+usersEmail+"/"+picture);
+                cookieAccount.setPath("/");
+                // response.addCookie(cookieAccount);
+                response.setContentType("text/html; charset=utf-8");
+                PrintWriter w = response.getWriter();
+                // w.write("<script>alert('"+msg+"');</script>");
+                w.println("<script>alert('" + "이미 가입된 이메일 주소입니다." + "'); location.href='http://"+ myDomain + ":" + myUiPort + "/"+"';</script> ");
+                // response.sendRedirect("http://" + myDomain + ":" + myUiPort + "/");
+                w.flush();
+                w.close();          
+            }
+            else {
+                Cookie cookieAccount = new Cookie("provider", sns+"/"+usersEmail+"/"+picture);
+                cookieAccount.setPath("/");
+                response.addCookie(cookieAccount);
+                response.sendRedirect("http://" + myDomain + ":" + myUiPort + "/");
+            }
         }
         else {
             log.info("{}, {} 님은 신규회원 입니다. 회원가입 페이지로 이동합니다.", sns, usersAccount);
@@ -559,6 +575,7 @@ public class UsersController {
         CustomResponseData result = new CustomResponseData();
         Users rows = usersService.selectUsersByUsersIdx(usersIdx);
         Users item = new Users();
+        log.debug("[selectUsersByUsersIdx] rows: {}", rows.toString());
         if(rows != null) {            
             item.setProvider(rows.getProvider());
             item.setUsersAccount(rows.getUsersAccount());
@@ -578,6 +595,7 @@ public class UsersController {
         }
 
         if(item != null) {
+            log.debug("[selectUsersByUsersIdx] item: {}", item.toString());
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem(item);
             result.setResponseDateTime(LocalDateTime.now());
