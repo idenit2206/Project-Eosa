@@ -20,5 +20,6 @@ public class Banner {
     @Column private String bannerTag;
     @Column private String bannerFileName;
     @Column private String bannerFileLink;
+    @Column private String bannerHref;
 
 }
