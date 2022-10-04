@@ -11,6 +11,7 @@ public interface SelectCompanyInfoByUsersIdx {
     String getCompanysRegion2();
     String getCompanysRegion3();
     String getCompanysRegistCerti();
+    String getCompanysRegistCertiDate();
     String getCompanysProfileImage();
     List<String> getCompanysCategory();
     List<String> getCompanysActiveRegion();
