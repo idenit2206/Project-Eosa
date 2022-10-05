@@ -23,6 +23,7 @@ public class RequestContractService implements RequestContractRepository {
 
     @Override
     public <S extends RequestContract> S save(S entity) {
+        entity.setRequestContractTurn(1);
         entity.setRequestContractCreateDate(LocalDateTime.now());
         return requestContractRepository.save(entity);
     }

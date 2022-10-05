@@ -3,6 +3,10 @@ package com.eosa.admin.service;
 import com.eosa.admin.dto.BannerDTO;
 import com.eosa.admin.mapper.BannerMapper;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.*;
 
 import com.eosa.web.banner.Banner;
@@ -26,33 +30,42 @@ public class BannerService {
 
     @Autowired private BannerMapper bannerMapper;
     @Autowired private AwsS3Service awsS3Service;
+    
 
     public String bannerUpdate(
         List<MultipartFile> bannerFile,
         String bannerItem,
         Model model
-    ) {
-        JsonParser parser = new JsonParser();
-        JsonArray bannerItemArray = (JsonArray) parser.parse(bannerItem);
-        int fileIndex = 0;
-        List<BannerDTO> bannerDTOList = new ArrayList<>();
+    ) throws IOException {       
+        JsonArray array = (JsonArray) JsonParser.parseString(bannerItem);
+        bannerMapper.mainBannerDelete();
+        for(int i = 0; i < array.size(); i++) {
+            JsonObject object = (JsonObject) array.get(i);
+            if(object.get("bannerFileLink").getAsString().equals("")) {
+                for(int j = 0; j < bannerFile.size(); j++) {
+                    List<String> file = awsS3Service.uploadSingleFile(bannerFile.get(j), "banner", Long.valueOf(i));
+                    String fileName = file.get(0);
+                    String fileUrl = file.get(1);
+                    String bannerUrl = object.get("bannerHref").getAsString();
 
-        if(bannerFile != null) {
-            bannerMapper.mainBannerDelete();
-            for(int i = 0; i < bannerFile.size(); i++) {
-                JsonObject object = (JsonObject) bannerItemArray.get(i);
-                List<String> file = awsS3Service.uploadSingleFile(bannerFile.get(i), "banner", Long.valueOf(i));
-                String fileName = file.get(0);
-                String fileUrl = file.get(1);
-                String bannerUrl = object.get("bannerHref").getAsString();
-
-                BannerDTO bannerDTO = new BannerDTO();
-                bannerDTO.setIdx(i+1);
-                bannerDTO.setBannerTag("banner");
-                bannerDTO.setBannerFileName(fileName);
-                bannerDTO.setBannerFileLink(fileUrl);
-                bannerDTO.setBannerHref(bannerUrl);
-                bannerMapper.bannerUpdate(bannerDTO);
+                    BannerDTO bannerDTO = new BannerDTO();
+                    bannerDTO.setIdx(i+1);
+                    bannerDTO.setBannerTag("banner");
+                    bannerDTO.setBannerFileName(fileName);
+                    bannerDTO.setBannerFileLink(fileUrl);
+                    bannerDTO.setBannerHref(bannerUrl);
+                    log.debug("[mainbanner Update] dto: {}", bannerDTO.toString());
+                    bannerMapper.bannerUpdate(bannerDTO);
+                }                
+            }
+            else {
+                BannerDTO bDTO = new BannerDTO();
+                bDTO.setIdx(Integer.valueOf(object.get("idx").getAsString()));
+                bDTO.setBannerTag("banner");
+                bDTO.setBannerFileName(object.get("bannerFileName").getAsString());
+                bDTO.setBannerFileLink(object.get("bannerFileLink").getAsString());
+                bDTO.setBannerHref(object.get("bannerHref").getAsString());
+                bannerMapper.bannerUpdate(bDTO);
             }
         }
         return "admin/banner/list";
@@ -74,27 +87,58 @@ public class BannerService {
         String bannerItem,
         Model model
     ) {        
-        JsonParser parser = new JsonParser();
-        JsonArray bannerItemArray = (JsonArray) parser.parse(bannerItem);
-        int fileIndex = 0;
-        List<BannerDTO> bannerDTOList = new ArrayList<>();
+        // JsonParser parser = new JsonParser();
+        // JsonArray bannerItemArray = (JsonArray) parser.parse(bannerItem);
+        // int fileIndex = 0;
+        // List<BannerDTO> bannerDTOList = new ArrayList<>();
+        // if(bannerFile != null) {
+        //     bannerMapper.detectiveBannerDelete();
+        //     for(int i = 0; i < bannerFile.size(); i++) {
+        //         JsonObject object = (JsonObject) bannerItemArray.get(i);
+        //         List<String> file = awsS3Service.uploadSingleFile(bannerFile.get(i), "detectivebanner", Long.valueOf(i));
+        //         String fileName = file.get(0);
+        //         String fileUrl = file.get(1);
+        //         String bannerUrl = object.get("bannerHref").getAsString();
 
-        if(bannerFile != null) {
-            bannerMapper.detectiveBannerDelete();
-            for(int i = 0; i < bannerFile.size(); i++) {
-                JsonObject object = (JsonObject) bannerItemArray.get(i);
-                List<String> file = awsS3Service.uploadSingleFile(bannerFile.get(i), "detectivebanner", Long.valueOf(i));
-                String fileName = file.get(0);
-                String fileUrl = file.get(1);
-                String bannerUrl = object.get("bannerHref").getAsString();
+        //         BannerDTO bannerDTO = new BannerDTO();
+        //         bannerDTO.setIdx(i+1);
+        //         bannerDTO.setBannerTag("detectivebanner");
+        //         bannerDTO.setBannerFileName(fileName);
+        //         bannerDTO.setBannerFileLink(fileUrl);
+        //         bannerDTO.setBannerHref(bannerUrl);
+        //         bannerMapper.detectiveBannerUpdate(bannerDTO);
+        //     }
+        // }
 
-                BannerDTO bannerDTO = new BannerDTO();
-                bannerDTO.setIdx(i+1);
-                bannerDTO.setBannerTag("detectivebanner");
-                bannerDTO.setBannerFileName(fileName);
-                bannerDTO.setBannerFileLink(fileUrl);
-                bannerDTO.setBannerHref(bannerUrl);
-                bannerMapper.detectiveBannerUpdate(bannerDTO);
+        JsonArray array = (JsonArray) JsonParser.parseString(bannerItem);
+        bannerMapper.detectiveBannerDelete();
+        for(int i = 0; i < array.size(); i++) {
+            JsonObject object = (JsonObject) array.get(i);
+            if(object.get("bannerFileLink").getAsString().equals("")) {
+                for(int j = 0; j < bannerFile.size(); j++) {
+                    List<String> file = awsS3Service.uploadSingleFile(bannerFile.get(j), "detectivebanner", Long.valueOf(i));
+                    String fileName = file.get(0);
+                    String fileUrl = file.get(1);
+                    String bannerUrl = object.get("bannerHref").getAsString();
+
+                    BannerDTO bannerDTO = new BannerDTO();
+                    bannerDTO.setIdx(i+1);
+                    bannerDTO.setBannerTag("detectivebanner");
+                    bannerDTO.setBannerFileName(fileName);
+                    bannerDTO.setBannerFileLink(fileUrl);
+                    bannerDTO.setBannerHref(bannerUrl);
+                    log.debug("[mainbanner Update] dto: {}", bannerDTO.toString());
+                    bannerMapper.detectiveBannerUpdate(bannerDTO);
+                }                
+            }
+            else {
+                BannerDTO bDTO = new BannerDTO();
+                bDTO.setIdx(Integer.valueOf(object.get("idx").getAsString()));
+                bDTO.setBannerTag("detectivebanner");
+                bDTO.setBannerFileName(object.get("bannerFileName").getAsString());
+                bDTO.setBannerFileLink(object.get("bannerFileLink").getAsString());
+                bDTO.setBannerHref(object.get("bannerHref").getAsString());
+                bannerMapper.detectiveBannerUpdate(bDTO);
             }
         }
         return "admin/banner/detectivepage/list";

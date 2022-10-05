@@ -7,7 +7,7 @@
     <th:block th:replace="admin/fragments/aside :: asideFragment"></th:block>
     <main id="main" class="main-list" data-category="mainbanner">
         <section class="section section-users">
-            <h2 class="section_title">배너 관리</h2>
+            <h2 class="section_title">메인 페이지 배너 관리</h2>
             <div class="table"> 
                <div class="table__top">
                    <div class="top-wrap">
@@ -24,9 +24,10 @@
                                                 th:onchange="FileUpProcess(this, [[${index.index}]])"/>
                                             <span class="bannerFileInputRemove">x</span>
                                             <br/>
+                                            <label>Url: </label>
                                             <input type="text" class="bannerHrefInput" th:value="${item.bannerHref}"/>
                                         </td>
-                                        <td class="bannerCellRemove" onclick="bannerRemoveItem()">삭제</td>                                     
+                                        <td th:id="${item.idx}" class="bannerCellRemove" onclick="bannerRemoveItem(this)">삭제</td>                                     
                                     </tr>                              
                                </tbody>
                            </table>
@@ -36,7 +37,6 @@
                <div class="table__action">
                    <button type="button" class="btn-normal banner-add-item">배너 추가하기</button>
                    <button type="button" class="btn-normal banner-update-btn">등록하기</button>
-                   <button type="button" class="btn-normal testBtn">현재 배너 요소 개수</button>
                </div>
            </div>
        </section>
@@ -57,14 +57,6 @@
         IsShowbannerInputFileRemove();
         bannerUpdate();
     });
-</script>
-<script>    
-    const testBtn = document.querySelector(".testBtn");
-    testBtn.addEventListener("click", () => {
-        const bannerRows = document.querySelectorAll(".bannerRows");
-        alert(bannerRows.length);
-    })
-
 </script>
 </th:block>
 

@@ -42,8 +42,9 @@ const bannerAddItem = () => {
         inputText.setAttribute("class", "bannerHrefInput");
 
         const bannerCellRemove = document.createElement("td");
+        bannerCellRemove.setAttribute("id", currentBannerRowsCount+1);
         bannerCellRemove.setAttribute("class", "bannerCellRemove");
-        bannerCellRemove.setAttribute("onclick", "bannerRemoveItem()");
+        bannerCellRemove.setAttribute("onclick", "bannerRemoveItem(this)");
         bannerCellRemove.innerText="삭제";
 
         bannerPreviewCell.appendChild(bannerPreview);
@@ -68,16 +69,10 @@ const bannerAddItem = () => {
     })
 }
 
-const bannerRemoveItem = () => {
-    const bannerCellRemove = document.querySelectorAll(".bannerCellRemove");
-    alert(bannerCellRemove.length);
-    // for(let i = 0; i < bannerCellRemove.length; i++) {
-    //     bannerCellRemove[i].addEventListener("click", () => {
-    //         currentBannerRows[i].remove();
-    //         currentBannerRowsCount--;
-    //         console.log(`현재 배너개수: ${currentBannerRowsCount}`);
-    //     })
-    // }
+const bannerRemoveItem = (event) => {
+    const bannerRows = event.parentElement;
+    bannerRows.remove();
+    currentBannerRowsCount--;
 }
 
 const bannerInputFile = () => {
@@ -146,28 +141,49 @@ const bannerUpdate = () => {
         
         let count = 0;
         const mainElement = document.querySelector("#main").getAttribute("data-category");
+        const bannerRows = document.querySelectorAll(".bannerRows");
         const bannerPreviewCell = document.querySelectorAll(".bannerPreviewCell");
         const bannerPreview = document.querySelectorAll(".bannerPreview");
         const bannerFileInput = document.querySelectorAll(".bannerFileInput");
         const bannerHrefInput = document.querySelectorAll(".bannerHrefInput");
         let bannerItems = [];
         
-        for(let i = 0; i < bannerFileInput.length; i++) {        
-            formData.append("bannerFile", bannerFileInput[i].files[0]);
+        for(let i = 0; i < bannerRows.length; i++) {        
+            // formData.append("bannerFile", bannerFileInput[i].files[0]);
            
-            bannerItems.push({ 
-                idx: bannerPreviewCell[i].getAttribute("id"),
-                bannerFileName: bannerFileInput[i].getAttribute("id"),
-                bannerFileLink: bannerPreview[i].getAttribute("src"),
-                bannerHref: bannerHrefInput[i].value
-            });
+            // formData.append("idx", bannerPreviewCell[i].getAttribute("id"));
+            // formData.append("bannerFileName", bannerFileInput[i].getAttribute("id"));
+            // // formData.append("bannerFileLink", bannerPreview[i].getAttribute("src"));
+            // formData.append("bannerHref", bannerHrefInput[i].value);
+
+            if(bannerPreview[i].getAttribute("src").startsWith("data:")) {
+                formData.append("bannerFile", bannerFileInput[i].files[0]);
+                bannerItems.push({ 
+                    idx: bannerPreviewCell[i].getAttribute("id"),
+                    bannerFileName: bannerFileInput[i].getAttribute("id"),
+                    // bannerFileLink: bannerFileInput[i].files[0],
+                    bannerFileLink: "",
+                    bannerHref: bannerHrefInput[i].value
+                });
+            }
+            else {
+                bannerItems.push({ 
+                    idx: bannerPreviewCell[i].getAttribute("id"),
+                    bannerFileName: bannerFileInput[i].getAttribute("id"),
+                    bannerFileLink: bannerPreview[i].getAttribute("src"),
+                    bannerHref: bannerHrefInput[i].value
+                });
+            }
             count++;
+
         }
         // for (let value of formData.keys()) {
         //     console.log(value);
         // }
-        // console.log(bannerItems);
+        console.log("bannerItem: ");
+        console.log(bannerItems);
         formData.append("bannerItem", new Blob([JSON.stringify(bannerItems)]));
+        
         if(count < 1) {
             alert("최소 한개의 배너가 필요합니다.");
             window.location.reload();

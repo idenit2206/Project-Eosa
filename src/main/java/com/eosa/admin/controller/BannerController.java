@@ -1,6 +1,10 @@
 package com.eosa.admin.controller;
 
+import com.eosa.admin.dto.BannerDTO;
 import com.eosa.admin.service.BannerService;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Slf4j
@@ -22,9 +27,9 @@ public class BannerController {
         @RequestParam(name="bannerFile", required = false) List<MultipartFile> bannerFile,
         @RequestPart(name="bannerItem", required = false) String bannerItem,
         Model model
-    ) {
-        if(bannerFile != null) { log.debug("[bannerUpdate] bannerFile[0]: {}", bannerFile.get(0).getOriginalFilename()); }
-        // if(bannerItem != null) { log.debug("[bannerUpdate] bannerItem: {}", bannerItem); }
+    ) throws IOException {
+        if(bannerFile != null) { log.debug("[bannerFile] bannerFile: {}", bannerFile.get(0).getOriginalFilename()); }
+        log.debug("[bannerUpdate] bannerItem: {}", bannerItem.toString());
         return bannerService.bannerUpdate(bannerFile, bannerItem, model);
         // return "/admin/banner/list";
     }
