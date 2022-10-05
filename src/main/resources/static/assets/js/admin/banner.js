@@ -9,8 +9,6 @@ const bannerAddItem = () => {
     const bannerTableBody = document.querySelector(".bannerTableBody");    
 
     bannerAddItem.addEventListener("click", () => {
-        console.log(`현재 배너개수: ${currentBannerRowsCount + 1}`);
-
         if(currentBannerRowsCount < 5) {
         const bannersRows = document.createElement("tr");
         bannersRows.setAttribute("class", "bannerRows");
@@ -60,6 +58,7 @@ const bannerAddItem = () => {
 
         bannerTableBody.appendChild(bannersRows);
         currentBannerRowsCount++;
+        console.log(`현재 배너개수: ${currentBannerRowsCount}`);
         }
         else {
             alert("배너의 개수는 5개를 초과할 수 없습니다.");
@@ -95,10 +94,13 @@ const FileUpProcess = (file, index) => {
     let fileReader = new FileReader();
     fileReader.readAsDataURL(file.files.length > 0 && file.files[0]);
     fileReader.onloadend = function (e) {
-        console.log(bannerPreview[index].getAttribute("src"));
-        bannerPreview[index].removeAttribute("src");              
-        bannerPreview[index].setAttribute("src", e.target.result);
-        bannerFileInputRemove[index].style.visibility = "visible";     
+        if(bannerPreview.length > 0) {
+            // console.log(bannerPreview[index].getAttribute("src"));
+            bannerPreview[index].removeAttribute("src");              
+            bannerPreview[index].setAttribute("src", e.target.result);
+            bannerFileInputRemove[index].style.visibility = "visible";   
+        }
+          
     };
 
 }
