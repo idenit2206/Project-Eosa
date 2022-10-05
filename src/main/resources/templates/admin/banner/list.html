@@ -26,9 +26,7 @@
                                             <br/>
                                             <input type="text" class="bannerHrefInput" th:value="${item.bannerHref}"/>
                                         </td>
-                                        <td class="bannerCellRemove">
-                                            삭제
-                                        </td>                                     
+                                        <td class="bannerCellRemove" onclick="bannerRemoveItem()">삭제</td>                                     
                                     </tr>                              
                                </tbody>
                            </table>
@@ -38,6 +36,7 @@
                <div class="table__action">
                    <button type="button" class="btn-normal banner-add-item">배너 추가하기</button>
                    <button type="button" class="btn-normal banner-update-btn">등록하기</button>
+                   <button type="button" class="btn-normal testBtn">현재 배너 요소 개수</button>
                </div>
            </div>
        </section>
@@ -52,12 +51,20 @@
         pageOn();
         // listCheck();
         bannerAddItem();
-        bannerRemoveItem();
+        // bannerRemoveItem();
         // bannerInputFile();
         bannerInputFileRemove();
         IsShowbannerInputFileRemove();
         bannerUpdate();
     });
+</script>
+<script>    
+    const testBtn = document.querySelector(".testBtn");
+    testBtn.addEventListener("click", () => {
+        const bannerRows = document.querySelectorAll(".bannerRows");
+        alert(bannerRows.length);
+    })
+
 </script>
 </th:block>
 

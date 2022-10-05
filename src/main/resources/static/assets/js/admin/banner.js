@@ -9,8 +9,6 @@ const bannerAddItem = () => {
     const bannerTableBody = document.querySelector(".bannerTableBody");    
 
     bannerAddItem.addEventListener("click", () => {
-        console.log(`현재 배너개수: ${currentBannerRowsCount + 1}`);
-
         if(currentBannerRowsCount < 5) {
         const bannersRows = document.createElement("tr");
         bannersRows.setAttribute("class", "bannerRows");
@@ -44,7 +42,9 @@ const bannerAddItem = () => {
         inputText.setAttribute("class", "bannerHrefInput");
 
         const bannerCellRemove = document.createElement("td");
-        bannerCellRemove.innerHTML = "삭제"
+        bannerCellRemove.setAttribute("class", "bannerCellRemove");
+        bannerCellRemove.setAttribute("onclick", "bannerRemoveItem()");
+        bannerCellRemove.innerText="삭제";
 
         bannerPreviewCell.appendChild(bannerPreview);
         
@@ -60,6 +60,7 @@ const bannerAddItem = () => {
 
         bannerTableBody.appendChild(bannersRows);
         currentBannerRowsCount++;
+        console.log(`현재 배너개수: ${currentBannerRowsCount}`);
         }
         else {
             alert("배너의 개수는 5개를 초과할 수 없습니다.");
@@ -69,12 +70,14 @@ const bannerAddItem = () => {
 
 const bannerRemoveItem = () => {
     const bannerCellRemove = document.querySelectorAll(".bannerCellRemove");
-    const currentBannerRows = document.querySelectorAll(".bannerRows");
-    for(let i = 0; i < bannerCellRemove.length; i++) {
-        bannerCellRemove[i].addEventListener("click", () => {
-            currentBannerRows[i].remove();
-        })
-    }    
+    alert(bannerCellRemove.length);
+    // for(let i = 0; i < bannerCellRemove.length; i++) {
+    //     bannerCellRemove[i].addEventListener("click", () => {
+    //         currentBannerRows[i].remove();
+    //         currentBannerRowsCount--;
+    //         console.log(`현재 배너개수: ${currentBannerRowsCount}`);
+    //     })
+    // }
 }
 
 const bannerInputFile = () => {
@@ -95,10 +98,13 @@ const FileUpProcess = (file, index) => {
     let fileReader = new FileReader();
     fileReader.readAsDataURL(file.files.length > 0 && file.files[0]);
     fileReader.onloadend = function (e) {
-        console.log(bannerPreview[index].getAttribute("src"));
-        bannerPreview[index].removeAttribute("src");              
-        bannerPreview[index].setAttribute("src", e.target.result);
-        bannerFileInputRemove[index].style.visibility = "visible";     
+        if(bannerPreview.length > 0) {
+            // console.log(bannerPreview[index].getAttribute("src"));
+            bannerPreview[index].removeAttribute("src");              
+            bannerPreview[index].setAttribute("src", e.target.result);
+            bannerFileInputRemove[index].style.visibility = "visible";   
+        }
+          
     };
 
 }

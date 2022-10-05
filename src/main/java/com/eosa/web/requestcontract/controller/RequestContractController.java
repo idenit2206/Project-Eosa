@@ -17,6 +17,8 @@ import com.eosa.web.companys.entity.SelectAllCompanysList;
 import com.eosa.web.companys.service.CompanysService;
 import com.eosa.web.requestcontract.entity.RequestContract;
 import com.eosa.web.requestcontract.service.RequestContractService;
+import com.eosa.web.requestform.entity.RequestForm;
+import com.eosa.web.requestform.service.DetectiveRequestFormService;
 import com.eosa.web.util.CustomResponseData;
 
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class RequestContractController {
     
     @Autowired private RequestContractService requestContractService;
+    @Autowired private DetectiveRequestFormService detectiveRequestFormService;
     @Autowired private CompanysService companysService;
 
     /**
@@ -99,7 +102,11 @@ public class RequestContractController {
         // log.debug(requestContract.toString());
 
         RequestContract saveEntity = requestContractService.save(requestContract);
+
         if(saveEntity != null) {
+            RequestForm rf = detectiveRequestFormService.selectRequestFormByRequestFormIdx(saveEntity.getRequestFormIdx());
+            rf.setRequestFormStatus("계약진행");
+            detectiveRequestFormService.updateRequestFormByEntity(rf);
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem(true);
             result.setResponseDateTime(LocalDateTime.now());
