@@ -87,7 +87,8 @@ public class PriceService {
             Long regionIdx = el.getAsJsonObject().get("regionIdx").getAsLong();
             String regionName = el.getAsJsonObject().get("regionName").getAsString();
             int regionPrice = el.getAsJsonObject().get("regionPrice").getAsInt();
-            RegionDTO regionDTO = new RegionDTO(regionIdx, regionName, regionPrice);
+            int regionSelectable = el.getAsJsonObject().get("regionSelectable").getAsInt();
+            RegionDTO regionDTO = new RegionDTO(regionIdx, regionName, regionPrice, regionSelectable);
             log.debug("[updateRegionPrice] regionDTO: {}", regionDTO.toString());
             regionMapper.priceUpdateRegion(regionDTO);
         }

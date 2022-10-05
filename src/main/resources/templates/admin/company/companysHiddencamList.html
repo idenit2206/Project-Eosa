@@ -49,7 +49,7 @@
 
                     <tbody th:if="${count} ne 0">
                     <tr th:each="list : ${list}" th:onclick="|linkTo(event,'/admin/manage/companysHiddencam/details?companysHiddencamIdx=${list.companysHiddencamIdx}')|">
-                        <td class="check"><input type="checkbox" name="listCheck"></td>
+                        <td class="check"><input class="companysHiddencamCheck" type="checkbox" name="listCheck" th:value="${list.companysHiddencamIdx}"></td>
                         <td><span th:text="${list.companysHiddencamIdx}"></span></td>
                         <td>
                             <span th:text="${list.companysHiddencamName}"></span>
@@ -93,12 +93,13 @@
 <th:block layout:fragment="script">
     <script>
         window.addEventListener('DOMContentLoaded', () => {
-            highlightMenu('list');
-            companyTab();
+            // highlightMenu('list');
+            // companyTab();
             pageOn();
             listCheck();
             telFormat();
             safetyFormat();
+            removeListItem();
             new Table(document.querySelector('#main table'));
         });
     </script>

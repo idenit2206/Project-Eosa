@@ -11,7 +11,10 @@ public class CompanysHiddencamDTO {
     private String companysHiddencamRegion1;
     private String companysHiddencamRegion2;
     private String companysHiddencamName;
+    private Long companysHiddencamRequesterUsersIdx;
     private LocalDateTime companysHiddencamRequestDate;
     private int companysHiddencamCheckStatus;
+
+    private String usersAccount;
     
 }

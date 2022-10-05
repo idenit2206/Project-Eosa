@@ -16,6 +16,7 @@ public class CompanysHiddencam {
     @Column private String companysHiddencamRegion1;
     @Column private String companysHiddencamRegion2;
     @Column private String companysHiddencamName;
+    @Column private Long companysHiddencamRequesterUsersIdx;
     @Column private LocalDateTime companysHiddencamRequestDate;
     @Column private int companysHiddencamCheckStatus;
 

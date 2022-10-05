@@ -22,8 +22,8 @@ public class RequestContract {
 
     @Column(nullable = false) private Long requestFormIdx;
     @Column(nullable = false, length = 255) private String requestContractContractId;
-    @Column(nullable = false) private Long companysIdx;
-    @Column(nullable = false) private Long usersIdx;
+    @Column(nullable = false) private String companysIdx;
+    @Column(nullable = false) private String usersIdx;
     // @Column(nullable = false, length = 300) private String requestContractUrl;
     @Column(nullable = false) private LocalDateTime requestContractCreateDate;
     

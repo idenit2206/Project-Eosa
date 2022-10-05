@@ -20,7 +20,7 @@
         ORDER BY C.companysHiddencamRequestDate DESC LIMIT #{startIndex}, #{pageSize}
     </select>
 
-    <select id="selectCompanysHiddencamDetails" resultType="CompanysHiddencamDTO">
+    <!-- <select id="selectCompanysHiddencamDetails" resultType="CompanysHiddencamDTO">
         SELECT
             C.companysHiddencamIdx,
             C.companysHiddencamName,
@@ -30,6 +30,25 @@
             C.companysHiddencamCheckStatus
         FROM CompanysHiddencam C
         WHERE C.companysHiddencamIdx = #{companysHiddencamIdx}
+    </select> -->
+    
+    <select id="selectCompanysHiddencamDetails" resultType="CompanysHiddencamDTO">
+        SELECT
+            C.companysHiddencamIdx,
+            C.companysHiddencamName,
+            U.usersAccount,
+            C.companysHiddencamRegion1,
+            C.companysHiddencamRegion2,
+            C.companysHiddencamRequestDate,
+            C.companysHiddencamCheckStatus
+        FROM CompanysHiddencam C
+        LEFT JOIN Users U ON C.companysHiddencamRequesterUsersIdx = U.usersIdx
+        WHERE C.companysHiddencamIdx = #{companysHiddencamIdx}
     </select>
+
+    <delete id="deleteHiddencamList" parameterType="Long">
+        DELETE FROM CompanysHiddencam
+        WHERE companysHiddencamIdx = #{companysHiddencamIdx}
+    </delete>
 
 </mapper>
