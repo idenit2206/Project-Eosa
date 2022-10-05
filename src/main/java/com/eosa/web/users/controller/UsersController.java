@@ -172,7 +172,7 @@ public class UsersController {
                 paramUsers.setUsersPass(jsonObject.get("usersPass").getAsString());
             }
             else {
-                paramUsers.setUsersPass(null);                
+                paramUsers.setUsersPass(null);
             }
            
             paramUsers.setUsersName(jsonObject.get("usersName").getAsString());
