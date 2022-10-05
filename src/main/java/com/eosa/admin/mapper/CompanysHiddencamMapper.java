@@ -16,6 +16,8 @@ public interface CompanysHiddencamMapper {
 
     CompanysHiddencamDTO selectCompanysHiddencamDetails(long companysHiddencamIdx);
 
+    int hiddencamUpdate(CompanysHiddencamDTO companysHiddencamDTO);
+
     int deleteHiddencamList(Long companysHiddencamIdx);
     
 }

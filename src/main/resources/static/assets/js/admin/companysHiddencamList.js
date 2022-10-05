@@ -38,14 +38,10 @@ const updateHiddencamCompany = () => {
     const companysHiddencamIdx = document.querySelector("#companysHiddencamIdx");
     const companysHiddencamCheckStatus = document.querySelector("#companysHiddencamCheckStatus");
 
-    let companysHiddencamDTO = {
-        "companysHiddencamIdx": companysHiddencamIdx.innerHTML,
-        "companysHiddencamCheckStatus": companysHiddencamCheckStatus.value
-    }
-
     let formData = new FormData();
 
-    formData.append("companysHiddencamDTO", companysHiddencamDTO);
+    formData.append("companysHiddencamIdx", companysHiddencamIdx.innerHTML);
+    formData.append("companysHiddencamCheckStatus", companysHiddencamCheckStatus.value);
 
     fetch("/admin/manage/companysHiddencam/update", {
         "method": "PUT",

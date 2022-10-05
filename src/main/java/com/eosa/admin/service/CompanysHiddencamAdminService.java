@@ -54,6 +54,8 @@ public class CompanysHiddencamAdminService {
 
     public String companysHiddencamUpdate(Model model, CompanysHiddencamDTO companysHiddencamDTO) {
         log.debug("[update] dto: {}", companysHiddencamDTO.toString());
+        int updateQuery = companyHiddencamMapper.hiddencamUpdate(companysHiddencamDTO);
+
         CompanysHiddencamDTO details = companyHiddencamMapper.selectCompanysHiddencamDetails(companysHiddencamDTO.getCompanysHiddencamIdx());      
         model.addAttribute("details", details);
 

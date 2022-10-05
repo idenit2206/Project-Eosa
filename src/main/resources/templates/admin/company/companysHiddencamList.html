@@ -58,7 +58,9 @@
                             <span th:text="${list.companysHiddencamRegion1}"></span>
                         </td>
                         <td>
-                            <span th:text="${list.companysHiddencamCheckStatus}"></span>
+                            <span th:if="${list.companysHiddencamCheckStatus == 0}">미확인</span>
+                            <span th:unless="${list.companysHiddencamCheckStatus == 0}">확인</span>
+                            <!-- <span th:text="${list.companysHiddencamCheckStatus}"></span> -->
                         </td>                     
                         <td>
                             <!-- <span th:text="${#dates.format(list.companysHiddencamRequestDate, 'yyyy-MM-dd')}"></span> -->

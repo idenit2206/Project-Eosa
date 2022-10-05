@@ -46,6 +46,12 @@
         WHERE C.companysHiddencamIdx = #{companysHiddencamIdx}
     </select>
 
+    <update id="hiddencamUpdate">
+        UPDATE CompanysHiddencam C
+        SET C.companysHiddencamCheckStatus = #{companysHiddencamCheckStatus}
+        WHERE C.companysHiddencamIdx = #{companysHiddencamIdx}
+    </update>
+
     <delete id="deleteHiddencamList" parameterType="Long">
         DELETE FROM CompanysHiddencam
         WHERE companysHiddencamIdx = #{companysHiddencamIdx}
