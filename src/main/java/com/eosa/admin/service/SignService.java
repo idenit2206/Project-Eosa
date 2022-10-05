@@ -25,11 +25,18 @@ public class SignService {
      * 사인 성공 서비스
      *
      * @param requestContractIdx
+     * @param requestFormIdx
      * @return String
      */
-    public String successSign(long requestContractIdx) {
+    public String successSign(long requestContractIdx, long requestFormIdx) {
 
         signMapper.updateTurn(requestContractIdx);
+
+        int turn = signMapper.selectTurn(requestContractIdx);
+
+        if (turn == 3) {
+            signMapper.updateRequestStatus(requestFormIdx);
+        }
 
         return "admin/sign/success";
     }

@@ -9,4 +9,18 @@
         WHERE requestContractIdx = #{requestContractIdx}
     </update>
 
+    <!-- 사인 상태 조회 -->
+    <select id="selectTurn" resultType="int" parameterType="long">
+        SELECT requestContractTurn
+        FROM RequestContract
+        WHERE requestContractIdx = #{requestContractIdx}
+    </select>
+
+    <!-- 의뢰 상태 변경 -->
+    <update id="updateRequestStatus" parameterType="long">
+        UPDATE RequestForm
+        SET requestFormStatus = '임무진행'
+        WHERE requestFormIdx = #{requestFormIdx}
+    </update>
+
 </mapper>

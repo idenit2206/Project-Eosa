@@ -27,12 +27,13 @@ public class SignController {
      * 사인 성공 컨트롤러
      *
      * @param requestContractIdx
+     * @param requestFormIdx
      * @return String
      */
     @GetMapping("/sign/success")
-    public String successSign(@RequestParam long requestContractIdx) {
+    public String successSign(@RequestParam long requestContractIdx, @RequestParam long requestFormIdx) {
 
-        return signService.successSign(requestContractIdx);
+        return signService.successSign(requestContractIdx, requestFormIdx);
     }
 
 }
