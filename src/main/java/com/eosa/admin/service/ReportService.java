@@ -63,6 +63,10 @@ public class ReportService {
         return "admin/board/report/list";
     }
 
+    public int reportUpdate(ReportDTO reportDTO) {
+        return reportMapper.reportUpdate(reportDTO);
+    }
+
     /**
      * 신고 삭제 서비스
      *

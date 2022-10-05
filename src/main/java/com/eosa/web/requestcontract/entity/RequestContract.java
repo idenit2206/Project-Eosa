@@ -26,5 +26,6 @@ public class RequestContract {
     @Column(nullable = false) private String usersIdx;
     // @Column(nullable = false, length = 300) private String requestContractUrl;
     @Column(nullable = false) private LocalDateTime requestContractCreateDate;
+    @Column(nullable = false) private int requestContractTurn;
     
 }

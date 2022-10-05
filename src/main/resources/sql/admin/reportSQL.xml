@@ -34,6 +34,14 @@
         ORDER BY R.reportDate DESC LIMIT #{startIndex}, #{pageSize}
     </select>
 
+    <!-- 신고목록 처리 상태 업데이트 -->
+    <update id="reportUpdate">
+        UPDATE ReportForm R
+        SET R.reportCheckState = #{reportCheckState},
+            R.reportCheckDate = NOW()
+        WHERE R.idx = #{idx}
+    </update>
+
     <!-- 신고 삭제 -->
     <delete id="deleteReport" parameterType="long">
         DELETE

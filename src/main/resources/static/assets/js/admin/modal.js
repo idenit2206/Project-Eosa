@@ -76,33 +76,23 @@ function reportDetailsModal() {
     const checkDate = document.querySelectorAll('.checkDate');
     const reportDate = document.querySelectorAll('.reportDate');
 
-    // 2022.10.05 PARK MINJAE 추가작성
-    const mStateSelect = document.createElement("select");
-    // const mStateOption = document.createElement("option");
-
     for (let i = 0; i < btn.length; i++) {
         btn[i].addEventListener('click', e => {
             mId.value = id[i].value;
             mUser.innerHTML = user[i].textContent;
-            mCompany.innerHTML = cName[i].textContent;
+            mCompany.innerHTML = cName[i].textContent;            
 
-            const mStateOption0 = document.createElement("option");
-            const mStateOption1 = document.createElement("option");
-            mStateOption0.setAttribute("value", "미처리");
-            mStateOption0.textContent = "미처리";
-            mStateSelect.appendChild(mStateOption0);
-            mStateOption1.setAttribute("value", "처리");
-            mStateOption1.textContent = "처리";
-            mStateSelect.appendChild(mStateOption1);
-            mState.appendChild(mStateSelect);
+            const reportCheckStateFalse = document.querySelector("#reportCheckStateFalse");
+            const reportCheckStateTrue = document.querySelector("#reportCheckStateTrue");
 
-            // 2022.10.05 PARK MINJAE 추가작성
-            // if (state[i].textContent == 0) {
-            //     // mState.innerHTML = '미처리';                
-                
-            // } else {
-            //     // mState.innerHTML = checkDate[i].textContent;
-            // }
+            // // 2022.10.05 PARK MINJAE 추가작성
+            if (state[i].textContent == 0) {
+                // mState.innerHTML = '미처리';
+                reportCheckStateFalse.setAttribute("selected", true);
+            } else {
+                // mState.innerHTML = checkDate[i].textContent;
+                reportCheckStateTrue.setAttribute("selected", true);
+            }
 
             while (mDetails.hasChildNodes()) {
                 mDetails.removeChild(mDetails.firstChild);
@@ -130,7 +120,21 @@ function reportDetailsModal() {
 /**
  * 신고 상세에서 처리상태 변경
  */
-
+const onChangeReportProcess = () => {
+    const modalId = document.querySelector(".modal-id");
+    const reportCheckState = document.querySelector("#reportCheckState");
+    reportCheckState.addEventListener("change", () => {
+        // alert(reportCheckState.value);
+        let formData = new FormData();
+        formData.append("idx", modalId.value);
+        formData.append("reportCheckState", reportCheckState.value);
+        fetch("/admin/manage/report/update", {
+            "method": "PUT",
+            "body": formData
+        })
+        .then(response => response.json())       
+    });
+};
 /**
  * 의뢰 상세
  */
