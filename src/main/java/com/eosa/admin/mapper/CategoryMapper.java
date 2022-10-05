@@ -11,6 +11,8 @@ public interface CategoryMapper {
 
     List<CategoryDTO> selectCategory();
 
+    int truncateCategory();
+
     int priceUpdateCategory(CategoryDTO categoryDTO);
 
     int deleteCategory(Long categoryIdx);

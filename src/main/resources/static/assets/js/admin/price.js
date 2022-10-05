@@ -192,15 +192,19 @@ const addCategoryItem = () => {
         const categoryTdIdx = document.createElement("td");
         const categoryTdName = document.createElement("td");
         const categoryTdPrice = document.createElement("td");
+        const categoryTdIcon = document.createElement("td");
 
         const categoryInputIdx = document.createElement("input");
         const categoryInputName = document.createElement("input");
         const categoryInputPrice = document.createElement("input");
+        const categoryIconPreview = document.createElement("img");
+        const categoryIconInputFile = document.createElement("input");
 
         categoryTr.setAttribute("class", "categoryTR");
         categoryTdIdx.setAttribute("class", "categoryIdx");
         categoryTdName.setAttribute("class", "categoryName");
         categoryTdPrice.setAttribute("class", "categoryPrice");
+        categoryTdIcon.setAttribute("class", "categoryIcon");
 
         categoryInputIdx.setAttribute("type", "checkbox");
         categoryInputIdx.setAttribute("class", "categoryIdxValue");
@@ -208,14 +212,20 @@ const addCategoryItem = () => {
         categoryInputName.setAttribute("class", "categoryNameValue");
         categoryInputPrice.setAttribute("type", "text");
         categoryInputPrice.setAttribute("class", "categoryPriceValue");
+        categoryIconPreview.setAttribute("class", "categoryIconPreview");
+        categoryIconInputFile.setAttribute("class", "categoryIconInputFile");
+        categoryIconInputFile.setAttribute("type", "file");
 
         categoryTdIdx.appendChild(categoryInputIdx);
         categoryTdName.appendChild(categoryInputName);
         categoryTdPrice.appendChild(categoryInputPrice);
+        categoryTdIcon.appendChild(categoryIconPreview);
+        categoryTdIcon.appendChild(categoryIconInputFile);
 
         categoryTr.appendChild(categoryTdIdx);
         categoryTr.appendChild(categoryTdName);
         categoryTr.appendChild(categoryTdPrice);
+        categoryTr.appendChild(categoryTdIcon);
 
         categoryList.appendChild(categoryTr);
     })
@@ -267,11 +277,10 @@ const modifyRegion = () => {
 }
 
 const FileUpProcess2 = (file, index) => {
-    console.log(file);
-    const categoryIconPreview = document.querySelectorAll(".categoryIconPreview");
     let fileReader = new FileReader();
     fileReader.readAsDataURL(file);
-    fileReader.onloadend = function (e) {
+    fileReader.onloadend = function (e) {        
+        const categoryIconPreview = document.querySelectorAll(".categoryIconPreview");
         if(categoryIconPreview.length > 0) {
             categoryIconPreview[index].setAttribute("src", e.target.result);
         }
@@ -296,6 +305,8 @@ const modifyCategory = () => {
         const categoryIdxValue = document.querySelectorAll(".categoryIdxValue");
         const categoryNameValue = document.querySelectorAll(".categoryNameValue");
         const categoryPriceValue = document.querySelectorAll(".categoryPriceValue");
+        const categoryIconPreview = document.querySelectorAll(".categoryIconPreview");
+        const categoryIcon = document.querySelectorAll(".categoryIconInputFile");
 
         let formData = new FormData();
 
@@ -304,12 +315,25 @@ const modifyCategory = () => {
             let category = {
                 categoryIdx: "",
                 categoryName: "",
-                categoryPrice: ""
+                categoryPrice: "",
+                categoryIcon: "",
+                categoryIconName: ""
             };
             category.categoryIdx = i + 1;
             category.categoryName = categoryNameValue[i].value;
             category.categoryPrice = categoryPriceValue[i].value;
             // console.log(`regionName: ${region.regionName}`);
+            if(categoryIcon[i].files[0] == null) {
+                console.log(categoryIcon[i].files[0]);
+                category.categoryIcon = categoryIconPreview[i].getAttribute("src") == null ? "" : categoryIconPreview[i].getAttribute("src");
+                category.categoryIconName = "";
+            }
+            else {
+                console.log(categoryIcon[i].files[0]);
+                // formData.append("categoryIcon", categoryIcon[i].files[0]);
+                formData.append("categoryIcon", categoryIcon[i].files[0]);
+            }            
+
             categoryList.push(category);
         }
         formData.append("category", new Blob([JSON.stringify(categoryList)]));

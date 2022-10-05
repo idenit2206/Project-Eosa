@@ -14,11 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.eosa.admin.dto.PriceDTO;
 import com.eosa.admin.service.PriceService;
 
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 @RequestMapping("/admin/manage/price")
 public class PriceController {
@@ -54,14 +57,6 @@ public class PriceController {
         return priceService.priceUpdateRegion(region, model);
     }
 
-    @PostMapping("/updateCategory")
-    public String priceUpdateCategory(
-        @RequestPart String category,
-        Model model
-    ) {
-        return priceService.priceUpdateCategory(category, model);
-    }
-
     @PutMapping("/lockRegion")
     public String lockRegion(
         @RequestParam List<Long> regionIdxList,
@@ -84,6 +79,17 @@ public class PriceController {
         Model model
     ) {
         return priceService.deleteRegion(regionIdxList, model);
+    }
+
+    
+    @PostMapping("/updateCategory")
+    public String priceUpdateCategory(
+        @RequestPart String category,
+        @RequestParam(name="categoryIcon", required = false) List<MultipartFile> categoryIcon,
+        Model model
+    ) {
+        if(categoryIcon != null) log.info("[priceUpdateCategory] {}", categoryIcon.get(0).getOriginalFilename());
+        return priceService.priceUpdateCategory(category, categoryIcon, model);
     }
 
     @DeleteMapping("/deleteCategory")

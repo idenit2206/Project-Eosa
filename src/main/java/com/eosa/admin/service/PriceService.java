@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.eosa.admin.dto.CategoryDTO;
 import com.eosa.admin.dto.PriceDTO;
@@ -16,6 +17,7 @@ import com.eosa.admin.dto.RegionDTO;
 import com.eosa.admin.mapper.CategoryMapper;
 import com.eosa.admin.mapper.PriceMapper;
 import com.eosa.admin.mapper.RegionMapper;
+import com.eosa.web.util.file.AwsS3Service;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -30,6 +32,7 @@ public class PriceService {
     @Autowired private PriceMapper priceMapper;
     @Autowired private RegionMapper regionMapper;
     @Autowired private CategoryMapper categoryMapper;
+    @Autowired private AwsS3Service awsS3Service;
 
     public String priceList(Model model) {
         PriceDTO price = priceMapper.selectPrice();
@@ -104,21 +107,43 @@ public class PriceService {
 
     public String priceUpdateCategory(
         String category,
+        List<MultipartFile> categoryIconList,
         Model model
     ) {
         log.debug("[priceUpdateCategory] param String: {}", category.toString());
         JsonParser parser2 = new JsonParser();
         JsonArray categoryObject = (JsonArray) parser2.parse(category);
 
+        categoryMapper.truncateCategory();
+
         for(int i = 0; i < categoryObject.size(); i++) {
-            // log.debug(categoryObject.get(i).toString());
+            log.info(categoryObject.get(i).toString());
             JsonElement el = categoryObject.get(i);
-            Long categoryIdx = el.getAsJsonObject().get("categoryIdx").getAsLong();
-            String categoryName = el.getAsJsonObject().get("categoryName").getAsString();
-            int categoryPrice = el.getAsJsonObject().get("categoryPrice").getAsInt();
+            if(el.getAsJsonObject().get("categoryIcon").getAsString().equals("")) {
+                for(int j = 0; j < categoryIconList.size(); j++) {
+                    List<String> file = awsS3Service.uploadSingleFile(categoryIconList.get(j), "categoryicon", Long.valueOf(j));
+                    String categoryIconName = file.get(0);
+                    String categoryIcon = file.get(1);
+
+                    Long categoryIdx = el.getAsJsonObject().get("categoryIdx").getAsLong();
+                    String categoryName = el.getAsJsonObject().get("categoryName").getAsString();
+                    int categoryPrice = el.getAsJsonObject().get("categoryPrice").getAsInt();
+                    
+                    CategoryDTO categoryDTO = new CategoryDTO(categoryIdx, categoryName, categoryPrice, categoryIcon, categoryIconName);
+                    categoryMapper.priceUpdateCategory(categoryDTO);
+                }
+            }
+            else {
+                Long categoryIdx = el.getAsJsonObject().get("categoryIdx").getAsLong();
+                String categoryName = el.getAsJsonObject().get("categoryName").getAsString();
+                int categoryPrice = el.getAsJsonObject().get("categoryPrice").getAsInt();
+                String categoryIcon = el.getAsJsonObject().get("categoryIcon").getAsString();
+                String categoryIconName = el.getAsJsonObject().get("categoryIconName").getAsString();
+
+                CategoryDTO categoryDTO = new CategoryDTO(categoryIdx, categoryName, categoryPrice, categoryIcon, categoryIconName);
+                categoryMapper.priceUpdateCategory(categoryDTO);
+            }
             
-            CategoryDTO categoryDTO = new CategoryDTO(categoryIdx, categoryName, categoryPrice);
-            categoryMapper.priceUpdateCategory(categoryDTO);
         }
 
         PriceDTO price = priceMapper.selectPrice();

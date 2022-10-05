@@ -6,14 +6,19 @@
         SELECT
             C.categoryIdx,
             C.categoryName,
-            C.categoryPrice
+            C.categoryPrice,
+            C.categoryIcon
         FROM Category C
     </select>
 
+    <delete id="truncateCategory">
+        TRUNCATE TABLE Category
+    </delete>
+
     <insert id="priceUpdateCategory" parameterType="CategoryDTO">
-        INSERT INTO Category(categoryIdx, categoryName, categoryPrice)
-        VALUES(#{categoryIdx}, #{categoryName}, #{categoryPrice})
-        ON DUPLICATE KEY UPDATE categoryPrice = #{categoryPrice}
+        INSERT INTO Category(categoryIdx, categoryName, categoryPrice, categoryIcon, categoryIconName)
+        VALUES(#{categoryIdx}, #{categoryName}, #{categoryPrice}, #{categoryIcon}, #{categoryIconName})
+        <!-- ON DUPLICATE KEY UPDATE categoryPrice = #{categoryPrice}, #{categoryIcon}, #{categoryIconName} -->
     </insert>
 
     <delete id="deleteCategory" parameterType="Long">

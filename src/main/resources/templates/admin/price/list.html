@@ -113,7 +113,7 @@
                                 <input class="categoryPriceValue" type="text" th:value="${categorylist.categoryPrice}"/>
                             </td>
                             <td class="categoryIcon">
-                                <img class="categoryIconPreview" />
+                                <img class="categoryIconPreview" th:src="${categorylist.categoryIcon}" />
                                 <input class="categoryIconInputFile" type="file" />
                             </td>
                         </tr>
