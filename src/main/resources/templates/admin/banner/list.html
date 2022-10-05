@@ -26,9 +26,7 @@
                                             <br/>
                                             <input type="text" class="bannerHrefInput" th:value="${item.bannerHref}"/>
                                         </td>
-                                        <td class="bannerCellRemove">
-                                            삭제
-                                        </td>                                     
+                                        <td class="bannerCellRemove" onclick="bannerRemoveItem()">삭제</td>                                     
                                     </tr>                              
                                </tbody>
                            </table>
@@ -53,7 +51,7 @@
         pageOn();
         // listCheck();
         bannerAddItem();
-        bannerRemoveItem();
+        // bannerRemoveItem();
         // bannerInputFile();
         bannerInputFileRemove();
         IsShowbannerInputFileRemove();

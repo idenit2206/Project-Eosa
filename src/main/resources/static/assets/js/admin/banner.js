@@ -42,7 +42,9 @@ const bannerAddItem = () => {
         inputText.setAttribute("class", "bannerHrefInput");
 
         const bannerCellRemove = document.createElement("td");
-        bannerCellRemove.innerHTML = "삭제"
+        bannerCellRemove.setAttribute("class", "bannerCellRemove");
+        bannerCellRemove.setAttribute("onclick", "bannerRemoveItem()");
+        bannerCellRemove.innerText="삭제";
 
         bannerPreviewCell.appendChild(bannerPreview);
         
@@ -68,12 +70,14 @@ const bannerAddItem = () => {
 
 const bannerRemoveItem = () => {
     const bannerCellRemove = document.querySelectorAll(".bannerCellRemove");
-    const currentBannerRows = document.querySelectorAll(".bannerRows");
-    for(let i = 0; i < bannerCellRemove.length; i++) {
-        bannerCellRemove[i].addEventListener("click", () => {
-            currentBannerRows[i].remove();
-        })
-    }    
+    alert(bannerCellRemove.length);
+    // for(let i = 0; i < bannerCellRemove.length; i++) {
+    //     bannerCellRemove[i].addEventListener("click", () => {
+    //         currentBannerRows[i].remove();
+    //         currentBannerRowsCount--;
+    //         console.log(`현재 배너개수: ${currentBannerRowsCount}`);
+    //     })
+    // }
 }
 
 const bannerInputFile = () => {
