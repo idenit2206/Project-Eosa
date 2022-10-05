@@ -24,4 +24,14 @@ public interface SignMapper {
      */
     int updateTurn(long requestContractIdx);
 
+    /**
+     * 사인 상태 조회 매퍼
+     *
+     * @param requestContractIdx
+     * @return int
+     */
+    int selectTurn(long requestContractIdx);
+
+    int updateRequestStatus(long requestFormIdx);
+
 }
