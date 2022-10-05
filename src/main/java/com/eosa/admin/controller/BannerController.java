@@ -24,7 +24,7 @@ public class BannerController {
         Model model
     ) {
         if(bannerFile != null) { log.debug("[bannerUpdate] bannerFile[0]: {}", bannerFile.get(0).getOriginalFilename()); }
-        if(bannerItem != null) { log.debug("[bannerUpdate] bannerItem: {}", bannerItem); }
+        // if(bannerItem != null) { log.debug("[bannerUpdate] bannerItem: {}", bannerItem); }
         return bannerService.bannerUpdate(bannerFile, bannerItem, model);
         // return "/admin/banner/list";
     }

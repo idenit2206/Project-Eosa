@@ -52,7 +52,7 @@ public class UsersService implements UsersRepository {
             param.setUsersPass(passwordEncoder.encode("DkftndjqtsmsRoqkfwk"));
         }
         param.setUsersEnabled(1);
-        if(param.getProvider().equals(null)) {
+        if(param.getProvider().equals(null) || param.getProvider().equals("")) {
             param.setProvider("local");
         }
 

@@ -17,6 +17,7 @@ public interface SelectAllCompanysForNormal {
     String getCompanysSpec();
     String getCompanysRegion1();
     String getCompanysRegistCerti();
+    String getCompanysRegistCertiDate();
     String getCompanysRegistCertiName();
     int getCompanysRegistCertiCheck();
     String getCompanysLicense();

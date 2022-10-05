@@ -1,6 +1,10 @@
 package com.eosa.admin.controller;
 
+import com.eosa.admin.dto.ReportDTO;
 import com.eosa.admin.service.ReportService;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
  * -----------------------------------------------------------
  * 2022-09-21        Jihun Kim       최초 생성
  */
+@Slf4j
 @Controller
 @RequestMapping("/admin/manage/report")
 public class ReportController {
@@ -34,10 +39,17 @@ public class ReportController {
      */
     @GetMapping("/list")
     public String reportList(Model model,
-                             @RequestParam(required = false) String state,
-                             @RequestParam(defaultValue = "1") int page) {
+                            @RequestParam(required = false) String state,
+                            @RequestParam(defaultValue = "1") int page) {
 
         return reportService.reportList(model, state, page);
+    }
+
+    @PutMapping("/update")
+    @ResponseBody
+    public int reportUpdate(ReportDTO reportDTO) {
+        log.debug("[reportUpdate] dto: {}", reportDTO.toString());
+        return reportService.reportUpdate(reportDTO);
     }
 
     /**

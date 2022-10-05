@@ -7,7 +7,7 @@ public interface SelectAllCompanysList {
     
     Long getCompanysIdx();
     String getCompanysName();
-    Long geCompanysCeoIdx();
+    Long getCompanysCeoIdx();
     String getCompanysCeoName();
     String getCompanysPhone();
     String getCompanysDummyPhone();
@@ -23,6 +23,8 @@ public interface SelectAllCompanysList {
     String getCompanysLicenseName();
     String getCompanysProfileImage();
     String getCompanysProfileImageName();
+    String getCompanysBankName();
+    String getCompanysBankNumber();
     int getCompanysEnabled();
     int getCompanysPremium();
     int getCompanysLocalPremium();

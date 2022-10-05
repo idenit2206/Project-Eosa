@@ -22,7 +22,7 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
                         "C.companysDummyPhone, C.companysMemo, " +
                         // "C.companysRegion1, C.companysRegion2, C.companysRegion3, " +
                         "C.companysRegion1, C.companysRegion3, " +
-                        "C.companysRegistCerti, C.companysRegistCertiName, C.companysRegistCertiCheck, " +
+                        "C.companysRegistCerti, C.companysRegistCertiName, C.companysRegistCertiDate, C.companysRegistCertiCheck, " +
                         "C.companysLicense, C.companysLicenseName, C.companysLicenseCheck, " +
                         "C.companysProfileImage, C.companysProfileImageName, " +
                         "C.companysBankName, C.companysBankNumber, C.companysRegistDate, " +
@@ -252,6 +252,7 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         "C.companysRegistCertiDate, " +
         "C.companysProfileImage, C.companysProfileImageName, C.companysEnabled, " +
         "C.companysPremium, C.companysLocalPremium, " +
+        "C.companysBankName, C.companysBankNumber, " +
         "GROUP_CONCAT(companysCategoryValue) AS CompanysCategory FROM Companys C " +
         "LEFT JOIN CompanysCategory CC on C.companysIdx = CC.companysIdx " +
         "WHERE C.companysIdx = ?1 " +
@@ -308,7 +309,8 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
                         "c.companysRegion1, c.companysRegion3, " +
                         "c.companysRegistCertCheck, c.companysLicenseCheck, " +
                         "c.companysRegistCerti, c.companysLicense, c.companysProfileImage, " +
-                        "c.companysRegistCertiName, c.companysLicenseName, c.companysProfileImageName, " +
+                        "c.companysRegistCertiName, c.companysRegistCertiDate, " +
+                        "c.companysLicenseName, c.companysProfileImageName, " +
                         "c.companysBankName, c.companysBankNumber, c.companysPremium, c.companysLocalPremium, " +
                         "c.companysEnabled, c.companysDelete, " +
                         "c.companysRegistDate, " +

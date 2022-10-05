@@ -18,6 +18,16 @@ public class BannerServiceService implements BannerRepository {
     @Autowired private BannerRepository bannerRepository;
 
     @Override
+    public List<Banner> findAllMain() {
+        return bannerRepository.findAllMain();
+    }
+
+    @Override
+    public List<Banner> findAllDetective() {
+        return bannerRepository.findAllDetective();
+    }
+
+    @Override
     public List<Banner> findAll() {
         // TODO Auto-generated method stub
         return bannerRepository.findAll();

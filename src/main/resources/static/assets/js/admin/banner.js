@@ -36,9 +36,12 @@ const bannerAddItem = () => {
 
         const brEl = document.createElement("br");
 
+        const inputTextLabel = document.createElement("label");
+        inputTextLabel.innerHTML = "Url: ";
+
         const inputText = document.createElement("input");
         inputText.setAttribute("type", "text");
-        inputText.setAttribute("class", "bannerUrlInput");
+        inputText.setAttribute("class", "bannerHrefInput");
 
         const bannerCellRemove = document.createElement("td");
         bannerCellRemove.innerHTML = "삭제"
@@ -48,6 +51,7 @@ const bannerAddItem = () => {
         bannerInputCell.appendChild(inputFile);
         bannerInputCell.appendChild(spanEl);
         bannerInputCell.appendChild(brEl);
+        bannerInputCell.appendChild(inputTextLabel);
         bannerInputCell.appendChild(inputText);
         
         bannersRows.appendChild(bannerPreviewCell);
@@ -102,13 +106,13 @@ const FileUpProcess = (file, index) => {
 const bannerInputFileRemove = () => {
     const bannerPreview = document.querySelectorAll(".bannerPreview");
     const bannerFileInput = document.querySelectorAll(".bannerFileInput");
-    const bannerUrlInput = document.querySelectorAll(".bannerUrlInput");
+    const bannerHrefInput = document.querySelectorAll(".bannerHrefInput");
     const bannerFileInputRemove = document.querySelectorAll(".bannerFileInputRemove");
     for(let i = 0; i < bannerPreview.length; i++) {
         bannerFileInputRemove[i].addEventListener("click", () => {
             bannerPreview[i].setAttribute("src", "");
             bannerFileInput[i].value = "";
-            bannerUrlInput[i].value = "";
+            bannerHrefInput[i].value = "";
             bannerFileInputRemove[i].style.visibility = "hidden";
         })
         
@@ -137,8 +141,9 @@ const bannerUpdate = () => {
         let count = 0;
         const mainElement = document.querySelector("#main").getAttribute("data-category");
         const bannerPreviewCell = document.querySelectorAll(".bannerPreviewCell");
+        const bannerPreview = document.querySelectorAll(".bannerPreview");
         const bannerFileInput = document.querySelectorAll(".bannerFileInput");
-        const bannerUrlInput = document.querySelectorAll(".bannerUrlInput");
+        const bannerHrefInput = document.querySelectorAll(".bannerHrefInput");
         let bannerItems = [];
         
         for(let i = 0; i < bannerFileInput.length; i++) {        
@@ -147,7 +152,8 @@ const bannerUpdate = () => {
             bannerItems.push({ 
                 idx: bannerPreviewCell[i].getAttribute("id"),
                 bannerFileName: bannerFileInput[i].getAttribute("id"),
-                bannerFileLink: bannerUrlInput[i].value
+                bannerFileLink: bannerPreview[i].getAttribute("src"),
+                bannerHref: bannerHrefInput[i].value
             });
             count++;
         }
@@ -160,25 +166,27 @@ const bannerUpdate = () => {
             alert("최소 한개의 배너가 필요합니다.");
             window.location.reload();
         }
-        if(mainElement == 'mainbanner') {
-            fetch(`/admin/manage/banner/update`, { method: "PUT", body: formData })
-                .then(response => response)
-                .then(data => {
-                    if(data.status == 200) {
-                        alert("변경을 완료했습니다.");
-                        window.location.reload();
-                    }
-                })
-        }
         else {
-            fetch(`/admin/manage/banner/detectiveBannerUpdate`, { method: "PUT", body: formData })
-                .then(response => response)
-                .then(data => {
-                    if(data.status == 200) {
-                        alert("변경을 완료했습니다.");
-                        window.location.reload();
-                    }
-                })
+            if(mainElement == 'mainbanner') {
+                fetch(`/admin/manage/banner/update`, { method: "PUT", body: formData })
+                    .then(response => response)
+                    .then(data => {
+                        if(data.status == 200) {
+                            alert("변경을 완료했습니다.");
+                            window.location.reload();
+                        }
+                    })
+            }
+            else {
+                fetch(`/admin/manage/banner/detectiveBannerUpdate`, { method: "PUT", body: formData })
+                    .then(response => response)
+                    .then(data => {
+                        if(data.status == 200) {
+                            alert("변경을 완료했습니다.");
+                            window.location.reload();
+                        }
+                    })
+            }
         }
     })
 

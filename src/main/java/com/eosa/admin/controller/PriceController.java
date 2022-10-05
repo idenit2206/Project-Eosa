@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -59,6 +60,22 @@ public class PriceController {
         Model model
     ) {
         return priceService.priceUpdateCategory(category, model);
+    }
+
+    @PutMapping("/lockRegion")
+    public String lockRegion(
+        @RequestParam List<Long> regionIdxList,
+        Model model
+    ) {
+        return priceService.lockRegion(regionIdxList, model);
+    }
+
+    @PutMapping("/unlockRegion")
+    public String unlockRegion(
+        @RequestParam List<Long> regionIdxList,
+        Model model
+    ) {
+        return priceService.unlockRegion(regionIdxList, model);
     }
 
     @DeleteMapping("/deleteRegion")

@@ -16,11 +16,11 @@
                             <tbody>
                                 <tr>
                                     <th>신청번호</th>
-                                    <td th:text="${details.companysHiddencamIdx}"></td>
+                                    <td id="companysHiddencamIdx" th:text="${details.companysHiddencamIdx}"></td>
                                     <th>상태</th>
-                                    <td>
+                                    <td colspan="3">
                                         <div class="input-wrap approval-wrap">
-                                            <select class="select width-100-per c-enabled">
+                                            <select id="companysHiddencamCheckStatus" class="select width-100-per c-enabled">
                                                 <option value="1" th:selected="${details.companysHiddencamCheckStatus} eq 1">확인</option>
                                                 <option value="0" th:selected="${details.companysHiddencamCheckStatus} eq 0">미확인</option>
                                                 <!-- <option value="-1" th:selected="${details.companysHiddencamCheckStatus} eq -1">반려</option> -->
@@ -29,16 +29,22 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <th>신청인 ID<i class="required">*</i></th>
+                                    <td>
+                                        <div class="input-wrap">
+                                            <input id="usersAccount" type="text" spellcheck="false" class="input c-name" th:value="${details.usersAccount}" readonly>
+                                        </div>
+                                    </td>
                                     <th>업체명<i class="required">*</i></th>
                                     <td>
                                         <div class="input-wrap">
-                                            <input type="text" spellcheck="false" class="input c-name" th:value="${details.companysHiddencamName}">
+                                            <input id="companysHiddencamName" type="text" spellcheck="false" class="input c-name" th:value="${details.companysHiddencamName}" readonly>
                                         </div>
                                     </td>
                                     <th>지역</th>
                                     <td>
                                         <div class="input-wrap">
-                                            <span th:text="${details.companysHiddencamRegion1}"></span>
+                                            <span id="companysHiddencamRegion1" th:text="${details.companysHiddencamRegion1}"></span>
                                         </div>
                                     </td>
                                 </tr>
@@ -60,15 +66,15 @@
                                                 </select>
                                             </div> -->         
                                 <tr>
-                                    <th>삭제</th>
+                                    <!-- <th>삭제</th>
                                     <td>
                                         <div class="input-wrap">
                                             <button type="button" class="company-delete">삭제</button>
                                         </div>
-                                    </td>
+                                    </td> -->
                                     <th>신청일</th>
                                     <!-- <td th:text="${#dates.format(details.companysRegistDate, 'yyyy-MM-dd')}"></td> -->
-                                    <td th:text="${details.companysHiddencamRequestDate}"></td>
+                                    <td id="companysHiddencamRequestDate" colspan="5" th:text="${details.companysHiddencamRequestDate}"></td>
                                 </tr>                           
                             </tbody>
                         </table>
@@ -92,7 +98,7 @@
     <script th:src="@{/assets/js/admin/library.js}"></script>
     <script>
         window.addEventListener('load', function () {
-            highlightMenu('list');
+            // highlightMenu('list');
             onlyNum();
 
             const editorWrap = document.querySelectorAll('.e-wrap');
@@ -108,7 +114,7 @@
 
             // 업체 수정
             const updateBtn = document.querySelector('.btn-update');
-            updateBtn.addEventListener('click', updateCompany);
+            updateBtn.addEventListener('click', updateHiddencamCompany);
            
             const deleteBtn = document.querySelector('.company-delete');
         });

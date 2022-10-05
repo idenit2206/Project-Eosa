@@ -21,6 +21,68 @@ const modifyPrice = () => {
     })
 }
 
+const regionLock = () => {
+    const regionLockBtn = document.querySelector(".region-lock-btn");
+    regionLockBtn.addEventListener("click", () => {
+        const regionIdxValue = document.querySelectorAll(".regionIdxValue")
+        let regionIdxValueList = [];
+        for(let i = 0; i < regionIdxValue.length; i++) {
+            if(regionIdxValue[i].checked == true) {
+                // console.log(regionIdxValue[i].value);
+                regionIdxValueList.push(regionIdxValue[i].value);
+            }
+        }
+        let formData = new FormData();
+        formData.append("regionIdxList", regionIdxValueList);
+        fetch(`/admin/manage/price/lockRegion`, {
+            "method": "PUT",
+            "body": formData
+        })
+        .then(result => result)
+        .then(data => {
+            if(data.status == 200) {
+                alert("잠금처리 되었습니다.")
+                window.location.reload();
+            }
+            else {
+                alert("다시 시도해주세요.")
+                window.location.reload();
+            } 
+        })       
+    });
+}
+
+const regionUnlock = () => {
+    const regionUnlockBtn = document.querySelector(".region-unlock-btn");
+    regionUnlockBtn.addEventListener("click", () => {
+        const regionIdxValue = document.querySelectorAll(".regionIdxValue")
+        let regionIdxValueList = [];
+        for(let i = 0; i < regionIdxValue.length; i++) {
+            if(regionIdxValue[i].checked == true) {
+                // console.log(regionIdxValue[i].value);
+                regionIdxValueList.push(regionIdxValue[i].value);
+            }
+        }
+        let formData = new FormData();
+        formData.append("regionIdxList", regionIdxValueList);
+        fetch(`/admin/manage/price/unlockRegion`, {
+            "method": "PUT",
+            "body": formData
+        })
+        .then(result => result)
+        .then(data => {
+            if(data.status == 200) {
+                alert("잠금해제 처리 되었습니다.")
+                window.location.reload();
+            }
+            else {
+                alert("다시 시도해주세요.")
+                window.location.reload();
+            } 
+        })
+    });
+}
+
 const removeRegionItem = () => {
     const regionRemoveBtn = document.querySelector(".region-remove-btn");
     regionRemoveBtn.addEventListener("click", () => {

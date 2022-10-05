@@ -22,7 +22,7 @@
                                 </div>
                                 <div class="filter-check">
                                     <input type="radio" id="filter02" name="state" value="0" th:checked="${state} eq 0">
-                                    <label for="filter02">대기</label>
+                                    <label for="filter02">미처리</label>
                                 </div>
                                 <div class="filter-check">
                                     <input type="radio" id="filter03" name="state" value="1" th:checked="${state} eq 1">
@@ -40,7 +40,7 @@
                         <th>업체명</th>
                         <th>신고자</th>
                         <th class="w-550">내용</th>
-                        <th>상태</th>
+                        <!-- <th>처리상태</th> -->
                         <th>신고처리일</th>
                         <th>신고일</th>
                     </tr>
@@ -72,9 +72,9 @@
                                 <span class="reportDetail" th:text="${list.reportDetail}"></span>
                             </div>
                         </td>
-                        <td>
+                        <!-- <td>
                             <span class="reportState" th:text="${list.reportCheckState}"></span>
-                        </td>
+                        </td> -->
                         <td>
                             <span class="checkDate" th:text="${#dates.format(list.reportCheckDate, 'yyyy-MM-dd')}"></span>
                         </td>
@@ -131,8 +131,13 @@
                                 <td class="modal-td r-date"></td>
                             </tr>
                             <tr>
-                                <td class="modal-th">처리일</td>
-                                <td class="modal-td r-state"></td>
+                                <td class="modal-th">처리상태</td>
+                                <td class="modal-td r-state">
+                                    <select id="reportCheckState">
+                                        <option id="reportCheckStateFalse" value="0">미처리</option>
+                                        <option id="reportCheckStateTrue" value="1">처리</option>
+                                    </select>
+                                </td>
                             </tr>
                             <tr>
                                 <td class="modal-th">내용</td>
@@ -163,6 +168,7 @@
             pageOn();
             listCheck();
             reportDetailsModal();
+            onChangeReportProcess();
             new Table(document.querySelector('#main table'));
 
             // 신고 삭제

@@ -114,6 +114,7 @@ public class CompanysController {
         entity.setCompanysCeoIdx(params.getCompanysCeoIdx());
         entity.setCompanysComment(params.getCompanysComment());
         entity.setCompanysSpec(params.getCompanysSpec());
+        entity.setCompanysRegistCertiDate(params.getCompanysRegistCertiDate());
         entity.setCompanysRegion1(params.getCompanysRegion1());
         entity.setCompanysRegion2(params.getCompanysRegion2());
         entity.setCompanysRegion3(params.getCompanysRegion3());
@@ -511,6 +512,7 @@ public class CompanysController {
             items.put("companysRegion3", step1.getCompanysRegion3());
             items.put("companysRegistCerti", step1.getCompanysRegistCerti());
             items.put("companysRegistCertiName", step1.getCompanysRegistCertiName());
+            items.put("companysRegistCertiDate", step1.getCompanysRegistCertiDate());
             items.put("companysLicense", step1.getCompanysLicense());
             items.put("companysLicenseName", step1.getCompanysLicenseName());
             items.put("companysProfileImage", step1.getCompanysProfileImage());
@@ -651,6 +653,7 @@ public class CompanysController {
         entity.setCompanysCeoIdx(companyInfo.getCompanysCeoIdx());
         entity.setCompanysComment(companyInfo.getCompanysComment());
         entity.setCompanysSpec(companyInfo.getCompanysSpec());
+        entity.setCompanysRegistCertiDate(companyInfo.getCompanysRegistCertiDate());
         entity.setCompanysRegion1(companyInfo.getCompanysRegion1());
         entity.setCompanysRegion2(companyInfo.getCompanysRegion2());
         entity.setCompanysRegion3(companyInfo.getCompanysRegion3());
@@ -694,6 +697,11 @@ public class CompanysController {
         return result;
     }
 
+    /**
+     * companysIdx 기반의 탐정업체 정보 조회(2)
+     * @param companysIdx
+     * @return
+     */
     @GetMapping("/selectOneCompanysByCompanysIdxTest")
     public CustomResponseData selectOneCompanysByCompanysIdxTest(@RequestParam("companysIdx") Long companysIdx) {
         CustomResponseData result = new CustomResponseData();

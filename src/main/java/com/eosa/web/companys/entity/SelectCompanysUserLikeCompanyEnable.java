@@ -11,7 +11,7 @@ public interface SelectCompanysUserLikeCompanyEnable {
     String getCompanysComment();
     String getCompanysSpec();
     String getCompanysPhone();
-    String getCompansyDummyPhone();
+    String getCompanysDummyPhone();
     String getCompanysMemo();
     String getCompanysRegion1();
 //    String getCompanysRegion2();

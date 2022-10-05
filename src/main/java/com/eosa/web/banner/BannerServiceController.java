@@ -20,7 +20,26 @@ public class BannerServiceController {
     @GetMapping("/selectAllBanner")
     public CustomResponseData selectAllBanner() {
         CustomResponseData result = new CustomResponseData();
-        List<Banner> items = bannerService.findAll();
+        List<Banner> items = bannerService.findAllMain();
+
+        if(items != null) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(items);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
+
+    @GetMapping("/selectAllDetectiveBanner")
+    public CustomResponseData selectAllDetectiveBanner() {
+        CustomResponseData result = new CustomResponseData();
+        List<Banner> items = bannerService.findAllDetective();
 
         if(items != null) {
             result.setStatusCode(HttpStatus.OK.value());

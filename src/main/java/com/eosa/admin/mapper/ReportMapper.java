@@ -37,6 +37,13 @@ public interface ReportMapper {
     List<ReportDTO> selectReportList(Map<String, Object> map);
 
     /**
+     * 신고 내역 처리 상태 업데이트
+     * @param reportDTO
+     * @return
+     */
+    int reportUpdate(ReportDTO reportDTO);
+
+    /**
      * 신고 삭제 매퍼
      *
      * @param idx
