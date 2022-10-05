@@ -6,15 +6,28 @@
         SELECT
             R.regionIdx,
             R.regionName,
-            R.regionPrice
+            R.regionPrice,
+            R.regionSelectable
         FROM Region R
     </select>
     
     <insert id="priceUpdateRegion" parameterType="RegionDTO">
-        INSERT INTO Region(regionIdx, regionName, regionPrice)
-        VALUES(#{regionIdx}, #{regionName}, #{regionPrice})
+        INSERT INTO Region(regionIdx, regionName, regionPrice, regionSelectable)
+        VALUES(#{regionIdx}, #{regionName}, #{regionPrice}, #{regionSelectable})
         ON DUPLICATE KEY UPDATE regionPrice = #{regionPrice}
     </insert>
+
+    <update id="lockRegion" parameterType="Long">
+        UPDATE Region
+        SET regionSelectable = 0
+        WHERE regionIdx = #{regionIdx}
+    </update>
+
+    <update id="unlockRegion" parameterType="Long">
+        UPDATE Region
+        SET regionSelectable = 1
+        WHERE regionIdx = #{regionIdx}
+    </update>
 
     <delete id="deleteRegion" parameterType="Long">
         DELETE FROM Region

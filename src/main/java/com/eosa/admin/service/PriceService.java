@@ -129,6 +129,34 @@ public class PriceService {
         return "admin/price/list";
     }
 
+    public String lockRegion(List<Long> regionIdx, Model model) {
+        for(int i = 0; i < regionIdx.size(); i++) {
+            regionMapper.lockRegion(Long.valueOf(regionIdx.get(i)));
+        }
+        
+        PriceDTO price = priceMapper.selectPrice();
+        List<RegionDTO> regionList = regionMapper.selectRegion();
+        List<CategoryDTO> categoryList = categoryMapper.selectCategory();
+        model.addAttribute("price", price);
+        model.addAttribute("region", regionList);
+        model.addAttribute("category", categoryList);
+        return "admin/price/list";
+    }
+
+    public String unlockRegion(List<Long> regionIdx, Model model) {
+        for(int i = 0; i < regionIdx.size(); i++) {
+            regionMapper.unlockRegion(Long.valueOf(regionIdx.get(i)));
+        }
+        
+        PriceDTO price = priceMapper.selectPrice();
+        List<RegionDTO> regionList = regionMapper.selectRegion();
+        List<CategoryDTO> categoryList = categoryMapper.selectCategory();
+        model.addAttribute("price", price);
+        model.addAttribute("region", regionList);
+        model.addAttribute("category", categoryList);
+        return "admin/price/list";
+    }
+
     public String deleteRegion(List<Long> regionIdx, Model model) {
         log.debug("[deleteRegion]: {}",regionIdx.toString());
         for(int i = 0; i < regionIdx.size(); i++) {

@@ -575,8 +575,8 @@ public class UsersController {
         CustomResponseData result = new CustomResponseData();
         Users rows = usersService.selectUsersByUsersIdx(usersIdx);
         Users item = new Users();
-        log.debug("[selectUsersByUsersIdx] rows: {}", rows.toString());
         if(rows != null) {            
+            log.debug("[selectUsersByUsersIdx] rows: {}", rows.toString());         
             item.setProvider(rows.getProvider());
             item.setUsersAccount(rows.getUsersAccount());
             item.setUsersName(rows.getUsersName());

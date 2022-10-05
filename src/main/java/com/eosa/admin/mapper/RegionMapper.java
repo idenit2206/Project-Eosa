@@ -13,6 +13,10 @@ public interface RegionMapper {
 
     int priceUpdateRegion(RegionDTO regionDTO);
 
+    int lockRegion(Long regionIdx);
+
+    int unlockRegion(Long regionIdx);
+
     int deleteRegion(Long regionIdx);
 
 }

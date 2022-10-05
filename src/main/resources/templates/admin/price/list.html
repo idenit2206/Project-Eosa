@@ -59,6 +59,7 @@
                             <th></th>
                             <th>지역명</th>
                             <th>가격</th>
+                            <th>선택 가능 여부</th>
                         </tr>
                         </thead>
                         <tbody id="regionList">
@@ -72,10 +73,18 @@
                             <td class="regionPrice">
                                 <input class="regionPriceValue" type="text" th:value="${regionlist.regionPrice}"/>
                             </td>
+                            <td class="regionSelectable" th:if="${regionlist.regionSelectable == 1}">
+                                선택 가능
+                            </td>
+                            <td class="regionSelectable" th:if="${regionlist.regionSelectable == 0}">
+                                선택 불가
+                            </td>
                         </tr>
                         </tbody>
                     </table>
                     <div>
+                        <input class="btn region-lock-btn" type="button" value="지역 잠금" />
+                        <input class="btn region-unlock-btn" type="button" value="지역 잠금 해제" />
                         <input class="btn region-remove-btn" type="button" value="지역 삭제" />
                         <input class="btn region-add-btn" type="button" value="지역 추가" />
                         <input class="btn region-modify-btn" type="button" value="지역 수정" />
@@ -89,6 +98,7 @@
                             <th></th>
                             <th>분야</th>
                             <th>가격</th>
+                            <th>아이콘</th>
                         </tr>
                         </thead>
                         <tbody id="categoryList">
@@ -101,6 +111,11 @@
                             </td>
                             <td class="categoryPrice">
                                 <input class="categoryPriceValue" type="text" th:value="${categorylist.categoryPrice}"/>
+                            </td>
+                            <td class="categoryIcon">
+                                <img class="categoryIconPreview" />
+                                <input type="file" />
+                                <span>지우기</span>
                             </td>
                         </tr>
                         </tbody>
@@ -121,6 +136,8 @@
             // highlightMenu('list');
             modifyPrice();
 
+            regionLock();
+            regionUnlock();
             removeRegionItem();
             addRegionItem();
             modifyRegion();
