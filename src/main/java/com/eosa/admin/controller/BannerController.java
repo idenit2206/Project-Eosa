@@ -1,10 +1,6 @@
 package com.eosa.admin.controller;
 
-import com.eosa.admin.dto.BannerDTO;
 import com.eosa.admin.service.BannerService;
-import com.eosa.web.banner.Banner;
-import com.eosa.web.util.file.AwsS3Service;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
