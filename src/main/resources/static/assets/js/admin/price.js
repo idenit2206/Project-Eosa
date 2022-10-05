@@ -266,6 +266,28 @@ const modifyRegion = () => {
     })
 }
 
+const FileUpProcess2 = (file, index) => {
+    console.log(file);
+    const categoryIconPreview = document.querySelectorAll(".categoryIconPreview");
+    let fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    fileReader.onloadend = function (e) {
+        if(categoryIconPreview.length > 0) {
+            categoryIconPreview[index].setAttribute("src", e.target.result);
+        }
+          
+    };
+}
+
+const categoryIconInputFileChange = () => {
+    const categoryIconInputFile = document.querySelectorAll(".categoryIconInputFile");
+    for(let i = 0; i < categoryIconInputFile.length; i++) {
+        categoryIconInputFile[i].addEventListener("change", (e) => {
+            FileUpProcess2(categoryIconInputFile[i].files[0], i);
+        })
+    }
+}
+
 const modifyCategory = () => {
     const categoryModifyBtn = document.querySelector(".category-modify-btn");
 

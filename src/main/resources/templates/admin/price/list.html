@@ -114,8 +114,7 @@
                             </td>
                             <td class="categoryIcon">
                                 <img class="categoryIconPreview" />
-                                <input type="file" />
-                                <span>지우기</span>
+                                <input class="categoryIconInputFile" type="file" />
                             </td>
                         </tr>
                         </tbody>
@@ -144,6 +143,7 @@
 
             removeCategoryItem();
             addCategoryItem();
+            categoryIconInputFileChange();
             modifyCategory();
         });
     </script>
