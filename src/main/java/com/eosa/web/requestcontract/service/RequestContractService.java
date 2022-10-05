@@ -28,6 +28,11 @@ public class RequestContractService implements RequestContractRepository {
     }
 
     @Override
+    public RequestContract selectRequestContractByRequestFormIdx(Long requestFormIdx) {
+        return requestContractRepository.selectRequestContractByRequestFormIdx(requestFormIdx);
+    }
+
+    @Override
     public List<RequestContract> findAll() {
         // TODO Auto-generated method stub
         return null;

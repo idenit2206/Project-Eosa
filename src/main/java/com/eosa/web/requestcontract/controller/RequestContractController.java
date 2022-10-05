@@ -29,6 +29,11 @@ public class RequestContractController {
     @Autowired private RequestContractService requestContractService;
     @Autowired private CompanysService companysService;
 
+    /**
+     * companysIdx
+     * @param companysIdx로 계약서에 기입할 업체 정보 조회
+     * @return
+     */
     @GetMapping("/selectCompanysByCompanysIdxUseRequestContractController")
     public CustomResponseData selectCompanysByCompanysIdxUseRequestContractController(
         @RequestParam("companysIdx") Long companysIdx
@@ -59,6 +64,35 @@ public class RequestContractController {
         return result;
     }
 
+    /**
+     * requestFormIdx에 해당하는 계약서 정보 가져오기
+     * @param requestContract
+     * @return
+     */
+    @GetMapping("/selectRequestContractByRequestFormIdx")
+    public CustomResponseData selectRequestContractByRequestFormIdx(@RequestParam("requestFormIdx") Long reqeustFormIdx) {
+        CustomResponseData result = new CustomResponseData();
+        
+        RequestContract select = requestContractService.selectRequestContractByRequestFormIdx(reqeustFormIdx);
+
+        if(select != null) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(select);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        return result;
+    }
+
+    /**
+     * 계약서 저장
+     * @param requestContract
+     * @return
+     */
     @PostMapping("/insertRequestContract")
     public CustomResponseData insertRequestContract(RequestContract requestContract) {
         CustomResponseData result = new CustomResponseData();
