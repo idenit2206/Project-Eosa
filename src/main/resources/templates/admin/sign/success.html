@@ -39,8 +39,9 @@
 </head>
 <body>
 	<div class="sign-form">
+		<input type="hidden" th:value="${path}" class="path">
 		<span>서명이 완료되었습니다.</span>
-		<button type="button" th:onclick="|location.href = ${path}|">돌아가기</button>
+		<button type="button" class="btn-return">돌아가기</button>
 	</div>
 </body>
 <script>
@@ -54,6 +55,9 @@
 
 	window.addEventListener('load', function () {
 		document.onkeydown = NotReload;
+		document.querySelector('.btn-return').addEventListener('click', e => {
+			location.href = document.querySelector('.path').value;
+		});
 	});
 </script>
 </html>

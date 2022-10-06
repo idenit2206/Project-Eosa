@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eosa.web.price.entity.Category;
+import com.eosa.web.price.entity.Price;
 import com.eosa.web.price.entity.Region;
 import com.eosa.web.price.service.CategoryService;
+import com.eosa.web.price.service.PriceServiceService;
 import com.eosa.web.price.service.RegionService;
 import com.eosa.web.util.CustomResponseData;
 
@@ -21,9 +23,28 @@ import com.eosa.web.util.CustomResponseData;
 @RequestMapping("/api/price")
 public class PriceServiceController {
 
+    @Autowired private PriceServiceService priceServiceService;
     @Autowired private CategoryService categoryService;
     @Autowired private RegionService regionService;
     
+    @GetMapping("/selectBankInfo")
+    public CustomResponseData selectBankInfo() {
+        CustomResponseData result = new CustomResponseData();
+
+        Price item = priceServiceService.findPrice();
+        if(item != null) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(item);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
     
     /** 
      * @return CustomResponseData
