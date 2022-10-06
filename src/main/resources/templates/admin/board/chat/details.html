@@ -35,9 +35,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="chatMessageInput" th:if="${chatList[0].roomName eq 'ADMIN'}">
-                                    <input class="chatTextInput" id="message" type="text">
-                                    <input class="chatSendBtn" id="sendBtn" type="button" onclick="sendMessage()" value="보내기"/>
+                            </div>
+
+                            <div class="msg-bottom chatMessageInput">
+                                <div class="message-input">
+                                    <textarea class="chatTextInput" id="message" type="text" th:readonly="${chatList[0].roomName ne '상담사'}"></textarea>
+                                    <input class="chatSendBtn" id="sendBtn" type="button" onclick="sendMessage()" value="보내기" th:disabled="${chatList[0].roomName ne '상담사'}"/>
                                 </div>
                             </div>
                         </div>
@@ -54,19 +57,6 @@
 
 </th:block>
 <th:block>
-<style>
-chatMessageBoard {
-    /* width: 80%; */
-    width: 100%;
-    height: 300px;
-    overflow-y: scroll;
-}
-
-.chatMessageInput {
-    width: 100% !important;
-    height: 100px !important;
-}
-</style>
 </th:block>
 
 <th:block layout:fragment="script">
@@ -88,7 +78,7 @@ chatMessageBoard {
         const recvMessage = (recv) => {
             messages.push({
                 "messageType": recv.messageType,
-                "sender": recv.messageType == "ENTER" ? '[알림]' : 
+                "sender": recv.messageType == "ENTER" ? '[알림]' :
                     recv.messageType == "LEAVE" ? "[알림]" : recv.sender,
                 "message": recv.message,
                 "fileMessage": recv.message,
@@ -98,12 +88,12 @@ chatMessageBoard {
         }
 
         const sendMessage = () => {
-            const message = document.querySelector("#message");               
+            const message = document.querySelector("#message");
             if(message.value != "") {
                 ws.send("/app/chat/message", {}, JSON.stringify({
-                    messageType:"TALK", 
-                    roomId: roomId, 
-                    sender: "상담사", 
+                    messageType:"TALK",
+                    roomId: roomId,
+                    sender: "상담사",
                     message: message.value,
                     fileMessage: null,
                     sendDate: currentDate.ShowCurrentDate()
@@ -112,13 +102,13 @@ chatMessageBoard {
             }
         }
 
-        const connectSocket = () => {   
+        const connectSocket = () => {
             ws.connect({}, (frame) => {
                 ws.subscribe(`/topic/chat/room/${roomId}`, (message) => {
                     let recv = JSON.parse(message.body);
                     recvMessage(recv);
-                })               
-                // ws.send("/app/chat/message", {}, JSON.stringify({                   
+                })
+                // ws.send("/app/chat/message", {}, JSON.stringify({
                 //     messageType: "ENTER",
                 //     roomID: roomId,
                 //     sender: "ADMIN",
