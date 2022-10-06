@@ -73,6 +73,10 @@ public class PushNotificationController {
         return result;
     }
 
+    
+    /** 
+     * @return CustomResponseData
+     */
     @PutMapping("/readPushNotification")
     public CustomResponseData readPushNotification(
         @RequestParam("requestFormIdx") Long requestFormIdx
@@ -94,6 +98,10 @@ public class PushNotificationController {
         return result;
     }
 
+    
+    /** 
+     * @return CustomResponseData
+     */
     @PutMapping("/readPushNotificationDetective")
     public CustomResponseData readPushNotificationDetective(
         @RequestParam("requestFormIdx") Long requestFormIdx,

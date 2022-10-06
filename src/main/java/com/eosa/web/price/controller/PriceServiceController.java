@@ -24,6 +24,10 @@ public class PriceServiceController {
     @Autowired private CategoryService categoryService;
     @Autowired private RegionService regionService;
     
+    
+    /** 
+     * @return CustomResponseData
+     */
     @GetMapping("/selectCategoryRegion")
     public CustomResponseData selectCategoryRegion() {
         CustomResponseData result = new CustomResponseData();
@@ -48,6 +52,10 @@ public class PriceServiceController {
         return result;
     }
 
+    
+    /** 
+     * @return CustomResponseData
+     */
     @GetMapping("/selectCategory")
     public CustomResponseData selectCategory() {
         CustomResponseData result = new CustomResponseData();

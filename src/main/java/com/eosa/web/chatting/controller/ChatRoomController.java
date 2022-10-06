@@ -28,6 +28,10 @@ public class ChatRoomController {
     @Autowired private ChatRoomService chatRoomService;
     @Autowired private ChatMessageService chatMessageService;
 
+
+/** 
+ * @return CustomResponseData
+ */
 //    // 채팅 리스트 화면 MVC pattern
 //    @GetMapping("/room")
 //    public String room(Model model) {
@@ -181,6 +185,10 @@ public class ChatRoomController {
         return transaction;
     }
 
+    
+    /** 
+     * @return List<ChatRoom>
+     */
     @GetMapping("/room/currentChatRoomList")
     @ResponseBody
     public List<ChatRoom> currentChatRoomList() {
@@ -209,6 +217,10 @@ public class ChatRoomController {
         return result;
     }   
 
+    
+    /** 
+     * @return List<ChatRoom>
+     */
     // TestMethod 현재 존재하는 모든 채팅방 삭제
     // @Secured({"CLIENT", "DETECTIVE"})
     // @GetMapping("/testAllFlush")

@@ -3,6 +3,7 @@ package com.eosa.admin.service;
 import com.eosa.admin.mapper.SignMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 /**
  * packageName    : com.eosa.admin.service
@@ -24,11 +25,12 @@ public class SignService {
     /**
      * 사인 성공 서비스
      *
+     * @param model
      * @param requestContractIdx
      * @param requestFormIdx
      * @return String
      */
-    public String successSign(long requestContractIdx, long requestFormIdx) {
+    public String successSign(Model model, long requestContractIdx, long requestFormIdx, String path) {
 
         signMapper.updateTurn(requestContractIdx);
 
@@ -37,6 +39,8 @@ public class SignService {
         if (turn == 3) {
             signMapper.updateRequestStatus(requestFormIdx);
         }
+
+        model.addAttribute("path", path);
 
         return "admin/sign/success";
     }

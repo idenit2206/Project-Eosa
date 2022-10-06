@@ -19,6 +19,12 @@ public class NoticeController {
     @Autowired
     NoticeService noticeService;
 
+    
+    /** 
+     * @param model
+     * @param 
+     * @return String
+     */
     @GetMapping("/list")
     public String noticeList(
         Model model,
@@ -28,17 +34,33 @@ public class NoticeController {
         return noticeService.noticeList(model, search, page);
     }
 
+    
+    /** 
+     * @param model
+     * @param authentication
+     * @return String
+     */
     @GetMapping("/register")
     public String noticeRegister(Model model, Authentication authentication) {
         return noticeService.noticeRegister(model, authentication);
     }
 
+    
+    /** 
+     * @param noticeDTO
+     * @return int
+     */
     @ResponseBody
     @PostMapping("/insert")
     public int insertNotice(NoticeDTO noticeDTO) {
         return noticeService.insertNotice(noticeDTO);
     }
 
+    
+    /** 
+     * @param noticeDTO
+     * @return int
+     */
     @ResponseBody
     @PutMapping("/updateByNoticeIdx")
     public int updateNoticeByNoticeIdx(NoticeDTO noticeDTO) {
@@ -46,6 +68,10 @@ public class NoticeController {
     }
 
 
+    
+    /** 
+     * @param idx
+     */
     @ResponseBody
     @DeleteMapping("/deleteByNoticeIdx")
     public void deleteByNoticeIdx(@RequestParam("noticeIdx") Long idx) {

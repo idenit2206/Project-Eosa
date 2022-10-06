@@ -66,6 +66,11 @@ public class ChatRoomService implements ChatRoomRepository {
         return chatRooms.get(roomId);
     }
 
+    
+    /** 
+     * @param usersIdx
+     * @return List<ChatRoom>
+     */
     public List<ChatRoom> getChatRoomListByUsersIdx(Long usersIdx) {
         List<ChatRoom> result = new ArrayList<>();
         Iterator<String> keys = chatRooms.keySet().iterator();
@@ -112,11 +117,21 @@ public class ChatRoomService implements ChatRoomRepository {
         }
     }
 
+    
+    /** 
+     * @param roomId
+     * @return int
+     */
     @Override
     public int deleteRoomByRoomId(String roomId) {
         return chatRoomRepository.deleteRoomByRoomId(roomId);
     }
 
+    
+    /** 
+     * @param roomId
+     * @return List<ChatRoom>
+     */
     public List<ChatRoom> selectRoomListOnServer(String roomId) {
         chatRooms.remove(roomId);
         List<ChatRoom> result = new ArrayList<>(chatRooms.values());
@@ -159,6 +174,11 @@ public class ChatRoomService implements ChatRoomRepository {
         return result;
     }
 
+    
+    /** 
+     * @param roomId
+     * @return ChatRoom
+     */
     @Override
     public ChatRoom selectChatRoomByChatRoomId(String roomId) {
         return chatRoomRepository.selectChatRoomByChatRoomId(roomId);
@@ -180,6 +200,11 @@ public class ChatRoomService implements ChatRoomRepository {
         return result;
     }
     
+    
+    /** 
+     * @param roomId
+     * @return int
+     */
     public int setClientReadStatusUnread(String roomId) {
         ChatRoom c = null;
         Iterator<String> keys = chatRooms.keySet().iterator();
@@ -198,6 +223,11 @@ public class ChatRoomService implements ChatRoomRepository {
         }
     }
 
+    
+    /** 
+     * @param roomId
+     * @return int
+     */
     public int setDetectiveReadStatusUnread(String roomId) {
         ChatRoom c = null;
         Iterator<String> keys = chatRooms.keySet().iterator();
@@ -211,6 +241,11 @@ public class ChatRoomService implements ChatRoomRepository {
         return c.getDetectiveReadStatus();
     }
 
+    
+    /** 
+     * @param roomId
+     * @return int
+     */
     public int setClientReadStatusRead(String roomId) {
         ChatRoom c = null;
         Iterator<String> keys = chatRooms.keySet().iterator();
@@ -224,6 +259,11 @@ public class ChatRoomService implements ChatRoomRepository {
         return c.getClientReadStatus();
     }
 
+    
+    /** 
+     * @param roomId
+     * @return int
+     */
     public int setDetectiveReadStatusRead(String roomId) {
         ChatRoom c = null;
         Iterator<String> keys = chatRooms.keySet().iterator();
@@ -237,24 +277,43 @@ public class ChatRoomService implements ChatRoomRepository {
         return c.getDetectiveReadStatus();
     }
 
+    
+    /** 
+     * @return List<ChatRoom>
+     */
     @Override
     public List<ChatRoom> findAll() {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param sort
+     * @return List<ChatRoom>
+     */
     @Override
     public List<ChatRoom> findAll(Sort sort) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param ids
+     * @return List<ChatRoom>
+     */
     @Override
     public List<ChatRoom> findAllById(Iterable<Long> ids) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param entities
+     * @return List<S>
+     */
     @Override
     public <S extends ChatRoom> List<S> saveAll(Iterable<S> entities) {
         // TODO Auto-generated method stub
@@ -267,24 +326,42 @@ public class ChatRoomService implements ChatRoomRepository {
         
     }
 
+    
+    /** 
+     * @param entity
+     * @return S
+     */
     @Override
     public <S extends ChatRoom> S saveAndFlush(S entity) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param entities
+     * @return List<S>
+     */
     @Override
     public <S extends ChatRoom> List<S> saveAllAndFlush(Iterable<S> entities) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param entities
+     */
     @Override
     public void deleteAllInBatch(Iterable<ChatRoom> entities) {
         // TODO Auto-generated method stub
         
     }
 
+    
+    /** 
+     * @param ids
+     */
     @Override
     public void deleteAllByIdInBatch(Iterable<Long> ids) {
         // TODO Auto-generated method stub
@@ -297,78 +374,139 @@ public class ChatRoomService implements ChatRoomRepository {
         
     }
 
+    
+    /** 
+     * @param id
+     * @return ChatRoom
+     */
     @Override
     public ChatRoom getOne(Long id) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param id
+     * @return ChatRoom
+     */
     @Override
     public ChatRoom getById(Long id) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param id
+     * @return ChatRoom
+     */
     @Override
     public ChatRoom getReferenceById(Long id) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param example
+     * @return List<S>
+     */
     @Override
     public <S extends ChatRoom> List<S> findAll(Example<S> example) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param example
+     * @param sort
+     * @return List<S>
+     */
     @Override
     public <S extends ChatRoom> List<S> findAll(Example<S> example, Sort sort) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param pageable
+     * @return Page<ChatRoom>
+     */
     @Override
     public Page<ChatRoom> findAll(Pageable pageable) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param id
+     * @return Optional<ChatRoom>
+     */
     @Override
     public Optional<ChatRoom> findById(Long id) {
         // TODO Auto-generated method stub
         return Optional.empty();
     }
 
+    
+    /** 
+     * @param id
+     * @return boolean
+     */
     @Override
     public boolean existsById(Long id) {
         // TODO Auto-generated method stub
         return false;
     }
 
+    
+    /** 
+     * @return long
+     */
     @Override
     public long count() {
         // TODO Auto-generated method stub
         return 0;
     }
 
+    
+    /** 
+     * @param id
+     */
     @Override
     public void deleteById(Long id) {
         // TODO Auto-generated method stub
         
     }
 
+    
+    /** 
+     * @param entity
+     */
     @Override
     public void delete(ChatRoom entity) {
         // TODO Auto-generated method stub
         
     }
 
+    
+    /** 
+     * @param ids
+     */
     @Override
     public void deleteAllById(Iterable<? extends Long> ids) {
         // TODO Auto-generated method stub
         
     }
 
+    
+    /** 
+     * @param entities
+     */
     @Override
     public void deleteAll(Iterable<? extends ChatRoom> entities) {
         // TODO Auto-generated method stub
@@ -381,30 +519,56 @@ public class ChatRoomService implements ChatRoomRepository {
         
     }
 
+    
+    /** 
+     * @param example
+     * @return Optional<S>
+     */
     @Override
     public <S extends ChatRoom> Optional<S> findOne(Example<S> example) {
         // TODO Auto-generated method stub
         return Optional.empty();
     }
 
+    
+    /** 
+     * @param example
+     * @param pageable
+     * @return Page<S>
+     */
     @Override
     public <S extends ChatRoom> Page<S> findAll(Example<S> example, Pageable pageable) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param example
+     * @return long
+     */
     @Override
     public <S extends ChatRoom> long count(Example<S> example) {
         // TODO Auto-generated method stub
         return 0;
     }
 
+    
+    /** 
+     * @param example
+     * @return boolean
+     */
     @Override
     public <S extends ChatRoom> boolean exists(Example<S> example) {
         // TODO Auto-generated method stub
         return false;
     }
 
+    
+    /** 
+     * @param queryFunction
+     * @return R
+     */
     @Override
     public <S extends ChatRoom, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
         // TODO Auto-generated method stub

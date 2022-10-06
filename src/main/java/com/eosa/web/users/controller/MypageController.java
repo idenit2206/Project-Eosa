@@ -27,6 +27,10 @@ public class MypageController {
 
     @Autowired private UsersService usersService;
 
+    
+    /** 
+     * @return CustomResponseData
+     */
     @PostMapping("/mypage/checkPass")
     public CustomResponseData mypageCheckPass(
         @RequestBody String param
@@ -56,6 +60,10 @@ public class MypageController {
     }
     
 
+    
+    /** 
+     * @return CustomResponseData
+     */
     @PostMapping("/mypage/updateUserInfo")
     public CustomResponseData updateUserInfo(
         @RequestBody String param

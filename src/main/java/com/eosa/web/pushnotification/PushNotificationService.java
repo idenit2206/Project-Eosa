@@ -18,12 +18,22 @@ public class PushNotificationService {
     @Autowired private RequestFormRepository requestFormRepository;
     @Autowired private CompanysService companysService;
 
+    
+    /** 
+     * @param usersIdx
+     * @return List<RequestForm>
+     */
     public List<RequestForm> selectPushNotificationByUsersIdx(Long usersIdx) {
         List<RequestForm> items = requestFormRepository.selectRequestFormByUsersIdx(usersIdx);
         // log.debug("[selectPushNotificationByUsersIdx] 요청한 유저번호: {} ", usersIdx);
         return items;
     }
 
+    
+    /** 
+     * @param usersIdx
+     * @return List<RequestForm>
+     */
     public List<RequestForm> selectPushNotificationForDetective(Long usersIdx) {
         Long companysIdx =companysService.selectCompanysIdxByUsersIdx(usersIdx);
         List<RequestForm> items = requestFormRepository.selectPushNotificationForDetective(companysIdx);
@@ -31,6 +41,11 @@ public class PushNotificationService {
         return items;
     }    
 
+    
+    /** 
+     * @param companysIdx
+     * @return List<RequestForm>
+     */
     public List<RequestForm> selectPushNotificationByCompanysIdx(Long companysIdx) {
         List<RequestForm> items = requestFormRepository.selectRequestFormByCompanysIdx(companysIdx);
         return items;

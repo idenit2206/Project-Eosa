@@ -29,6 +29,12 @@ public class CustomPrincipalOAuth2UserService extends DefaultOAuth2UserService {
     
     @Autowired private UsersRepository usersRepository;
 
+    
+    /** 
+     * @param userRequest
+     * @return OAuth2User
+     * @throws OAuth2AuthenticationException
+     */
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         

@@ -45,6 +45,11 @@ public class ReportController {
         return reportService.reportList(model, state, page);
     }
 
+    
+    /** 
+     * @param reportDTO
+     * @return int
+     */
     @PutMapping("/update")
     @ResponseBody
     public int reportUpdate(ReportDTO reportDTO) {

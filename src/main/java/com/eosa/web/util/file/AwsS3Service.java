@@ -30,6 +30,10 @@ public class AwsS3Service {
     @Value("${cloud.aws.s3.bucket.url}") private String bucketURL;
     private final AmazonS3 amazonS3;
 
+
+/** 
+ * @return List<String>
+ */
 //    public String uploadSingleFile(MultipartFile file, String directoryName, Long companysIdx) {
 //        String fileName = directoryName + "_" +
 //                UUID.randomUUID().toString().substring(0,4) + "_" +
@@ -76,6 +80,13 @@ public class AwsS3Service {
         return result;
     }
 
+    
+    /** 
+     * @param files
+     * @param directoryName
+     * @param companysIdx
+     * @return List<String>
+     */
     public List<String> uploadMultipleFile(List<MultipartFile> files, String directoryName, Long companysIdx) {
         List<String> fileURLList = new ArrayList<>();
 

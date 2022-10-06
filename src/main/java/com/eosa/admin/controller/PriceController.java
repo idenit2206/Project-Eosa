@@ -27,6 +27,11 @@ import lombok.extern.slf4j.Slf4j;
 public class PriceController {
 
     @Autowired private PriceService priceService;
+    
+    /** 
+     * @param model
+     * @return String
+     */
     // private JsonParser jsonParser;
 
     @GetMapping("/list")
@@ -34,12 +39,22 @@ public class PriceController {
         return priceService.priceList(model);
     }
 
+    
+    /** 
+     * @return Map<String, Object>
+     */
     @GetMapping("/selectPrice")
     @ResponseBody
     public Map<String, Object> selectPrice() {
         return priceService.selectPrice();
     }
 
+    
+    /** 
+     * @param priceDTO
+     * @param model
+     * @return String
+     */
     @PostMapping("/updatePrice")
     public String updatePrice(
         PriceDTO priceDTO,
@@ -48,6 +63,11 @@ public class PriceController {
         return priceService.updatePrice(priceDTO, model);
     }
 
+    
+    /** 
+     * @param model
+     * @return String
+     */
     @PostMapping("/updateRegion")
     public String priceUpdateRegion(
         // @RequestParam(name="region", required = false) String region,
@@ -57,6 +77,11 @@ public class PriceController {
         return priceService.priceUpdateRegion(region, model);
     }
 
+    
+    /** 
+     * @param model
+     * @return String
+     */
     @PutMapping("/lockRegion")
     public String lockRegion(
         @RequestParam List<Long> regionIdxList,
@@ -65,6 +90,11 @@ public class PriceController {
         return priceService.lockRegion(regionIdxList, model);
     }
 
+    
+    /** 
+     * @param model
+     * @return String
+     */
     @PutMapping("/unlockRegion")
     public String unlockRegion(
         @RequestParam List<Long> regionIdxList,
@@ -73,6 +103,11 @@ public class PriceController {
         return priceService.unlockRegion(regionIdxList, model);
     }
 
+    
+    /** 
+     * @param model
+     * @return String
+     */
     @DeleteMapping("/deleteRegion")
     public String deleteRegion(
         @RequestParam List<Long> regionIdxList,
@@ -82,6 +117,11 @@ public class PriceController {
     }
 
     
+    
+    /** 
+     * @param model
+     * @return String
+     */
     @PostMapping("/updateCategory")
     public String priceUpdateCategory(
         @RequestPart String category,
@@ -92,6 +132,11 @@ public class PriceController {
         return priceService.priceUpdateCategory(category, categoryIcon, model);
     }
 
+    
+    /** 
+     * @param model
+     * @return String
+     */
     @DeleteMapping("/deleteCategory")
     public String deleteCategory(
         @RequestParam List<Long> categoryIdxList,

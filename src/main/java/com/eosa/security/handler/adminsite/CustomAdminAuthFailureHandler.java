@@ -18,7 +18,15 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class CustomAdminAuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
-    /*
+    
+	/** 
+	 * @param request
+	 * @param response
+	 * @param exception
+	 * @throws IOException
+	 * @throws ServletException
+	 */
+	/*
 	 * HttpServletRequest : request 정보
 	 * HttpServletResponse : Response에 대해 설정할 수 있는 변수
 	 * AuthenticationException : 로그인 실패 시 예외에 대한 정보

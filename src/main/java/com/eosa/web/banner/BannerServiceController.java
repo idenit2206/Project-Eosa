@@ -17,6 +17,10 @@ public class BannerServiceController {
 
     @Autowired private BannerServiceService bannerService;
 
+    
+    /** 
+     * @return CustomResponseData
+     */
     @GetMapping("/selectAllBanner")
     public CustomResponseData selectAllBanner() {
         CustomResponseData result = new CustomResponseData();
@@ -36,6 +40,10 @@ public class BannerServiceController {
         return result;
     }
 
+    
+    /** 
+     * @return CustomResponseData
+     */
     @GetMapping("/selectAllDetectiveBanner")
     public CustomResponseData selectAllDetectiveBanner() {
         CustomResponseData result = new CustomResponseData();

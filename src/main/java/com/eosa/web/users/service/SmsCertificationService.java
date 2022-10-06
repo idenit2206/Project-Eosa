@@ -19,6 +19,11 @@ public class SmsCertificationService {
     private static Map<String, String> authKeyList = new HashMap<>();
     @Autowired private RedisTemplate<String, String> redisTemplate;
 
+    
+    /** 
+     * @param usersPhone
+     * @return String
+     */
     public String createCertificationCode(String usersPhone) {
         String result = "";
         while(result.length() <= 5) {
@@ -30,12 +35,22 @@ public class SmsCertificationService {
         return result;
     }
 
+    
+    /** 
+     * @param usersPhone
+     * @param code
+     */
     public void savedAuthCode(String usersPhone, String code) {
         log.info("[savedAuthCode] redis에 인증코드 객체를 저장합니다.");
         redisTemplate.opsForValue()
             .set(usersPhone, code, Duration.ofSeconds(180));
     }
 
+    
+    /** 
+     * @param usersPhone
+     * @return String
+     */
     public String getAuthCode(String usersPhone) {
         log.info("[savedAuthCode] redis의 인증정보와 비교합니다.");
 //        log.info("server의 인증정보를 가져옵니다.");
@@ -43,6 +58,10 @@ public class SmsCertificationService {
         return authKeyList.get(usersPhone);
     }
 
+    
+    /** 
+     * @param usersPhone
+     */
     public void removeAuthCode(String usersPhone) {
 //        log.info("redis의 인증정보를 삭제합니다.");
 //        redisTemplate.delete(usersPhone);

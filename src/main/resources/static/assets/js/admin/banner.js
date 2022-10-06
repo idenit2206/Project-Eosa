@@ -189,14 +189,14 @@ const bannerUpdate = () => {
             window.location.reload();
         }
         else {
-            if(mainElement == 'mainbanner') {
+            if(mainElement == 'mainbanner') {               
                 fetch(`/admin/manage/banner/update`, { method: "PUT", body: formData })
                     .then(response => response)
                     .then(data => {
                         if(data.status == 200) {
                             alert("변경을 완료했습니다.");
                             window.location.reload();
-                        }
+                        }                       
                     })
             }
             else {

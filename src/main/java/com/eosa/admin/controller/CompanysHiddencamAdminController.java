@@ -20,6 +20,12 @@ public class CompanysHiddencamAdminController {
 
     @Autowired private CompanysHiddencamAdminService companysHiddencamAdminService;
 
+    
+    /** 
+     * @param model
+     * @param 
+     * @return String
+     */
     @GetMapping("/list")
     public String companysHiddencamList(
         Model model,
@@ -31,16 +37,33 @@ public class CompanysHiddencamAdminController {
         return companysHiddencamAdminService.companysHiddencamList(model, enabled, sort, search, page);
     }
     
+    
+    /** 
+     * @param model
+     * @param companysHiddencamIdx
+     * @return String
+     */
     @GetMapping("/details")
     public String companysHiddencamDetails(Model model, @RequestParam long companysHiddencamIdx) {
         return companysHiddencamAdminService.companysHiddencamDetails(model, companysHiddencamIdx);
     }
 
+    
+    /** 
+     * @param model
+     * @param companysHiddencamDTO
+     * @return String
+     */
     @PutMapping("/update")
     public String companysHiddencamUpdate(Model model, CompanysHiddencamDTO companysHiddencamDTO) {
         return companysHiddencamAdminService.companysHiddencamUpdate(model, companysHiddencamDTO);
     }
 
+    
+    /** 
+     * @param model
+     * @return String
+     */
     @DeleteMapping("/delete")
     public String companysHiddencamDelete(
         @RequestParam List<Long> companysHiddencamIdxList,

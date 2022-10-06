@@ -22,6 +22,12 @@ public class BannerController {
 
     @Autowired private BannerService bannerService;
 
+    
+    /** 
+     * @param model
+     * @return String
+     * @throws IOException
+     */
     @PutMapping("/update")
     public String bannerUpdate(
         @RequestParam(name="bannerFile", required = false) List<MultipartFile> bannerFile,
@@ -34,11 +40,21 @@ public class BannerController {
         // return "/admin/banner/list";
     }
 
+    
+    /** 
+     * @param model
+     * @return String
+     */
     @GetMapping("/list")
     public String bannerList(Model model) {
         return bannerService.bannerList(model);
     }
 
+    
+    /** 
+     * @param model
+     * @return String
+     */
     // 탐정 페이지 배너
     @PutMapping("/detectiveBannerUpdate")
     public String detectiveBannerUpdate(
@@ -52,6 +68,11 @@ public class BannerController {
     }
 
 
+    
+    /** 
+     * @param model
+     * @return String
+     */
     @GetMapping("/detectiveBannerList")
     public String detectiveBannerList(Model model) {
         return bannerService.detectiveBannerList(model);

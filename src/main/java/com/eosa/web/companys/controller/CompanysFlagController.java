@@ -33,6 +33,11 @@ public class CompanysFlagController {
     @Autowired private CompanysFlagRegionService companysFlagRegionService;
     @Autowired private CompanysFlagCategoryService companysFlagCategoryService;
 
+    
+    /** 
+     * @param strings
+     * @return List<String>
+     */
     public List<String> stringsToArray (String strings) {
         List<String> result = new ArrayList<>();
         int count = 0;
@@ -57,6 +62,12 @@ public class CompanysFlagController {
     }
 
 
+    
+    /** 
+     * @param companysFlag
+     * @param companysFlagCategory
+     * @return CustomResponseData
+     */
     @PostMapping("/insertCompanysFlag")
     public CustomResponseData insertCompanysFlag(
         CompanysFlag companysFlag,
@@ -116,6 +127,10 @@ public class CompanysFlagController {
         return result;
     }
 
+    
+    /** 
+     * @return CustomResponseData
+     */
     @GetMapping("/selectAllCompanysFlag")
     public CustomResponseData selectAllCompanysFlag() {
         CustomResponseData result = new CustomResponseData();
@@ -135,6 +150,10 @@ public class CompanysFlagController {
         return result;
     }
 
+    
+    /** 
+     * @return CustomResponseData
+     */
     @GetMapping("/selectCompanysFlagByFilter")
     public CustomResponseData selectCompanysFlagByFilter(
         @RequestParam(value = "companysCategory", required = false, defaultValue = "") List<String> companysCategory,

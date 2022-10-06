@@ -71,6 +71,10 @@ public class CustomPrincipalDetails implements UserDetails, OAuth2User {
          return auths;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String customGetAuthorities() {
         return users.getUsersRole();
     }
@@ -108,6 +112,10 @@ public class CustomPrincipalDetails implements UserDetails, OAuth2User {
         return users.getUsersPass();
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getUsersRole() {
         return users.getUsersRole();
     }

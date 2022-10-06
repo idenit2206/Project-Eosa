@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" oncontextmenu="return false">
+<html lang="ko" oncontextmenu="return false" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
 	<title>계약서 사인</title>
@@ -40,7 +40,7 @@
 <body>
 	<div class="sign-form">
 		<span>서명이 완료되었습니다.</span>
-		<button type="button" onclick="window.close()">닫기</button>
+		<button type="button" th:onclick="|location.href = ${path}|">돌아가기</button>
 	</div>
 </body>
 <script>

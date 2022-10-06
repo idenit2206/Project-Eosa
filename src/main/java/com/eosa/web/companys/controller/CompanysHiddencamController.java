@@ -17,6 +17,11 @@ public class CompanysHiddencamController {
 
     @Autowired CompanysHiddencamService companysHiddencamService;
 
+    
+    /** 
+     * @param companysHiddencam
+     * @return CustomResponseData
+     */
     @PostMapping("/insertCompanysHiddenCamRequest")
     public CustomResponseData insertCompanysHiddenCamRequest(CompanysHiddencam companysHiddencam) {
         CustomResponseData result = new CustomResponseData();

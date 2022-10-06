@@ -213,6 +213,11 @@ public class CompanysController {
         return result;
     }
 
+    
+    /** 
+     * @param selectAllCompanys(
+     * @return CustomResponseData
+     */
     // @Secured({"CLIENT", "DETECTIVE"})
     @GetMapping("/selectAllCompanys")
     public CustomResponseData selectAllCompanys(
@@ -228,6 +233,10 @@ public class CompanysController {
         return result;
     }
 
+    
+    /** 
+     * @return CustomResponseData
+     */
     @GetMapping("/selectAllCompanysRandom")
     public CustomResponseData selectAllCompanysRandom() {
         CustomResponseData result = new CustomResponseData();
@@ -712,6 +721,11 @@ public class CompanysController {
         return result;
     }
 
+    
+    /** 
+     * @param selectOneCompanysUserLikeCompanyEnableByCompanysIdxUsersIdxTest(
+     * @return CustomResponseData
+     */
     @GetMapping("/selectOneCompanysUserLikeCompanyEnableByCompanysIdxUsersIdx")
     public CustomResponseData selectOneCompanysUserLikeCompanyEnableByCompanysIdxUsersIdxTest(
             @RequestParam("companysIdx") Long companysIdx, @RequestParam("usersIdx") Long usersIdx) {
@@ -724,6 +738,11 @@ public class CompanysController {
         return result;
     }
 
+    
+    /** 
+     * @param selectListCompanysUserLikeCompanyEnableByCompanysIdxUsersIdxTest(
+     * @return CustomResponseData
+     */
     @GetMapping("/selectListCompanysUserLikeCompanyEnableByCompanysIdxUsersIdx")
     public CustomResponseData selectListCompanysUserLikeCompanyEnableByCompanysIdxUsersIdxTest(
             @RequestParam("companysIdx") List<Long> companysIdxList,
@@ -751,6 +770,11 @@ public class CompanysController {
         return result;
     }
 
+    
+    /** 
+     * @param usersIdx
+     * @return CustomResponseData
+     */
     @GetMapping("/selectCompanysPremiumEnabled")
     public CustomResponseData selectCompanysPremiumEnabled(@RequestParam("usersIdx") Long usersIdx) {
         CustomResponseData result = new CustomResponseData();

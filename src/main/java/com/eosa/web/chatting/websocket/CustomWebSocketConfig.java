@@ -28,6 +28,10 @@ public class CustomWebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.setApplicationDestinationPrefixes("/app");
     }
 
+    
+    /** 
+     * @param registry
+     */
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry
@@ -36,6 +40,10 @@ public class CustomWebSocketConfig implements WebSocketMessageBrokerConfigurer {
             .withSockJS();
     }
 
+    
+    /** 
+     * @param registration
+     */
     @Override
     public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
         registration.setMessageSizeLimit(5 * 1024 * 1024);

@@ -22,6 +22,11 @@ public class CompanysHiddencamService implements CompanysHiddencamRepository {
 
     @Autowired private CompanysHiddencamRepository companysHiddencamRepository;
 
+    
+    /** 
+     * @param entity
+     * @return S
+     */
     @Override
     public <S extends CompanysHiddencam> S save(S entity) {
         entity.setCompanysHiddencamRequestDate(LocalDateTime.now());
@@ -29,46 +34,85 @@ public class CompanysHiddencamService implements CompanysHiddencamRepository {
         return companysHiddencamRepository.save(entity);
     }
 
+    
+    /** 
+     * @return List<CompanysHiddencam>
+     */
     @Override
     public List<CompanysHiddencam> findAll() {
         return null;
     }
 
+    
+    /** 
+     * @param sort
+     * @return List<CompanysHiddencam>
+     */
     @Override
     public List<CompanysHiddencam> findAll(Sort sort) {
         return null;
     }
 
+    
+    /** 
+     * @param pageable
+     * @return Page<CompanysHiddencam>
+     */
     @Override
     public Page<CompanysHiddencam> findAll(Pageable pageable) {
         return null;
     }
 
+    
+    /** 
+     * @param longs
+     * @return List<CompanysHiddencam>
+     */
     @Override
     public List<CompanysHiddencam> findAllById(Iterable<Long> longs) {
         return null;
     }
 
+    
+    /** 
+     * @return long
+     */
     @Override
     public long count() {
         return 0;
     }
 
+    
+    /** 
+     * @param aLong
+     */
     @Override
     public void deleteById(Long aLong) {
 
     }
 
+    
+    /** 
+     * @param entity
+     */
     @Override
     public void delete(CompanysHiddencam entity) {
 
     }
 
+    
+    /** 
+     * @param longs
+     */
     @Override
     public void deleteAllById(Iterable<? extends Long> longs) {
 
     }
 
+    
+    /** 
+     * @param entities
+     */
     @Override
     public void deleteAll(Iterable<? extends CompanysHiddencam> entities) {
 
@@ -79,16 +123,31 @@ public class CompanysHiddencamService implements CompanysHiddencamRepository {
 
     }
 
+    
+    /** 
+     * @param entities
+     * @return List<S>
+     */
     @Override
     public <S extends CompanysHiddencam> List<S> saveAll(Iterable<S> entities) {
         return null;
     }
 
+    
+    /** 
+     * @param aLong
+     * @return Optional<CompanysHiddencam>
+     */
     @Override
     public Optional<CompanysHiddencam> findById(Long aLong) {
         return Optional.empty();
     }
 
+    
+    /** 
+     * @param aLong
+     * @return boolean
+     */
     @Override
     public boolean existsById(Long aLong) {
         return false;
@@ -99,21 +158,39 @@ public class CompanysHiddencamService implements CompanysHiddencamRepository {
 
     }
 
+    
+    /** 
+     * @param entity
+     * @return S
+     */
     @Override
     public <S extends CompanysHiddencam> S saveAndFlush(S entity) {
         return null;
     }
 
+    
+    /** 
+     * @param entities
+     * @return List<S>
+     */
     @Override
     public <S extends CompanysHiddencam> List<S> saveAllAndFlush(Iterable<S> entities) {
         return null;
     }
 
+    
+    /** 
+     * @param entities
+     */
     @Override
     public void deleteAllInBatch(Iterable<CompanysHiddencam> entities) {
 
     }
 
+    
+    /** 
+     * @param longs
+     */
     @Override
     public void deleteAllByIdInBatch(Iterable<Long> longs) {
 
@@ -124,51 +201,103 @@ public class CompanysHiddencamService implements CompanysHiddencamRepository {
 
     }
 
+    
+    /** 
+     * @param aLong
+     * @return CompanysHiddencam
+     */
     @Override
     public CompanysHiddencam getOne(Long aLong) {
         return null;
     }
 
+    
+    /** 
+     * @param aLong
+     * @return CompanysHiddencam
+     */
     @Override
     public CompanysHiddencam getById(Long aLong) {
         return null;
     }
 
+    
+    /** 
+     * @param aLong
+     * @return CompanysHiddencam
+     */
     @Override
     public CompanysHiddencam getReferenceById(Long aLong) {
         return null;
     }
 
+    
+    /** 
+     * @param example
+     * @return Optional<S>
+     */
     @Override
     public <S extends CompanysHiddencam> Optional<S> findOne(Example<S> example) {
         return Optional.empty();
     }
 
+    
+    /** 
+     * @param example
+     * @return List<S>
+     */
     @Override
     public <S extends CompanysHiddencam> List<S> findAll(Example<S> example) {
         return null;
     }
 
+    
+    /** 
+     * @param example
+     * @param sort
+     * @return List<S>
+     */
     @Override
     public <S extends CompanysHiddencam> List<S> findAll(Example<S> example, Sort sort) {
         return null;
     }
 
+    
+    /** 
+     * @param example
+     * @param pageable
+     * @return Page<S>
+     */
     @Override
     public <S extends CompanysHiddencam> Page<S> findAll(Example<S> example, Pageable pageable) {
         return null;
     }
 
+    
+    /** 
+     * @param example
+     * @return long
+     */
     @Override
     public <S extends CompanysHiddencam> long count(Example<S> example) {
         return 0;
     }
 
+    
+    /** 
+     * @param example
+     * @return boolean
+     */
     @Override
     public <S extends CompanysHiddencam> boolean exists(Example<S> example) {
         return false;
     }
 
+    
+    /** 
+     * @param queryFunction
+     * @return R
+     */
     @Override
     public <S extends CompanysHiddencam, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return null;

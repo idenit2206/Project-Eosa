@@ -15,6 +15,14 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class CustomAdminLogoutSuccessHandler implements LogoutSuccessHandler {
 
+    
+    /** 
+     * @param request
+     * @param response
+     * @param authentication
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void onLogoutSuccess(
         HttpServletRequest request, HttpServletResponse response, Authentication authentication

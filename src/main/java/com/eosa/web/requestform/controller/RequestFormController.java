@@ -312,6 +312,10 @@ public class RequestFormController {
         return result;
     }
 
+    
+    /** 
+     * @return CustomResponseData
+     */
     @GetMapping("/selectRequestFormByRequsetFormIdx")
     public CustomResponseData selectRequestFormByRequsetFormIdx(
         @RequestParam("requestFormIdx") Long requestFormIdx

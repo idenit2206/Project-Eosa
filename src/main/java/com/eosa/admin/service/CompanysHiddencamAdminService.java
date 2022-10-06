@@ -21,6 +21,15 @@ public class CompanysHiddencamAdminService {
     
     @Autowired private CompanysHiddencamMapper companyHiddencamMapper;
 
+    
+    /** 
+     * @param model
+     * @param enabled
+     * @param sort
+     * @param search
+     * @param page
+     * @return String
+     */
     public String companysHiddencamList(Model model, int enabled, String sort, String search, int page) {
 
         Map<String, Object> map = new HashMap<>();
@@ -44,6 +53,12 @@ public class CompanysHiddencamAdminService {
         return "admin/company/companysHiddencamList";
     }
 
+    
+    /** 
+     * @param model
+     * @param companysHiddencamIdx
+     * @return String
+     */
     public String companysHiddencamDetails(Model model, long companysHiddencamIdx) {
         // CompanysHiddencamDTO details = companyHiddencamMapper.selectCompanysHiddencamDetails(companysHiddencamIdx);
         CompanysHiddencamDTO details = companyHiddencamMapper.selectCompanysHiddencamDetails(companysHiddencamIdx);
@@ -52,6 +67,12 @@ public class CompanysHiddencamAdminService {
         return "admin/company/companysHiddencamDetails";
     }
 
+    
+    /** 
+     * @param model
+     * @param companysHiddencamDTO
+     * @return String
+     */
     public String companysHiddencamUpdate(Model model, CompanysHiddencamDTO companysHiddencamDTO) {
         log.debug("[update] dto: {}", companysHiddencamDTO.toString());
         int updateQuery = companyHiddencamMapper.hiddencamUpdate(companysHiddencamDTO);
@@ -62,6 +83,11 @@ public class CompanysHiddencamAdminService {
         return "admin/company/companysHiddencamDetails";
     }
 
+    
+    /** 
+     * @param model
+     * @return String
+     */
     public String companysHiddencamDelete(
         @RequestParam List<Long> companysHiddencamIdxList,
         @RequestParam(defaultValue = "1") int enabled,

@@ -32,6 +32,14 @@ public class BannerService {
     @Autowired private AwsS3Service awsS3Service;
     
 
+    
+    /** 
+     * @param bannerFile
+     * @param bannerItem
+     * @param model
+     * @return String
+     * @throws IOException
+     */
     public String bannerUpdate(
         List<MultipartFile> bannerFile,
         String bannerItem,
@@ -71,6 +79,11 @@ public class BannerService {
         return "admin/banner/list";
     }
 
+    
+    /** 
+     * @param model
+     * @return String
+     */
     public String bannerList(Model model) {
 
         List<BannerDTO> items = bannerMapper.bannerList();
@@ -81,6 +94,13 @@ public class BannerService {
         return "admin/banner/list";
     }
 
+    
+    /** 
+     * @param bannerFile
+     * @param bannerItem
+     * @param model
+     * @return String
+     */
     // 탐정 페이지 배너 관리
     public String detectiveBannerUpdate(
         List<MultipartFile> bannerFile,
@@ -145,6 +165,11 @@ public class BannerService {
     }
 
 
+    
+    /** 
+     * @param model
+     * @return String
+     */
     public String detectiveBannerList(Model model) {
 
         List<BannerDTO> items = bannerMapper.detectivePageBannerList();

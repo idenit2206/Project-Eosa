@@ -51,6 +51,10 @@ public class PolicyService {
     }
 
 
+    
+    /** 
+     * @return List<PolicyDTO>
+     */
     public List<PolicyDTO> selecPolicyDTO() {
         return policyMapper.selectPolicy();
     }

@@ -34,6 +34,10 @@ public class MailController {
         mailService.mailSend(mailEntity);
     }
 
+    
+    /** 
+     * @param mailEntity
+     */
     @PostMapping("/sendCode")
     public void codeMailSend(MailEntity mailEntity) {        
         String code = UUID.randomUUID().toString();

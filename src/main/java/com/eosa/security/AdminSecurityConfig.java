@@ -24,6 +24,12 @@ public class AdminSecurityConfig {
         "/admin", "/admin/sign/**"
     };
 
+    
+    /** 
+     * @param http
+     * @return SecurityFilterChain
+     * @throws Exception
+     */
     @Bean
     public SecurityFilterChain adminFilterChain(HttpSecurity http) throws Exception {
 

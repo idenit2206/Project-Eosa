@@ -135,6 +135,11 @@ public class DetectiveRequestFormController {
         return result;
     }
 
+    
+    /** 
+     * @param updateRequestFormStatusByRequestFormIdx(
+     * @return CustomResponseData
+     */
     @PostMapping("/updateRequestFormStatusByRequestFormIdx")
     public CustomResponseData updateRequestFormStatusByRequestFormIdx(
             @RequestParam(name = "requestFormIdx") Long requestFormIdx,

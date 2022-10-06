@@ -20,6 +20,10 @@ public class NoticeWebController {
     @Autowired
     NoticeWebService noticeWebService;
 
+    
+    /** 
+     * @return CustomResponseData
+     */
     @GetMapping("/selectNotice")
     public CustomResponseData selectNotice() {
         CustomResponseData result = new CustomResponseData();
@@ -40,6 +44,11 @@ public class NoticeWebController {
         return result;
     }
 
+    
+    /** 
+     * @param idx
+     * @return CustomResponseData
+     */
     @GetMapping("/selectNoticeByNoticeIdx")
     public CustomResponseData selectNoticeByNoticeIdx(@RequestParam("idx") Long idx) {
         CustomResponseData result = new CustomResponseData();

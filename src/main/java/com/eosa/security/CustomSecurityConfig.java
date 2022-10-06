@@ -21,11 +21,19 @@ public class CustomSecurityConfig {
     @Autowired private CustomPrincipalOAuth2UserService customPrincipalOAuth2UserService;    
     @Value("${my.service.domain}") private String myDomain;
 
+    
+    /** 
+     * @return BCryptPasswordEncoder
+     */
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
 
+    
+    /** 
+     * @return CorsConfigurationSource
+     */
     @Bean
     public CorsConfigurationSource customConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -46,6 +54,12 @@ public class CustomSecurityConfig {
 
     
 
+    
+    /** 
+     * @param http
+     * @return SecurityFilterChain
+     * @throws Exception
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http

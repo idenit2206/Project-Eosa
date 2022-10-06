@@ -39,6 +39,13 @@ public class AppleController {
     @Value("${my.service.domain}") private String myDomain;
     @Value("${my.ui.port}") private String myUiPort;
 
+    
+    /** 
+     * @param response
+     * @throws JOSEException
+     * @throws ParseException
+     * @throws IOException
+     */
     @PostMapping("/api/user/apple/loginCallBack")
     @ResponseBody
     public void appleLoginCallBack(
@@ -157,6 +164,11 @@ public class AppleController {
         // return mv;
     }
 
+    
+    /** 
+     * @param id_token
+     * @return JSONObject
+     */
     public JSONObject decodeFromIdToken(String id_token) {
 
         try {

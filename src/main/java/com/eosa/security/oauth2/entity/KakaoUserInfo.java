@@ -16,21 +16,37 @@ public class KakaoUserInfo implements CustomOAuth2UserInfo {
         this.attributesProfile = (Map<String, Object>) attributesAccount.get("profile");
     }
 
+    
+    /** 
+     * @return String
+     */
     @Override
     public String getEmail() {
         return attributesAccount.get("email").toString();
     }
 
+    
+    /** 
+     * @return String
+     */
     @Override
     public String getProvider() {
         return "Kakao";
     }
 
+    
+    /** 
+     * @return String
+     */
     @Override
     public String getProviderId() {
         return attributes.get("id").toString();
     }
 
+    
+    /** 
+     * @return Map<String, Object>
+     */
     @Override
     public Map<String, Object> getAttributes() {
         return attributes;

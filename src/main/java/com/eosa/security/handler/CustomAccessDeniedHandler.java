@@ -14,6 +14,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
+    
+    /** 
+     * @param request
+     * @param response
+     * @param accessDeniedException
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void handle(
         HttpServletRequest request, HttpServletResponse response,
