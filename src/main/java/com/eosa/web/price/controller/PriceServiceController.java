@@ -48,4 +48,23 @@ public class PriceServiceController {
         return result;
     }
 
+    @GetMapping("/selectCategory")
+    public CustomResponseData selectCategory() {
+        CustomResponseData result = new CustomResponseData();
+        List<Category> categories = categoryService.findAll();
+
+        if(categories != null) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(categories);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
+
 }
