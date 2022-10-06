@@ -89,7 +89,7 @@ public class ChatRoomService implements ChatRoomRepository {
     public <S extends ChatRoom> S save(S entity) {
         if(entity.getCompanysIdx() == 0) {
             entity.setRoomId(UUID.randomUUID().toString());
-            entity.setRoomName("ADMIN");
+            entity.setRoomName("상담사");
             entity.setDataInfo("");
             entity.setCreatedDate(LocalDateTime.now());
             entity.setUsable(1);
