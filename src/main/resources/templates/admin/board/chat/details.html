@@ -121,6 +121,10 @@
         window.addEventListener('load', function () {
             highlightMenu();
             connectSocket();
+
+            const msgBody = document.querySelector('.chatBody');
+            const msgHeight = document.querySelector('.chatMessageBoard2').scrollHeight;
+            msgBody.scrollBy(0, msgHeight);
         });
     </script>
 </th:block>
