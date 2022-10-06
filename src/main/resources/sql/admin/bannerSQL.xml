@@ -7,9 +7,9 @@
     </delete>
 
     <insert id="bannerUpdate" parameterType="BannerDTO">
-        INSERT INTO AdminBannerManage(bannerTag, bannerFileName, bannerFileLink, bannerHref)
-        VALUES(#{bannerTag}, #{bannerFileName}, #{bannerFileLink}, #{bannerHref})
-        <!-- ON DUPLICATE KEY UPDATE bannerFileName = #{bannerFileName}, bannerFileLink = #{bannerFileLink}, bannerHref = #{bannerHref} -->
+        INSERT INTO AdminBannerManage(idx, bannerTag, bannerFileName, bannerFileLink, bannerHref)
+        VALUES(#{idx}, #{bannerTag}, #{bannerFileName}, #{bannerFileLink}, #{bannerHref})
+        ON DUPLICATE KEY UPDATE bannerFileName = #{bannerFileName}, bannerFileLink = #{bannerFileLink}, bannerHref = #{bannerHref}
     </insert>
 
     <!-- <delete id="bannerTruncate">
@@ -36,7 +36,7 @@
     <insert id="detectiveBannerUpdate" parameterType="BannerDTO">
         INSERT INTO AdminDetectiveBannerManage(idx, bannerTag, bannerFileName, bannerFileLink, bannerHref)
         VALUES(#{idx}, #{bannerTag}, #{bannerFileName}, #{bannerFileLink}, #{bannerHref})
-        <!-- ON DUPLICATE KEY UPDATE bannerFileName = #{bannerFileName}, bannerFileLink = #{bannerFileLink} -->
+        ON DUPLICATE KEY UPDATE bannerFileName = #{bannerFileName}, bannerFileLink = #{bannerFileLink}, bannerHref = #{bannerHref}
     </insert>
 
     <select id="detectivePageBannerList" resultType="BannerDTO">
