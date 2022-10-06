@@ -19,5 +19,6 @@ public class Region {
     private Long regionIdx;
     @Column private String regionName;
     @Column private int regionPrice;
+    @Column private int regionSelectable;
     
 }
