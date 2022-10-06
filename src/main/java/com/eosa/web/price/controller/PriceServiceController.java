@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -80,7 +81,8 @@ public class PriceServiceController {
     @GetMapping("/selectCategory")
     public CustomResponseData selectCategory() {
         CustomResponseData result = new CustomResponseData();
-        List<Category> categories = categoryService.findAll();
+        
+        List<Category> categories = categoryService.findAllASC();
 
         if(categories != null) {
             result.setStatusCode(HttpStatus.OK.value());

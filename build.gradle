@@ -12,7 +12,7 @@ plugins {
 }
 
 group = 'com.eosa'
-version = '1.1006.1443'
+version = '1.1006.1709'
 sourceCompatibility = '11'
 
 configurations {
@@ -63,11 +63,8 @@ dependencies {
 	runtimeOnly 'mysql:mysql-connector-java'
 
 	implementation 'org.springframework.boot:spring-boot-configuration-processor'
-	// annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'junit:junit:4.13.1'
-
 
 	// mybatis
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
@@ -84,6 +81,12 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+javadoc {
+	source = sourceSets.main.java
+	options.encoding = 'UTF-8'
+}
+
 
 // // Intergration Springboot & React
 // def UI = "$projectDir/src/main/ui"

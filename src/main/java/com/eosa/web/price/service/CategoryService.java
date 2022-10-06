@@ -29,6 +29,16 @@ public class CategoryService implements CategoryRepository {
         return categoryRepository.findAll();
     }
 
+    /** 
+     * select List<Category> Order by ASC
+     * @return List<Category>
+     */
+    @Override
+    public List<Category> findAllASC() {
+        return categoryRepository.findAllASC();
+    }
+
+
     
     /** 
      * @param sort
@@ -36,7 +46,6 @@ public class CategoryService implements CategoryRepository {
      */
     @Override
     public List<Category> findAll(Sort sort) {
-        // TODO Auto-generated method stub
         return null;
     }
 

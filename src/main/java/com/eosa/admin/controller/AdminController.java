@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
  * -----------------------------------------------------------
  * 2022-09-08        Jihun Kim       최초 생성
  */
+
+
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -28,8 +30,7 @@ public class AdminController {
     private AdminService adminService;
 
     /**
-     * 관리자 로그인 폼 컨트롤러
-     *
+     * 관리자사이트의 메인페이지로 이동하는 메서드입니다.
      * @param model
      * @return String
      */

@@ -66,10 +66,9 @@ public class BannerController {
         if(bannerItem != null) { log.debug("[bannerUpdate] bannerItem: {}", bannerItem); }
         return bannerService.detectiveBannerUpdate(bannerFile, bannerItem, model);
     }
-
-
     
     /** 
+     * detective 페이지 banner 조회
      * @param model
      * @return String
      */
