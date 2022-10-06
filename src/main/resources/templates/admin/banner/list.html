@@ -5,40 +5,56 @@
 
 <th:block layout:fragment="content">
     <th:block th:replace="admin/fragments/aside :: asideFragment"></th:block>
-    <main id="main" class="main-list" data-category="mainbanner">
+    <main id="main" class="main-list banner-list" data-category="banner" data-value="mainbanner">
         <section class="section section-users">
             <h2 class="section_title">메인 페이지 배너 관리</h2>
-            <div class="table"> 
-               <div class="table__top">
-                   <div class="top-wrap">
-                       <div class="header-wrap">
-                           <table>
-                              <tbody class="bannerTableBody">
-                                    <tr class="bannerRows" th:each="item, index : ${items}">
-                                        <td class="bannerPreviewCell" th:id="${item.idx}">
-                                            <img class="bannerPreview" th:src="${item.bannerFileLink}"/>
-                                        </td>
-                                        <td class="bannerInputCell">
-                                            <input type="file" class="bannerFileInput" accept="image/jpeg, image/png"
-                                                th:id="${item.bannerFileName}"
-                                                th:onchange="FileUpProcess(this, [[${index.index}]])"/>
-                                            <span class="bannerFileInputRemove">x</span>
-                                            <br/>
-                                            <label>Url: </label>
-                                            <input type="text" class="bannerHrefInput" th:value="${item.bannerHref}"/>
-                                        </td>
-                                        <td th:id="${item.idx}" class="bannerCellRemove" onclick="bannerRemoveItem(this)">삭제</td>                                     
-                                    </tr>                              
-                               </tbody>
-                           </table>
+
+            <div class="banner-table">
+                <div class="table">
+                   <div class="table__top">
+                       <div class="top-wrap">
+                           <div class="header-wrap">
+                               <table class="border-1">
+                                  <tbody class="bannerTableBody">
+                                        <tr class="bannerRows" th:each="item, index : ${items}">
+                                            <td class="bannerPreviewCell" th:id="${item.idx}">
+                                                <div class="img-wrap">
+                                                    <img class="bannerPreview" th:src="${item.bannerFileLink}"/>
+                                                </div>
+                                            </td>
+                                            <td class="bannerInputCell">
+                                                <div class="banner-wrap">
+                                                    <div class="banner-file-wrap">
+                                                        <label th:for="${item.bannerFileName}">업로드</label>
+                                                        <input type="file" class="bannerFileInput" accept="image/jpeg, image/png"
+                                                            th:id="${item.bannerFileName}"
+                                                            th:onchange="FileUpProcess(this, [[${index.index}]])"/>
+                                                        <div class="banner-file-tag">
+                                                            <a class="banner-file-name" th:text="${item.bannerFileName}"></a>
+                                                            <span class="bannerFileInputRemove" th:onclick="|bannerRemove(this, ${index.index})|"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="redirect-wrap">
+                                                        <label>바로가기</label>
+                                                        <div class="input-wrap">
+                                                            <input type="text" class="bannerHrefInput" th:value="${item.bannerHref}"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td th:id="${item.idx}" class="bannerCellRemove" onclick="bannerRemoveItem(this)">삭제</td>
+                                        </tr>
+                                   </tbody>
+                               </table>
+                           </div>
                        </div>
                    </div>
+                   <div class="table__action">
+                       <button type="button" class="btn-normal banner-add-item">배너 추가하기</button>
+                       <button type="button" class="btn-normal banner-update-btn">등록하기</button>
+                   </div>
                </div>
-               <div class="table__action">
-                   <button type="button" class="btn-normal banner-add-item">배너 추가하기</button>
-                   <button type="button" class="btn-normal banner-update-btn">등록하기</button>
-               </div>
-           </div>
+            </div>
        </section>
     </main>
 
@@ -47,13 +63,11 @@
 <th:block layout:fragment="script">
 <script>
     window.addEventListener('DOMContentLoaded', () => {
-        highlightMenu();
+        highlightMenu('main');
         pageOn();
-        // listCheck();
         bannerAddItem();
         // bannerRemoveItem();
         // bannerInputFile();
-        bannerInputFileRemove();
         IsShowbannerInputFileRemove();
         bannerUpdate();
     });

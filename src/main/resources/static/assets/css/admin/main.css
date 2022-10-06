@@ -1333,8 +1333,123 @@ option {
 .m-b-30 {
   margin-bottom: 30px;
 }
+.w-100 {
+  width: 100px;
+}
+.w-250 {
+  width: 250px;
+}
 .w-550 {
   width: 550px;
+}
+.w-850 {
+  width: 850px;
+}
+.f-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.border-1 {
+  border: 1px solid #dbdbdb;
+}
+.border-1 tbody tr td {
+  padding: 10px !important;
+}
+.img-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.table table tbody .bannerRows {
+  cursor: auto;
+}
+.banner-table {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.banner-table .table {
+  width: 60%;
+  margin-top: 40px;
+}
+.banner-wrap {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+}
+.banner-file-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.banner-file-wrap .banner-file-tag {
+  display: flex;
+  align-items: center;
+  padding: 6px;
+  border-bottom: 1px solid #dbdbdb;
+  cursor: auto;
+}
+.banner-file-wrap .banner-file-tag .banner-file-name {
+  width: 200px;
+  height: 24px;
+  line-height: 24px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: inherit;
+}
+.banner-file-wrap label {
+  display: inline-block;
+  padding: 6px 14px;
+  color: #4C956C;
+  cursor: pointer;
+  border: 1px solid #4C956C;
+  border-radius: 0.25em;
+  line-height: normal;
+  transition: 0.25s background-color;
+}
+.banner-file-wrap label:hover {
+  background-color: #EAF6EF;
+}
+.banner-file-wrap input[type=file] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip:rect(0,0,0,0);
+  border: 0;
+}
+.bannerCellRemove {
+  cursor: pointer;
+}
+.bannerFileInputRemove {
+  width: 16px;
+  height: 16px;
+  border: 1px solid #999;
+  cursor: pointer;
+  background: center/auto 10px url(../../images/ico/ico-x.svg) no-repeat;
+}
+.redirect-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.redirect-wrap label {
+  padding: 0 8px;
+  white-space: nowrap;
+}
+.redirect-wrap .input-wrap {
+  min-height: 34px;
+}
+.redirect-wrap .input-wrap input {
+  width: 230px;
+  height: 34px;
+  padding: 0 10px;
+  border: 1px solid #dbdbdb;
 }
 .tab-wrap span {
   color: #999;
@@ -1397,6 +1512,9 @@ option {
 .highBpm.warn, .highO2.warn {
   color: #ff3333;
   font-weight: 600;
+}
+.modal-notice.w-800 {
+  width: 800px;
 }
 .modal-memo .memo-wrap {
   margin-top: 40px;
@@ -1662,6 +1780,12 @@ img.stat {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.content-overflow {
+  width: 800px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .table {
   width: 100%;
 }
@@ -1762,6 +1886,9 @@ img.stat {
 }
 .main-list .table table tbody tr:not(.rows):hover td {
   background: #EAF6EF;
+}
+.banner-list .table table tbody tr:not(.rows):hover td {
+  background: #fff;
 }
 .table table tbody tr.rows td:not(.check):not(.type):hover {
   background-color: #FFF1E4;
@@ -2987,7 +3114,7 @@ meter::-webkit-meter-optimum-value {
   overflow-y: auto;
   display: none;
 }
-.modal-details .table, .modal-reason .table, .modal-terminate .table, .modal-request .table, .modal-form .table, .modal-review .table, .modal-report .table {
+.modal-details .table, .modal-reason .table, .modal-terminate .table, .modal-request .table, .modal-form .table, .modal-review .table, .modal-report .table, .modal-notice .table {
   margin-top: 40px;
   border: 1px solid #dfdfdf;
   border-bottom: none;
@@ -3020,7 +3147,7 @@ meter::-webkit-meter-optimum-value {
   font-size: 14px;
   cursor: default;
 }
-.modal-write .table .input-wrap, .modal-input .table .input-wrap, .note-modal .table .input-wrap {
+.modal-write .table .input-wrap, .modal-input .table .input-wrap, .note-modal .table .input-wrap, .modal-notice .table .input-wrap {
   display: flex;
   justify-content: start;
   flex-wrap: wrap;
@@ -3031,7 +3158,7 @@ meter::-webkit-meter-optimum-value {
 .health-modal .table .input-wrap, .health-register .table .input-wrap {
   width: 170px;
 }
-.modal-write input, .modal-input input, .note-modal input {
+.modal-write input, .modal-input input, .note-modal input, .modal-notice input {
   width: 100% !important;
   height: 32px;
   background: #f9f9f9;

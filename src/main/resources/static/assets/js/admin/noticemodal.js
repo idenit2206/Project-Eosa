@@ -7,7 +7,7 @@ function noticeDetailsModal() {
     const modal = document.querySelector(".modal-notice");
     const modalId = modal.querySelector("modal-id");
 
-    const btn = document.querySelectorAll(".notice-btn");    
+    const btn = document.querySelectorAll(".notice-btn");
     const noticeIdx = document.querySelectorAll(".noticeIdx");
     const noticeTitle = document.querySelectorAll(".noticeTitle");
     const noticeContent = document.querySelectorAll(".noticeContent");
@@ -23,10 +23,10 @@ function noticeDetailsModal() {
 
     for(let i = 0; i < btn.length; i++) {
         btn[i].addEventListener("click", () => {
-            modalIdx.value = noticeIdx[i].innerText;
+            modalIdx.innerHTML = noticeIdx[i].innerText;
             modalTitle.value = noticeTitle[i].innerText;
-            modalContent.innerHTML = noticeContent[i].innerText;
-            modalAuthor.value = noticeAuthor[i].innerText;
+            modalContent.innerHTML = noticeContent[i].value;
+            modalAuthor.innerHTML = noticeAuthor[i].innerText;
             modalPostDate.value = noticePostDate[i].innerText;
             modalDelBtn.addEventListener("click", () => {
                 if(window.confirm("정말로 이 공지사항을 삭제 하시겠습니까?")) {
@@ -34,7 +34,7 @@ function noticeDetailsModal() {
                     fetch("/admin/manage/notice/deleteByNoticeIdx?noticeIdx="+noticeIdx[i].innerHTML, {method: "DELETE"})
                         .then(response => response)
                         .then(data => { window.location.href = "list" });
-                }                
+                }
             })
         })
     }
@@ -53,7 +53,7 @@ const updateNoticeByNoticeIdx = () => {
 
     modlaModifyBtn.addEventListener("click", () => {
         let formData = new FormData();
-        formData.append("idx", modalNoticeIdx.value);
+        formData.append("idx", modalNoticeIdx.textContent);
         formData.append("title", modalNoticeTitle.value);
         formData.append("content", modalNoticeContent.value);
         fetch("/admin/manage/notice/updateByNoticeIdx", {method: "PUT", body: formData})

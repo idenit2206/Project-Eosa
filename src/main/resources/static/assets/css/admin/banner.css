@@ -3,7 +3,7 @@
 }
 
 .bannerPreviewCell {
-    width: 20% !important;
+    width: 40% !important;
     height: 100% !important;
 }
 
@@ -14,6 +14,7 @@
 
 .bannerInputCell {
     text-align: start !important;
+    width: 50% !important;
     height: 100% !important;
 }
 

@@ -6,7 +6,7 @@ let currentBannerRowsCount = document.querySelectorAll(".bannerRows").length;
 const bannerAddItem = () => {
 
     const bannerAddItem = document.querySelector(".banner-add-item");
-    const bannerTableBody = document.querySelector(".bannerTableBody");    
+    const bannerTableBody = document.querySelector(".bannerTableBody");
 
     bannerAddItem.addEventListener("click", () => {
         if(currentBannerRowsCount < 5) {
@@ -16,26 +16,51 @@ const bannerAddItem = () => {
         const bannerPreviewCell = document.createElement("td");
         bannerPreviewCell.setAttribute("class", "bannerPreviewCell");
 
+        const prevDiv = document.createElement('div');
+        prevDiv.classList.add('img-wrap');
+
         const bannerPreview = document.createElement("img");
         bannerPreview.setAttribute("class", "bannerPreview");
 
+        //
         const bannerInputCell = document.createElement("td");
         bannerInputCell.setAttribute("class", "bannerInputCell");
 
+        const bannerWrap = document.createElement('div');
+        bannerWrap.classList.add('banner-wrap');
+
+        const fileWrap = document.createElement('div');
+        fileWrap.classList.add('banner-file-wrap');
+
+        const fileLabel = document.createElement('label');
+        fileLabel.setAttribute("for", "bannerFile" + currentBannerRowsCount);
+        fileLabel.innerText = '업로드';
+
         const inputFile = document.createElement("input");
         inputFile.setAttribute("type", "file");
-        inputFile.setAttribute("class", "bannerFileInput")
+        inputFile.setAttribute("class", "bannerFileInput");
+        inputFile.setAttribute("id", "bannerFile" + currentBannerRowsCount);
         inputFile.setAttribute("accept", "image/jpeg, image/png");
         inputFile.setAttribute("onchange", `FileUpProcess(this, ${currentBannerRowsCount})`);
-        
+
+        const fileTag = document.createElement('div');
+        fileTag.classList.add('banner-file-tag');
+
+        const fileName = document.createElement('a');
+        fileName.classList.add('banner-file-name');
+
         const spanEl = document.createElement("span");
         spanEl.setAttribute("class", "bannerFileInputRemove");
-        spanEl.innerHTML = "x";
+        spanEl.setAttribute('onclick', 'bannerRemove(this, ' + currentBannerRowsCount + ')');
 
-        const brEl = document.createElement("br");
+        const redirectWrap = document.createElement('div');
+        redirectWrap.classList.add('redirect-wrap');
 
         const inputTextLabel = document.createElement("label");
-        inputTextLabel.innerHTML = "Url: ";
+        inputTextLabel.innerHTML = "바로가기";
+
+        const inputWrap = document.createElement('div');
+        inputWrap.classList.add('input-wrap');
 
         const inputText = document.createElement("input");
         inputText.setAttribute("type", "text");
@@ -47,14 +72,26 @@ const bannerAddItem = () => {
         bannerCellRemove.setAttribute("onclick", "bannerRemoveItem(this)");
         bannerCellRemove.innerText="삭제";
 
-        bannerPreviewCell.appendChild(bannerPreview);
-        
-        bannerInputCell.appendChild(inputFile);
-        bannerInputCell.appendChild(spanEl);
-        bannerInputCell.appendChild(brEl);
-        bannerInputCell.appendChild(inputTextLabel);
-        bannerInputCell.appendChild(inputText);
-        
+        bannerPreviewCell.appendChild(prevDiv);
+        prevDiv.append(bannerPreview);
+
+        bannerInputCell.appendChild(bannerWrap);
+
+        bannerWrap.append(fileWrap);
+        bannerWrap.append(redirectWrap);
+
+        fileWrap.append(fileLabel);
+        fileWrap.append(inputFile);
+        fileWrap.append(fileTag);
+
+        fileTag.append(fileName);
+        fileTag.append(spanEl);
+
+        redirectWrap.append(inputTextLabel);
+        redirectWrap.append(inputWrap);
+
+        inputWrap.append(inputText);
+
         bannersRows.appendChild(bannerPreviewCell);
         bannersRows.appendChild(bannerInputCell);
         bannersRows.appendChild(bannerCellRemove);
@@ -76,7 +113,7 @@ const bannerRemoveItem = (event) => {
 }
 
 const bannerInputFile = () => {
-    const bannerFileInput = document.querySelectorAll(".bannerFileInput");    
+    const bannerFileInput = document.querySelectorAll(".bannerFileInput");
     for(let i = 0; i < bannerFileInput.length; i++) {
         bannerFileInput[i].addEventListener("change", (e) => {
             FileUpProcess(e.target.files[0], i);
@@ -89,22 +126,37 @@ const FileUpProcess = (file, index) => {
     console.log(`FileUpProcess input parameter: file - ${file}, index = ${index}`);
     console.log(file.files)
     const bannerPreview = document.querySelectorAll(".bannerPreview");
-    const bannerFileInputRemove = document.querySelectorAll(".bannerFileInputRemove");   
+    const bannerFileInputRemove = document.querySelectorAll(".bannerFileInputRemove");
     let fileReader = new FileReader();
     fileReader.readAsDataURL(file.files.length > 0 && file.files[0]);
     fileReader.onloadend = function (e) {
         if(bannerPreview.length > 0) {
             // console.log(bannerPreview[index].getAttribute("src"));
-            bannerPreview[index].removeAttribute("src");              
+            bannerPreview[index].removeAttribute("src");
             bannerPreview[index].setAttribute("src", e.target.result);
-            bannerFileInputRemove[index].style.visibility = "visible";   
+            bannerFileInputRemove[index].style.visibility = "visible";
         }
-          
+
     };
+    const fileName = document.querySelectorAll(".banner-file-name");
+    const fileInput = document.querySelectorAll(".bannerFileInput");
+    fileName[index].innerText = fileInput[index].value.split('\\')[2];
 
 }
 
+function bannerRemove(e, i) {
+
+    document.querySelectorAll(".bannerPreview")[i].src = '';
+    document.querySelectorAll(".bannerFileInput")[i].value = '';
+    document.querySelectorAll(".bannerHrefInput")[i].value = '';
+    document.querySelectorAll('.banner-file-name')[i].Text = '';
+    document.querySelectorAll('.banner-file-name')[i].innerText = '';
+    e.style.visibility = 'hidden';
+
+};
 const bannerInputFileRemove = () => {
+
+    const bannerFileName = document.querySelectorAll('.banner-file-name');
     const bannerPreview = document.querySelectorAll(".bannerPreview");
     const bannerFileInput = document.querySelectorAll(".bannerFileInput");
     const bannerHrefInput = document.querySelectorAll(".bannerHrefInput");
@@ -115,8 +167,9 @@ const bannerInputFileRemove = () => {
             bannerFileInput[i].value = "";
             bannerHrefInput[i].value = "";
             bannerFileInputRemove[i].style.visibility = "hidden";
+            bannerFileName[i].innerText = '';
         })
-        
+
     }
 }
 
@@ -138,19 +191,19 @@ const bannerUpdate = () => {
     bannerUpdateBtn.addEventListener("click", () => {
         // const test = document.querySelectorAll('.bannerRows');
         // console.log(`bannerRows: count: ${test.length}`);
-        
+
         let count = 0;
-        const mainElement = document.querySelector("#main").getAttribute("data-category");
+        const mainElement = document.querySelector("#main").getAttribute("data-value");
         const bannerRows = document.querySelectorAll(".bannerRows");
         const bannerPreviewCell = document.querySelectorAll(".bannerPreviewCell");
         const bannerPreview = document.querySelectorAll(".bannerPreview");
         const bannerFileInput = document.querySelectorAll(".bannerFileInput");
         const bannerHrefInput = document.querySelectorAll(".bannerHrefInput");
         let bannerItems = [];
-        
-        for(let i = 0; i < bannerRows.length; i++) {        
+
+        for(let i = 0; i < bannerRows.length; i++) {
             // formData.append("bannerFile", bannerFileInput[i].files[0]);
-           
+
             // formData.append("idx", bannerPreviewCell[i].getAttribute("id"));
             // formData.append("bannerFileName", bannerFileInput[i].getAttribute("id"));
             // // formData.append("bannerFileLink", bannerPreview[i].getAttribute("src"));
@@ -158,7 +211,7 @@ const bannerUpdate = () => {
 
             if(bannerPreview[i].getAttribute("src").startsWith("data:")) {
                 formData.append("bannerFile", bannerFileInput[i].files[0]);
-                bannerItems.push({ 
+                bannerItems.push({
                     idx: bannerPreviewCell[i].getAttribute("id"),
                     bannerFileName: bannerFileInput[i].getAttribute("id"),
                     // bannerFileLink: bannerFileInput[i].files[0],
@@ -167,7 +220,7 @@ const bannerUpdate = () => {
                 });
             }
             else {
-                bannerItems.push({ 
+                bannerItems.push({
                     idx: bannerPreviewCell[i].getAttribute("id"),
                     bannerFileName: bannerFileInput[i].getAttribute("id"),
                     bannerFileLink: bannerPreview[i].getAttribute("src"),
@@ -183,12 +236,21 @@ const bannerUpdate = () => {
         console.log("bannerItem: ");
         console.log(bannerItems);
         formData.append("bannerItem", new Blob([JSON.stringify(bannerItems)]));
-        
+
+        const nameLabel = document.querySelectorAll('.banner-file-name');
+        let valid = 0;
+        for (let i = 0; i < nameLabel.length; i++) {
+            if (nameLabel[i].textContent == '') {
+                valid++;
+            }
+        }
+
         if(count < 1) {
             alert("최소 한개의 배너가 필요합니다.");
             window.location.reload();
-        }
-        else {
+        } else if (valid > 0) {
+            alert('배너가 비어있습니다.');
+        } else {
             if(mainElement == 'mainbanner') {
                 fetch(`/admin/manage/banner/update`, { method: "PUT", body: formData })
                     .then(response => response)
@@ -212,5 +274,5 @@ const bannerUpdate = () => {
         }
     })
 
-    
+
 }
