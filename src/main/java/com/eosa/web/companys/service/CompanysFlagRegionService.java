@@ -21,51 +21,95 @@ public class CompanysFlagRegionService implements CompanysFlagRegionRepository {
 
     @Autowired private CompanysFlagRegionRepository companysFlagRegionRepository;
 
+    
+    /** 
+     * @param entity
+     * @return S
+     */
     @Override
     public <S extends CompanysFlagRegion> S save(S entity) {
         return companysFlagRegionRepository.save(entity);
     }
 
+    
+    /** 
+     * @return List<CompanysFlagRegion>
+     */
     @Override
     public List<CompanysFlagRegion> findAll() {
         return null;
     }
 
+    
+    /** 
+     * @param sort
+     * @return List<CompanysFlagRegion>
+     */
     @Override
     public List<CompanysFlagRegion> findAll(Sort sort) {
         return null;
     }
 
+    
+    /** 
+     * @param pageable
+     * @return Page<CompanysFlagRegion>
+     */
     @Override
     public Page<CompanysFlagRegion> findAll(Pageable pageable) {
         return null;
     }
 
+    
+    /** 
+     * @param longs
+     * @return List<CompanysFlagRegion>
+     */
     @Override
     public List<CompanysFlagRegion> findAllById(Iterable<Long> longs) {
         return null;
     }
 
+    
+    /** 
+     * @return long
+     */
     @Override
     public long count() {
         return 0;
     }
 
+    
+    /** 
+     * @param aLong
+     */
     @Override
     public void deleteById(Long aLong) {
 
     }
 
+    
+    /** 
+     * @param entity
+     */
     @Override
     public void delete(CompanysFlagRegion entity) {
 
     }
 
+    
+    /** 
+     * @param longs
+     */
     @Override
     public void deleteAllById(Iterable<? extends Long> longs) {
 
     }
 
+    
+    /** 
+     * @param entities
+     */
     @Override
     public void deleteAll(Iterable<? extends CompanysFlagRegion> entities) {
 
@@ -76,16 +120,31 @@ public class CompanysFlagRegionService implements CompanysFlagRegionRepository {
 
     }
 
+    
+    /** 
+     * @param entities
+     * @return List<S>
+     */
     @Override
     public <S extends CompanysFlagRegion> List<S> saveAll(Iterable<S> entities) {
         return null;
     }
 
+    
+    /** 
+     * @param aLong
+     * @return Optional<CompanysFlagRegion>
+     */
     @Override
     public Optional<CompanysFlagRegion> findById(Long aLong) {
         return Optional.empty();
     }
 
+    
+    /** 
+     * @param aLong
+     * @return boolean
+     */
     @Override
     public boolean existsById(Long aLong) {
         return false;
@@ -96,21 +155,39 @@ public class CompanysFlagRegionService implements CompanysFlagRegionRepository {
 
     }
 
+    
+    /** 
+     * @param entity
+     * @return S
+     */
     @Override
     public <S extends CompanysFlagRegion> S saveAndFlush(S entity) {
         return null;
     }
 
+    
+    /** 
+     * @param entities
+     * @return List<S>
+     */
     @Override
     public <S extends CompanysFlagRegion> List<S> saveAllAndFlush(Iterable<S> entities) {
         return null;
     }
 
+    
+    /** 
+     * @param entities
+     */
     @Override
     public void deleteAllInBatch(Iterable<CompanysFlagRegion> entities) {
 
     }
 
+    
+    /** 
+     * @param longs
+     */
     @Override
     public void deleteAllByIdInBatch(Iterable<Long> longs) {
 
@@ -121,51 +198,103 @@ public class CompanysFlagRegionService implements CompanysFlagRegionRepository {
 
     }
 
+    
+    /** 
+     * @param aLong
+     * @return CompanysFlagRegion
+     */
     @Override
     public CompanysFlagRegion getOne(Long aLong) {
         return null;
     }
 
+    
+    /** 
+     * @param aLong
+     * @return CompanysFlagRegion
+     */
     @Override
     public CompanysFlagRegion getById(Long aLong) {
         return null;
     }
 
+    
+    /** 
+     * @param aLong
+     * @return CompanysFlagRegion
+     */
     @Override
     public CompanysFlagRegion getReferenceById(Long aLong) {
         return null;
     }
 
+    
+    /** 
+     * @param example
+     * @return Optional<S>
+     */
     @Override
     public <S extends CompanysFlagRegion> Optional<S> findOne(Example<S> example) {
         return Optional.empty();
     }
 
+    
+    /** 
+     * @param example
+     * @return List<S>
+     */
     @Override
     public <S extends CompanysFlagRegion> List<S> findAll(Example<S> example) {
         return null;
     }
 
+    
+    /** 
+     * @param example
+     * @param sort
+     * @return List<S>
+     */
     @Override
     public <S extends CompanysFlagRegion> List<S> findAll(Example<S> example, Sort sort) {
         return null;
     }
 
+    
+    /** 
+     * @param example
+     * @param pageable
+     * @return Page<S>
+     */
     @Override
     public <S extends CompanysFlagRegion> Page<S> findAll(Example<S> example, Pageable pageable) {
         return null;
     }
 
+    
+    /** 
+     * @param example
+     * @return long
+     */
     @Override
     public <S extends CompanysFlagRegion> long count(Example<S> example) {
         return 0;
     }
 
+    
+    /** 
+     * @param example
+     * @return boolean
+     */
     @Override
     public <S extends CompanysFlagRegion> boolean exists(Example<S> example) {
         return false;
     }
 
+    
+    /** 
+     * @param queryFunction
+     * @return R
+     */
     @Override
     public <S extends CompanysFlagRegion, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return null;

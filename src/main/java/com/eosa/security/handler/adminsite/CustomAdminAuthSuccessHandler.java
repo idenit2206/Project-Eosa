@@ -22,6 +22,14 @@ public class CustomAdminAuthSuccessHandler implements AuthenticationSuccessHandl
 
     @Autowired private UsersService usersService;
 
+    
+    /** 
+     * @param request
+     * @param response
+     * @param authentication
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void onAuthenticationSuccess(
         HttpServletRequest request, HttpServletResponse response,

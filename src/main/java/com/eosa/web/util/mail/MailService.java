@@ -17,6 +17,11 @@ public class MailService {
     
     private JavaMailSender javaMailSender;
 
+    
+    /** 
+     * @param mailEntity
+     * @throws MessagingException
+     */
     public void mailSend(MailEntity mailEntity) throws MessagingException {
 //        Gmail
         SimpleMailMessage message = new SimpleMailMessage();
@@ -31,6 +36,10 @@ public class MailService {
         javaMailSender.send(message);
     }
 
+    
+    /** 
+     * @param mailEntity
+     */
     public void codeMailSend(MailEntity mailEntity) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(mailEntity.getAddress());

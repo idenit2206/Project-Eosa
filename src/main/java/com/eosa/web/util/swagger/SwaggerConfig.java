@@ -17,6 +17,10 @@ public class SwaggerConfig {
     
     private final String CONTROLLERS = "com.eosa.web";
 
+    
+    /** 
+     * @return Docket
+     */
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.OAS_30)

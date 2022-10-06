@@ -24,6 +24,12 @@ public class AdminSecurityConfig {
         "/admin", "/admin/sign/**"
     };
 
+    
+    /** 
+     * @param http
+     * @return SecurityFilterChain
+     * @throws Exception
+     */
     @Bean
     public SecurityFilterChain adminFilterChain(HttpSecurity http) throws Exception {
 
@@ -33,8 +39,8 @@ public class AdminSecurityConfig {
             .antMatcher("/admin/**")
             .authorizeRequests()
                 .antMatchers(PERMIT_URL).permitAll()
-//                .anyRequest().hasAnyAuthority("ADMIN", "SUPER_ADMIN")
-                 .anyRequest().permitAll()
+                .anyRequest().hasAnyAuthority("ADMIN", "SUPER_ADMIN")
+                // .anyRequest().permitAll()
         .and()
             .formLogin()
                 .loginPage("/admin")

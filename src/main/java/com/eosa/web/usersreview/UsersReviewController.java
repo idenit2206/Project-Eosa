@@ -20,6 +20,11 @@ public class UsersReviewController {
 
     @Autowired UsersReviewService usersReviewService;
 
+    
+    /** 
+     * @param param
+     * @return CustomResponseData
+     */
     @PostMapping("/insertUsersReview")
     public CustomResponseData insertUsersReview(UsersReview param) {
         log.debug("[insertUsersReview] 작동시작");
@@ -41,6 +46,10 @@ public class UsersReviewController {
         return result;
     }
 
+    
+    /** 
+     * @return CustomResponseData
+     */
     @GetMapping("/selectAllUsersReview")
     public CustomResponseData selectAllUsersReview() {
         CustomResponseData result = new CustomResponseData();

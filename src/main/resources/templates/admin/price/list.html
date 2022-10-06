@@ -102,7 +102,7 @@
                         </tr>
                         </thead>
                         <tbody id="categoryList">
-                        <tr class="categoryTR" th:each="categorylist : ${category}">
+                        <tr class="categoryTR" th:each="categorylist, index : ${category}">
                             <td class="categoryIdx">
                                 <input class="categoryIdxValue" type="checkbox" th:value="${categorylist.categoryIdx}" />
                             </td>
@@ -114,7 +114,7 @@
                             </td>
                             <td class="categoryIcon">
                                 <img class="categoryIconPreview" th:src="${categorylist.categoryIcon}" />
-                                <input class="categoryIconInputFile" type="file" />
+                                <input th:id="${index.count - 1}" class="categoryIconInputFile" onchange="categoryIconInputFileChange(this)" type="file" />
                             </td>
                         </tr>
                         </tbody>
@@ -143,7 +143,7 @@
 
             removeCategoryItem();
             addCategoryItem();
-            categoryIconInputFileChange();
+            // categoryIconInputFileChange();
             modifyCategory();
         });
     </script>

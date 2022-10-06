@@ -30,6 +30,11 @@ public class KorNameTempData {
         "", "ㄱ", "ㄴ", "ㄹ", "ㅁ", "ㅇ"
     };
 
+    
+    /** 
+     * @param nameLength
+     * @return String
+     */
     //(char) ((fv * 21 + sv) * 28 + tv + 0XAC00)
 
     public String korNameGen(int nameLength) {

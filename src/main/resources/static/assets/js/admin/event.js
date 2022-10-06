@@ -572,24 +572,24 @@ function updateCheck(sort, num) {
 };
 
 /**
- * 프리미엄 신청
+ * 제휴협회 신청
  */
 function requestPremium() {
 
-    const msg = confirm('프리미엄을 신청하시겠습니까?');
+    const msg = confirm('제휴협회를 신청하시겠습니까?');
     if (msg) {
         const formData = new FormData();
         formData.set('companysIdx', document.querySelector('.companysIdx').value);
         formData.set('companysName', document.querySelector('.c-name').value);
         formData.set('companysCeoName', document.querySelector('.c-ceo').textContent);
 
-        fetchApi('/admin/manage/company/premium/request', 'post', formData, '프리미엄이 신청되었습니다.');
+        fetchApi('/admin/manage/company/premium/request', 'post', formData, '제휴협회에 신청되었습니다.');
     }
 
 };
 
 /**
- * 프리미엄 등록
+ * 제휴협회 등록
  */
 function approvalPremium() {
 
@@ -601,7 +601,7 @@ function approvalPremium() {
     } else if (end.value == '') {
         alert('종료일을 입력해 주세요.');
     } else {
-        const msg = confirm('프리미엄을 등록하시겠습니까?');
+        const msg = confirm('제휴협회를 등록하시겠습니까?');
         if (msg) {
             const formData = new FormData();
 
@@ -609,23 +609,23 @@ function approvalPremium() {
             formData.set('premiumStartDate', start.value + ' 00:00:00');
             formData.set('premiumEndDate',  end.value + ' 00:00:00');
 
-            fetchApi('/admin/manage/company/premium/approval', 'post', formData, '프리미엄이 등록되었습니다.');
+            fetchApi('/admin/manage/company/premium/approval', 'post', formData, '제휴협회에 등록되었습니다.');
         }
     }
 
 };
 
 /**
- * 프리미엄 해지
+ * 제휴협회 해지
  */
 function cancelPremium() {
 
-    const msg = confirm('프리미엄을 해지하시겠습니까?');
+    const msg = confirm('제휴협회를 해지하시겠습니까?');
     if (msg) {
         const formData = new FormData();
 
         formData.set('companysIdx', document.querySelector('.companysIdx').value);
-        fetchApi('/admin/manage/company/premium/cancel', 'post', formData, '프리미엄이 해지되었습니다.');
+        fetchApi('/admin/manage/company/premium/cancel', 'post', formData, '제휴협회가 해지되었습니다.');
     }
 
 };

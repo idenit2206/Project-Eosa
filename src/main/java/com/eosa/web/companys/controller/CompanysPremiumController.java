@@ -19,6 +19,10 @@ public class CompanysPremiumController {
     @Autowired private CompanysService companysService;
     @Autowired private CompanysPremiumService companysPremiumService;
 
+    
+    /** 
+     * @return CustomResponseData
+     */
     @PostMapping("/insertCompanysPremium")
     public CustomResponseData insertCompanysPremium(
             @RequestParam("companysName") String companysName,

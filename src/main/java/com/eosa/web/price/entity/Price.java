@@ -10,15 +10,15 @@ import javax.persistence.Table;
 import lombok.Data;
 
 @Data
-@Entity
-@Table(name="Region")
-public class Region {
-
+@Entity(name="Price")
+@Table(name="Price")
+public class Price {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long regionIdx;
-    @Column private String regionName;
-    @Column private int regionPrice;
-    @Column private int regionSelectable;
-    
+    private int priceIdx;
+
+    @Column private String bankName;
+    @Column private String bankNumber;
+
 }

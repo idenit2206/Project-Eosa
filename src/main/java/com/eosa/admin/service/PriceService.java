@@ -34,6 +34,11 @@ public class PriceService {
     @Autowired private CategoryMapper categoryMapper;
     @Autowired private AwsS3Service awsS3Service;
 
+    
+    /** 
+     * @param model
+     * @return String
+     */
     public String priceList(Model model) {
         PriceDTO price = priceMapper.selectPrice();
         List<RegionDTO> regionList = regionMapper.selectRegion();
@@ -46,6 +51,10 @@ public class PriceService {
         return "admin/price/list";
     }
 
+    
+    /** 
+     * @return Map<String, Object>
+     */
     public Map<String, Object> selectPrice() {
         Map<String, Object> result = new HashMap<>();
 
@@ -60,6 +69,12 @@ public class PriceService {
         return result;
     }
 
+    
+    /** 
+     * @param priceDTO
+     * @param model
+     * @return String
+     */
     public String updatePrice(PriceDTO priceDTO, Model model) {
         // log.debug("[updatePrice] priceDTO: {}", priceDTO.toString());
         int updateRow = priceMapper.updatePrice(priceDTO);
@@ -75,6 +90,12 @@ public class PriceService {
         return "admin/price/list";
     }
 
+    
+    /** 
+     * @param region
+     * @param model
+     * @return String
+     */
     public String priceUpdateRegion(
         String region,
         // @RequestParam List<CategoryDTO> category,
@@ -105,6 +126,13 @@ public class PriceService {
         return "admin/price/list";
     }
 
+    
+    /** 
+     * @param category
+     * @param categoryIconList
+     * @param model
+     * @return String
+     */
     public String priceUpdateCategory(
         String category,
         List<MultipartFile> categoryIconList,
@@ -155,6 +183,12 @@ public class PriceService {
         return "admin/price/list";
     }
 
+    
+    /** 
+     * @param regionIdx
+     * @param model
+     * @return String
+     */
     public String lockRegion(List<Long> regionIdx, Model model) {
         for(int i = 0; i < regionIdx.size(); i++) {
             regionMapper.lockRegion(Long.valueOf(regionIdx.get(i)));
@@ -169,6 +203,12 @@ public class PriceService {
         return "admin/price/list";
     }
 
+    
+    /** 
+     * @param regionIdx
+     * @param model
+     * @return String
+     */
     public String unlockRegion(List<Long> regionIdx, Model model) {
         for(int i = 0; i < regionIdx.size(); i++) {
             regionMapper.unlockRegion(Long.valueOf(regionIdx.get(i)));
@@ -183,6 +223,12 @@ public class PriceService {
         return "admin/price/list";
     }
 
+    
+    /** 
+     * @param regionIdx
+     * @param model
+     * @return String
+     */
     public String deleteRegion(List<Long> regionIdx, Model model) {
         log.debug("[deleteRegion]: {}",regionIdx.toString());
         for(int i = 0; i < regionIdx.size(); i++) {
@@ -198,6 +244,12 @@ public class PriceService {
         return "admin/price/list";
     }
 
+    
+    /** 
+     * @param categoryIdx
+     * @param model
+     * @return String
+     */
     public String deleteCategory(List<Long> categoryIdx, Model model) {
         log.debug("[deleteRegion]: {}", categoryIdx.toString());
         for(int i = 0; i < categoryIdx.size(); i++) {

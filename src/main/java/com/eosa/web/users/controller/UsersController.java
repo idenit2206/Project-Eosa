@@ -79,12 +79,22 @@ public class UsersController {
     @Value("${my.service.domain}") private String myDomain;
     @Value("${my.ui.port}") private String myUiPort;
 
+    
+    /** 
+     * @return String
+     * @throws UnknownHostException
+     */
     @GetMapping("/sign/test01")
     public String test01() throws UnknownHostException {
         // String hostAddress = InetAddress.getLocalHost().getHostAddress();
         // return hostAddress + "/api/user/test01";
         return myDomain; 
     }
+    
+    /** 
+     * @param usersPhone
+     * @return CustomResponseData
+     */
     @PostMapping(value="/sign/sendPhoneCheckMessage")
     public CustomResponseData sendOne(@RequestParam("usersPhone") String usersPhone) {
         CustomResponseData result = new CustomResponseData();
@@ -118,6 +128,10 @@ public class UsersController {
         return result;
     }
 
+    
+    /** 
+     * @return CustomResponseData
+     */
     @PostMapping(value="/sign/checkMyPhone")
     public CustomResponseData checkMyPhone(
         @RequestParam("usersPhone") String usersPhone,
@@ -229,6 +243,10 @@ public class UsersController {
         return result;
     }
 
+    
+    /** 
+     * @return CustomResponseData
+     */
     @GetMapping("/sign/usersAccountDupliCheck")
     public CustomResponseData usersAccountDupliCheck(
         @RequestParam("usersAccount") String usersAccount
@@ -249,6 +267,10 @@ public class UsersController {
         return result;
     }
 
+    
+    /** 
+     * @return CustomResponseData
+     */
     @GetMapping("/sign/usersEmailDupliCheck")
     public CustomResponseData usersEmailDupliCheck(
         @RequestParam("usersEmail") String usersEmail
@@ -391,6 +413,12 @@ public class UsersController {
         }
     }
 
+    
+    /** 
+     * @param request
+     * @param response
+     * @throws IOException
+     */
     @GetMapping("/sign/oauth2SignIn.failure")
     public void oauth2SignInFailure(
         @AuthenticationPrincipal CustomPrincipalDetails principalUserDetails,
@@ -438,6 +466,10 @@ public class UsersController {
         return result;
     }
 
+    
+    /** 
+     * @return CustomResponseData
+     */
     @PostMapping("/checkMyPagePass")
     public CustomResponseData checkMyPagePass(
         @RequestParam("usersAccount") String usersAccount,
@@ -462,6 +494,10 @@ public class UsersController {
         return result;
     }
 
+    
+    /** 
+     * @return CustomResponseData
+     */
     @Operation(summary="회원정보 조회 (메인페이지 전용)")
     @GetMapping(value="/getUsersInfo")
     public CustomResponseData getUsersInfoByUsersAccount(
@@ -570,6 +606,11 @@ public class UsersController {
         return result;
     }
 
+    
+    /** 
+     * @param usersIdx
+     * @return CustomResponseData
+     */
     @GetMapping("/selectUsersByUsersIdx")
     public CustomResponseData selectUsersByUsersIdx(@RequestParam("usersIdx") Long usersIdx) {
         CustomResponseData result = new CustomResponseData();
@@ -609,6 +650,13 @@ public class UsersController {
         return result;
     }
 
+    
+    /** 
+     * @param usersEmail
+     * @param me
+     * @return CustomResponseData
+     * @throws MessagingException
+     */
     @PostMapping("/findUsersAccountByUsersEmail")
     public CustomResponseData findUsersAccountByUsersEmail(@RequestParam("usersEmail") String usersEmail, MailEntity me) throws MessagingException {
         CustomResponseData result = new CustomResponseData();

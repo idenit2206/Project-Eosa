@@ -19,6 +19,10 @@ public class TempUserController {
 
     @Autowired private TempUserService tempUserService;
 
+    
+    /** 
+     * @return CustomResponseData
+     */
     @PostMapping("/insertNewTempUser")
     public CustomResponseData insertNewTempUser(
         @RequestBody Users user
@@ -41,6 +45,10 @@ public class TempUserController {
         return result;
     }
 
+    
+    /** 
+     * @return CustomResponseData
+     */
     @PostMapping("/signIn")
     public CustomResponseData signIn(
         @RequestParam("usersAccount") String usersEmail,

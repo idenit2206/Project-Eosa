@@ -18,7 +18,11 @@
     <insert id="priceUpdateCategory" parameterType="CategoryDTO">
         INSERT INTO Category(categoryIdx, categoryName, categoryPrice, categoryIcon, categoryIconName)
         VALUES(#{categoryIdx}, #{categoryName}, #{categoryPrice}, #{categoryIcon}, #{categoryIconName})
-        <!-- ON DUPLICATE KEY UPDATE categoryPrice = #{categoryPrice}, #{categoryIcon}, #{categoryIconName} -->
+        ON DUPLICATE KEY UPDATE
+            categoryName = #{categoryName},
+            categoryPrice =  #{categoryPrice},
+            categoryIcon = #{categoryIcon},
+            categoryIconName = #{categoryIconName}
     </insert>
 
     <delete id="deleteCategory" parameterType="Long">

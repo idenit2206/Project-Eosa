@@ -21,6 +21,11 @@ public class RequestContractService implements RequestContractRepository {
 
     @Autowired private RequestContractRepository requestContractRepository;
 
+    
+    /** 
+     * @param entity
+     * @return S
+     */
     @Override
     public <S extends RequestContract> S save(S entity) {
         entity.setRequestContractTurn(1);
@@ -28,29 +33,53 @@ public class RequestContractService implements RequestContractRepository {
         return requestContractRepository.save(entity);
     }
 
+    
+    /** 
+     * @param requestFormIdx
+     * @return RequestContract
+     */
     @Override
     public RequestContract selectRequestContractByRequestFormIdx(Long requestFormIdx) {
         return requestContractRepository.selectRequestContractByRequestFormIdx(requestFormIdx);
     }
 
+    
+    /** 
+     * @return List<RequestContract>
+     */
     @Override
     public List<RequestContract> findAll() {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param sort
+     * @return List<RequestContract>
+     */
     @Override
     public List<RequestContract> findAll(Sort sort) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param ids
+     * @return List<RequestContract>
+     */
     @Override
     public List<RequestContract> findAllById(Iterable<Long> ids) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param entities
+     * @return List<S>
+     */
     @Override
     public <S extends RequestContract> List<S> saveAll(Iterable<S> entities) {
         // TODO Auto-generated method stub
@@ -63,24 +92,42 @@ public class RequestContractService implements RequestContractRepository {
         
     }
 
+    
+    /** 
+     * @param entity
+     * @return S
+     */
     @Override
     public <S extends RequestContract> S saveAndFlush(S entity) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param entities
+     * @return List<S>
+     */
     @Override
     public <S extends RequestContract> List<S> saveAllAndFlush(Iterable<S> entities) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param entities
+     */
     @Override
     public void deleteAllInBatch(Iterable<RequestContract> entities) {
         // TODO Auto-generated method stub
         
     }
 
+    
+    /** 
+     * @param ids
+     */
     @Override
     public void deleteAllByIdInBatch(Iterable<Long> ids) {
         // TODO Auto-generated method stub
@@ -93,78 +140,139 @@ public class RequestContractService implements RequestContractRepository {
         
     }
 
+    
+    /** 
+     * @param id
+     * @return RequestContract
+     */
     @Override
     public RequestContract getOne(Long id) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param id
+     * @return RequestContract
+     */
     @Override
     public RequestContract getById(Long id) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param id
+     * @return RequestContract
+     */
     @Override
     public RequestContract getReferenceById(Long id) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param example
+     * @return List<S>
+     */
     @Override
     public <S extends RequestContract> List<S> findAll(Example<S> example) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param example
+     * @param sort
+     * @return List<S>
+     */
     @Override
     public <S extends RequestContract> List<S> findAll(Example<S> example, Sort sort) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param pageable
+     * @return Page<RequestContract>
+     */
     @Override
     public Page<RequestContract> findAll(Pageable pageable) {
         // TODO Auto-generated method stub
         return null;
     }   
 
+    
+    /** 
+     * @param id
+     * @return Optional<RequestContract>
+     */
     @Override
     public Optional<RequestContract> findById(Long id) {
         // TODO Auto-generated method stub
         return Optional.empty();
     }
 
+    
+    /** 
+     * @param id
+     * @return boolean
+     */
     @Override
     public boolean existsById(Long id) {
         // TODO Auto-generated method stub
         return false;
     }
 
+    
+    /** 
+     * @return long
+     */
     @Override
     public long count() {
         // TODO Auto-generated method stub
         return 0;
     }
 
+    
+    /** 
+     * @param id
+     */
     @Override
     public void deleteById(Long id) {
         // TODO Auto-generated method stub
         
     }
 
+    
+    /** 
+     * @param entity
+     */
     @Override
     public void delete(RequestContract entity) {
         // TODO Auto-generated method stub
         
     }
 
+    
+    /** 
+     * @param ids
+     */
     @Override
     public void deleteAllById(Iterable<? extends Long> ids) {
         // TODO Auto-generated method stub
         
     }
 
+    
+    /** 
+     * @param entities
+     */
     @Override
     public void deleteAll(Iterable<? extends RequestContract> entities) {
         // TODO Auto-generated method stub
@@ -177,30 +285,56 @@ public class RequestContractService implements RequestContractRepository {
         
     }
 
+    
+    /** 
+     * @param example
+     * @return Optional<S>
+     */
     @Override
     public <S extends RequestContract> Optional<S> findOne(Example<S> example) {
         // TODO Auto-generated method stub
         return Optional.empty();
     }
 
+    
+    /** 
+     * @param example
+     * @param pageable
+     * @return Page<S>
+     */
     @Override
     public <S extends RequestContract> Page<S> findAll(Example<S> example, Pageable pageable) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param example
+     * @return long
+     */
     @Override
     public <S extends RequestContract> long count(Example<S> example) {
         // TODO Auto-generated method stub
         return 0;
     }
 
+    
+    /** 
+     * @param example
+     * @return boolean
+     */
     @Override
     public <S extends RequestContract> boolean exists(Example<S> example) {
         // TODO Auto-generated method stub
         return false;
     }
 
+    
+    /** 
+     * @param queryFunction
+     * @return R
+     */
     @Override
     public <S extends RequestContract, R> R findBy(Example<S> example,
             Function<FetchableFluentQuery<S>, R> queryFunction) {

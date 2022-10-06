@@ -19,6 +19,10 @@ public class PolicyServiceController {
 
     @Autowired private PolicyService policyService;
     
+    
+    /** 
+     * @return CustomResponseData
+     */
     @GetMapping("/selectPolicy")
     public CustomResponseData selectPolicyDTO() {
         CustomResponseData result = new CustomResponseData();

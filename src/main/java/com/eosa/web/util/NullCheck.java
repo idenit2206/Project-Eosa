@@ -24,6 +24,10 @@ public class NullCheck {
 
     public NullCheck() {}
 
+    
+    /** 
+     * @return boolean
+     */
     // public NullCheck(String input01) {
     //     this.input01 = input01;
     // }
@@ -39,6 +43,12 @@ public class NullCheck {
         return result;
     }
 
+    
+    /** 
+     * @param object
+     * @param targets
+     * @return Map<String, Object>
+     */
     public Map<String, Object> ObjectNullCheck(Object object, String[] targets) {
         Map<String, Object> result = new HashMap<>();
         // boolean result = false;

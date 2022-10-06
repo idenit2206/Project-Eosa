@@ -33,6 +33,11 @@ public class CompanysService implements CompanysRepository {
     @Autowired
     private CompanysRepository companysRepository;
 
+    
+    /** 
+     * @param entity
+     * @return S
+     */
     @Override
     public <S extends Companys> S save(S entity) {
         LocalDateTime currentTime = LocalDateTime.now();
@@ -40,26 +45,57 @@ public class CompanysService implements CompanysRepository {
         return companysRepository.save(entity);        
     }
 
+    
+    /** 
+     * @param companysIdx
+     * @param file1URL
+     * @param file3URL
+     * @param file1Name
+     * @param file3Name
+     * @return int
+     */
     @Override
     public int updateRegistCertiAndProfileImage(Long companysIdx, String file1URL, String file3URL, String file1Name, String file3Name) {
         return companysRepository.updateRegistCertiAndProfileImage(companysIdx, file1URL, file3URL, file1Name, file3Name);
     }
 
+    
+    /** 
+     * @param companysIdx
+     * @param file1URL
+     * @param file1Name
+     * @return int
+     */
     @Override
     public int updateRegistCerti(Long companysIdx, String file1URL, String file1Name) {
         return companysRepository.updateRegistCerti(companysIdx, file1URL, file1Name);
     }
 
+    
+    /** 
+     * @param companysIdx
+     * @param file2URL
+     * @param file2Name
+     * @return int
+     */
     @Override
     public int updateLicense(Long companysIdx, String file2URL, String file2Name) {
         return companysRepository.updateLicense(companysIdx, file2URL, file2Name);
     }
 
+    
+    /** 
+     * @return List<String>
+     */
     @Override
     public List<String> selectAllCategory() {
         return companysRepository.selectAllCategory();
     }
 
+    
+    /** 
+     * @return List<SelectCompanys>
+     */
     // @Override
     // public int insertCompanys(Companys entity) {
     //     return companysRepository.insertCompanys(entity);
@@ -70,80 +106,165 @@ public class CompanysService implements CompanysRepository {
         return companysRepository.selectAllCompanys();
     }
 
+    
+    /** 
+     * @return List<SelectCompanys>
+     */
     @Override
     public List<SelectCompanys> selectAllCompanysRandom() {
         return companysRepository.selectAllCompanysRandom();   
     }
 
+    
+    /** 
+     * @param usersIdx
+     * @param companysIdx
+     * @return List<SelectAllCompanysList>
+     */
     @Override
     public List<SelectAllCompanysList> selectAllCompanysListByUsersIdxAndCompanysIdx(Long usersIdx, Long companysIdx) {
         return companysRepository.selectAllCompanysListByUsersIdxAndCompanysIdx(usersIdx, companysIdx);
     }
 
+    
+    /** 
+     * @param companysCategoryValue
+     * @return List<Long>
+     */
     @Override
     public List<Long> selectCompanysIdxByCompanysCategory(String companysCategoryValue) {
         return companysRepository.selectCompanysIdxByCompanysCategory(companysCategoryValue);
     }
 
+    
+    /** 
+     * @param companysIdx
+     * @return SelectAllCompanysList
+     */
     @Override
     public SelectAllCompanysList selectCompanysByCompanysIdx(Long companysIdx) {
         return companysRepository.selectCompanysByCompanysIdx(companysIdx);
     }
 
+    
+    /** 
+     * @param companysIdx
+     * @param companysRegion1
+     * @return SelectAllCompanysList
+     */
     @Override
     public SelectAllCompanysList selectCompanysByCompanysIdxAndCompanysRegion1(Long companysIdx, String companysRegion1) {
         return companysRepository.selectCompanysByCompanysIdxAndCompanysRegion1(companysIdx, companysRegion1);
     }
 
+    
+    /** 
+     * @param companysIdx
+     * @return List<SelectAllCompanysList>
+     */
     @Override
     public List<SelectAllCompanysList> selectCompanysByCategory(Long companysIdx) {
         return companysRepository.selectCompanysByCategory(companysIdx);
     }
 
+    
+    /** 
+     * @param companysRegion1
+     * @return List<Long>
+     */
     public List<Long> selectCompanysIdxByRegion1(String companysRegion1) {
         return companysRepository.selectCompanysIdxByRegion1(companysRegion1);
     }
 
+    
+    /** 
+     * @param companysRegion1
+     * @return List<SelectAllCompanysList>
+     */
     @Override
     public List<SelectAllCompanysList> selectCompanysByCompanysRegion1(String companysRegion1) {
         return companysRepository.selectCompanysByCompanysRegion1(companysRegion1);
     }
 
+    
+    /** 
+     * @param usersIdx
+     * @return Companys
+     */
     @Override
     public Companys selectCompanyInfoByUsersIdx(Long usersIdx) {
         return companysRepository.selectCompanyInfoByUsersIdx(usersIdx);
     }
 
+    
+    /** 
+     * @param companysIdx
+     * @return SelectAllCompanysForNormal
+     */
     @Override
     public SelectAllCompanysForNormal selectOneCompanyInfoByCompanysIdx(Long companysIdx) {
         return companysRepository.selectOneCompanyInfoByCompanysIdx(companysIdx);
     }
 
+    
+    /** 
+     * @param companysName
+     * @param companysCeoName
+     * @return Long
+     */
     @Override
     public Long selectCompanyIdxByComapnysNameAndCompanysCeoName(String companysName, String companysCeoName) {
         return companysRepository.selectCompanyIdxByComapnysNameAndCompanysCeoName(companysName, companysCeoName);
     }
 
+    
+    /** 
+     * @param companysIdx
+     * @return SelectCompanys
+     */
     @Override
     public SelectCompanys selectOneCompanysByCompanysIdxTest(Long companysIdx) {
         return companysRepository.selectOneCompanysByCompanysIdxTest(companysIdx);
     }
 
+    
+    /** 
+     * @param companysIdx
+     * @param usersIdx
+     * @return SelectCompanysUserLikeCompanyEnable
+     */
     @Override
     public SelectCompanysUserLikeCompanyEnable selectOneCompanysUserLikeCompanyEnableByCompanysIdxUsersIdx(Long companysIdx, Long usersIdx) {
         return companysRepository.selectOneCompanysUserLikeCompanyEnableByCompanysIdxUsersIdx(companysIdx, usersIdx);
     }
 
+    
+    /** 
+     * @param usersIdx
+     * @return Companys
+     */
     @Override
     public Companys selectCompanysPremiumEnabled(Long usersIdx) {
         return companysRepository.selectCompanysPremiumEnabled(usersIdx);
     }
 
+    
+    /** 
+     * @param companysCategory
+     * @param companysRegion1
+     * @return List<Long>
+     */
     @Override
     public List<Long> selectCompanysByFilter2(String companysCategory, String companysRegion1) {
         return companysRepository.selectCompanysByFilter2(companysCategory, companysRegion1);
     }
 
+    
+    /** 
+     * @param companysCategory
+     * @param companysRegion1
+     * @return List<Long>
+     */
     @Override
     public List<Long> selectCompanysFlagByFilter(String companysCategory, String companysRegion1) {
         return companysRepository.selectCompanysFlagByFilter(companysCategory, companysRegion1);
@@ -196,38 +317,72 @@ public class CompanysService implements CompanysRepository {
     }
 
 
+    
+    /** 
+     * @return List<Companys>
+     */
     @Override
     public List<Companys> findAll() {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param sort
+     * @return List<Companys>
+     */
     @Override
     public List<Companys> findAll(Sort sort) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param ids
+     * @return List<Companys>
+     */
     @Override
     public List<Companys> findAllById(Iterable<Long> ids) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param usersIdx
+     * @return Long
+     */
     @Override
     public Long selectCompanysIdxByUsersIdx(Long usersIdx) {
         return companysRepository.selectCompanysIdxByUsersIdx(usersIdx);
     }
 
+    
+    /** 
+     * @param entity
+     * @return int
+     */
     @Override
     public int updateCompanys(Companys entity) {
         return companysRepository.updateCompanys(entity);
     }
 
+    
+    /** 
+     * @param companysIdx
+     * @return int
+     */
     public int findByCompanysIdx(Long companysIdx) {
         return companysRepository.findByCompanysIdx(companysIdx);
     }
 
+    
+    /** 
+     * @param entities
+     * @return List<S>
+     */
     @Override
     public <S extends Companys> List<S> saveAll(Iterable<S> entities) {
         // TODO Auto-generated method stub
@@ -240,24 +395,42 @@ public class CompanysService implements CompanysRepository {
         
     }
 
+    
+    /** 
+     * @param entity
+     * @return S
+     */
     @Override
     public <S extends Companys> S saveAndFlush(S entity) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param entities
+     * @return List<S>
+     */
     @Override
     public <S extends Companys> List<S> saveAllAndFlush(Iterable<S> entities) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param entities
+     */
     @Override
     public void deleteAllInBatch(Iterable<Companys> entities) {
         // TODO Auto-generated method stub
         
     }
 
+    
+    /** 
+     * @param ids
+     */
     @Override
     public void deleteAllByIdInBatch(Iterable<Long> ids) {
         // TODO Auto-generated method stub
@@ -270,76 +443,137 @@ public class CompanysService implements CompanysRepository {
         
     }
 
+    
+    /** 
+     * @param id
+     * @return Companys
+     */
     @Override
     public Companys getOne(Long id) {
         return null;
     }
 
+    
+    /** 
+     * @param id
+     * @return Companys
+     */
     @Override
     public Companys getById(Long id) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param id
+     * @return Companys
+     */
     @Override
     public Companys getReferenceById(Long id) {
         return null;
     }
 
+    
+    /** 
+     * @param example
+     * @return List<S>
+     */
     @Override
     public <S extends Companys> List<S> findAll(Example<S> example) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param example
+     * @param sort
+     * @return List<S>
+     */
     @Override
     public <S extends Companys> List<S> findAll(Example<S> example, Sort sort) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param pageable
+     * @return Page<Companys>
+     */
     @Override
     public Page<Companys> findAll(Pageable pageable) {
         // TODO Auto-generated method stub
         return null;
     }    
 
+    
+    /** 
+     * @param id
+     * @return Optional<Companys>
+     */
     @Override
     public Optional<Companys> findById(Long id) {
         // TODO Auto-generated method stub
         return Optional.empty();
     }
 
+    
+    /** 
+     * @param id
+     * @return boolean
+     */
     @Override
     public boolean existsById(Long id) {
         // TODO Auto-generated method stub
         return false;
     }
 
+    
+    /** 
+     * @return long
+     */
     @Override
     public long count() {
         // TODO Auto-generated method stub
         return 0;
     }
 
+    
+    /** 
+     * @param id
+     */
     @Override
     public void deleteById(Long id) {
         // TODO Auto-generated method stub
         
     }
 
+    
+    /** 
+     * @param entity
+     */
     @Override
     public void delete(Companys entity) {
         // TODO Auto-generated method stub
         
     }
 
+    
+    /** 
+     * @param ids
+     */
     @Override
     public void deleteAllById(Iterable<? extends Long> ids) {
         // TODO Auto-generated method stub
         
     }
 
+    
+    /** 
+     * @param entities
+     */
     @Override
     public void deleteAll(Iterable<? extends Companys> entities) {
         // TODO Auto-generated method stub
@@ -352,30 +586,56 @@ public class CompanysService implements CompanysRepository {
         
     }
 
+    
+    /** 
+     * @param example
+     * @return Optional<S>
+     */
     @Override
     public <S extends Companys> Optional<S> findOne(Example<S> example) {
         // TODO Auto-generated method stub
         return Optional.empty();
     }
 
+    
+    /** 
+     * @param example
+     * @param pageable
+     * @return Page<S>
+     */
     @Override
     public <S extends Companys> Page<S> findAll(Example<S> example, Pageable pageable) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param example
+     * @return long
+     */
     @Override
     public <S extends Companys> long count(Example<S> example) {
         // TODO Auto-generated method stub
         return 0;
     }
 
+    
+    /** 
+     * @param example
+     * @return boolean
+     */
     @Override
     public <S extends Companys> boolean exists(Example<S> example) {
         // TODO Auto-generated method stub
         return false;
     }
 
+    
+    /** 
+     * @param queryFunction
+     * @return R
+     */
     @Override
     public <S extends Companys, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
         // TODO Auto-generated method stub

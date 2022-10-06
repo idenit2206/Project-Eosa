@@ -27,6 +27,11 @@ public class HttpClientUtils {
     private static Logger logger = LoggerFactory.getLogger(HttpClientUtils.class);
     private static ObjectMapper objectMapper = new ObjectMapper();
 
+    
+    /** 
+     * @param url
+     * @return String
+     */
     public static String doGet(String url) {
         String result = null;
         CloseableHttpClient httpclient = null;
@@ -65,6 +70,12 @@ public class HttpClientUtils {
         return result;
     }
 
+    
+    /** 
+     * @param url
+     * @param param
+     * @return String
+     */
     public static String doPost(String url, Map<String, String> param) {
         String result = null;
         CloseableHttpClient httpclient = null;

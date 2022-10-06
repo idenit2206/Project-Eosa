@@ -22,6 +22,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired UsersRepository usersRepository;
 
+    
+    /** 
+     * @param username
+     * @return UserDetails
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.debug("[loadUserByUsername 27] {}", username);

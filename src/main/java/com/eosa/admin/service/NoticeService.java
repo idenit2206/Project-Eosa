@@ -22,6 +22,13 @@ public class NoticeService {
     @Autowired
     private NoticeMapper noticeMapper;
 
+    
+    /** 
+     * @param model
+     * @param search
+     * @param page
+     * @return String
+     */
     public String noticeList(Model model, String search, int page) {
         Map<String, Object> map = new HashMap<>();
         int count = noticeMapper.countNoticeList();
@@ -39,6 +46,12 @@ public class NoticeService {
         return "admin/board/notice/list";
     }
 
+    
+    /** 
+     * @param model
+     * @param authentication
+     * @return String
+     */
     public String noticeRegister(Model model, Authentication authentication) {
         if(authentication != null) {
             model.addAttribute("usersName", authentication.getName());
@@ -51,15 +64,30 @@ public class NoticeService {
 
     }
 
+    
+    /** 
+     * @param noticeDTO
+     * @return int
+     */
     public int insertNotice(NoticeDTO noticeDTO) {
         return noticeMapper.insertNotice(noticeDTO);
     }
 
+    
+    /** 
+     * @param noticeDTO
+     * @return int
+     */
     public int updateNoticeByNoticeIdx(NoticeDTO noticeDTO) {
         log.debug("[updateNoticeByNoticeIdx] noticeDto: {}", noticeDTO.toString());
         return noticeMapper.updateNoticeByNoticeIdx(noticeDTO);
     }
 
+    
+    /** 
+     * @param idx
+     * @return int
+     */
     public int deleteByNoticeIdx(Long idx) {
         int deleteRows = noticeMapper.deleteByNoticeIdx(idx);
         return deleteRows;

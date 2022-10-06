@@ -19,6 +19,11 @@ public class ReportFormController {
 
     @Autowired private ReportFormService reportFormService;
 
+    
+    /** 
+     * @param reportForm
+     * @return CustomResponseData
+     */
     @PostMapping("/insertReportForm")
     public CustomResponseData insertReportForm(ReportForm reportForm) {
         CustomResponseData result = new CustomResponseData();
@@ -39,6 +44,10 @@ public class ReportFormController {
         return result;
     }
 
+    
+    /** 
+     * @return CustomResponseData
+     */
     @GetMapping("/selectAllReprotForm")
     public CustomResponseData selectAllReportForm() {
         CustomResponseData result = new CustomResponseData();

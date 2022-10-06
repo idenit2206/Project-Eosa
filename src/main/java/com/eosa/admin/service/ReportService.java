@@ -63,6 +63,11 @@ public class ReportService {
         return "admin/board/report/list";
     }
 
+    
+    /** 
+     * @param reportDTO
+     * @return int
+     */
     public int reportUpdate(ReportDTO reportDTO) {
         return reportMapper.reportUpdate(reportDTO);
     }

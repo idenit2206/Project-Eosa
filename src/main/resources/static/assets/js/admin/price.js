@@ -212,8 +212,9 @@ const addCategoryItem = () => {
         categoryInputName.setAttribute("class", "categoryNameValue");
         categoryInputPrice.setAttribute("type", "text");
         categoryInputPrice.setAttribute("class", "categoryPriceValue");
-        categoryIconPreview.setAttribute("class", "categoryIconPreview");
+        categoryIconPreview.setAttribute("class", "categoryIconPreview");       
         categoryIconInputFile.setAttribute("class", "categoryIconInputFile");
+        categoryIconInputFile.setAttribute("onchange", "categoryIconInputFileChange(this)");
         categoryIconInputFile.setAttribute("type", "file");
 
         categoryTdIdx.appendChild(categoryInputIdx);
@@ -288,13 +289,19 @@ const FileUpProcess2 = (file, index) => {
     };
 }
 
-const categoryIconInputFileChange = () => {
-    const categoryIconInputFile = document.querySelectorAll(".categoryIconInputFile");
-    for(let i = 0; i < categoryIconInputFile.length; i++) {
-        categoryIconInputFile[i].addEventListener("change", (e) => {
-            FileUpProcess2(categoryIconInputFile[i].files[0], i);
-        })
-    }
+// const categoryIconInputFileChange = () => {
+//     const categoryIconInputFile = document.querySelectorAll(".categoryIconInputFile");
+//     for(let i = 0; i < categoryIconInputFile.length; i++) {
+//         categoryIconInputFile[i].addEventListener("change", (e) => {
+//             FileUpProcess2(categoryIconInputFile[i].files[0], i);
+//         })
+//     }
+// }
+const categoryIconInputFileChange = (event) => {
+    let id = event.getAttribute("id"); // int | null
+    const categoryTR = document.querySelectorAll(".categoryTR");
+    // console.log(event.files[0]);
+    FileUpProcess2(event.files[0], id == null ? categoryTR.length-1 : id);   
 }
 
 const modifyCategory = () => {

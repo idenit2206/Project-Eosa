@@ -38,6 +38,10 @@ public class ChatMessageController {
 
     List<Object> messageList = new LinkedList<>();
 
+    
+    /** 
+     * @param message
+     */
     @MessageMapping("/chat/message")
     public void sendMessage(ChatMessage message) {
         if((message.getMessageType()).equals(MessageType.ENTER)) {
@@ -80,11 +84,19 @@ public class ChatMessageController {
         sendingOperations.convertAndSend("/topic/chat/room/" + message.getRoomId(), message);
     }
 
+    
+    /** 
+     * @return List<ChatMessage>
+     */
     @GetMapping("/chat/message/read")
     public List<ChatMessage> readMessageList() {        
         return chatMessageService.readMessagesList();
     }
 
+
+/** 
+ * @return List<ChatMessage>
+ */
 //    @GetMapping("/chat/message/selectChatMessageByRoomId/{roomId}")
 //    public List<ChatMessage> selectChatMessageByRoomId(@PathVariable String roomId) {
 //        return chatMessageService.selectChatMessageByByRoomId(roomId);

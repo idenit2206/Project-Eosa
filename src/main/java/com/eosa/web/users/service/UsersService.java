@@ -71,16 +71,31 @@ public class UsersService implements UsersRepository {
         return result;
     }
 
+    
+    /** 
+     * @param usersPhone
+     * @return int
+     */
     @Override
     public int selectUsersPhoneCheckByUsersPhone(String usersPhone) {
         return usersRepository.selectUsersPhoneCheckByUsersPhone(usersPhone);
     }
 
+    
+    /** 
+     * @param usersAccount
+     * @return Users
+     */
     @Override
     public Users usersAccountDupliCheck(String usersAccount) {
         return usersRepository.usersAccountDupliCheck(usersAccount);
     }
 
+    
+    /** 
+     * @param usersEmail
+     * @return Users
+     */
     @Override
     public Users selectUsersByUsersEmail(String usersEmail) {
         return usersRepository.selectUsersByUsersEmail(usersEmail);
@@ -114,6 +129,11 @@ public class UsersService implements UsersRepository {
         return result;
     }
 
+    
+    /** 
+     * @param usersEmail
+     * @return Users
+     */
     public Users selectByUsersEmail(String usersEmail) {
         return usersRepository.selectByUsersEmail(usersEmail);
     }
@@ -190,6 +210,11 @@ public class UsersService implements UsersRepository {
         return tran;
     }
 
+    
+    /** 
+     * @param param
+     * @return int
+     */
     public int updateAdminUserInfo(Users param) {
         String newPass = passwordEncoder.encode(param.getUsersPass());
         param.setUsersPass(newPass);
@@ -204,32 +229,64 @@ public class UsersService implements UsersRepository {
         return usersRepository.deleteUserInfo(usersIdx);
     }
 
+    
+    /** 
+     * @param usersIdx
+     * @return Users
+     */
     @Override
     public Users selectUsersByUsersIdx(Long usersIdx) {
         return usersRepository.selectUsersByUsersIdx(usersIdx);
     }
 
+    
+    /** 
+     * @param usersIdx
+     * @return String
+     */
     public String selectUsersAccountByUsersIdx(Long usersIdx) {
         return usersRepository.selectUsersAccountByUsersIdx(usersIdx);
     }
 
+    
+    /** 
+     * @param usersAccount
+     * @param usersEmail
+     * @param encodedCode
+     * @return int
+     */
     @Override
     public int updateUsersPass(String usersAccount, String usersEmail, String encodedCode) {
         return usersRepository.updateUsersPass(usersAccount, usersEmail, encodedCode);
     }
 
+    
+    /** 
+     * @param sort
+     * @return List<Users>
+     */
     @Override
     public List<Users> findAll(Sort sort) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param ids
+     * @return List<Users>
+     */
     @Override
     public List<Users> findAllById(Iterable<Long> ids) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param entities
+     * @return List<S>
+     */
     @Override
     public <S extends Users> List<S> saveAll(Iterable<S> entities) {
         // TODO Auto-generated method stub
@@ -242,24 +299,42 @@ public class UsersService implements UsersRepository {
         
     }
 
+    
+    /** 
+     * @param entity
+     * @return S
+     */
     @Override
     public <S extends Users> S saveAndFlush(S entity) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param entities
+     * @return List<S>
+     */
     @Override
     public <S extends Users> List<S> saveAllAndFlush(Iterable<S> entities) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param entities
+     */
     @Override
     public void deleteAllInBatch(Iterable<Users> entities) {
         // TODO Auto-generated method stub
         
     }
 
+    
+    /** 
+     * @param ids
+     */
     @Override
     public void deleteAllByIdInBatch(Iterable<Long> ids) {
         // TODO Auto-generated method stub
@@ -272,84 +347,150 @@ public class UsersService implements UsersRepository {
         
     }
 
+    
+    /** 
+     * @param id
+     * @return Users
+     */
     @Override
     public Users getOne(Long id) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param id
+     * @return Users
+     */
     @Override
     public Users getById(Long id) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param id
+     * @return Users
+     */
     @Override
     public Users getReferenceById(Long id) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param example
+     * @return List<S>
+     */
     @Override
     public <S extends Users> List<S> findAll(Example<S> example) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param example
+     * @param sort
+     * @return List<S>
+     */
     @Override
     public <S extends Users> List<S> findAll(Example<S> example, Sort sort) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param pageable
+     * @return Page<Users>
+     */
     @Override
     public Page<Users> findAll(Pageable pageable) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param entity
+     * @return S
+     */
     @Override
     public <S extends Users> S save(S entity) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param id
+     * @return Optional<Users>
+     */
     @Override
     public Optional<Users> findById(Long id) {
         // TODO Auto-generated method stub
         return Optional.empty();
     }
 
+    
+    /** 
+     * @param id
+     * @return boolean
+     */
     @Override
     public boolean existsById(Long id) {
         // TODO Auto-generated method stub
         return false;
     }
 
+    
+    /** 
+     * @return long
+     */
     @Override
     public long count() {
         // TODO Auto-generated method stub
         return 0;
     }
 
+    
+    /** 
+     * @param id
+     */
     @Override
     public void deleteById(Long id) {
         // TODO Auto-generated method stub
         
     }
 
+    
+    /** 
+     * @param entity
+     */
     @Override
     public void delete(Users entity) {
         // TODO Auto-generated method stub
         
     }
 
+    
+    /** 
+     * @param ids
+     */
     @Override
     public void deleteAllById(Iterable<? extends Long> ids) {
         // TODO Auto-generated method stub
         
     }
 
+    
+    /** 
+     * @param entities
+     */
     @Override
     public void deleteAll(Iterable<? extends Users> entities) {
         // TODO Auto-generated method stub
@@ -362,42 +503,77 @@ public class UsersService implements UsersRepository {
         
     }
 
+    
+    /** 
+     * @param example
+     * @return Optional<S>
+     */
     @Override
     public <S extends Users> Optional<S> findOne(Example<S> example) {
         // TODO Auto-generated method stub
         return Optional.empty();
     }
 
+    
+    /** 
+     * @param example
+     * @param pageable
+     * @return Page<S>
+     */
     @Override
     public <S extends Users> Page<S> findAll(Example<S> example, Pageable pageable) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param example
+     * @return long
+     */
     @Override
     public <S extends Users> long count(Example<S> example) {
         // TODO Auto-generated method stub
         return 0;
     }
 
+    
+    /** 
+     * @param example
+     * @return boolean
+     */
     @Override
     public <S extends Users> boolean exists(Example<S> example) {
         // TODO Auto-generated method stub
         return false;
     }
 
+    
+    /** 
+     * @param queryFunction
+     * @return R
+     */
     @Override
     public <S extends Users, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @param usersEmail
+     * @return Users
+     */
     @Override
     public Users findByUsersEmail(String usersEmail) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    /** 
+     * @return List<Users>
+     */
     @Override
     public List<Users> selectAllDetective() {
         // TODO Auto-generated method stub

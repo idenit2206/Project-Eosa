@@ -19,5 +19,6 @@ public class Category {
     private Long categoryIdx;
     @Column private String categoryName;
     @Column private int categoryPrice;
+    @Column private String categoryIcon;
     
 }

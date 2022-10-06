@@ -21,31 +21,63 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
 
     @Autowired private DetectiveRequestFormRepository detectiveRequestFormRepository;
 
+    
+    /** 
+     * @param companysIdx
+     * @return List<SelectRequestFormList>
+     */
     @Override
     public List<SelectRequestFormList> selectAllDetectiveRequestFormListByCompanysIdx(Long companysIdx) {
         return detectiveRequestFormRepository.selectAllDetectiveRequestFormListByCompanysIdx(companysIdx);
     }
 
+    
+    /** 
+     * @param companysIdx
+     * @return List<SelectRequestFormList>
+     */
     @Override
     public List<SelectRequestFormList> selectAllDetectiveRequestFormListByCompanysIdxOrderByDESC(Long companysIdx) {
         return detectiveRequestFormRepository.selectAllDetectiveRequestFormListByCompanysIdxOrderByDESC(companysIdx);
     }
 
+    
+    /** 
+     * @param companysIdx
+     * @return List<SelectRequestFormList>
+     */
     @Override
     public List<SelectRequestFormList> selectAllDetectiveRequestFormListByCompanysIdxOrderByASC(Long companysIdx) {
         return detectiveRequestFormRepository.selectAllDetectiveRequestFormListByCompanysIdxOrderByASC(companysIdx);
     }
 
+    
+    /** 
+     * @param requestFormIdx
+     * @return RequestForm
+     */
     @Override
     public RequestForm selectDetectiveRequestFormInfoByRequestFormIdx(Long requestFormIdx) {
         return detectiveRequestFormRepository.selectDetectiveRequestFormInfoByRequestFormIdx(requestFormIdx);
     }
 
+    
+    /** 
+     * @param requestFormIdx
+     * @param requestFormStatus
+     * @param requestFormRejectMessage
+     * @return int
+     */
     @Override
     public int updateRequestFormStatusByRequestFormIdx(Long requestFormIdx, String requestFormStatus, String requestFormRejectMessage) {
         return detectiveRequestFormRepository.updateRequestFormStatusByRequestFormIdx(requestFormIdx, requestFormStatus, requestFormRejectMessage);
     }
 
+    
+    /** 
+     * @param entity
+     * @return int
+     */
     @Override
     public int updateRequestFormByEntity(RequestForm entity) {
         if(entity.getRequestFormStatus().equals("의뢰거절")) { entity.setRequestFormCompDate(LocalDateTime.now()); }
@@ -59,56 +91,111 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
         return detectiveRequestFormRepository.updateRequestFormByEntity(entity);
     }
 
+    
+    /** 
+     * @param requestFormIdx
+     * @param requestFormAcceptDate
+     * @param requestFormStatus
+     * @param requestFormRejectMessage
+     * @return int
+     */
     @Override
     public int updateRequestFormStatusByRequestFormIdxCaseConsultComplete(Long requestFormIdx, LocalDateTime requestFormAcceptDate, String requestFormStatus, String requestFormRejectMessage) {
         return detectiveRequestFormRepository.updateRequestFormStatusByRequestFormIdxCaseConsultComplete(requestFormIdx, requestFormAcceptDate, requestFormStatus, requestFormRejectMessage);
     }
 
+    
+    /** 
+     * @param requestFormIdx
+     * @param requestFormCompDate
+     * @param requestFormStatus
+     * @param requestFormRejectMessage
+     * @return int
+     */
     @Override
     public int updateRequestFormStatusByRequestFormIdxCaseMissionComplete(Long requestFormIdx, LocalDateTime requestFormCompDate, String requestFormStatus, String requestFormRejectMessage) {
         return detectiveRequestFormRepository.updateRequestFormStatusByRequestFormIdxCaseMissionComplete(requestFormIdx, requestFormCompDate, requestFormStatus, requestFormRejectMessage);
     }
 
+    
+    /** 
+     * @return List<RequestForm>
+     */
     @Override
     public List<RequestForm> findAll() {
         return null;
     }
 
+    
+    /** 
+     * @param sort
+     * @return List<RequestForm>
+     */
     @Override
     public List<RequestForm> findAll(Sort sort) {
         return null;
     }
 
+    
+    /** 
+     * @param pageable
+     * @return Page<RequestForm>
+     */
     @Override
     public Page<RequestForm> findAll(Pageable pageable) {
         return null;
     }
 
+    
+    /** 
+     * @param longs
+     * @return List<RequestForm>
+     */
     @Override
     public List<RequestForm> findAllById(Iterable<Long> longs) {
         return null;
     }
 
+    
+    /** 
+     * @return long
+     */
     @Override
     public long count() {
         return 0;
     }
 
+    
+    /** 
+     * @param aLong
+     */
     @Override
     public void deleteById(Long aLong) {
 
     }
 
+    
+    /** 
+     * @param entity
+     */
     @Override
     public void delete(RequestForm entity) {
 
     }
 
+    
+    /** 
+     * @param longs
+     */
     @Override
     public void deleteAllById(Iterable<? extends Long> longs) {
 
     }
 
+    
+    /** 
+     * @param entities
+     */
     @Override
     public void deleteAll(Iterable<? extends RequestForm> entities) {
 
@@ -119,21 +206,41 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
 
     }
 
+    
+    /** 
+     * @param entity
+     * @return S
+     */
     @Override
     public <S extends RequestForm> S save(S entity) {
         return null;
     }
 
+    
+    /** 
+     * @param entities
+     * @return List<S>
+     */
     @Override
     public <S extends RequestForm> List<S> saveAll(Iterable<S> entities) {
         return null;
     }
 
+    
+    /** 
+     * @param aLong
+     * @return Optional<RequestForm>
+     */
     @Override
     public Optional<RequestForm> findById(Long aLong) {
         return Optional.empty();
     }
 
+    
+    /** 
+     * @param aLong
+     * @return boolean
+     */
     @Override
     public boolean existsById(Long aLong) {
         return false;
@@ -144,21 +251,39 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
 
     }
 
+    
+    /** 
+     * @param entity
+     * @return S
+     */
     @Override
     public <S extends RequestForm> S saveAndFlush(S entity) {
         return null;
     }
 
+    
+    /** 
+     * @param entities
+     * @return List<S>
+     */
     @Override
     public <S extends RequestForm> List<S> saveAllAndFlush(Iterable<S> entities) {
         return null;
     }
 
+    
+    /** 
+     * @param entities
+     */
     @Override
     public void deleteAllInBatch(Iterable<RequestForm> entities) {
 
     }
 
+    
+    /** 
+     * @param longs
+     */
     @Override
     public void deleteAllByIdInBatch(Iterable<Long> longs) {
 
@@ -169,56 +294,113 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
 
     }
 
+    
+    /** 
+     * @param aLong
+     * @return RequestForm
+     */
     @Override
     public RequestForm getOne(Long aLong) {
         return null;
     }
 
+    
+    /** 
+     * @param aLong
+     * @return RequestForm
+     */
     @Override
     public RequestForm getById(Long aLong) {
         return null;
     }
 
+    
+    /** 
+     * @param aLong
+     * @return RequestForm
+     */
     @Override
     public RequestForm getReferenceById(Long aLong) {
         return null;
     }
 
+    
+    /** 
+     * @param example
+     * @return Optional<S>
+     */
     @Override
     public <S extends RequestForm> Optional<S> findOne(Example<S> example) {
         return Optional.empty();
     }
 
+    
+    /** 
+     * @param example
+     * @return List<S>
+     */
     @Override
     public <S extends RequestForm> List<S> findAll(Example<S> example) {
         return null;
     }
 
+    
+    /** 
+     * @param example
+     * @param sort
+     * @return List<S>
+     */
     @Override
     public <S extends RequestForm> List<S> findAll(Example<S> example, Sort sort) {
         return null;
     }
 
+    
+    /** 
+     * @param example
+     * @param pageable
+     * @return Page<S>
+     */
     @Override
     public <S extends RequestForm> Page<S> findAll(Example<S> example, Pageable pageable) {
         return null;
     }
 
+    
+    /** 
+     * @param example
+     * @return long
+     */
     @Override
     public <S extends RequestForm> long count(Example<S> example) {
         return 0;
     }
 
+    
+    /** 
+     * @param example
+     * @return boolean
+     */
     @Override
     public <S extends RequestForm> boolean exists(Example<S> example) {
         return false;
     }
 
+    
+    /** 
+     * @param queryFunction
+     * @return R
+     */
     @Override
     public <S extends RequestForm, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return null;
     }
 
+    
+    /** 
+     * @param requestFormIdx
+     * @return RequestForm
+     */
     @Override
     public RequestForm selectRequestFormByRequestFormIdx(Long requestFormIdx) {
         // TODO Auto-generated method stub

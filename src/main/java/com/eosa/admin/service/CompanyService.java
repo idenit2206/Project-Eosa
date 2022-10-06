@@ -215,7 +215,7 @@ public class CompanyService {
     }
 
     /**
-     * 업체 프리미엄 신청 서비스
+     * 업체 제휴협회 신청 서비스
      *
      * @param companysDTO
      * @return int
@@ -226,7 +226,7 @@ public class CompanyService {
     }
 
     /**
-     * 업체 프리미엄 등록 서비스
+     * 업체 제휴협회 등록 서비스
      *
      * @param companysDTO
      * @return int
@@ -244,7 +244,7 @@ public class CompanyService {
     }
 
     /**
-     * 업체 프리미엄 해지 서비스
+     * 업체 제휴협회 해지 서비스
      *
      * @param companysIdx
      * @return int
@@ -342,7 +342,7 @@ public class CompanyService {
     }
 
     /**
-     * 프리미엄 목록 조회 서비스
+     * 제휴협회 목록 조회 서비스
      *
      * @param model
      * @param enabled
