@@ -118,7 +118,7 @@ public class CompanyController {
     }
 
     /**
-     * 업체 프리미엄 신청 컨트롤러
+     * 업체 제휴협회 신청 컨트롤러
      *
      * @param companysDTO
      * @return int
@@ -131,7 +131,7 @@ public class CompanyController {
     }
 
     /**
-     * 업체 프리미엄 등록 컨트롤러
+     * 업체 제휴협회 등록 컨트롤러
      *
      * @param companysDTO
      * @return int
@@ -144,7 +144,7 @@ public class CompanyController {
     }
 
     /**
-     * 업체 프리미엄 해지 컨트롤러
+     * 업체 제휴협회 해지 컨트롤러
      *
      * @param companysIdx
      * @return int
@@ -209,7 +209,7 @@ public class CompanyController {
     }
 
     /**
-     * 프리미엄 목록 조회 컨트롤러
+     * 제휴협회 목록 조회 컨트롤러
      *
      * @param model
      * @param enabled

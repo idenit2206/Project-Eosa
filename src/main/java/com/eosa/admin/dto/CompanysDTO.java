@@ -39,7 +39,7 @@ public class CompanysDTO {
     private String companysBankName;        // 계좌 은행
     private String companysBankNumber;      // 계좌번호
     private Timestamp companysRegistDate;   // 업체 등록일
-    private int companysPremium;            // 프리미엄 여부
+    private int companysPremium;            // 제휴협회 여부
     private int companysLocalPremium;       // 마패 여부
     private int companysEnabled;            // 승인 상태
     private int companysDelete;             // 삭제 여부
@@ -52,11 +52,11 @@ public class CompanysDTO {
     private long companysCategoryIdx;       // 업체 업무 분야 고유 번호
     private String companysCategoryValue;   // 업체 업무 분야
 
-    private long idx;                       // 프리미엄 업체 고유 번호
-    private Timestamp premiumReqDate;       // 프리미엄 신청일
-    private Timestamp premiumStartDate;     // 프리미엄 시작일
-    private Timestamp premiumEndDate;       // 프리미엄 종료일
-    private int companysPremiumEnabled;     // 프리미엄 승인 여부
+    private long idx;                       // 제휴협회 업체 고유 번호
+    private Timestamp premiumReqDate;       // 제휴협회 신청일
+    private Timestamp premiumStartDate;     // 제휴협회 시작일
+    private Timestamp premiumEndDate;       // 제휴협회 종료일
+    private int companysPremiumEnabled;     // 제휴협회 승인 여부
 
     private long companysFlagIdx;           // 깃발 업체 고유 번호
     private long flagPrice;                 // 깃발 가격

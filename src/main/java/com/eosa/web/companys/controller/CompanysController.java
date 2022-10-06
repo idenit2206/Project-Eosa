@@ -538,7 +538,7 @@ public class CompanysController {
     }
 
     /**
-     * 업체 등급별 검색 일반, 마패, 프리미엄, 전체
+     * 업체 등급별 검색 일반, 마패, 제휴협회, 전체
      *
      */
     // @GetMapping("/selectCompanysByCompanysGrade")

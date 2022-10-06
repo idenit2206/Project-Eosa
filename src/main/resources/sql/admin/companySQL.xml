@@ -200,7 +200,7 @@
         WHERE companysIdx = #{companysIdx}
     </update>
 
-    <!-- 업체 프리미엄 신청 -->
+    <!-- 업체 제휴협회 신청 -->
     <insert id="insertPremium" parameterType="CompanysDTO">
         INSERT INTO CompanysPremium (companysIdx,
                                      companysName,
@@ -212,7 +212,7 @@
                 NOW())
     </insert>
 
-    <!-- 업체 프리미엄 등록 -->
+    <!-- 업체 제휴협회 등록 -->
     <update id="updatePremium" parameterType="CompanysDTO">
         UPDATE CompanysPremium
         SET premiumStartDate       = #{premiumStartDate},
@@ -221,7 +221,7 @@
         WHERE companysIdx = #{companysIdx}
     </update>
 
-    <!-- 업체 프리미엄 해지 -->
+    <!-- 업체 제휴협회 해지 -->
     <update id="cancelPremium" parameterType="long">
         UPDATE CompanysPremium
         SET premiumStartDate       = NULL,
@@ -314,7 +314,7 @@
         WHERE companysIdx = #{companysIdx}
     </update>
 
-    <!-- 프리미엄 목록 개수 조회 -->
+    <!-- 제휴협회 목록 개수 조회 -->
     <select id="countPremiumList" resultType="int" parameterType="hashmap">
         SELECT COUNT(*)
         FROM CompanysPremium P
@@ -325,7 +325,7 @@
         </where>
     </select>
 
-    <!-- 프리미엄 목록 조회 -->
+    <!-- 제휴협회 목록 조회 -->
     <select id="selectPremiumList" resultType="CompanysDTO" parameterType="hashmap">
         SELECT C.companysIdx,
                C.companysName,

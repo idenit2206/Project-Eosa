@@ -277,7 +277,7 @@
                         <table class="dt-table">
                             <thead>
                             <tr>
-                                <th class="text-center">프리미엄</th>
+                                <th class="text-center">제휴협회</th>
                                 <th class="text-center">마패</th>
                             </tr>
                             </thead>
@@ -285,7 +285,7 @@
                             <tr>
                                 <td>
                                     <div class="input-wrap center-wrap">
-                                        <button type="button" th:if="${details.idx} eq 0" class="btn-normal btn-green-lt req-premium">프리미엄 신청</button>
+                                        <button type="button" th:if="${details.idx} eq 0" class="btn-normal btn-green-lt req-premium">제휴협회 신청</button>
                                         <select class="select width-100-per" th:if="${details.idx} ne 0" disabled>
                                             <option value="1" th:selected="${details.companysPremium} eq 1">적용</option>
                                             <option value="0" th:selected="${details.companysPremium} eq 0">미적용</option>
@@ -575,15 +575,15 @@
                 });
             }
 
-            // 프리미엄 신청
+            // 제휴협회 신청
             const reqPremium = document.querySelector('.req-premium');
             if (reqPremium != null) reqPremium.addEventListener('click', requestPremium);
 
-            // 프리미엄 등록
+            // 제휴협회 등록
             const appPremium = document.querySelector('.approval-premium');
             if (appPremium != null) appPremium.addEventListener('click', approvalPremium);
 
-            // 프리미엄 해지
+            // 제휴협회 해지
             const canPremium = document.querySelector('.cancel-premium');
             if (canPremium != null) canPremium.addEventListener('click', cancelPremium);
 

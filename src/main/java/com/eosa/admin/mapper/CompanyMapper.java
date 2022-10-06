@@ -93,7 +93,7 @@ public interface CompanyMapper {
     int updateCheck(Map<String, Object> map);
 
     /**
-     * 업체 프리미엄 신청 매퍼
+     * 업체 제휴협회 신청 매퍼
      *
      * @param companysDTO
      * @return int
@@ -101,7 +101,7 @@ public interface CompanyMapper {
     int insertPremium(CompanysDTO companysDTO);
 
     /**
-     * 업체 프리미엄 등록 매퍼
+     * 업체 제휴협회 등록 매퍼
      *
      * @param companysDTO
      * @return int
@@ -109,7 +109,7 @@ public interface CompanyMapper {
     int updatePremium(CompanysDTO companysDTO);
 
     /**
-     * 업체 프리미엄 해지 매퍼
+     * 업체 제휴협회 해지 매퍼
      *
      * @param companysIdx
      * @return int
@@ -188,7 +188,7 @@ public interface CompanyMapper {
     int updateAd(Map<String, Object> map);
 
     /**
-     * 프리미엄 목록 개수 조회 매퍼
+     * 제휴협회 목록 개수 조회 매퍼
      *
      * @param map
      * @return int
@@ -196,7 +196,7 @@ public interface CompanyMapper {
     int countPremiumList(Map<String, Object> map);
 
     /**
-     * 프리미엄 목록 조회 매퍼
+     * 제휴협회 목록 조회 매퍼
      *
      * @param map
      * @return CompanysDTO
