@@ -28,6 +28,10 @@ public class PriceServiceController {
     @Autowired private CategoryService categoryService;
     @Autowired private RegionService regionService;
     
+    
+    /** 
+     * @return CustomResponseData
+     */
     @GetMapping("/selectBankInfo")
     public CustomResponseData selectBankInfo() {
         CustomResponseData result = new CustomResponseData();

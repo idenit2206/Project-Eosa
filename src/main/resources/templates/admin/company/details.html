@@ -80,7 +80,8 @@
                                         <div class="td-flex-wrap">
                                             <div class="select-wrap">
                                                 <select class="select select-sm" id="region01">
-                                                    <option value="서울" th:selected="${details.companysRegion1} eq '서울'">서울</option>
+                                                    <option th:each="list : ${regionList}" th:selected="${details.companysRegion1} eq ${list.regionName}" th:value="${list.regionName}">[[${list.regionName}]]</option>
+                                                    <!-- <option value="서울" th:selected="${details.companysRegion1} eq '서울'">서울</option>
                                                     <option value="경기" th:selected="${details.companysRegion1} eq '경기'">경기</option>
                                                     <option value="대전/충남/세종" th:selected="${details.companysRegion1} eq '대전/충남/세종'">대전/충남/세종</option>
                                                     <option value="인천/부천" th:selected="${details.companysRegion1} eq '인천/부천'">인천/부천</option>
@@ -90,7 +91,7 @@
                                                     <option value="대구/경북" th:selected="${details.companysRegion1} eq '대구/경북'">대구/경북</option>
                                                     <option value="부산/울산/경남" th:selected="${details.companysRegion1} eq '부산/울산/경남'">부산/울산/경남</option>
                                                     <option value="광주/전남" th:selected="${details.companysRegion1} eq '광주/전남'">광주/전남</option>
-                                                    <option value="제주" th:selected="${details.companysRegion1} eq '제주'">제주</option>
+                                                    <option value="제주" th:selected="${details.companysRegion1} eq '제주'">제주</option> -->
                                                 </select>
                                             </div>
                                             <div class="input-wrap">
@@ -128,7 +129,11 @@
                                     <th>분야</th>
                                     <td>
                                         <div class="checkbox-wrap">
-                                            <div class="dt-check-wrap">
+                                            <div class="dt-check-wrap" th:each="list, index : ${categoryList}">
+                                                <input type="checkbox" th:id="${index}" name="category" th:value="${list.categoryName}" th:checked="${#strings.contains(details.companysCategoryValue, list.categoryName)}"/>
+                                                <label th:for="${index}">[[${list.categoryName}]]</label>
+                                            </div>
+                                            <!-- <div class="dt-check-wrap">
                                                 <input type="checkbox" id="category1" name="category" value="가정문제" th:checked="${#strings.contains(details.companysCategoryValue, '가정문제')}">
                                                 <label for="category1">가정문제</label>
                                             </div>
@@ -179,13 +184,17 @@
                                             <div class="dt-check-wrap">
                                                 <input type="checkbox" id="category13" name="category" value="해외조사" th:checked="${#strings.contains(details.companysCategoryValue, '해외조사')}">
                                                 <label for="category13">해외조사</label>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </td>
                                     <th>활동지역</th>
                                     <td class="vertical-top">
                                         <div class="checkbox-wrap">
-                                            <div class="dt-check-wrap">
+                                            <div class="dt-check-wrap" th:each="list, index : ${regionList}">
+                                                <input type="checkbox" th:id="${index}" name="area" th:value="${list.regionName}" th:checked="${#strings.contains(details.activeRegion, list.regionName)}"/>
+                                                <label th:for="${index}">[[${list.regionName}]]</label>
+                                            </div>
+                                            <!-- <div class="dt-check-wrap">
                                                 <input type="checkbox" id="area1" name="area" value="서울" th:checked="${#strings.contains(details.activeRegion, '서울')}">
                                                 <label for="area1">서울</label>
                                             </div>
@@ -228,7 +237,7 @@
                                             <div class="dt-check-wrap">
                                                 <input type="checkbox" id="area11" name="area" value="제주" th:checked="${#strings.contains(details.activeRegion, '제주')}">
                                                 <label for="area11">제주</label>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </td>
                                 </tr>
