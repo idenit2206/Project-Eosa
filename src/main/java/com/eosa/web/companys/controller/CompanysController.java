@@ -502,7 +502,7 @@ public class CompanysController {
         Companys step1 = companysService.selectCompanyInfoByUsersIdx(usersIdx);
 
         if (step1 != null) {
-            log.debug("[selectCompanyInfoByUsersIdx] step1: {}", step1.toString());
+            // log.debug("[selectCompanyInfoByUsersIdx] step1: {}", step1.toString());
             Long companysIdx = step1.getCompanysIdx();
             List<String> companysCategory = companysCategoryService.selectByCompanysIdx(companysIdx);
             List<String> companysActiveRegion = companysActiveRegionService.selectByCompanysIdx(companysIdx);
@@ -531,7 +531,7 @@ public class CompanysController {
             items.put("companysCategory", companysCategory);
             items.put("companysActiveRegion", companysActiveRegion);
 
-            log.debug("[selectCompanyInfoByUsersIdx]399lines prepare result items: {}", items.toString());
+            // log.debug("[selectCompanyInfoByUsersIdx]399lines prepare result items: {}", items.toString());
 
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem(items);
