@@ -105,6 +105,7 @@ public class RequestContractController {
 
         if(saveEntity != null) {
             RequestForm rf = detectiveRequestFormService.selectRequestFormByRequestFormIdx(saveEntity.getRequestFormIdx());
+            log.debug(rf.toString());
             rf.setRequestFormStatus("계약진행");
             detectiveRequestFormService.updateRequestFormByEntity(rf);
             result.setStatusCode(HttpStatus.OK.value());

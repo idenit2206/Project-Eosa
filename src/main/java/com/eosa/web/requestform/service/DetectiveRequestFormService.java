@@ -3,6 +3,8 @@ package com.eosa.web.requestform.service;
 import com.eosa.web.requestform.entity.RequestForm;
 import com.eosa.web.requestform.entity.SelectRequestFormList;
 import com.eosa.web.requestform.repository.DetectiveRequestFormRepository;
+import com.eosa.web.requestform.repository.RequestFormRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -19,8 +21,16 @@ import java.util.function.Function;
 @Service
 public class DetectiveRequestFormService implements DetectiveRequestFormRepository {
 
-    @Autowired private DetectiveRequestFormRepository detectiveRequestFormRepository;
-
+    @Autowired private DetectiveRequestFormRepository detectiveRequestFormRepository;    
+    
+    /** 
+     * @param requestFormIdx
+     * @return RequestForm
+     */
+    @Override
+    public RequestForm selectRequestFormByRequestFormIdx(Long requestFormIdx) {
+        return detectiveRequestFormRepository.selectRequestFormByRequestFormIdx(requestFormIdx);
+    }
     
     /** 
      * @param companysIdx
@@ -50,7 +60,6 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
     public List<SelectRequestFormList> selectAllDetectiveRequestFormListByCompanysIdxOrderByASC(Long companysIdx) {
         return detectiveRequestFormRepository.selectAllDetectiveRequestFormListByCompanysIdxOrderByASC(companysIdx);
     }
-
     
     /** 
      * @param requestFormIdx
@@ -72,7 +81,6 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
     public int updateRequestFormStatusByRequestFormIdx(Long requestFormIdx, String requestFormStatus, String requestFormRejectMessage) {
         return detectiveRequestFormRepository.updateRequestFormStatusByRequestFormIdx(requestFormIdx, requestFormStatus, requestFormRejectMessage);
     }
-
     
     /** 
      * @param entity
@@ -90,7 +98,6 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
         }
         return detectiveRequestFormRepository.updateRequestFormByEntity(entity);
     }
-
     
     /** 
      * @param requestFormIdx
@@ -103,7 +110,6 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
     public int updateRequestFormStatusByRequestFormIdxCaseConsultComplete(Long requestFormIdx, LocalDateTime requestFormAcceptDate, String requestFormStatus, String requestFormRejectMessage) {
         return detectiveRequestFormRepository.updateRequestFormStatusByRequestFormIdxCaseConsultComplete(requestFormIdx, requestFormAcceptDate, requestFormStatus, requestFormRejectMessage);
     }
-
     
     /** 
      * @param requestFormIdx
@@ -116,7 +122,6 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
     public int updateRequestFormStatusByRequestFormIdxCaseMissionComplete(Long requestFormIdx, LocalDateTime requestFormCompDate, String requestFormStatus, String requestFormRejectMessage) {
         return detectiveRequestFormRepository.updateRequestFormStatusByRequestFormIdxCaseMissionComplete(requestFormIdx, requestFormCompDate, requestFormStatus, requestFormRejectMessage);
     }
-
     
     /** 
      * @return List<RequestForm>
@@ -125,7 +130,6 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
     public List<RequestForm> findAll() {
         return null;
     }
-
     
     /** 
      * @param sort
@@ -135,7 +139,6 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
     public List<RequestForm> findAll(Sort sort) {
         return null;
     }
-
     
     /** 
      * @param pageable
@@ -145,7 +148,6 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
     public Page<RequestForm> findAll(Pageable pageable) {
         return null;
     }
-
     
     /** 
      * @param longs
@@ -155,7 +157,6 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
     public List<RequestForm> findAllById(Iterable<Long> longs) {
         return null;
     }
-
     
     /** 
      * @return long
@@ -164,7 +165,6 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
     public long count() {
         return 0;
     }
-
     
     /** 
      * @param aLong
@@ -173,7 +173,6 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
     public void deleteById(Long aLong) {
 
     }
-
     
     /** 
      * @param entity
@@ -182,7 +181,6 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
     public void delete(RequestForm entity) {
 
     }
-
     
     /** 
      * @param longs
@@ -191,7 +189,6 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
     public void deleteAllById(Iterable<? extends Long> longs) {
 
     }
-
     
     /** 
      * @param entities
@@ -205,7 +202,6 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
     public void deleteAll() {
 
     }
-
     
     /** 
      * @param entity
@@ -215,7 +211,6 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
     public <S extends RequestForm> S save(S entity) {
         return null;
     }
-
     
     /** 
      * @param entities
@@ -225,7 +220,6 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
     public <S extends RequestForm> List<S> saveAll(Iterable<S> entities) {
         return null;
     }
-
     
     /** 
      * @param aLong
@@ -235,7 +229,6 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
     public Optional<RequestForm> findById(Long aLong) {
         return Optional.empty();
     }
-
     
     /** 
      * @param aLong
@@ -250,7 +243,6 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
     public void flush() {
 
     }
-
     
     /** 
      * @param entity
@@ -260,7 +252,6 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
     public <S extends RequestForm> S saveAndFlush(S entity) {
         return null;
     }
-
     
     /** 
      * @param entities
@@ -270,7 +261,6 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
     public <S extends RequestForm> List<S> saveAllAndFlush(Iterable<S> entities) {
         return null;
     }
-
     
     /** 
      * @param entities
@@ -279,7 +269,6 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
     public void deleteAllInBatch(Iterable<RequestForm> entities) {
 
     }
-
     
     /** 
      * @param longs
@@ -375,7 +364,6 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
     public <S extends RequestForm> long count(Example<S> example) {
         return 0;
     }
-
     
     /** 
      * @param example
@@ -396,14 +384,4 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
         return null;
     }
 
-    
-    /** 
-     * @param requestFormIdx
-     * @return RequestForm
-     */
-    @Override
-    public RequestForm selectRequestFormByRequestFormIdx(Long requestFormIdx) {
-        // TODO Auto-generated method stub
-        return null;
-    }
 }
