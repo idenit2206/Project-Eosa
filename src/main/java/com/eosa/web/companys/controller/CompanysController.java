@@ -265,12 +265,6 @@ public class CompanysController {
      */
     @GetMapping("/selectCompanysByFilter")
     public CustomResponseData selectCompanysByFilter(
-            // @RequestParam(value="companysNormal", required = false, defaultValue =
-            // "false") boolean companysNormal,
-            // @RequestParam(value="companysPremium", required = false, defaultValue =
-            // "false") boolean companysPremium,
-            // @RequestParam(value="companysLocalPremium", required = false, defaultValue =
-            // "false") boolean companysLocalPremium,
             @RequestParam(value = "companysCategory", required = false, defaultValue = "") List<String> companysCategory,
             @RequestParam(value = "companysRegion1", required = false, defaultValue = "") List<String> companysRegion1,
             @RequestParam(value = "companysRegion2", required = false, defaultValue = "") List<String> companysRegion2) {

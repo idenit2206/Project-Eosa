@@ -617,7 +617,7 @@ public class UsersController {
         Users rows = usersService.selectUsersByUsersIdx(usersIdx);
         Users item = new Users();
         if(rows != null) {            
-            log.debug("[selectUsersByUsersIdx] rows: {}", rows.toString());         
+            // log.debug("[selectUsersByUsersIdx] rows: {}", rows.toString());         
             item.setProvider(rows.getProvider());
             item.setUsersAccount(rows.getUsersAccount());
             item.setUsersName(rows.getUsersName());
@@ -636,7 +636,7 @@ public class UsersController {
         }
 
         if(item != null) {
-            log.debug("[selectUsersByUsersIdx] item: {}", item.toString());
+            // log.debug("[selectUsersByUsersIdx] item: {}", item.toString());
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem(item);
             result.setResponseDateTime(LocalDateTime.now());

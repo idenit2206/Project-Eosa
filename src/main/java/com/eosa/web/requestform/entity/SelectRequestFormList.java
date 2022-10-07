@@ -11,7 +11,7 @@ public interface SelectRequestFormList {
     Integer getUsersGender();
     Long getCompanysIdx();
     String getCompanysName();
-    int getCompanysPremium();
+    Integer getCompanysPremium();
     String getRequestFormRegion1();
     String getRequestFormRegion2();
     String getRequestFormStatus();
