@@ -7,7 +7,7 @@
 
     <th:block th:replace="admin/fragments/aside :: asideFragment"></th:block>
 
-    <main id="main" data-category="hiddencam">
+    <main id="main" data-category="company">
         <section class="section section-users">
             <div class="form form--xxl details-form">
                 <div>
@@ -48,7 +48,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                              
+
                                         <!-- <div class="td-flex-wrap">
                                             <div class="select-wrap">
                                                 <select class="select select-sm" id="region01">
@@ -64,7 +64,7 @@
                                                     <option value="광주/전남" th:selected="${details.companysRegion1} eq '광주/전남'">광주/전남</option>
                                                     <option value="제주" th:selected="${details.companysRegion1} eq '제주'">제주</option>
                                                 </select>
-                                            </div> -->         
+                                            </div> -->
                                 <tr>
                                     <!-- <th>삭제</th>
                                     <td>
@@ -75,11 +75,11 @@
                                     <th>신청일</th>
                                     <!-- <td th:text="${#dates.format(details.companysRegistDate, 'yyyy-MM-dd')}"></td> -->
                                     <td id="companysHiddencamRequestDate" colspan="5" th:text="${details.companysHiddencamRequestDate}"></td>
-                                </tr>                           
+                                </tr>
                             </tbody>
                         </table>
-                    </fieldset>                   
-                    <hr class="fieldset__hr">                 
+                    </fieldset>
+                    <hr class="fieldset__hr">
                     <div class="form__action bottom">
                         <a th:href="@{/admin/manage/companysHiddencam/list}" class="btn-normal">목록가기</a>
                         <button type="button" class="btn-prime btn-update">수정하기</button>
@@ -98,7 +98,7 @@
     <script th:src="@{/assets/js/admin/library.js}"></script>
     <script>
         window.addEventListener('load', function () {
-            // highlightMenu('list');
+            highlightMenu('hiddencam');
             onlyNum();
 
             const editorWrap = document.querySelectorAll('.e-wrap');
@@ -115,7 +115,7 @@
             // 업체 수정
             const updateBtn = document.querySelector('.btn-update');
             updateBtn.addEventListener('click', updateHiddencamCompany);
-           
+
             const deleteBtn = document.querySelector('.company-delete');
         });
     </script>

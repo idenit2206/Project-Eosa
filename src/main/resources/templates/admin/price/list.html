@@ -7,7 +7,7 @@
 
     <th:block th:replace="admin/fragments/aside :: asideFragment"></th:block>
 
-    <main id="main" class="main-list" data-category="price">
+    <main id="main" class="main-list" data-category="company">
         <section class="section section-users">
             <h3 class="section_title">지역&분야별 가격 관리</h3>
                 <div class="table">
@@ -19,7 +19,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>                           
+                            <tr>
                                 <td>
                                     <input id="priceBankName" type="text" th:value="${price.bankName}"/>
                                 </td>
@@ -48,11 +48,11 @@
                         </tbody>
                     </table>
                 </div>
-                <div>                  
+                <div>
                     <input class="btn price-modify-btn" type="button" value="은행 정보 수정" />
                 </div>
-           
-                <div class="table">              
+
+                <div class="table">
                     <table class="regionTable">
                         <thead>
                         <tr>
@@ -132,7 +132,7 @@
 <th:block layout:fragment="script">
     <script>
         window.addEventListener('DOMContentLoaded', () => {
-            // highlightMenu('list');
+            highlightMenu('price');
             modifyPrice();
 
             regionLock();

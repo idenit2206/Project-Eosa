@@ -7,7 +7,7 @@
 
     <th:block th:replace="admin/fragments/aside :: asideFragment"></th:block>
 
-    <main id="main" class="main-list" data-category="hiddencam">
+    <main id="main" class="main-list" data-category="company">
         <section class="section section-users">
             <h2 class="section_title">몰래카메라 업체 목록</h2>
             <div class="table">
@@ -61,7 +61,7 @@
                             <span th:if="${list.companysHiddencamCheckStatus == 0}">미확인</span>
                             <span th:unless="${list.companysHiddencamCheckStatus == 0}">확인</span>
                             <!-- <span th:text="${list.companysHiddencamCheckStatus}"></span> -->
-                        </td>                     
+                        </td>
                         <td>
                             <!-- <span th:text="${#dates.format(list.companysHiddencamRequestDate, 'yyyy-MM-dd')}"></span> -->
                             <span th:text="${list.companysHiddencamRequestDate}"></span>
@@ -95,7 +95,7 @@
 <th:block layout:fragment="script">
     <script>
         window.addEventListener('DOMContentLoaded', () => {
-            // highlightMenu('list');
+            highlightMenu('hiddencam');
             // companyTab();
             pageOn();
             listCheck();
