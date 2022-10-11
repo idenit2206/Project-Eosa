@@ -59,39 +59,46 @@ function reportDetailsModal() {
 
     const modal = document.querySelector('.modal-report');
     const mId = modal.querySelector('.modal-id');
+    const mUsersIdx = modal.querySelector(".r-usersIdx");
+    const mCompanysIdx = modal.querySelector(".r-companysIdx");
     const mUser = modal.querySelector('.r-user');
     const mCompany = modal.querySelector('.r-name');
-    const mState = modal.querySelector('.r-state');
+    const mState = modal.querySelector('.r-reportCheckState');
     const mDate = modal.querySelector('.r-date');
     const mDetails = modal.querySelector('.r-details');
     const mBtn = modal.querySelector('.redirect-company');
 
     const btn = document.querySelectorAll('.report-btn');
     const id = document.querySelectorAll('.reportIdx');
+    const usersIdx = document.querySelectorAll(".usersIdx");
     const cId = document.querySelectorAll('.companyIdx');
     const cName = document.querySelectorAll('.companysName');
     const user = document.querySelectorAll('.usersAccount');
     const details = document.querySelectorAll('.reportDetail');
-    const state = document.querySelectorAll('.reportState');
+    // const state = document.querySelectorAll('.reportState');
+    const state = document.querySelectorAll('.reportCheckState');
     const checkDate = document.querySelectorAll('.checkDate');
     const reportDate = document.querySelectorAll('.reportDate');
 
     for (let i = 0; i < btn.length; i++) {
         btn[i].addEventListener('click', e => {
             mId.value = id[i].value;
+            mUsersIdx.innerHTML = usersIdx[i].value;
+            mCompanysIdx.innerHTML = cId[i].value;
             mUser.innerHTML = user[i].textContent;
             mCompany.innerHTML = cName[i].textContent;            
+            mDate.innerHTML = reportDate[i].textContent;
+            mDetails.value = details[i].textContent;         
 
-            const reportCheckStateFalse = document.querySelector("#reportCheckStateFalse");
-            const reportCheckStateTrue = document.querySelector("#reportCheckStateTrue");
+            const reportCheckStateFalse = document.querySelectorAll(".reportCheckStateFalse");
+            const reportCheckStateTrue = document.querySelectorAll(".reportCheckStateTrue");
 
             // // 2022.10.05 PARK MINJAE 추가작성
-            if (state[i].textContent == 0) {
-                // mState.innerHTML = '미처리';
-                reportCheckStateFalse.setAttribute("selected", true);
+            // alert("상태값: " + state[i].innerHTML);
+            if (state[i].innerHTML == 0) {
+                reportCheckStateFalse[i].setAttribute("selected", true);
             } else {
-                // mState.innerHTML = checkDate[i].textContent;
-                reportCheckStateTrue.setAttribute("selected", true);
+                reportCheckStateTrue[i].setAttribute("selected", true);
             }
 
             while (mDetails.hasChildNodes()) {
@@ -106,9 +113,6 @@ function reportDetailsModal() {
                 mDetails.append(span);
             }
 
-            mDate.innerHTML = reportDate[i].textContent;
-            mDetails.value = details[i].textContent;
-
             mBtn.addEventListener('click', e => {
                 location.href = '/admin/manage/company/details?companysIdx=' + cId[i].value;
             });
@@ -122,7 +126,7 @@ function reportDetailsModal() {
  */
 const onChangeReportProcess = () => {
     const modalId = document.querySelector(".modal-id");
-    const reportCheckState = document.querySelector("#reportCheckState");
+    const reportCheckState = document.querySelector("#r-reportCheckState");
     reportCheckState.addEventListener("change", () => {
         // alert(reportCheckState.value);
         let formData = new FormData();

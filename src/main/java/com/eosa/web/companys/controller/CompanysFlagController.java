@@ -64,6 +64,7 @@ public class CompanysFlagController {
 
     
     /** 
+     * 마패 업체 신청
      * @param companysFlag
      * @param companysFlagCategory
      * @return CustomResponseData

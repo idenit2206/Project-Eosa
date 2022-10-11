@@ -59,6 +59,8 @@
 
                         <input type="hidden" class="reportIdx" th:value="${list.idx}">
                         <input type="hidden" class="companyIdx" th:value="${list.companysIdx}">
+                        <input type="hidden" class="usersIdx" th:value="${list.usersIdx}">
+                        <input type="hidden" class="companysIdx" th:value="${list.companysIdx}">
 
                         <td class="check" onclick="event.cancelBubble=true"><input type="checkbox" name="listCheck"></td>
                         <td>
@@ -72,9 +74,9 @@
                                 <span class="reportDetail" th:text="${list.reportDetail}"></span>
                             </div>
                         </td>
-                        <!-- <td>
-                            <span class="reportState" th:text="${list.reportCheckState}"></span>
-                        </td> -->
+                        <td class="td-hidden">
+                            <span class="reportCheckState" th:text="${list.reportCheckState}"></span>
+                        </td>
                         <td>
                             <span class="checkDate" th:text="${#dates.format(list.reportCheckDate, 'yyyy-MM-dd')}"></span>
                         </td>
@@ -118,6 +120,14 @@
                     <div class="table">
                         <table>
                             <tbody>
+                            <tr class="modal-tr-hidden">
+                                <td class="modal-th">usersIdx</td>
+                                <td class="modal-td r-usersIdx"></td>
+                            </tr>
+                            <tr class="modal-tr-hidden">
+                                <td class="modal-th">companysIdx</td>
+                                <td class="modal-td r-companysIdx"></td>
+                            </tr>
                             <tr>
                                 <td class="modal-th">신고자</td>
                                 <td class="modal-td r-user"></td>
@@ -133,9 +143,9 @@
                             <tr>
                                 <td class="modal-th">처리상태</td>
                                 <td class="modal-td r-state">
-                                    <select id="reportCheckState">
-                                        <option id="reportCheckStateFalse" value="0">미처리</option>
-                                        <option id="reportCheckStateTrue" value="1">처리</option>
+                                    <select id="r-reportCheckState"  class="r-reportCheckState">
+                                        <option id="reportCheckStateFalse" class="reportCheckStateFalse" value="0">미처리</option>
+                                        <option id="reportCheckStateTrue" class="reportCheckStateTrue" value="1">처리</option>
                                     </select>
                                 </td>
                             </tr>
@@ -152,6 +162,7 @@
                     </div>
                     <div class="form__action bottom">
                         <button class="btn-del report-delete">삭제하기</button>
+                        <button class="btn-normal btn-chatListView">채팅보기</button>
                         <button class="btn-prime redirect-company">업체 바로가기</button>
                     </div>
                 </div>
@@ -178,6 +189,25 @@
             // 신고 다중 삭제
             const deleteBtn = document.querySelector('.btn-delete');
             deleteBtn.addEventListener('click', deleteReportMulti);
+
+            const chatListViewBtn = document.querySelector(".btn-chatListView");
+            chatListViewBtn.addEventListener("click", () => {
+                const usersIdx = document.querySelector(".r-usersIdx").innerHTML;
+                const companysIdx = document.querySelector(".r-companysIdx").innerHTML;
+                alert(usersIdx + " : " + companysIdx);
+                // let url=`/admin/manage/chat/chatListFromRequestList?usersIdx=${usersIdx}&companysIdx=${companysIdx}`;
+                // fetch(url)
+                //     .then(response => response.text())
+                //     .then(data => {
+                //         if(data == null) {
+                //             alert("조건에 일치하는 채팅방이 없습니다.");
+                //         }
+                //         else {
+                //             alert("해당 채팅방으로 이동합니다.");
+                //             window.location.href=`/admin/manage/chat/details?roomId=${data}`;
+                //         }
+                //     })
+            })
         });
     </script>
 </th:block>

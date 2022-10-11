@@ -5,6 +5,9 @@ import com.eosa.web.companys.entity.SelectCompanys;
 import com.eosa.web.companys.service.CompanysPremiumService;
 import com.eosa.web.companys.service.CompanysService;
 import com.eosa.web.util.CustomResponseData;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/companys")
 public class CompanysPremiumController {
@@ -25,15 +29,15 @@ public class CompanysPremiumController {
      */
     @PostMapping("/insertCompanysPremium")
     public CustomResponseData insertCompanysPremium(
+            @RequestParam("companysIdx") Long companysIdx,
             @RequestParam("companysName") String companysName,
             @RequestParam("companysCeoName") String companysCeoName
     ) {
         CustomResponseData result = new CustomResponseData();
 //        Parameter 조건에 해당하는 Companys가 DB에 존재하는지 확인
-//        Long companysIdx = companysService.selectCompanyIdxByComapnysNameAndCompanysCeoName(companysName.trim(), companysCeoName.trim());
-//        log.debug("[insertCompanyPremium] companysIdx: {}", String.valueOf(companysIdx));
-
-        if(!companysName.equals("") || !companysName.equals(null) && !companysCeoName.equals("") || !companysCeoName.equals(null)) {
+        Long searchCompanysIdx = companysService.selectCompanyIdxByComapnysNameAndCompanysCeoName(companysName.trim(), companysCeoName.trim());
+        if(searchCompanysIdx != null) {
+            log.info("[insertCompanyPremium] Premium 신청이 가능합니다. companysIdx: {}", String.valueOf(searchCompanysIdx));
             CompanysPremium entity = new CompanysPremium();
             entity.setCompanysName(companysName);
             entity.setCompanysCeoName(companysCeoName);
@@ -44,6 +48,7 @@ public class CompanysPremiumController {
             result.setResponseDateTime(LocalDateTime.now());
         }
         else {
+            log.info("[insertCompanyPremium] Premium 신청이 불가합니다.");
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem(null);
             result.setResponseDateTime(LocalDateTime.now());

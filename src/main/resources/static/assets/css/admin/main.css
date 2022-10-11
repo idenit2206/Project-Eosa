@@ -3268,6 +3268,9 @@ meter::-webkit-meter-optimum-value {
   text-align: start;
   width: 140px;
 }
+.td-hidden {
+  display: none !important;
+}
 .modal-tr-hidden {
   display: none !important;
 }
