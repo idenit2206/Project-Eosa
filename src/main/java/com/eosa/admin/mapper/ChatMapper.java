@@ -2,6 +2,7 @@ package com.eosa.admin.mapper;
 
 import com.eosa.admin.dto.ChatDTO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -43,5 +44,13 @@ public interface ChatMapper {
      * @return ChatDTO
      */
     List<ChatDTO> selectChat(String roomId);
+
+    /**
+     * 채팅 내역 조회 매퍼
+     * @param usersIdx
+     * @param companysIdx
+     * @return String
+     */
+    String selectChatByUsersIdxCompanysIdx(@Param(value = "usersIdx") Long usersIdx, @Param(value = "companysIdx") Long companysIdx);
 
 }

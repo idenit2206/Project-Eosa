@@ -54,4 +54,8 @@
         ORDER BY CM.sendDate
     </select>
 
+    <!-- roomId 조회 usersIdx, companysIdx -->
+    <select id="selectChatByUsersIdxCompanysIdx" resultType="String" parameterType="long">
+        SELECT CR.roomId FROM ChatRoom CR WHERE CR.usersIdx = #{usersIdx} AND CR.companysIdx = #{companysIdx}
+    </select>
 </mapper>

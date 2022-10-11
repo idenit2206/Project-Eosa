@@ -45,6 +45,13 @@ public interface CompanyMapper {
     CompanysDTO selectCompanyDetails(long companysIdx);
 
     /**
+     * 업체 상세 조회 화면에서 삭제
+     * @param companysIdx
+     * @return
+     */
+    int deleteCompanys(long companysIdx);
+
+    /**
      * 업체 수정 매퍼
      *
      * @param companysDTO

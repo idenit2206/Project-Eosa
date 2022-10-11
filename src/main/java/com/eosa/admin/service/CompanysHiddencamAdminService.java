@@ -82,7 +82,6 @@ public class CompanysHiddencamAdminService {
 
         return "admin/company/companysHiddencamDetails";
     }
-
     
     /** 
      * @param model

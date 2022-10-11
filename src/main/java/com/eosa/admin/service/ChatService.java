@@ -102,4 +102,40 @@ public class ChatService {
         return "admin/board/chat/details";
     }
 
+    /**
+     * 의뢰내역서의 usersIdx와 companysIdx를 이용해 채팅방 roomId 조회
+     * @param usersIdx
+     * @param companysIdx
+     * @return
+     */
+    public String chatListFromRequestList(Model model, Long usersIdx, Long companysIdx) {
+        log.info("usersIdx: {}, companysIdx: {} 가 해당되는 채팅방의 대화내용을 불러옵니다.", usersIdx, companysIdx);
+        String roomId = chatMapper.selectChatByUsersIdxCompanysIdx(usersIdx, companysIdx);
+        
+        if(roomId.equals(null)) {
+            return "null";
+        }
+        else {
+            log.info("chatListFromRequestList] roomId: {}", roomId);
+        
+            List<ChatDTO> list = chatMapper.selectChat(roomId);
+
+            model.addAttribute("chatList", list);
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+            if (list.size() > 1) {
+                list.get(0).setDateCheck(1);
+                for (int i = 1; i < list.size(); i++) {
+                    if(!sdf.format(list.get(i).getSendDate()).equals(sdf.format(list.get(i - 1).getSendDate()))) {
+                        list.get(i).setDateCheck(1);
+                    }
+                }
+            }
+
+            return roomId;
+        }
+        
+    }
+
 }

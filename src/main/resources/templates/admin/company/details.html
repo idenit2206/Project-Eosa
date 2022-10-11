@@ -52,7 +52,7 @@
                                 </tr>
                                 <tr>
                                     <th>업체번호</th>
-                                    <td th:text="${details.companysIdx}"></td>
+                                    <td id="companysIdx" th:text="${details.companysIdx}"></td>
                                     <th>상태</th>
                                     <td>
                                         <div class="input-wrap approval-wrap">
@@ -616,6 +616,22 @@
 
             // 업체 삭제
             const deleteBtn = document.querySelector('.company-delete');
+            deleteBtn.addEventListener("click", () => {
+                const companysIdx = document.querySelector("#companysIdx");
+                fetch(`/admin/manage/company/delete?companysIdx=${companysIdx.innerHTML}`, {
+                    method: "PUT"
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data == 1) {
+                            alert("해당 업체 정보가 삭제되었습니다.");
+                            window.location.href="/admin/manage/company/list";
+                        }
+                        else {
+                           alert("다시 시도해주세요.");
+                        }
+                    })
+            })
 
         });
     </script>

@@ -135,6 +135,18 @@
         WHERE C.companysIdx = #{companysIdx}
     </select>
 
+    <!-- 업체 삭제 -->
+    <delete id="deleteCompanys" parameterType="Long">
+        DELETE FROM Companys
+        WHERE companysIdx = #{companysIdx}
+    </delete>
+    <!-- 업체 삭제 -->
+    <!-- <update id="deleteCompanys" parameterType="Long">
+        UPDATE Companys
+        SET companysPremium = 0, companysLocalPremium = 0, companysEnabled = 0, companysDelete = 1
+        WHERE companysIdx = #{companysIdx}
+    </update> -->
+
     <!-- 업체 수정 -->
     <update id="updateCompanys" parameterType="CompanysDTO">
         UPDATE Companys
@@ -187,6 +199,13 @@
         WHERE companysIdx = #{companysIdx}
     </delete>
 
+    <!-- CompanysMember 삭제 -->
+    <delete id="deleteCompanysMember" parameterType="long">
+        DELETE
+        FROM CompanysMember
+        WHERE companysIdx= #{companysIdx}
+    </delete>
+
     <!-- 업체 인증 -->
     <update id="updateCheck" parameterType="hashmap">
         UPDATE Companys
@@ -229,6 +248,11 @@
             companysPremiumEnabled = 0
         WHERE companysIdx = #{companysIdx}
     </update>
+
+    <!-- 업체 제휴협회 삭제 -->
+    <delete id="deletePremium" parameterType="long">
+        
+    </delete>
 
     <!-- 업체 마패 신청 -->
     <insert id="insertFlag" parameterType="CompanysDTO" useGeneratedKeys="true" keyProperty="companysFlagIdx">

@@ -50,6 +50,24 @@ public class CompanyController {
     }
 
     /**
+     * 
+     * @param model
+     * @param companysIdx
+     * @return
+     */
+    @PutMapping("/listDelete")
+    public String companysListDelete(
+        @RequestParam List<Long> listCheckValueList,
+        @RequestParam(defaultValue = "1") int enabled,
+        @RequestParam(defaultValue = "name") String sort,
+        @RequestParam(defaultValue = "") String search,
+        @RequestParam(defaultValue = "1") int page,
+        Model model
+    ) {
+        return companyService.companysListDelete(listCheckValueList, enabled, sort, search, page, model);
+    }
+
+    /**
      * 업체 상세 조회 컨트롤러
      *
      * @param model
@@ -58,8 +76,20 @@ public class CompanyController {
      */
     @GetMapping("/details")
     public String companyDetails(Model model, @RequestParam long companysIdx) {
-
         return companyService.companyDetails(model, companysIdx);
+    }
+
+    /**
+     *  업체 상세 조회 화면에서 업체 정보 삭제하기
+     * @param companysIdx
+     * @return
+     */
+    @PutMapping("/delete")
+    @ResponseBody
+    public int deleteCompanys(
+        Long companysIdx
+    ) {
+        return companyService.deleteCompanys(companysIdx);
     }
 
     /**

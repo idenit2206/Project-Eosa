@@ -62,6 +62,8 @@
 
                         <input type="hidden" class="requestFormIdx" th:value="${list.requestFormIdx}">
                         <input type="hidden" class="requestCategory" th:value="${list.requestFormCategoryValue}">
+                        <input type="hidden" id="usersIdx" th:value="${list.usersIdx}">
+                        <input type="hidden" id="companysIdx" th:value="${list.companysIdx}">
 
                         <td>
                             <span th:text="${list.requestFormChannel}"></span>
@@ -228,6 +230,10 @@
                                     </div>
                                 </td>
                             </tr>
+                            <tr>
+                                <td class="modal-th">상담내역</td>
+                                <td id="btn-chatListView" class="modal-td">보기</td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -249,6 +255,25 @@
             pageOn();
             requestDetailsModel();
             new Table(document.querySelector('#main table'));
+
+            const chatListViewBtn = document.querySelector("#btn-chatListView");
+            chatListViewBtn.addEventListener("click", () => {
+                const usersIdx = document.querySelector("#usersIdx");
+                const companysIdx = document.querySelector("#companysIdx");
+                
+                let url=`/admin/manage/chat/chatListFromRequestList?usersIdx=${usersIdx.value}&companysIdx=${companysIdx.value}`;
+                fetch(url)
+                    .then(response => response.text())
+                    .then(data => {
+                        if(data == null) {
+                            alert("조건에 일치하는 채팅방이 없습니다.");
+                        }
+                        else {
+                            alert("해당 채팅방으로 이동합니다.");
+                            window.location.href=`/admin/manage/chat/details?roomId=${data}`;
+                        }
+                    })
+            })
 
             // 의뢰 삭제
             const deleteBtn = document.querySelector('.request-delete');

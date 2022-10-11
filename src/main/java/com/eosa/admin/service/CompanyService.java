@@ -7,11 +7,15 @@ import com.eosa.admin.mapper.PriceMapper;
 import com.eosa.admin.mapper.RegionMapper;
 import com.eosa.admin.pagination.Pagination;
 import com.eosa.admin.safety.Safety;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
 import java.security.NoSuchAlgorithmException;
@@ -29,6 +33,8 @@ import java.util.*;
  * -----------------------------------------------------------
  * 2022-09-15        Jihun Kim       최초 생성
  */
+
+@Slf4j
 @Service
 public class CompanyService {
 
@@ -92,6 +98,66 @@ public class CompanyService {
     }
 
     /**
+     * 업체 목록에서 업체 삭제하기
+     * @param companysHiddencamIdxList
+     * @param enabled
+     * @param sort
+     * @param search
+     * @param page
+     * @param model
+     * @return
+     */
+    public String companysListDelete(
+        @RequestParam List<Long> listCheckValueList,
+        @RequestParam(defaultValue = "1") int enabled,
+        @RequestParam(defaultValue = "name") String sort,
+        @RequestParam(defaultValue = "") String search,
+        @RequestParam(defaultValue = "1") int page,
+        Model model
+    ) {
+        for(int i = 0; i < listCheckValueList.size(); i++) {
+            log.info("companysIdx {} 와 일치하는 업체 정보를 삭제합니다.", listCheckValueList.get(i).toString());
+            companyMapper.deleteCompanysRegion(listCheckValueList.get(i));
+            companyMapper.deleteCompanysCategory(listCheckValueList.get(i));
+            companyMapper.deleteCompanys(Long.valueOf(listCheckValueList.get(i)));
+        }
+        
+        Map<String, Object> map = new HashMap<>();
+        
+        map.put("companysEnabled", enabled);
+
+        // 필터 검색 조건
+        if (search != "" && !search.equals("")) {
+            if (sort.equals("name")) {
+                map.put("name", sort);
+            } else if (sort.equals("ceo")) {
+                map.put("ceo", sort);
+            } else if (sort.equals("phone")) {
+                map.put("phone", sort);
+            }
+            map.put("search", search);
+        }
+
+        int count = companyMapper.countCompanyList(map);
+
+        Pagination pagination = new Pagination(count, page);
+
+        map.put("startIndex", pagination.getStartIndex());
+        map.put("pageSize", pagination.getPageSize());
+
+        List<CompanysDTO> list = companyMapper.selectCompanyList(map);
+
+        model.addAttribute("companyList", list);
+        model.addAttribute("pagination", pagination);
+        model.addAttribute("count", count);
+        model.addAttribute("enabled", enabled);
+        model.addAttribute("sort", sort);
+        model.addAttribute("search", search);
+
+        return "admin/company/list";
+    }
+
+    /**
      * 업체 상세 조회 서비스
      *
      * @param model
@@ -113,6 +179,32 @@ public class CompanyService {
         model.addAttribute("categoryList", categoryList);
 
         return "admin/company/details";
+    }
+
+    /**
+     *  업체 상세 조회 화면에서 업체 정보 삭제하기
+     * @param companysIdx
+     * @return
+    */
+    public int deleteCompanys(
+        Long companysIdx
+    ) {
+        log.info("companysIdx {} 와 일치하는 업체 정보를 삭제합니다.", companysIdx.toString());
+        int answer = 0;
+
+        int deleteFromCompanysActiveRegion = companyMapper.deleteCompanysRegion(companysIdx);
+        int deleteFromCompanysCategory = companyMapper.deleteCompanysCategory(companysIdx);
+
+        int deleteFromCompanys = companyMapper.deleteCompanys(companysIdx);
+
+        if(deleteFromCompanys == 1) {
+            answer = 1;
+        }
+        else {
+            answer = 0;
+        }
+
+        return answer;        
     }
 
     /**
