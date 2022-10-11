@@ -194,19 +194,19 @@
             chatListViewBtn.addEventListener("click", () => {
                 const usersIdx = document.querySelector(".r-usersIdx").innerHTML;
                 const companysIdx = document.querySelector(".r-companysIdx").innerHTML;
-                alert(usersIdx + " : " + companysIdx);
-                // let url=`/admin/manage/chat/chatListFromRequestList?usersIdx=${usersIdx}&companysIdx=${companysIdx}`;
-                // fetch(url)
-                //     .then(response => response.text())
-                //     .then(data => {
-                //         if(data == null) {
-                //             alert("조건에 일치하는 채팅방이 없습니다.");
-                //         }
-                //         else {
-                //             alert("해당 채팅방으로 이동합니다.");
-                //             window.location.href=`/admin/manage/chat/details?roomId=${data}`;
-                //         }
-                //     })
+                // alert(usersIdx + " : " + companysIdx);
+                let url=`/admin/manage/chat/chatListFromRequestList?usersIdx=${usersIdx}&companysIdx=${companysIdx}`;
+                fetch(url)
+                    .then(response => response.text())
+                    .then(data => {
+                        if(data == null) {
+                            alert("조건에 일치하는 채팅방이 없습니다.");
+                        }
+                        else {
+                            alert("해당 채팅방으로 이동합니다.");
+                            window.location.href=`/admin/manage/chat/details?roomId=${data}`;
+                        }
+                    })
             })
         });
     </script>

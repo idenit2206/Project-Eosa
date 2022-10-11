@@ -86,20 +86,10 @@ function reportDetailsModal() {
             mUsersIdx.innerHTML = usersIdx[i].value;
             mCompanysIdx.innerHTML = cId[i].value;
             mUser.innerHTML = user[i].textContent;
-            mCompany.innerHTML = cName[i].textContent;            
+            mCompany.innerHTML = cName[i].textContent;  
+            mState.value = state[i].innerHTML;          
             mDate.innerHTML = reportDate[i].textContent;
-            mDetails.value = details[i].textContent;         
-
-            const reportCheckStateFalse = document.querySelectorAll(".reportCheckStateFalse");
-            const reportCheckStateTrue = document.querySelectorAll(".reportCheckStateTrue");
-
-            // // 2022.10.05 PARK MINJAE 추가작성
-            // alert("상태값: " + state[i].innerHTML);
-            if (state[i].innerHTML == 0) {
-                reportCheckStateFalse[i].setAttribute("selected", true);
-            } else {
-                reportCheckStateTrue[i].setAttribute("selected", true);
-            }
+            mDetails.value = details[i].textContent;
 
             while (mDetails.hasChildNodes()) {
                 mDetails.removeChild(mDetails.firstChild);
@@ -136,7 +126,10 @@ const onChangeReportProcess = () => {
             "method": "PUT",
             "body": formData
         })
-        .then(response => response.json())       
+        .then(response => response.json())
+        .then(data => {
+            window.location.reload();
+        })       
     });
 };
 /**
