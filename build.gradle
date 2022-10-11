@@ -12,8 +12,8 @@ plugins {
 }
 
 group = 'com.eosa'
-version = '1.1007.1230'
-sourceCompatibility = '11'
+version = '1.1007.1444'
+sourceCompatibility = 11
 
 configurations {
 	compileOnly {
