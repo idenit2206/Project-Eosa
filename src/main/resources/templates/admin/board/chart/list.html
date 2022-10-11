@@ -78,15 +78,15 @@
 
                 <div class="table__paging">
                     <ul>
-                        <li><a class="first" th:href="@{/admin/manage/company/chart(sort=${sort}, search=${search}, page=1)}"></a></li>
-                        <li><a class="prev" th:href="@{/admin/manage/company/chart(sort=${sort}, search=${search}, page=${pagination.prevBlock})}"></a></li>
+                        <li><a class="first" th:href="@{/admin/manage/company/chart/list(sort=${sort}, search=${search}, page=1)}"></a></li>
+                        <li><a class="prev" th:href="@{/admin/manage/company/chart/list(sort=${sort}, search=${search}, page=${pagination.prevBlock})}"></a></li>
 
                         <th:block th:with="start = ${pagination.startPage}, end = ${pagination.endPage}">
-                            <li th:each="pageButton : ${#numbers.sequence(start, end)}"><a class="pageNum" th:href="@{/admin/manage/company/chart(sort=${sort}, search=${search}, page=${pageButton})}" th:text="${pageButton}"></a></li>
+                            <li th:each="pageButton : ${#numbers.sequence(start, end)}"><a class="pageNum" th:href="@{/admin/manage/company/chart/list(sort=${sort}, search=${search}, page=${pageButton})}" th:text="${pageButton}"></a></li>
                         </th:block>
 
-                        <li><a class="next" th:href="@{/admin/manage/company/chart(sort=${sort}, search=${search}, page=${pagination.nextBlock})}"></a></li>
-                        <li><a class="last" th:href="@{/admin/manage/company/chart(sort=${sort}, search=${search}, page=${pagination.totalPageCnt eq 0 ? 1 : pagination.totalPageCnt})}"></a></li>
+                        <li><a class="next" th:href="@{/admin/manage/company/chart/list(sort=${sort}, search=${search}, page=${pagination.nextBlock})}"></a></li>
+                        <li><a class="last" th:href="@{/admin/manage/company/chart/list(sort=${sort}, search=${search}, page=${pagination.totalPageCnt eq 0 ? 1 : pagination.totalPageCnt})}"></a></li>
                     </ul>
                 </div>
             </div>

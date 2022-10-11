@@ -16,18 +16,7 @@ import lombok.Data;
 @Data
 public class ChartDataDTO {
 
-    private int category01;
-    private int category02;
-    private int category03;
-    private int category04;
-    private int category05;
-    private int category06;
-    private int category07;
-    private int category08;
-    private int category09;
-    private int category10;
-    private int category11;
-    private int category12;
-    private int category13;
+    private int num;
+    private String categoryName;
 
 }
