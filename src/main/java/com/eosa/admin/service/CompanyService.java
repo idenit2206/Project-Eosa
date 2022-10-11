@@ -586,7 +586,8 @@ public class CompanyService {
         int[] time = new int[12];
         int[] region = new int[11];
         int[] month = new int[12];
-        int[] category = new int[13];
+        List<String> category = new ArrayList<>();
+        List<Integer> categoryNum = new ArrayList<>();
 
         SimpleDateFormat hour = new SimpleDateFormat("hh");
         SimpleDateFormat mFormat = new SimpleDateFormat("MM");
@@ -695,19 +696,10 @@ public class CompanyService {
 
         }
 
-        category[0] = cateList.get(0).getCategory01();
-        category[1] = cateList.get(0).getCategory02();
-        category[2] = cateList.get(0).getCategory03();
-        category[3] = cateList.get(0).getCategory04();
-        category[4] = cateList.get(0).getCategory05();
-        category[5] = cateList.get(0).getCategory06();
-        category[6] = cateList.get(0).getCategory07();
-        category[7] = cateList.get(0).getCategory08();
-        category[8] = cateList.get(0).getCategory09();
-        category[9] = cateList.get(0).getCategory10();
-        category[10] = cateList.get(0).getCategory11();
-        category[11] = cateList.get(0).getCategory12();
-        category[12] = cateList.get(0).getCategory13();
+        for (int i = 0; i < cateList.size(); i++) {
+            category.add(cateList.get(i).getCategoryName());
+            categoryNum.add(cateList.get(i).getNum());
+        }
 
         Map<String, Object> map = new HashMap<>();
         map.put("size", list.size());
@@ -716,6 +708,7 @@ public class CompanyService {
         map.put("region", region);
         map.put("month", month);
         map.put("category", category);
+        map.put("categoryNum", categoryNum);
 
         return map;
     }

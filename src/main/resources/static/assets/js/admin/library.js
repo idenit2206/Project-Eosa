@@ -105,10 +105,10 @@ function createChart(sort) {
             const categoryChart = new Chart(category, {
                 type: 'bar',
                 data: {
-                    labels: ['가정문제', '기업문제', '안전분야조사', '사기/분쟁', '스토킹', '의료/보험', '부동산', '금융/사이버', '민원대행', '불법기기탐지', '경호/경비', '일반조사', '해외조사'],
+                    labels: data.category,
                     datasets: [{
                         label: '분야',
-                        data: data.category,
+                        data: data.categoryNum,
                         backgroundColor: "#64B5F6",
                         barThickness: 7,
                     }]
