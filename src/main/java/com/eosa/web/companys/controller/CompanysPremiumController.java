@@ -29,16 +29,17 @@ public class CompanysPremiumController {
      */
     @PostMapping("/insertCompanysPremium")
     public CustomResponseData insertCompanysPremium(
-            @RequestParam("companysIdx") Long companysIdx,
             @RequestParam("companysName") String companysName,
             @RequestParam("companysCeoName") String companysCeoName
     ) {
+        log.info("제휴협회 신청자명: {}, 신청자회사명: {}", companysName, companysCeoName);
         CustomResponseData result = new CustomResponseData();
 //        Parameter 조건에 해당하는 Companys가 DB에 존재하는지 확인
         Long searchCompanysIdx = companysService.selectCompanyIdxByComapnysNameAndCompanysCeoName(companysName.trim(), companysCeoName.trim());
         if(searchCompanysIdx != null) {
             log.info("[insertCompanyPremium] Premium 신청이 가능합니다. companysIdx: {}", String.valueOf(searchCompanysIdx));
             CompanysPremium entity = new CompanysPremium();
+            entity.setCompanysIdx(searchCompanysIdx);
             entity.setCompanysName(companysName);
             entity.setCompanysCeoName(companysCeoName);
             CompanysPremium insertData = companysPremiumService.save(entity);
