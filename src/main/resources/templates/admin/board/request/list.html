@@ -62,8 +62,8 @@
 
                         <input type="hidden" class="requestFormIdx" th:value="${list.requestFormIdx}">
                         <input type="hidden" class="requestCategory" th:value="${list.requestFormCategoryValue}">
-                        <input type="hidden" id="usersIdx" th:value="${list.usersIdx}">
-                        <input type="hidden" id="companysIdx" th:value="${list.companysIdx}">
+                        <input type="hidden" class="usersIdx" th:value="${list.usersIdx}">
+                        <input type="hidden" class="companysIdx" th:value="${list.companysIdx}">
 
                         <td>
                             <span th:text="${list.requestFormChannel}"></span>
@@ -123,6 +123,14 @@
                     <div class="table">
                         <table>
                             <tbody>
+                            <tr class="modal-tr-hidden">
+                                <td class="modal-th">usersIdx</td>
+                                <td class="modal-td r-usersIdx"></td>
+                            </tr>
+                            <tr class="modal-tr-hidden">
+                                <td class="modal-th">companysIdx</td>
+                                <td class="modal-td r-companysIdx"></td>
+                            </tr>
                             <tr>
                                 <td class="modal-th">의뢰일</td>
                                 <td class="modal-td r-date"></td>
@@ -230,15 +238,16 @@
                                     </div>
                                 </td>
                             </tr>
-                            <tr>
+                            <!-- <tr>
                                 <td class="modal-th">상담내역</td>
                                 <td id="btn-chatListView" class="modal-td">보기</td>
-                            </tr>
+                            </tr> -->
                             </tbody>
                         </table>
                     </div>
                     <div class="form__action bottom">
                         <a class="btn-del request-delete">삭제하기</a>
+                        <button class="btn-normal btn-chatListView">채팅보기</button>
                         <button class="btn-prime request-update">수정하기</button>
                     </div>
                 </div>
@@ -256,12 +265,12 @@
             requestDetailsModel();
             new Table(document.querySelector('#main table'));
 
-            const chatListViewBtn = document.querySelector("#btn-chatListView");
+            const chatListViewBtn = document.querySelector(".btn-chatListView");
             chatListViewBtn.addEventListener("click", () => {
-                const usersIdx = document.querySelector("#usersIdx");
-                const companysIdx = document.querySelector("#companysIdx");
-                
-                let url=`/admin/manage/chat/chatListFromRequestList?usersIdx=${usersIdx.value}&companysIdx=${companysIdx.value}`;
+                const usersIdx = document.querySelector(".r-usersIdx").innerHTML;
+                const companysIdx = document.querySelector(".r-companysIdx").innerHTML;
+
+                let url=`/admin/manage/chat/chatListFromRequestList?usersIdx=${usersIdx}&companysIdx=${companysIdx}`;
                 fetch(url)
                     .then(response => response.text())
                     .then(data => {

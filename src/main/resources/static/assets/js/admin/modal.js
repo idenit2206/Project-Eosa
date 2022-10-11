@@ -142,6 +142,8 @@ function requestDetailsModel() {
 
     const modal = document.querySelector('.modal-request');
     const mId = modal.querySelector('.modal-id');
+    const mUsersIdx = modal.querySelector('.r-usersIdx');
+    const mCompanysIdx = modal.querySelector('.r-companysIdx');
     const mDate = modal.querySelector('.r-date');
     const mClient = modal.querySelector('.r-client');
     const mCompany = modal.querySelector('.r-company');
@@ -150,6 +152,8 @@ function requestDetailsModel() {
     const mState = modal.querySelector('.r-state');
 
     const id = document.querySelectorAll('.requestFormIdx');
+    const usersIdx = document.querySelectorAll('.usersIdx');
+    const companysIdx = document.querySelectorAll('.companysIdx');
     const category = document.querySelectorAll('.requestCategory');
     const company = document.querySelectorAll('.companysName');
     const client = document.querySelectorAll('.usersAccount');
@@ -161,6 +165,8 @@ function requestDetailsModel() {
     for (let i = 0; i < btn.length; i++) {
         btn[i].addEventListener('click', e => {
             mId.value = id[i].value;
+            mUsersIdx.innerHTML = usersIdx[i].value;
+            mCompanysIdx.innerHTML = companysIdx[i].value;
             mDate.innerHTML = date[i].textContent;
             mClient.innerHTML = client[i].textContent;
             mCompany.innerHTML = company[i].textContent;
