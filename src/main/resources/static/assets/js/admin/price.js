@@ -241,6 +241,7 @@ const modifyRegion = () => {
         const regionIdxValue = document.querySelectorAll(".regionIdxValue");
         const regionNameValue = document.querySelectorAll(".regionNameValue");
         const regionPriceValue = document.querySelectorAll(".regionPriceValue");
+        const regionSelectableValue = document.querySelectorAll(".regionSelectable");
 
         let formData = new FormData();
 
@@ -251,10 +252,14 @@ const modifyRegion = () => {
            
             region.regionIdx = i + 1;
             region.regionName = regionNameValue[i].value;
-            region.regionPrice = regionPriceValue[i].value;            
-            
-            // formData.append("region", JSON.stringify(region));
-            // formData.append("region", region);
+            region.regionPrice = regionPriceValue[i].value;
+            if(regionSelectableValue[i].innerHTML == "선택 가능") {
+                region.regionSelectable = 1;
+            }
+            else {
+                region.regionSelectable = 0;
+            }
+           
             regionList.push(region);
         }        
         formData.append("region", new Blob([JSON.stringify(regionList)]));

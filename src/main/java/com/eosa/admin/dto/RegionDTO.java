@@ -14,6 +14,12 @@ public class RegionDTO {
         this.regionName = regionName;
         this.regionPrice = regionPrice;
     }
+
+    public RegionDTO(Long regionIdx, String regionName, int regionPrice) {
+        this.regionIdx = regionIdx;
+        this.regionName = regionName;
+        this.regionPrice = regionPrice;
+    }
     
     public RegionDTO(Long regionIdx, String regionName, int regionPrice, int regionSelectable) {
         this.regionIdx = regionIdx;

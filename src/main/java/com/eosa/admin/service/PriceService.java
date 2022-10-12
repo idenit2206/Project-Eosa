@@ -1,6 +1,5 @@
 package com.eosa.admin.service;
 
-import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,7 +7,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.eosa.admin.dto.CategoryDTO;
@@ -20,7 +18,6 @@ import com.eosa.admin.mapper.RegionMapper;
 import com.eosa.web.util.file.AwsS3Service;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import lombok.extern.slf4j.Slf4j;
@@ -108,12 +105,13 @@ public class PriceService {
         for(int i = 0; i < regionObject.size(); i++) {
             // log.debug(regionObject.get(i).toString());
             JsonElement el = regionObject.get(i);
+            log.info("regionPrice Update value] : {}", el.getAsJsonObject().toString());
             Long regionIdx = el.getAsJsonObject().get("regionIdx").getAsLong();
             String regionName = el.getAsJsonObject().get("regionName").getAsString();
             int regionPrice = el.getAsJsonObject().get("regionPrice").getAsInt();
             int regionSelectable = el.getAsJsonObject().get("regionSelectable").getAsInt();
             RegionDTO regionDTO = new RegionDTO(regionIdx, regionName, regionPrice, regionSelectable);
-            log.debug("[updateRegionPrice] regionDTO: {}", regionDTO.toString());
+            // log.info("[updateRegionPrice] regionDTO: {}", regionDTO.toString());
             regionMapper.priceUpdateRegion(regionDTO);
         }
         
