@@ -51,7 +51,8 @@
                             <span th:text="${list.idx}"></span>
                         </td>
                         <td>
-                            <span th:text="${list.usersAccount}"></span>
+                            <span th:if="${list.usersAccount ne null}" th:text="${list.usersAccount}"></span>
+                            <span th:unless="${list.usersAccount ne null}" th:text="비회원"></span>
                         </td>
                         <td>
                             <div>
