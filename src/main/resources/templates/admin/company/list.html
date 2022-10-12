@@ -58,6 +58,13 @@
                         </td>
                     </tr>
                     </tbody>
+                    <tbody th:if="${enabled == 0} and ${count-1} eq 0">
+                        <tr>
+                            <td colspan="11">
+                                <span>등록된 업체가 없습니다.</span>
+                            </td>
+                        </tr>
+                        </tbody>
 
                     <tbody th:if="${count} ne 0">
                     <tr th:each="list : ${companyList}" th:onclick="|linkTo(event,'/admin/manage/company/details?companysIdx=${list.companysIdx}')|">
