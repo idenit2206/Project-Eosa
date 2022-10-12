@@ -21,7 +21,6 @@ public class NoticeService {
 
     @Autowired
     private NoticeMapper noticeMapper;
-
     
     /** 
      * @param model
@@ -30,6 +29,40 @@ public class NoticeService {
      * @return String
      */
     public String noticeList(Model model, String search, int page) {
+        Map<String, Object> map = new HashMap<>();
+        int count = noticeMapper.countNoticeList();
+        Pagination pagination = new Pagination(count, page);
+
+        map.put("startIndex", pagination.getStartIndex());
+        map.put("pageSize", pagination.getPageSize());
+
+        List<NoticeDTO> list = noticeMapper.selectNoticeList(map);
+
+        model.addAttribute("noticeList", list);
+        model.addAttribute("pagination", pagination);
+        model.addAttribute("count", count);
+
+        return "admin/board/notice/list";
+    }
+
+    /**
+     * 공지사항 목록에서 삭제하기
+     * @param listCheckValueList
+     * @param search
+     * @param page
+     * @param model
+     * @return
+     */
+    public String noticeListDelete(
+        List<Long> listCheckValueList,
+        String search,
+        int page,
+        Model model
+    ) {
+        for(int i = 0; i < listCheckValueList.size(); i++) {
+            noticeMapper.deleteByNoticeIdx(listCheckValueList.get(i));
+        }
+
         Map<String, Object> map = new HashMap<>();
         int count = noticeMapper.countNoticeList();
         Pagination pagination = new Pagination(count, page);
@@ -63,7 +96,6 @@ public class NoticeService {
         }
 
     }
-
     
     /** 
      * @param noticeDTO
@@ -72,7 +104,6 @@ public class NoticeService {
     public int insertNotice(NoticeDTO noticeDTO) {
         return noticeMapper.insertNotice(noticeDTO);
     }
-
     
     /** 
      * @param noticeDTO
@@ -82,7 +113,6 @@ public class NoticeService {
         log.debug("[updateNoticeByNoticeIdx] noticeDto: {}", noticeDTO.toString());
         return noticeMapper.updateNoticeByNoticeIdx(noticeDTO);
     }
-
     
     /** 
      * @param idx

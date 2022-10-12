@@ -42,7 +42,9 @@
 
                         <input type="hidden" class="noticeContent" th:value="${list.content}">
 
-                        <td class="check"><input type="checkbox" class="listCheck" name="listCheck" onclick="event.cancelBubble=true"></td>
+                        <td class="check">
+                            <input type="checkbox" class="listCheck" name="listCheck" th:value="${list.idx}" onclick="event.cancelBubble=true">
+                        </td>
                         <td>
                             <span class="noticeIdx" th:text="${list.idx}"></span>
                         </td>
@@ -145,7 +147,7 @@
             pageOn();
             listCheck();
             noticeDetailsModal();
-            removeListItem02("/admin/manage/notice/deleteByNoticeIdx");
+            removeListItem02("/admin/manage/notice/listDelete");
             updateNoticeByNoticeIdx();
             new Table(document.querySelector('#main table'));
         });

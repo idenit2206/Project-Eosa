@@ -21,7 +21,8 @@ public class NoticeController {
     @Autowired
     NoticeService noticeService;
     
-    /** 
+    /**
+     * 공지사항 목록 출력하기
      * @param model
      * @param 
      * @return String
@@ -35,21 +36,21 @@ public class NoticeController {
         return noticeService.noticeList(model, search, page);
     }
 
-    // /**
-    //  * 공지사항 목록에서 공지사항 삭제하기
-    //  * @param model
-    //  * @param companysIdx
-    //  * @return
-    //  */
-    // @PutMapping("/listDelete")
-    // public String companysListDelete(
-    //     @RequestParam List<Long> listCheckValueList,
-    //     @RequestParam(defaultValue = "") String search,
-    //     @RequestParam(defaultValue = "1") int page,
-    //     Model model
-    // ) {
-    //     return companyService.companysListDelete(listCheckValueList, enabled, sort, search, page, model);
-    // }
+    /**
+     * 공지사항 목록에서 공지사항 삭제하기
+     * @param model
+     * @param companysIdx
+     * @return
+     */
+    @PutMapping("/listDelete")
+    public String noticeListDelete(
+        @RequestParam List<Long> listCheckValueList,
+        @RequestParam(defaultValue = "") String search,
+        @RequestParam(defaultValue = "1") int page,
+        Model model
+    ) {
+        return noticeService.noticeListDelete(listCheckValueList, search, page, model);
+    }
 
     
     /** 

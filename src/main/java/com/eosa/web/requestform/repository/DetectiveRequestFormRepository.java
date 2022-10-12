@@ -130,7 +130,8 @@ public interface DetectiveRequestFormRepository extends JpaRepository<RequestFor
         value = 
         "UPDATE RequestForm " +
         "SET " +
-        "requestFormStatus = :#{#R.requestFormStatus}, requestFormRejectMessage = :#{#R.requestFormRejectMessage}, " +
+        "requestFormStatus = :#{#R.requestFormStatus}, requestFormStatusChangeDate = :#{#R.requestFormStatusChangeDate}, " +
+        "requestFormRejectMessage = :#{#R.requestFormRejectMessage}, " +
         "requestFormAcceptDate = :#{#R.requestFormAcceptDate}, requestFormCompDate = :#{#R.requestFormCompDate}, " +
         "requestFormClientReadState = :#{#R.requestFormClientReadState}, requestFormClientReadDate = NOW(), " +
         "requestFormDetectiveReadState = 0 " +
