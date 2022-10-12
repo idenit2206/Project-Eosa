@@ -19,7 +19,8 @@
                             <button class="btn tab-menu enabled-1" th:onclick="|goTo('/admin/manage/company/list?enabled=-1')|">반려</button>
                         </div>
                         <div class="header-wrap">
-                            <span class="table__count">전체<i class="value" th:text="${count}"></i></span>
+                            <span class="table__count" th:if="${enabled == 0}">전체<i class="value" th:text="${count-1}"></i></span>
+                            <span class="table__count" th:unless="${enabled == 0}">전체<i class="value" th:text="${count}"></i></span>
                             <form class="table__search">
                                 <input type="hidden" name="enabled" th:value="${enabled}">
                                 <select class="select" name="sort">

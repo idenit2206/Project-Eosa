@@ -240,8 +240,7 @@ public class UsersService implements UsersRepository {
         if(companysDelete == 1) {
             log.info("[deleteUserInfo] 회원탈퇴 usersIdx: {} 회원의 업체 정보를 삭제합니다.", String.valueOf(usersIdx));
         }
-        return 1;
-        // return usersRepository.deleteUserInfo(usersIdx);
+        return usersRepository.deleteUserInfo(usersIdx);
     }
 
     
