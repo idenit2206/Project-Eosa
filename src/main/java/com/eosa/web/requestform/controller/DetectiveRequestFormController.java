@@ -163,18 +163,23 @@ public class DetectiveRequestFormController {
             );
         }
         else if (entity.getRequestFormStatus().equals("의뢰대기")) {
+            entity.setRequestFormStatusChangeDate(LocalDateTime.now());
             updateRows = detectiveRequestFormService.updateRequestFormByEntity(entity);
         }
         else if(entity.getRequestFormStatus().equals("의뢰거절")) {
+            entity.setRequestFormStatusChangeDate(LocalDateTime.now());
             updateRows = detectiveRequestFormService.updateRequestFormByEntity(entity);
         }
         else if(entity.getRequestFormStatus().equals("계약진행")) {
+            entity.setRequestFormStatusChangeDate(LocalDateTime.now());
             updateRows = detectiveRequestFormService.updateRequestFormByEntity(entity);
         }
         else if(entity.getRequestFormStatus().equals("임무진행")) {
+            entity.setRequestFormStatusChangeDate(LocalDateTime.now());
             updateRows = detectiveRequestFormService.updateRequestFormByEntity(entity);
         }
         else if(entity.getRequestFormStatus().equals("임무완료")) {
+            entity.setRequestFormStatusChangeDate(LocalDateTime.now());
             updateRows = detectiveRequestFormService.updateRequestFormByEntity(entity);
         }
 
