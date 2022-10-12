@@ -88,14 +88,21 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
      */
     @Override
     public int updateRequestFormByEntity(RequestForm entity) {
-        if(entity.getRequestFormStatus().equals("의뢰거절")) { entity.setRequestFormCompDate(LocalDateTime.now()); }
-        else if(entity.getRequestFormStatus().equals("계약진행")) { entity.setRequestFormStatus("계약진행"); }
-        else if(entity.getRequestFormStatus().equals("임무진행")) { entity.setRequestFormAcceptDate(LocalDateTime.now()); }
+        if(entity.getRequestFormStatus().equals("의뢰거절")) { 
+            // entity.setRequestFormAcceptDate(LocalDateTime.now());
+            entity.setRequestFormCompDate(LocalDateTime.now()); 
+        }
+        else if(entity.getRequestFormStatus().equals("계약진행")) {
+            entity.setRequestFormAcceptDate(LocalDateTime.now());
+            entity.setRequestFormStatus("계약진행"); 
+        }
+        else if(entity.getRequestFormStatus().equals("임무진행")) { 
+            entity.setRequestFormAcceptDate(LocalDateTime.now()); 
+        }
         else if(entity.getRequestFormStatus().equals("임무완료")) { 
             LocalDateTime requestFormAcceptDate = detectiveRequestFormRepository.selectRequestFormByRequestFormIdx(entity.getRequestFormIdx()).getRequestFormAcceptDate();
-            entity.setRequestFormStatusChangeDate(LocalDateTime.now());
             entity.setRequestFormAcceptDate(requestFormAcceptDate);
-            entity.setRequestFormCompDate(LocalDateTime.now()); 
+            entity.setRequestFormCompDate(LocalDateTime.now());
         }
         return detectiveRequestFormRepository.updateRequestFormByEntity(entity);
     }

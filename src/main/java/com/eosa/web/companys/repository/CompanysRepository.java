@@ -164,7 +164,7 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
                         "FROM Companys C " +
                         "LEFT JOIN CompanysActiveRegion CAR on C.companysIdx = CAR.companysIdx " +
                         "LEFT JOIN CompanysCategory CC on C.companysIdx = CC.companysIdx " +
-                        "WHERE C.companysIdx NOT IN (0) " +
+                        "WHERE C.companysIdx NOT IN (0) AND C.companysEnabled = 1 " +
                         "GROUP BY C.companysIdx", nativeQuery = true)
         List<SelectCompanys> selectAllCompanys();
 
