@@ -575,6 +575,14 @@ public class ChatRoomService implements ChatRoomRepository {
         return null;
     }
 
+    /**
+     * usersIdx가 일치하는 List<roomId> 출력
+     */
+    @Override
+    public List<String> selectChatRoomIdListByUsersIdx(Long usersIdx) {
+        return chatRoomRepository.selectChatRoomIdListByUsersIdx(usersIdx);
+    }
+
 //    @Override
 //    public int createChatRoom(ChatRoom chatRoom) {
 //        // TODO Auto-generated method stub

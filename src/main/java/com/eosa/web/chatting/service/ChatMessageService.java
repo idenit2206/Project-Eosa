@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import com.eosa.web.chatting.entity.ChatRoom;
 import com.eosa.web.chatting.repository.ChatMessageRepository;
 import com.eosa.web.chatting.repository.ChatRoomRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -341,6 +340,14 @@ public class ChatMessageService implements ChatMessageRepository {
     @Override
     public <S extends ChatMessage, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return null;
+    }
+
+    /**
+     * roomId와 일치하는 채팅방 삭제
+     */
+    @Override
+    public int deleteByRoomId(String roomId) {
+        return chatMessageRepository.deleteByRoomId(roomId);
     }
 
 //    @Override

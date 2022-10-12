@@ -25,6 +25,11 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
 //    )
 //    public int createChatRoom(@Param("LiveChat") ChatRoom chatRoom);
 
+    /**
+     * usersIdx가 일치하는 List<ChatRoom>을 출력
+     * @param usersIdx
+     * @return List
+     */
     @Query(
         value="SELECT * FROM ChatRoom c WHERE c.usersIdx = ?1 and c.usable = 1",
         nativeQuery = true
@@ -51,4 +56,6 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
     )
     int deleteRoomByRoomId(String roomId);
 
+    @Query(value="SELECT roomId FROM ChatRoom WHERE usersIdx = ?1", nativeQuery = true)
+    List<String> selectChatRoomIdListByUsersIdx(Long usersIdx);
 }
