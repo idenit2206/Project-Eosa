@@ -29,6 +29,7 @@ public class RequestFormService implements RequestFormRepository {
      */
     @Override
     public <S extends RequestForm> S save(S entity) {
+        entity.setRequestFormStatusChangeDate(LocalDateTime.now());
         return requestFormRepository.save(entity);
     }
 

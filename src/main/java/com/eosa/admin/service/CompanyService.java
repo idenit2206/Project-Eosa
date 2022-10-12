@@ -165,8 +165,9 @@ public class CompanyService {
      * @return String
      */
     public String companyDetails(Model model, long companysIdx) {
-
+       
         CompanysDTO details = companyMapper.selectCompanyDetails(companysIdx);
+       
 
         // 가격 조회
         PriceDTO price = priceMapper.selectPrice();
