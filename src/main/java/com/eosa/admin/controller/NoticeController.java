@@ -5,6 +5,8 @@ import com.eosa.admin.service.NoticeService;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -18,7 +20,6 @@ public class NoticeController {
 
     @Autowired
     NoticeService noticeService;
-
     
     /** 
      * @param model
@@ -33,6 +34,22 @@ public class NoticeController {
     ) {
         return noticeService.noticeList(model, search, page);
     }
+
+    // /**
+    //  * 공지사항 목록에서 공지사항 삭제하기
+    //  * @param model
+    //  * @param companysIdx
+    //  * @return
+    //  */
+    // @PutMapping("/listDelete")
+    // public String companysListDelete(
+    //     @RequestParam List<Long> listCheckValueList,
+    //     @RequestParam(defaultValue = "") String search,
+    //     @RequestParam(defaultValue = "1") int page,
+    //     Model model
+    // ) {
+    //     return companyService.companysListDelete(listCheckValueList, enabled, sort, search, page, model);
+    // }
 
     
     /** 
@@ -66,10 +83,9 @@ public class NoticeController {
     public int updateNoticeByNoticeIdx(NoticeDTO noticeDTO) {
         return noticeService.updateNoticeByNoticeIdx(noticeDTO);
     }
-
-
     
     /** 
+     * 공지사항 상세보기에서 삭제하기
      * @param idx
      */
     @ResponseBody

@@ -42,7 +42,7 @@
 
                         <input type="hidden" class="noticeContent" th:value="${list.content}">
 
-                        <td class="check"><input type="checkbox" name="listCheck" onclick="event.cancelBubble=true"></td>
+                        <td class="check"><input type="checkbox" class="listCheck" name="listCheck" onclick="event.cancelBubble=true"></td>
                         <td>
                             <span class="noticeIdx" th:text="${list.idx}"></span>
                         </td>
@@ -128,7 +128,7 @@
                         </table>
                     </div>
                     <div class="form__action bottom">
-                        <button class="btn-del hospital-delete">삭제하기</button>
+                        <button class="btn-del btn-delete hospital-delete">삭제하기</button>
                         <button class="btn-prime hospital-modify">수정하기</button>
                     </div>
                 </div>
@@ -145,6 +145,7 @@
             pageOn();
             listCheck();
             noticeDetailsModal();
+            removeListItem02("/admin/manage/notice/deleteByNoticeIdx");
             updateNoticeByNoticeIdx();
             new Table(document.querySelector('#main table'));
         });

@@ -29,12 +29,16 @@ function noticeDetailsModal() {
             modalAuthor.innerHTML = noticeAuthor[i].innerText;
             modalPostDate.value = noticePostDate[i].innerText;
             modalDelBtn.addEventListener("click", () => {
-                if(window.confirm("정말로 이 공지사항을 삭제 하시겠습니까?")) {
-                    alert("이 공지사항을 삭제합니다.");
+                alert("이 공지사항을 삭제합니다.");
                     fetch("/admin/manage/notice/deleteByNoticeIdx?noticeIdx="+noticeIdx[i].innerHTML, {method: "DELETE"})
                         .then(response => response)
                         .then(data => { window.location.href = "list" });
-                }
+                // if(window.confirm("정말로 이 공지사항을 삭제 하시겠습니까?")) {
+                //     alert("이 공지사항을 삭제합니다.");
+                //     fetch("/admin/manage/notice/deleteByNoticeIdx?noticeIdx="+noticeIdx[i].innerHTML, {method: "DELETE"})
+                //         .then(response => response)
+                //         .then(data => { window.location.href = "list" });
+                // }
             })
         })
     }

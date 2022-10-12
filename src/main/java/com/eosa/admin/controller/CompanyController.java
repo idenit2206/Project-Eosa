@@ -50,7 +50,7 @@ public class CompanyController {
     }
 
     /**
-     * 
+     * 업체 목록에서 업체 삭제하기
      * @param model
      * @param companysIdx
      * @return
