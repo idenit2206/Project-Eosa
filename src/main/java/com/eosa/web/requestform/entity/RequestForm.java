@@ -34,6 +34,7 @@ public class RequestForm {
     @Column(nullable=false) private String requestFormChannel;
 
     @Column(nullable=false) private String requestFormStatus;
+    @Column(nullable=true) private LocalDateTime requestFormStatusChangeDate;
 
     @Column(nullable=true) private LocalDateTime requestConsultDate;    
     @Column(nullable=true) private LocalDateTime requestFormDate;

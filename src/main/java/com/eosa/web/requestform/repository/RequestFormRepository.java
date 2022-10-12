@@ -115,6 +115,7 @@ public interface RequestFormRepository extends JpaRepository<RequestForm, Long> 
 
     @Query(value =
         "SELECT R.requestFormIdx, R.usersIdx, R.companysIdx, R.requestFormRegion1, R.requestFormChannel, R.requestFormStatus, " +
+        "R.requestFormStatusChangeDate, " +
         "R.requestFormDate, R.requestConsultDate, R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage, " +
         "R.requestFormClientReadState, R.requestFormClientReadDate, " +
         "R.requestFormDetectiveReadState, R.requestFormDetectiveReadDate, " +
@@ -125,12 +126,13 @@ public interface RequestFormRepository extends JpaRepository<RequestForm, Long> 
         // "WHERE R.usersIdx = ?1 AND R.requestFormClientReadState = 0 " +
         "WHERE U.usersIdx = ?1 " +
         "GROUP BY R.requestFormIdx, R.usersIdx, R.companysIdx, R.requestFormRegion1, R.requestFormChannel, R.requestFormStatus, R.requestFormDate, R.requestConsultDate, R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage " +
-        "ORDER BY R.requestFormClientReadDate DESC"
+        "ORDER BY R.requestFormStatusChangeDate DESC"
     ,nativeQuery = true)
     List<RequestForm> selectRequestFormByUsersIdx(Long usersIdx);
 
     @Query(value =
         "SELECT R.requestFormIdx, R.usersIdx, R.companysIdx, R.requestFormRegion1, R.requestFormChannel, R.requestFormStatus, " +
+        "R.requestFormStatusChangeDate, " +
         "R.requestFormDate, R.requestConsultDate, R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage, " +
         "R.requestFormClientReadState, R.requestFormClientReadDate, " +
         "R.requestFormDetectiveReadState, R.requestFormDetectiveReadDate, " +
@@ -139,7 +141,7 @@ public interface RequestFormRepository extends JpaRepository<RequestForm, Long> 
         "LEFT JOIN RequestFormCategory RFC on R.requestFormIdx = RFC.requestFormIdx " +
         "WHERE R.companysIdx = ?1 " +
         "GROUP BY R.requestFormIdx, R.usersIdx, R.companysIdx, R.requestFormRegion1, R.requestFormChannel, R.requestFormStatus, R.requestFormDate, R.requestConsultDate, R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage " +
-        "ORDER BY R.requestFormClientReadDate DESC"
+        "ORDER BY R.requestFormStatusChangeDate DESC"
     ,nativeQuery = true)
     List<RequestForm> selectPushNotificationForDetective(Long companysIdx);
 

@@ -642,4 +642,13 @@ public class CompanysService implements CompanysRepository {
         return null;
     }
 
+    /**
+     * usersIdx와 일치하는 Companys 정보를 삭제
+     */
+    @Override
+    public int deleteCompanysByCompanysCeoIdx(Long companysCeoIdx) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
 }

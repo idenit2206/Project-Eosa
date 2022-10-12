@@ -12,14 +12,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.eosa.security.CustomPrincipalDetails;
+import com.eosa.web.chatting.repository.ChatMessageRepository;
+import com.eosa.web.chatting.repository.ChatRoomRepository;
+import com.eosa.web.companys.repository.CompanysRepository;
 import com.eosa.web.users.entity.FindByUsersAccountEntity;
 import com.eosa.web.users.entity.GetUsersInfoByUsersAccountEntity;
 import com.eosa.web.users.entity.Users;
@@ -27,13 +28,14 @@ import com.eosa.web.users.repository.UsersRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
-import javax.transaction.Transactional;
-
 @Slf4j
 @Service
 public class UsersService implements UsersRepository {    
 
-    @Autowired private UsersRepository usersRepository;    
+    @Autowired private UsersRepository usersRepository;
+    @Autowired private CompanysRepository companysRepository;
+    @Autowired private ChatRoomRepository chatRoomRepository;
+    @Autowired private ChatMessageRepository chatMessageRepository;
     @Autowired private BCryptPasswordEncoder passwordEncoder;
     
     /**
@@ -226,6 +228,11 @@ public class UsersService implements UsersRepository {
      * 사용자 서비스 탈퇴를 수행하는 메서드 
     */
     public int deleteUserInfo(Long usersIdx) {
+        int companysDelete = companysRepository.deleteCompanysByCompanysCeoIdx(usersIdx);
+        List<String> selectChatRoomList = null;
+        if(companysDelete == 1) {
+            log.info("[deleteUserInfo] 회원탈퇴 절차에 따라 usersIdx: {} 회원의 업체 정보를 삭제합니다.", String.valueOf(usersIdx));
+        }
         return usersRepository.deleteUserInfo(usersIdx);
     }
 
