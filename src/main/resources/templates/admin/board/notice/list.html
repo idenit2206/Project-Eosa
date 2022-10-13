@@ -121,11 +121,9 @@
                             <tr>
                                 <td class="modal-th">내용</td>
                                 <td class="modal-td">
-                                    <div class="input-wrap">
-                                        <textarea id="content" class="textarea" spellcheck="false"></textarea>
-                                    <!-- <div class="text-wrap editor-details-wrap e-wrap">
-                                        <div id="editor" th:utext=""></div>
-                                    </div> -->
+                                    <div class="input-wrap e-wrap">
+                                        <!-- <textarea id="content" class="textarea" spellcheck="false"></textarea> -->                                    
+                                        <div id="editor"></div>
                                     </div>
                                 </td>
                             </tr>
@@ -144,12 +142,25 @@
 </th:block>
 
 <th:block layout:fragment="script">
+    <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="https://unpkg.com/quill-image-compress@1.2.11/dist/quill.imageCompressor.min.js"></script>
+    <script th:src="@{/assets/js/admin/library.js}"></script>
     <script>
         window.addEventListener('DOMContentLoaded', () => {
             highlightMenu('notice');
             pageOn();
             listCheck();
+
+            const editorWrap = document.querySelectorAll('.e-wrap');
+            setTimeout(e => {
+                editorWrap[0].style.display = 'block';
+            }, 500)  
+
             noticeDetailsModal();
+
+            createEditorForNotice();
+
             removeListItem02("/admin/manage/notice/listDelete");
             updateNoticeByNoticeIdx();
             new Table(document.querySelector('#main table'));

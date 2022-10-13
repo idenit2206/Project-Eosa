@@ -221,9 +221,9 @@ public class UsersService implements UsersRepository {
         int tran = usersRepository.updateUserInfoExcludeUsersPass(param);
         return tran;
     }
-
     
     /** 
+     * 관리자 계정정보 업데이트
      * @param param
      * @return int
      */

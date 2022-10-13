@@ -17,7 +17,7 @@ function noticeDetailsModal() {
     const modalIdx = document.querySelector("#idx");
     const modalTitle = document.querySelector("#title");
     const modalAuthor = document.querySelector("#author");
-    const modalContent = document.querySelector("#content");
+    const modalContent = document.querySelector("#editor");
     const modalPostDate = document.querySelector("#postDate");
     const modalDelBtn = document.querySelector(".btn-del");
 
@@ -52,14 +52,15 @@ function noticeDetailsModal() {
 const updateNoticeByNoticeIdx = () => {
     const modalNoticeIdx = document.querySelector("#idx");
     const modalNoticeTitle = document.querySelector("#title");
-    const modalNoticeContent = document.querySelector("#content");
+    // const modalNoticeContent = document.querySelector("#content");
     const modlaModifyBtn = document.querySelector(".btn-prime");
 
     modlaModifyBtn.addEventListener("click", () => {
         let formData = new FormData();
         formData.append("idx", modalNoticeIdx.textContent);
         formData.append("title", modalNoticeTitle.value);
-        formData.append("content", modalNoticeContent.value);
+        const memo = document.querySelector('.ql-editor');
+        if (memo.innerText != '\n') formData.append('content', memo.innerHTML);
         fetch("/admin/manage/notice/updateByNoticeIdx", {method: "PUT", body: formData})
             .then(response => response)
             .then(data => {
