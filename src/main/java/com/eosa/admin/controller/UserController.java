@@ -71,7 +71,7 @@ public class UserController {
 
         return userService.updateUser(usersDTO);
     }
-    
+
     // @PostMapping("/reset/password")
     // @ResponseBody
     // public int r
@@ -137,13 +137,18 @@ public class UserController {
      * 비회원 목록 조회 컨트롤러
      *
      * @param model
+     * @param sort
+     * @param search
      * @param page
      * @return String
      */
     @GetMapping("/temp/list")
-    public String tempList(Model model, @RequestParam(defaultValue = "1") int page) {
+    public String tempList(Model model,
+                           @RequestParam(defaultValue = "") String sort,
+                           @RequestParam(defaultValue = "") String search,
+                           @RequestParam(defaultValue = "1") int page) {
 
-        return userService.tempList(model, page);
+        return userService.tempList(model, sort, search, page);
     }
 
     /**
