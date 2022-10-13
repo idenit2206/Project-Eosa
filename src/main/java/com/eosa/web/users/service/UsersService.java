@@ -212,6 +212,16 @@ public class UsersService implements UsersRepository {
         return tran;
     }
 
+    /**
+     * 사용자의 정보(패스워드 제외)를 수정하는 메서드
+     * @param Users param
+     * @return int
+    */
+    public int updateUserInfoExcludeUsersPass(Users param) {
+        int tran = usersRepository.updateUserInfoExcludeUsersPass(param);
+        return tran;
+    }
+
     
     /** 
      * @param param

@@ -152,6 +152,22 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     @Transactional
     @Query(
         value="UPDATE Users " +
+        "SET " +
+        "usersNick=:#{#Users.usersNick}, " +
+        "usersEmail=:#{#Users.usersEmail}, " +
+        "usersGender=:#{#Users.usersGender}, " +
+        "usersAge=:#{#Users.usersAge}, " +
+        "usersRegion1=:#{#Users.usersRegion1}, " +
+        "usersRegion2=:#{#Users.usersRegion2} " +
+        "WHERE usersIdx=:#{#Users.usersIdx}"
+        ,nativeQuery=true
+    )
+    int updateUserInfoExcludeUsersPass(@Param("Users") Users param);
+
+    @Modifying
+    @Transactional
+    @Query(
+        value="UPDATE Users " +
         "SET " + 
         "usersAccount=:#{#Users.usersAccount}, " +
         "usersPass=:#{#Users.usersPass}, " +
