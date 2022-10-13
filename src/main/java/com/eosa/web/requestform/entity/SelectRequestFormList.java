@@ -7,6 +7,7 @@ public interface SelectRequestFormList {
     Long getRequestFormIdx();
     Long getUsersIdx();
     String getUsersAccount();
+    String getUsersNick();
     Integer getUsersAge();
     Integer getUsersGender();
     Long getCompanysIdx();

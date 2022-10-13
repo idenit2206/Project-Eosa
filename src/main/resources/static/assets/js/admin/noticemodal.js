@@ -17,17 +17,17 @@ function noticeDetailsModal() {
     const modalIdx = document.querySelector("#idx");
     const modalTitle = document.querySelector("#title");
     const modalAuthor = document.querySelector("#author");
-    const modalContent = document.querySelector("#editor");
+    const modalContent0 = document.querySelector("#editor");
+    const modalContent = document.querySelector(".ql-editor");
     const modalPostDate = document.querySelector("#postDate");
     const modalDelBtn = document.querySelector(".btn-del");
 
     for(let i = 0; i < btn.length; i++) {
         btn[i].addEventListener("click", () => {
             modalIdx.innerHTML = noticeIdx[i].innerText;
-            modalTitle.value = noticeTitle[i].innerText;
-            modalContent.innerHTML = noticeContent[i].value;
+            modalTitle.value = noticeTitle[i].innerText;         
             modalAuthor.innerHTML = noticeAuthor[i].innerText;
-            modalPostDate.value = noticePostDate[i].innerText;
+            modalPostDate.innerHTML = noticePostDate[i].innerText;
             modalDelBtn.addEventListener("click", () => {
                 alert("이 공지사항을 삭제합니다.");
                     fetch("/admin/manage/notice/deleteByNoticeIdx?noticeIdx="+noticeIdx[i].innerHTML, {method: "DELETE"})
@@ -47,7 +47,7 @@ function noticeDetailsModal() {
 }
 
 /**
- * Modal 공지사항 상세보기 수정하기
+ * Modal 공지사항 상세보기에서 수정하기
 */
 const updateNoticeByNoticeIdx = () => {
     const modalNoticeIdx = document.querySelector("#idx");
