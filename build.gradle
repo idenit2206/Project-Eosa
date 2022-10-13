@@ -76,6 +76,16 @@ dependencies {
 	// json
 	implementation 'org.json:json:20220320'
 
+	// push alert
+	//firebase
+	runtimeOnly group: 'com.google.firebase', name: 'firebase-admin', version: '8.1.0'
+
+	//google oauth2 http
+	implementation 'com.google.auth:google-auth-library-oauth2-http:1.4.0'
+
+	// okhttp
+	implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+
 }
 
 tasks.named('test') {

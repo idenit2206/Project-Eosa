@@ -256,4 +256,17 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     )
     int updateUsersPass(@Param("usersAccount") String usersAccount, @Param("usersEmail") String usersEmail, @Param("usersPass") String encodedCode);
     
+    /**
+     * usersIdx 사용자의 token 조회
+     * @param usersIdx
+     * @return
+     */
+    @Query(value = "SELECT U.token FROM Users WHERE U.usersIdx = ?1", nativeQuery = true)
+    String getTokenByUsersIdx(Long usersIdx);
+
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO Users(token) VALUES (:token) ON DUPLICATE KEY UPDATE usersIdx = :usersIdx, token = :token", nativeQuery = true)
+    int updateUsersToken(@Param("token") String token, @Param("usersIdx") Long usersIdx);
+    
 }

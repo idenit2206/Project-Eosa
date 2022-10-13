@@ -283,7 +283,18 @@ public class UsersService implements UsersRepository {
     public int updateUsersPass(String usersAccount, String usersEmail, String encodedCode) {
         return usersRepository.updateUsersPass(usersAccount, usersEmail, encodedCode);
     }
-
+    
+    // firebase를 활용한 모바일 푸시알림을 위한 서비스
+    // Token 조회
+    @Override
+    public String getTokenByUsersIdx(Long usersIdx) {
+        return usersRepository.getTokenByUsersIdx(usersIdx);
+    }
+    // Token 업데이트
+    @Override
+    public int updateUsersToken(String token, Long usersIdx) {
+        return usersRepository.updateUsersToken(token, usersIdx);
+    }
     
     /** 
      * @param sort

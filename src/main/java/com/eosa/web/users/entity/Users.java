@@ -83,6 +83,10 @@ public class Users {
     // OAuth2를 이용할 경우 플랫폼에서의 사용자 아이디
     @Column private String providerId;
 
+    @Column private String token;
+    
+    @Column private String device;
+
     // OAuth2를 이용할 경우 프로필 이미지 파일 링크(사용하지 않음)
     @Column private String usersProfile;
 

@@ -29,8 +29,11 @@ public class SmsCertificationService {
         while(result.length() <= 5) {
             result += String.valueOf((int)Math.floor(Math.random() * 9));
         }
-        log.info("[createCertificationCode] 새로운 인증코드 객체를 저장합니다.");
-        log.debug("[createCertificationCode] usersPhone: {}  code: {}", usersPhone, result);
+        log.info("[createCertificationCode] 서버에 새로운 인증코드 객체를 저장합니다.");
+        log.debug("[createCertificationCode] 인증코드 usersPhone: {}  code: {}", usersPhone, result);
+        // for(int i = 0; i < authKeyList.size(); i++) {
+        //     if(authKeyList.get(usersPhone) ==
+        // }
         authKeyList.put(usersPhone, result);
         return result;
     }
@@ -52,7 +55,7 @@ public class SmsCertificationService {
      * @return String
      */
     public String getAuthCode(String usersPhone) {
-        log.info("[savedAuthCode] redis의 인증정보와 비교합니다.");
+        log.info("[savedAuthCode] 서버의 인증정보와 비교합니다.");
 //        log.info("server의 인증정보를 가져옵니다.");
 //        return redisTemplate.opsForValue().get(usersPhone);
         return authKeyList.get(usersPhone);
@@ -65,7 +68,7 @@ public class SmsCertificationService {
     public void removeAuthCode(String usersPhone) {
 //        log.info("redis의 인증정보를 삭제합니다.");
 //        redisTemplate.delete(usersPhone);
-        log.info("[savedAuthCode] server의 인증정보를 삭제합니다.");
+        log.info("[savedAuthCode] 서버의 인증정보를 삭제합니다.");
         authKeyList.remove(usersPhone);
     }
 
