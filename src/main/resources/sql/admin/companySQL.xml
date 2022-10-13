@@ -63,6 +63,7 @@
                C.companysRegion3,
                C.companysRegistCerti,
                C.companysRegistCertiName,
+               C.companysRegistCertiDate,
                C.companysRegistCertiCheck,
                C.companysLicense,
                C.companysLicenseName,

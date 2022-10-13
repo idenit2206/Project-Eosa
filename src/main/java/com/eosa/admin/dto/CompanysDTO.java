@@ -29,6 +29,7 @@ public class CompanysDTO {
     private String companysRegion2;         // 구/군
     private String companysRegion3;         // 상세주소
     private String companysRegistCerti;     // 사업자등록증
+    private String companysRegistCertiDate; // 사업자등록증 발급일
     private String companysRegistCertiName; // 사업자등록증 파일명
     private int companysRegistCertiCheck;   // 사업자 인증
     private String companysLicense;         // 자격증
