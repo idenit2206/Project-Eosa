@@ -208,25 +208,34 @@ public class UserService {
      * 비회원 목록 조회 서비스
      *
      * @param model
+     * @param sort
+     * @param search
      * @param page
      * @return String
      */
-    public String tempList(Model model, int page) {
+    public String tempList(Model model, String sort, String search, int page) {
 
         Map<String, Object> map = new HashMap<>();
 
-        int count = userMapper.countTempList();
+        if (!search.equals("")) {
+            map.put("sort", sort);
+            map.put("search", search);
+        }
+
+        int count = userMapper.countTempList(map);
 
         Pagination pagination = new Pagination(count, page);
 
         map.put("startIndex", pagination.getStartIndex());
         map.put("pageSize", pagination.getPageSize());
 
-        List<TempUserDTO> list = userMapper.selectTempList(map);
+        List<UsersDTO> list = userMapper.selectTempList(map);
 
         model.addAttribute("tempList", list);
         model.addAttribute("pagination", pagination);
         model.addAttribute("count", count);
+        model.addAttribute("sort", sort);
+        model.addAttribute("search", search);
 
         return "admin/user/temp/list";
     }

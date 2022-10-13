@@ -164,38 +164,36 @@
     </delete>
 
     <!-- 비회원 목록 개수 조회 -->
-    <select id="countTempList" resultType="int">
+    <select id="countTempList" resultType="int" parameterType="hashmap">
         SELECT COUNT(*)
-        FROM TempUser T
+        FROM Users U
+        WHERE U.usersRole = 'TEMP'
+        <if test="sort != null">
+            AND CONCAT(U.usersEmail) REGEXP #{search}
+        </if>
     </select>
 
     <!-- 비회원 목록 조회 -->
-    <select id="selectTempList" resultType="TempUserDTO" parameterType="hashmap">
-        SELECT A.num,
-               A.tempUserIdx,
-               A.tempUserEmail,
-               A.tempUserGender,
-               A.tempUserAge,
-               A.tempUserRegion1,
-               A.tempUserRegistDate
-        FROM (SELECT @ROWNUM := @ROWNUM + 1 NUM,
-             T.tempUserIdx,
-             T.tempUserEmail,
-             T.tempUserGender,
-             T.tempUserAge,
-             T.tempUserRegion1,
-             T.tempUserRegistDate
-              FROM TempUser T,
-                  (SELECT @ROWNUM := 0) R
-              ORDER BY T.tempUserRegistDate ASC) A
-        ORDER BY A.NUM DESC LIMIT #{startIndex}, #{pageSize}
+    <select id="selectTempList" resultType="UsersDTO" parameterType="hashmap">
+        SELECT U.usersIdx,
+               U.usersEmail,
+               U.usersAge,
+               U.usersRegion1,
+               U.usersGender,
+               U.usersJoinDate
+        FROM Users U
+        WHERE U.usersRole = 'TEMP'
+        <if test="sort != null">
+            AND CONCAT(U.usersEmail) REGEXP #{search}
+        </if>
+        ORDER BY U.usersJoinDate DESC LIMIT #{startIndex}, #{pageSize}
     </select>
 
     <!-- 비회원 삭제 -->
     <delete id="deleteTemp">
         DELETE
-        FROM TempUser
-        WHERE tempUserIdx IN
+        FROM Users U
+        WHERE U.usersIdx IN
         <foreach collection="array" item="arr" index="i" open="(" separator="," close=")">
             #{arr}
         </foreach>

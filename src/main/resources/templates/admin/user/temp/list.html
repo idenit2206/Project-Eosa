@@ -15,6 +15,13 @@
                     <div class="top-wrap">
                         <div class="header-wrap">
                             <span class="table__count">전체<i class="value" th:text="${count}"></i></span>
+                            <form class="table__search">
+                                <select class="select" name="sort">
+                                    <option value="id" th:selected="${sort} eq 'email'">이메일</option>
+                                </select>
+                                <input class="input" name="search" type="text" th:value="${search}" placeholder="검색어 입력">
+                                <button type="submit" class="btn-prime">검색</button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -42,22 +49,22 @@
                     <tbody th:if="${count} ne 0">
                     <tr th:each="list : ${tempList}">
                         <td class="check"><input type="checkbox" name="listCheck"></td>
-                        <td><span th:text="${list.num}"></span></td>
+                        <td><span th:text="${list.usersIdx}"></span></td>
                         <td>
-                            <input type="hidden" class="tempUserIdx" th:value="${list.tempUserIdx}">
-                            <span th:text="${list.tempUserEmail}"></span>
+                            <input type="hidden" class="tempUserIdx" th:value="${list.usersIdx}">
+                            <span th:text="${list.usersEmail}"></span>
                         </td>
                         <td>
-                            <span th:text="|${list.tempUserAge}대|"></span>
+                            <span th:text="|${list.usersAge}대|"></span>
                         </td>
                         <td>
-                            <span th:text="${list.tempUserGender} eq 0 ? '남성' : '여성'"></span>
+                            <span th:text="${list.usersGender} eq 0 ? '남성' : '여성'"></span>
                         </td>
                         <td>
-                            <span th:text="${list.tempUserRegion1}"></span>
+                            <span th:text="${list.usersRegion1}"></span>
                         </td>
                         <td>
-                            <span th:text="${#dates.format(list.tempUserRegistDate, 'yyyy-MM-dd')}"></span>
+                            <span th:text="${#dates.format(list.usersJoinDate, 'yyyy-MM-dd')}"></span>
                         </td>
                     </tr>
                     </tbody>
@@ -69,15 +76,15 @@
 
                 <div class="table__paging">
                     <ul>
-                        <li><a class="first" th:href="@{/admin/manage/user/temp/list(page=1)}"></a></li>
-                        <li><a class="prev" th:href="@{/admin/manage/user/temp/list(page=${pagination.prevBlock})}"></a></li>
+                        <li><a class="first" th:href="@{/admin/manage/user/temp/list(sort=${sort}, search=${search}, page=1)}"></a></li>
+                        <li><a class="prev" th:href="@{/admin/manage/user/temp/list(sort=${sort}, search=${search}, page=${pagination.prevBlock})}"></a></li>
 
                         <th:block th:with="start = ${pagination.startPage}, end = ${pagination.endPage}">
-                            <li th:each="pageButton : ${#numbers.sequence(start, end)}"><a class="pageNum" th:href="@{/admin/manage/user/temp/list(page=${pageButton})}" th:text="${pageButton}"></a></li>
+                            <li th:each="pageButton : ${#numbers.sequence(start, end)}"><a class="pageNum" th:href="@{/admin/manage/user/temp/list(sort=${sort}, search=${search}, page=${pageButton})}" th:text="${pageButton}"></a></li>
                         </th:block>
 
-                        <li><a class="next" th:href="@{/admin/manage/user/temp/list(page=${pagination.nextBlock})}"></a></li>
-                        <li><a class="last" th:href="@{/admin/manage/user/temp/list(page=${pagination.totalPageCnt eq 0 ? 1 : pagination.totalPageCnt})}"></a></li>
+                        <li><a class="next" th:href="@{/admin/manage/user/temp/list(sort=${sort}, search=${search}, page=${pagination.nextBlock})}"></a></li>
+                        <li><a class="last" th:href="@{/admin/manage/user/temp/list(sort=${sort}, search=${search}, page=${pagination.totalPageCnt eq 0 ? 1 : pagination.totalPageCnt})}"></a></li>
                     </ul>
                 </div>
             </div>

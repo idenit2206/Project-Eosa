@@ -115,17 +115,18 @@ public interface UserMapper {
     /**
      * 비회원 목록 개수 조회 매퍼
      *
+     * @param map
      * @return int
      */
-    int countTempList();
+    int countTempList(Map<String, Object> map);
 
     /**
      * 비회원 목록 조회 매퍼
      *
      * @param map
-     * @return TempUserDTO
+     * @return UsersDTO
      */
-    List<TempUserDTO> selectTempList(Map<String, Object>map);
+    List<UsersDTO> selectTempList(Map<String, Object>map);
 
     /**
      * 비회원 삭제 매퍼
