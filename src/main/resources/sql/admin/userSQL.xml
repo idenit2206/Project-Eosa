@@ -65,7 +65,7 @@
                T.terminateRequestDate,
                DATE_ADD(T.terminateRequestDate, INTERVAL -30 DAY) terminateCreateDate
         FROM Users U
-                 LEFT OUTER JOIN TerminateUser T on U.usersIdx = T.usersIdx
+                LEFT OUTER JOIN TerminateUser T on U.usersIdx = T.usersIdx
         WHERE U.usersIdx = #{usersIdx}
     </select>
 
