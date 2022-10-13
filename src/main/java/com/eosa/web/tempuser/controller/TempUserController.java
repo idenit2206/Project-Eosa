@@ -21,6 +21,7 @@ public class TempUserController {
 
     
     /** 
+     * 임시회원 회원가입 컨트롤러
      * @return CustomResponseData
      */
     @PostMapping("/insertNewTempUser")

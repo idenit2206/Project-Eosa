@@ -34,6 +34,7 @@ public class TempUserService implements TempUserRepository {
         entity.setUsersAccount(entity.getUsersEmail().split("@")[0]);
         entity.setUsersRole("TEMP");
         entity.setUsersJoinDate(LocalDateTime.now());
+        entity.setProvider("local");
         entity.setUsersEnabled(1);
         return tempUserRepository.save(entity);
     }
