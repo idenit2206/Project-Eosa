@@ -70,11 +70,7 @@ public class UserController {
     public int updateUser(UsersDTO usersDTO) {
 
         return userService.updateUser(usersDTO);
-    }
-    
-    // @PostMapping("/reset/password")
-    // @ResponseBody
-    // public int r
+    }    
 
     /**
      * 탈퇴 회원 목록 조회 컨트롤러

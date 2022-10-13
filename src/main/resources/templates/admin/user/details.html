@@ -28,13 +28,13 @@
                             <tbody>
                                 <tr>
                                     <th>회원번호</th>
-                                    <td th:text="${details.usersIdx}"></td>
+                                    <td id="usersIdx" th:text="${details.usersIdx}"></td>
                                     <th>유형</th>
                                     <td th:text="${details.usersRole} eq 'CLIENT' ? '의뢰인' : '탐정'"></td>
                                 </tr>
                                 <tr>
                                     <th>아이디</th>
-                                    <td th:text="${details.usersAccount}"></td>
+                                    <td id="usersAccount" th:text="${details.usersAccount}"></td>
                                     <th>비밀번호</th>
                                     <td>
                                         <button type="button" class="btn-reset">비밀번호 초기화</button>
