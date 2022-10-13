@@ -352,7 +352,8 @@ function deleteUser() {
     if (msg) {
         formData.set('usersIdx', document.querySelector('.usersIdx').value);
 
-        fetchApi('/admin/manage/user/delete', 'post', formData, '회원이 삭제되었습니다.', '/admin/manage/user/terminate/list');
+        // fetchApi('/admin/manage/user/delete', 'post', formData, '회원이 삭제되었습니다.', '/admin/manage/user/terminate/list');
+        fetchApi('/admin/manage/user/delete', 'post', formData, '회원이 삭제되었습니다.', '/admin/manage/user/list');
     }
 
 };

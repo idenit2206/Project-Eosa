@@ -117,7 +117,8 @@
                                                 <option th:if="${details.usersDelete} eq 0" selected>이용가능</option>
                                                 <option th:if="${details.usersDelete} eq 1" selected>탈퇴</option>
                                             </select>
-                                            <button type="button" th:if="${details.usersDelete} eq 0" class="btn-terminate js-modalShow" data-modal="terminate">회원탈퇴</button>
+                                            <!-- <button type="button" th:if="${details.usersDelete} eq 0" class="btn-terminate js-modalShow" data-modal="terminate">회원탈퇴</button> -->
+                                            <button type="button" class="btn-del delete-now">회원 삭제</button>
                                             <button type="button" th:if="${details.usersDelete} eq 1" class="btn-terminate js-modalShow" data-modal="reason">탈퇴사유</button>
                                         </div>
                                     </td>

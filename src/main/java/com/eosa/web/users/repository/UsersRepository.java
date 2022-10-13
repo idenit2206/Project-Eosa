@@ -211,7 +211,7 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     int checkAccountByUsersEmail(String usersEmail);
 
     @Query(
-        value="SELECT usersAccount FROM Users WHERE usersEmail=?1",
+        value="SELECT usersAccount FROM Users WHERE usersEmail=?1 AND usersRole != 'TEMP'",
         nativeQuery = true
     )
     String accountMailSend(String usersEmail);
@@ -251,7 +251,7 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     @Query(value =
         "UPDATE Users " +
         "SET usersPass = :usersPass " +
-        "WHERE usersAccount = :usersAccount AND usersEmail = :usersEmail"
+        "WHERE usersAccount = :usersAccount AND usersEmail = :usersEmail AND usersRole != 'TEMP' "
         ,nativeQuery = true
     )
     int updateUsersPass(@Param("usersAccount") String usersAccount, @Param("usersEmail") String usersEmail, @Param("usersPass") String encodedCode);

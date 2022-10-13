@@ -695,7 +695,7 @@ public class UsersController {
         String encodedCode = passwordEncoder.encode(code);
 
         int updateUsers = usersService.updateUsersPass(usersAccount, usersEmail, encodedCode);
-//        log.debug("[resetUsersPassByUsersEmail] result New code: {}", code);
+        log.info("[resetUsersPassByUsersEmail] result New code: {}", code);
         if(updateUsers == 1) {
             me.setAddress(usersEmail);
             me.setTitle("도와조 고객센터 입니다. 신청하신 계정 정보를 발송합니다.");
