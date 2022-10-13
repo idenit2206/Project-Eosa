@@ -43,8 +43,7 @@ public class ReportController {
                             @RequestParam(defaultValue = "1") int page) {
 
         return reportService.reportList(model, state, page);
-    }
-
+    }    
     
     /** 
      * @param reportDTO

@@ -62,7 +62,6 @@ public class ReportService {
 
         return "admin/board/report/list";
     }
-
     
     /** 
      * @param reportDTO

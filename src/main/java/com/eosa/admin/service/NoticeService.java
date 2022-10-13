@@ -104,6 +104,23 @@ public class NoticeService {
     public int insertNotice(NoticeDTO noticeDTO) {
         return noticeMapper.insertNotice(noticeDTO);
     }
+
+    
+    /**
+     * 공지 상세 조회 서비스
+     *
+     * @param model
+     * @param idx
+     * @return String
+     */
+    public String noticeDetails(Model model, long idx) {
+       
+        NoticeDTO details = noticeMapper.noticeDetails(idx);
+       
+        model.addAttribute("details", details);
+
+        return "admin/board/notice/details";
+    }
     
     /** 
      * @param noticeDTO

@@ -54,6 +54,7 @@ public class NoticeController {
 
     
     /** 
+     * 공지사항 등록하기
      * @param model
      * @param authentication
      * @return String
@@ -65,6 +66,7 @@ public class NoticeController {
 
     
     /** 
+     * 공지사항 등록하기 RESTful 
      * @param noticeDTO
      * @return int
      */
@@ -74,8 +76,23 @@ public class NoticeController {
         return noticeService.insertNotice(noticeDTO);
     }
 
-    
+    /**
+     * 공지사항 상세 조회 컨트롤러
+     *
+     * @param model
+     * @param companysIdx
+     * @return String
+     */
+    @GetMapping("/details")
+    public String noticeDetails(
+        Model model,
+        @RequestParam(name="idx") long idx
+    ) {
+        return noticeService.noticeDetails(model, idx);
+    }
+
     /** 
+     * 공지사항 수정하기
      * @param noticeDTO
      * @return int
      */

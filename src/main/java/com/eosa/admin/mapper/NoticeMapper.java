@@ -15,6 +15,14 @@ public interface NoticeMapper {
 
     List<NoticeDTO> selectNoticeList(Map<String, Object> map);    
 
+    
+    /**
+     * 공지 상세 조회 매퍼
+     * @param idx
+     * @return
+     */
+    NoticeDTO noticeDetails(Long idx);
+
     int updateNoticeByNoticeIdx(NoticeDTO noticeDTo);
 
     int deleteByNoticeIdx(Long idx);

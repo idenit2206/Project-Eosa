@@ -28,6 +28,17 @@
         FROM Notice N
         ORDER BY N.postDate DESC LIMIT #{startIndex}, #{pageSize}
     </select>
+
+    <select id="noticeDetails" resultType="NoticeDTO"  parameterType="Long">
+        SELECT
+            N.idx,
+            N.title,
+            N.content,
+            N.author,
+            N.postDate
+        FROM Notice N
+        WHERE N.idx = #{idx}
+    </select>
     
     <update id="updateNoticeByNoticeIdx" parameterType="NoticeDTO">
         UPDATE Notice N SET N.title = #{title}, N.content = #{content} WHERE N.idx = #{idx}

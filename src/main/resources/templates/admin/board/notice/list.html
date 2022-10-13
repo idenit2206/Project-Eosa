@@ -36,12 +36,9 @@
                         </td>
                     </tr>
                     </tbody>
-
                     <tbody th:if="${count} ne 0">
-                    <tr th:each="list : ${noticeList}" class="js-modalShow notice-btn" data-modal="notice">
-
+                    <tr th:each="list : ${noticeList}" class="js-modalShow notice-btn" data-modal="notice"  th:onclick="|linkTo(event,'/admin/manage/notice/details?idx=${list.idx}')|">
                         <input type="hidden" class="noticeContent" th:value="${list.content}">
-
                         <td class="check">
                             <input type="checkbox" class="listCheck" name="listCheck" th:value="${list.idx}" onclick="event.cancelBubble=true">
                         </td>
@@ -89,7 +86,8 @@
         </section>
     </main>
 
-    <div class="modal modal-notice w-800" data-modal="notice">
+    <!-- 상세보기 modal -->
+    <!-- <div class="modal modal-notice w-800" data-modal="notice">
         <div class="modal__inner">
             <div class="modal-head">
                 <span class="modal__title">공지사항 상세</span>
@@ -110,10 +108,10 @@
                                 <td class="modal-th">작성자</td>
                                 <td id="author" class="modal-td"></td>
                             </tr>
-                            <!-- <tr>
+                            <tr>
                                 <td class="modal-th">작성일</td>
                                 <td id="postDate" class="modal-td"></td>
-                            </tr> -->
+                            </tr>
                             <tr>
                                 <td class="modal-th">제목</td>
                                 <td class="modal-td">
@@ -126,7 +124,7 @@
                                 <td class="modal-th">내용</td>
                                 <td class="modal-td">
                                     <div class="input-wrap e-wrap">
-                                        <!-- <textarea id="content" class="textarea" spellcheck="false"></textarea> -->                                    
+                                        /* <textarea id="content" class="textarea" spellcheck="false"></textarea> */
                                         <div id="editor"></div>
                                     </div>
                                 </td>
@@ -141,8 +139,7 @@
                 </div>
             </div>
         </div>
-    </div>
-
+    </div> -->
 </th:block>
 
 <th:block layout:fragment="script">
@@ -161,12 +158,12 @@
                 editorWrap[0].style.display = 'block';
             }, 500)  
 
-            noticeDetailsModal();
+            // noticeDetailsModal();
 
-            createEditorForNotice();
+            // createEditorForNotice();
 
             removeListItem02("/admin/manage/notice/listDelete");
-            updateNoticeByNoticeIdx();
+            // updateNoticeByNoticeIdx();
             new Table(document.querySelector('#main table'));
         });
     </script>
