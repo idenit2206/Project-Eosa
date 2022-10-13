@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/push")
+@RequestMapping("/api/pushNotification")
 public class PushNotiController {
 
     @Autowired private UsersService usersService;
@@ -43,11 +43,12 @@ public class PushNotiController {
     
     @GetMapping("/getTokenAndDevice")
     public String getTokenAndDevice(
-        @RequestParam(value="token") String token,
-        @RequestParam(value="device") String device
+        @RequestParam(value="usersIdx", required = false) Long usersIdx,
+        @RequestParam(value="token", required = false) String token,
+        @RequestParam(value="device", required = false) String device
     ) {
-        log.info("[getToken] token: {} , device: {}", token, device);
-        return token + " : " + device;
+        log.info("[getToken] usersIdx: {}, token: {} , device: {}",usersIdx, token, device);
+        return usersService.getTokenCheck(usersIdx, token, device);
     }
 
 }

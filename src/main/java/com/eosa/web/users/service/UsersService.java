@@ -284,12 +284,31 @@ public class UsersService implements UsersRepository {
         return usersRepository.updateUsersPass(usersAccount, usersEmail, encodedCode);
     }
     
+    public String getTokenCheck(Long usersIdx, String token, String device) {
+        log.info("[getTokenCheck] {}, {}, {}", usersIdx, token, device);
+        int tokenSave = usersRepository.updateUsersTokenDevice(usersIdx, token, device);
+        return token;
+    }
+
     // firebase를 활용한 모바일 푸시알림을 위한 서비스
     // Token 조회
     @Override
     public String getTokenByUsersIdx(Long usersIdx) {
-        return usersRepository.getTokenByUsersIdx(usersIdx);
+        String token = usersRepository.getTokenByUsersIdx(usersIdx);
+        if(token != null) {
+            return token;
+        }
+        else {
+            usersRepository.updateUsersToken(token, usersIdx);
+            return null;
+        }
     }
+
+    @Override
+    public String getDeviceByUsersIdx(Long usersIdx) {
+        return usersRepository.getDeviceByUsersIdx(usersIdx);
+    }
+    
     // Token 업데이트
     @Override
     public int updateUsersToken(String token, Long usersIdx) {
@@ -613,6 +632,13 @@ public class UsersService implements UsersRepository {
     public List<Users> selectAllDetective() {
         // TODO Auto-generated method stub
         return null;
+    }
+
+
+    @Override
+    public int updateUsersTokenDevice(Long usersIdx, String token, String device) {
+        // TODO Auto-generated method stub
+        return 0;
     }
 
 }

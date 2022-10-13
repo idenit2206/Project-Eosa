@@ -9,6 +9,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -139,7 +141,7 @@ public interface DetectiveRequestFormRepository extends JpaRepository<RequestFor
         "WHERE requestFormIdx = :#{#R.requestFormIdx}"
         ,nativeQuery = true
     )
-    int updateRequestFormByEntity(@Param("R") RequestForm entity);
+    int updateRequestFormByEntity(@Param("R") RequestForm entity) throws IOException;
 
     @Transactional
     @Modifying

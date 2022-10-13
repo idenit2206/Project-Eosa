@@ -261,12 +261,21 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
      * @param usersIdx
      * @return
      */
-    @Query(value = "SELECT U.token FROM Users WHERE U.usersIdx = ?1", nativeQuery = true)
+    @Query(value = "SELECT U.token, U.device FROM Users U WHERE U.usersIdx = ?1", nativeQuery = true)
     String getTokenByUsersIdx(Long usersIdx);
 
-    @Modifying
+    @Query(value = "SELECT U.device FROM Users U WHERE U.usersIdx = ?1", nativeQuery = true)
+    String getDeviceByUsersIdx(Long usersIdx);
+
     @Transactional
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query(value = "INSERT INTO Users(token) VALUES (:token) ON DUPLICATE KEY UPDATE usersIdx = :usersIdx, token = :token", nativeQuery = true)
     int updateUsersToken(@Param("token") String token, @Param("usersIdx") Long usersIdx);
+
+    @Transactional
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    // @Query(value = "INSERT INTO Users(token, device) VALUES (:token, :device) ON DUPLICATE KEY UPDATE usersIdx = :usersIdx, token = :token, device = :device", nativeQuery = true)
+    @Query(value = "UPDATE Users SET token = :token, device = :device WHERE usersIdx = :usersIdx", nativeQuery = true)
+    int updateUsersTokenDevice(@Param("usersIdx") Long usersIdx, @Param("token") String token, @Param("device") String device);
     
 }

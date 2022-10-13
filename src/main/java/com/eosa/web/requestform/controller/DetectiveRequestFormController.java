@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -139,12 +140,13 @@ public class DetectiveRequestFormController {
     /** 
      * @param updateRequestFormStatusByRequestFormIdx(
      * @return CustomResponseData
+     * @throws IOException
      */
     @PostMapping("/updateRequestFormStatusByRequestFormIdx")
     public CustomResponseData updateRequestFormStatusByRequestFormIdx(
             @RequestParam(name = "requestFormIdx") Long requestFormIdx,
             @RequestParam(name = "requestFormStatus") String requestFormStatus,
-            @RequestParam(name = "requestFormRejectMessage", required = false) String requestFormRejectMessage) {
+            @RequestParam(name = "requestFormRejectMessage", required = false) String requestFormRejectMessage) throws IOException {
         CustomResponseData result = new CustomResponseData();
         RequestForm entity = new RequestForm();
         entity.setRequestFormIdx(requestFormIdx);
