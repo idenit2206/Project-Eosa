@@ -33,7 +33,7 @@ public interface DetectiveRequestFormRepository extends JpaRepository<RequestFor
     @Query(
             value="SELECT " +
                     "RequestForm.requestFormIdx, RequestForm.usersIdx, " + 
-                    "Users.usersAccount, Users.usersAge, Users.usersGender, " +
+                    "Users.usersAccount, Users.usersNick, Users.usersAge, Users.usersGender, " +
                     "RequestForm.companysIdx, " +
                     "C.companysName, C.companysPremium, " +
                     "RequestForm.requestFormRegion1, RequestForm.requestFormRegion2, " +
