@@ -30,39 +30,35 @@ public class FirebaseCloudMessage {
         public void sendMessageTo(String targetToken, String body, String link, String device) throws IOException {
                 String message = makeMessage(targetToken, body, link, device);
 
-                System.err.println("message : " + message);
-
                 OkHttpClient client = new OkHttpClient();
                 RequestBody requestBody = RequestBody.create(message,
-                                MediaType.get("application/json; charset=utf-8"));
+                        MediaType.get("application/json; charset=utf-8"));
                 Request request = new Request.Builder()
-                                .url(API_URL)
-                                .post(requestBody)
-                                .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + getAccessToken())
-                                .addHeader(HttpHeaders.CONTENT_TYPE, "application/json; UTF-8")
-                                .build();
+                        .url(API_URL)
+                        .post(requestBody)
+                        .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + getAccessToken())
+                        .addHeader(HttpHeaders.CONTENT_TYPE, "application/json; UTF-8")
+                        .build();
 
                 Response response = client.newCall(request).execute();
-
-                System.out.println(response.body().string());
         }
 
         private String makeMessage(String targetToken, String body, String link, String device)
                         throws JsonParseException, JsonProcessingException {
                 FcmMessage fcmMessage = FcmMessage.builder()
                                 .message(FcmMessage.Message.builder()
-                                                .token(targetToken)
-                                                .data(FcmMessage.data.builder()
-                                                                .title("새로운 메세지 도착")
-                                                                .body(body)
-                                                                .link("https://dowajo.co.kr" + link)
-                                                                .build())
-                                                .notification(FcmMessage.Notification.builder()
-                                                                .title("새로운 메세지 도착")
-                                                                .body(body)
-                                                                .image(null)
-                                                                .build())
+                                        .token(targetToken)
+                                        .data(FcmMessage.data.builder()
+                                                .title("새로운 메세지 도착")
+                                                .body(body)
+                                                .link("https://dowajo.co.kr" + link)
                                                 .build())
+                                        .notification(FcmMessage.Notification.builder()
+                                                .title("새로운 메세지 도착")
+                                                .body(body)
+                                                .image(null)
+                                                .build())
+                                        .build())
                                 .validateOnly(false).build();
                 return objectMapper.writeValueAsString(fcmMessage);
         }

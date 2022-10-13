@@ -294,9 +294,7 @@ public class UsersService implements UsersRepository {
     // Token 조회
     @Override
     public String getTokenByUsersIdx(Long usersIdx) {
-        System.err.println("service useIdx : "+usersIdx);
         String token = usersRepository.getTokenByUsersIdx(usersIdx);       
-        System.err.println("service token : "+token);
         return token;      
     }
 

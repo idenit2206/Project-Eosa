@@ -1,5 +1,6 @@
 package com.eosa.web.requestform.service;
 
+import com.eosa.web.companys.service.CompanysService;
 import com.eosa.web.firebase.pushnoti.service.FirebaseCloudMessage;
 import com.eosa.web.requestform.entity.RequestForm;
 import com.eosa.web.requestform.entity.SelectRequestFormList;
@@ -30,6 +31,7 @@ import java.util.function.Function;
 public class DetectiveRequestFormService implements DetectiveRequestFormRepository {
 
     @Autowired private DetectiveRequestFormRepository detectiveRequestFormRepository;
+    @Autowired private CompanysService companysService;
     @Autowired private UsersService usersService;
     private final FirebaseCloudMessage firebaseCloudMessage; 
     
@@ -99,39 +101,35 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
      */
     @Override
     public int updateRequestFormByEntity(RequestForm entity) throws IOException {
-        log.info("[entity] entity: {}", entity.toString());
-        Long usersIdx = entity.getUsersIdx();        
-        String token = usersService.getTokenByUsersIdx(151L);
-        String device = usersService.getDeviceByUsersIdx(151L);
-        log.info("l103 {} {} {}", 151L, token, device);
-
+        // log.info("[entity] entity: {}", entity.toString());
+        Long usersIdx = entity.getUsersIdx();
+        String companysName = companysService.selectCompanysByCompanysIdx(entity.getCompanysIdx()).getCompanysName();       
+        String token = usersService.getTokenByUsersIdx(usersIdx);
+        String device = usersService.getDeviceByUsersIdx(usersIdx);
+        
         if(entity.getRequestFormStatus().equals("의뢰거절")) { 
             // entity.setRequestFormAcceptDate(LocalDateTime.now());
             if(token != null) {
-                log.info("l104 {} {} {}", usersIdx, token, device);
-                firebaseCloudMessage.sendMessageTo(token, "의뢰가 거절되었습니다.", "/", device);
-            }
-            else {
-                log.info("l111 {} {} {}", usersIdx, token, device);
-            }        
+                firebaseCloudMessage.sendMessageTo(token,  companysName + "에 신청한 의뢰가 거절되었습니다.", "/", device);
+            }   
             entity.setRequestFormCompDate(LocalDateTime.now()); 
         }
         else if(entity.getRequestFormStatus().equals("계약진행")) {
             if(token != null) {
-                firebaseCloudMessage.sendMessageTo(token, "계약을 진행합니다..", "/", device);
+                firebaseCloudMessage.sendMessageTo(token, companysName + " 와 계약을 진행합니다..", "/", device);
             }
-            entity.setRequestFormAcceptDate(LocalDateTime.now());            
+            entity.setRequestFormAcceptDate(LocalDateTime.now());
             entity.setRequestFormStatus("계약진행"); 
         }
         else if(entity.getRequestFormStatus().equals("임무진행")) { 
             if(token != null) {
-                firebaseCloudMessage.sendMessageTo(token, "임무를 진행합니다.", "/", device);
+                firebaseCloudMessage.sendMessageTo(token, companysName +  " 에서 임무를 진행합니다.", "/", device);
             }
             entity.setRequestFormAcceptDate(LocalDateTime.now()); 
         }
         else if(entity.getRequestFormStatus().equals("임무완료")) { 
             if(token != null) {
-                firebaseCloudMessage.sendMessageTo(token, "임무가 완료되었습니다.", "/", device);
+                firebaseCloudMessage.sendMessageTo(token, companysName + " 에서 임무를 완료했습니다.", "/", device);
             }
             LocalDateTime requestFormAcceptDate = detectiveRequestFormRepository.selectRequestFormByRequestFormIdx(entity.getRequestFormIdx()).getRequestFormAcceptDate();
             entity.setRequestFormAcceptDate(requestFormAcceptDate);

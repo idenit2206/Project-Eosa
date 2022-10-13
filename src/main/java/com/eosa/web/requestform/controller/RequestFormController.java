@@ -1,8 +1,6 @@
 package com.eosa.web.requestform.controller;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,21 +8,14 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import com.eosa.security.CustomPrincipalDetails;
 import com.eosa.web.requestform.entity.RequestForm;
 import com.eosa.web.requestform.entity.RequestFormCategory;
 import com.eosa.web.requestform.entity.SelectRequestFormList;
 import com.eosa.web.requestform.repository.RequestFormCategoryRepository;
 import com.eosa.web.requestform.service.RequestFormService;
 import com.eosa.web.util.CustomResponseData;
-import com.eosa.web.util.NullCheck;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.nimbusds.jose.shaded.json.parser.ParseException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +29,7 @@ public class RequestFormController {
     @Autowired private RequestFormCategoryRepository requestFormCategoryRepository;
 
     /**
-     * CLIENT회원의 의뢰하기 버튼을 통한 의뢰 신청
+     * CLIENT회원의 의뢰하기 버튼을 통한 의뢰 신청 컨트롤러
      * @param param RequestForm
      * @return
      */

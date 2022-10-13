@@ -4,6 +4,7 @@ import com.eosa.web.requestform.entity.RequestForm;
 import com.eosa.web.requestform.entity.SelectRequestFormList;
 import com.eosa.web.requestform.service.DetectiveRequestFormService;
 import com.eosa.web.requestform.service.RequestFormCategoryService;
+import com.eosa.web.requestform.service.RequestFormService;
 import com.eosa.web.users.service.UsersService;
 import com.eosa.web.util.CustomResponseData;
 import lombok.extern.slf4j.Slf4j;
@@ -148,14 +149,16 @@ public class DetectiveRequestFormController {
             @RequestParam(name = "requestFormStatus") String requestFormStatus,
             @RequestParam(name = "requestFormRejectMessage", required = false) String requestFormRejectMessage) throws IOException {
         CustomResponseData result = new CustomResponseData();
+        RequestForm rf = detectiveRequestFormService.selectRequestFormByRequestFormIdx(requestFormIdx);
+        log.info("rf: {}", rf.toString());
         RequestForm entity = new RequestForm();
-        entity.setRequestFormIdx(requestFormIdx);
-        entity.setRequestFormStatus(requestFormStatus);
-        entity.setRequestFormRejectMessage(requestFormRejectMessage);
-        entity.setRequestFormClientReadState(0);
+        // entity.setRequestFormIdx(requestFormIdx);
+        rf.setRequestFormStatus(requestFormStatus);
+        rf.setRequestFormRejectMessage(requestFormRejectMessage);
+        rf.setRequestFormClientReadState(0);
 
-        log.debug("[updateRequestFormStatusWhereRequestFormIdx]: 의뢰요청서IDX: {}, 의뢰상태: {}, 의뢰관련메시지: {}", 
-            entity.getRequestFormIdx(), entity.getRequestFormStatus(), entity.getRequestFormRejectMessage()
+        log.info("[updateRequestFormStatusWhereRequestFormIdx] 의뢰요청서 업데이트: 의뢰요청서IDX: {}, 의뢰상태: {}, 의뢰관련메시지: {}", 
+            rf.getRequestFormIdx(), rf.getRequestFormStatus(), rf.getRequestFormRejectMessage()
         );
 
         int updateRows = 0;
@@ -164,25 +167,25 @@ public class DetectiveRequestFormController {
                 requestFormIdx, LocalDateTime.now(), requestFormStatus, requestFormRejectMessage
             );
         }
-        else if (entity.getRequestFormStatus().equals("의뢰대기")) {
-            entity.setRequestFormStatusChangeDate(LocalDateTime.now());
-            updateRows = detectiveRequestFormService.updateRequestFormByEntity(entity);
+        else if (rf.getRequestFormStatus().equals("의뢰대기")) {
+            rf.setRequestFormStatusChangeDate(LocalDateTime.now());
+            updateRows = detectiveRequestFormService.updateRequestFormByEntity(rf);
         }
-        else if(entity.getRequestFormStatus().equals("의뢰거절")) {
-            entity.setRequestFormStatusChangeDate(LocalDateTime.now());
-            updateRows = detectiveRequestFormService.updateRequestFormByEntity(entity);
+        else if(rf.getRequestFormStatus().equals("의뢰거절")) {
+            rf.setRequestFormStatusChangeDate(LocalDateTime.now());
+            updateRows = detectiveRequestFormService.updateRequestFormByEntity(rf);
         }
-        else if(entity.getRequestFormStatus().equals("계약진행")) {
-            entity.setRequestFormStatusChangeDate(LocalDateTime.now());
-            updateRows = detectiveRequestFormService.updateRequestFormByEntity(entity);
+        else if(rf.getRequestFormStatus().equals("계약진행")) {
+            rf.setRequestFormStatusChangeDate(LocalDateTime.now());
+            updateRows = detectiveRequestFormService.updateRequestFormByEntity(rf);
         }
-        else if(entity.getRequestFormStatus().equals("임무진행")) {
-            entity.setRequestFormStatusChangeDate(LocalDateTime.now());
-            updateRows = detectiveRequestFormService.updateRequestFormByEntity(entity);
+        else if(rf.getRequestFormStatus().equals("임무진행")) {
+            rf.setRequestFormStatusChangeDate(LocalDateTime.now());
+            updateRows = detectiveRequestFormService.updateRequestFormByEntity(rf);
         }
-        else if(entity.getRequestFormStatus().equals("임무완료")) {
-            entity.setRequestFormStatusChangeDate(LocalDateTime.now());
-            updateRows = detectiveRequestFormService.updateRequestFormByEntity(entity);
+        else if(rf.getRequestFormStatus().equals("임무완료")) {
+            rf.setRequestFormStatusChangeDate(LocalDateTime.now());
+            updateRows = detectiveRequestFormService.updateRequestFormByEntity(rf);
         }
 
         if (updateRows == 1) {

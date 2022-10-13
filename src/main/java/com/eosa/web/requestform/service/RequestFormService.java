@@ -1,5 +1,6 @@
 package com.eosa.web.requestform.service;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -13,22 +14,50 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.stereotype.Service;
 
+import com.eosa.web.companys.service.CompanysService;
+import com.eosa.web.firebase.pushnoti.service.FirebaseCloudMessage;
 import com.eosa.web.requestform.entity.RequestForm;
 import com.eosa.web.requestform.entity.SelectRequestFormList;
 import com.eosa.web.requestform.repository.RequestFormRepository;
+import com.eosa.web.users.service.UsersService;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class RequestFormService implements RequestFormRepository {
 
     @Autowired private RequestFormRepository requestFormRepository;
+    @Autowired private UsersService usersService;
+    @Autowired private CompanysService companysService;
+    private final FirebaseCloudMessage firebaseCloudMessage; 
     
     
     /** 
+     * CLIENT의 의뢰 신청 서비스
      * @param entity
      * @return S
      */
     @Override
     public <S extends RequestForm> S save(S entity) {
+        // log.info(entity.toString());
+        Long companysIdx = entity.getCompanysIdx();
+        Long companysCeoIdx = companysService.selectCompanysByCompanysIdx(companysIdx).getCompanysCeoIdx();
+
+        String token = usersService.getTokenByUsersIdx(companysCeoIdx);
+        String device = usersService.getDeviceByUsersIdx(companysCeoIdx);
+
+        if(token != null) {
+            try {
+                firebaseCloudMessage.sendMessageTo(token,  "상담요청이 들어왔습니다.", "/", device);
+            } catch (IOException e) {
+                // e.printStackTrace();
+                log.error("푸시 메시지 전송 실패 - logs: {}", e.toString());
+            }
+        } 
+
         entity.setRequestFormStatusChangeDate(LocalDateTime.now());
         return requestFormRepository.save(entity);
     }
@@ -74,7 +103,6 @@ public class RequestFormService implements RequestFormRepository {
     public List<SelectRequestFormList> selectAllRequestFormList() {
         return requestFormRepository.selectAllRequestFormList();
     }
-
     
     /** 
      * @param usersIdx
