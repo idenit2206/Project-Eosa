@@ -196,7 +196,7 @@ function resetPwd() {
         formData.set('usersIdx', document.querySelector('.usersIdx').value);
         formData.set('usersAccount', document.querySelector('.user-account').value);
 
-        fetchApi('/admin/manage/user/reset/password', 'post', formData, '비밀번호가 초기화되었습니다.');
+        fetchApi('/admin/manage/reset/password', 'post', formData, '비밀번호가 초기화되었습니다.');
     }
 
 };

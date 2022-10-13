@@ -4,6 +4,7 @@ import com.eosa.admin.dto.TempUserDTO;
 import com.eosa.admin.dto.UsersDTO;
 import com.eosa.admin.dto.UsersTerminateDTO;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -53,6 +54,15 @@ public interface UserMapper {
      * @return int
      */
     int updateUsers(UsersDTO usersDTO);
+
+    /**
+     * 회원 유효 여부 확인 매퍼
+     * @return
+     */
+    Long existUserCheck(
+        @Param(value="usersIdx")Long usersIdx, 
+        @Param(value="usersAccount") String usersAccount
+    );
 
     /**
      * 탈퇴 회원 목록 개수 조회 매퍼

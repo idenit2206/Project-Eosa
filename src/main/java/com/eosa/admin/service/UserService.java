@@ -5,6 +5,9 @@ import com.eosa.admin.dto.UsersDTO;
 import com.eosa.admin.dto.UsersTerminateDTO;
 import com.eosa.admin.mapper.UserMapper;
 import com.eosa.admin.pagination.Pagination;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,6 +28,7 @@ import java.util.Map;
  * -----------------------------------------------------------
  * 2022-09-13        Jihun Kim       최초 생성
  */
+@Slf4j
 @Service
 public class UserService {
 

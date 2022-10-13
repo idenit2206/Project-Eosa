@@ -82,6 +82,7 @@
         WHERE usersIdx = #{usersIdx}
     </update>
 
+
     <!-- 탈퇴 회원 목록 개수 조회 -->
     <select id="countTerminateList" resultType="int" parameterType="hashmap">
         SELECT COUNT(*)
