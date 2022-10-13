@@ -7,6 +7,7 @@ logfile*.txt
 log*.log
 /logs
 *.gz
+*.p8
 
 # HELP.md
 *.sql

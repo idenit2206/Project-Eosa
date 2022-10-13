@@ -37,8 +37,11 @@ public interface UsersReviewRepository extends JpaRepository<UsersReview, Long>{
     List<SelectReviewEntity> selectAllUsersReview();
 
     @Query(
-            value="SELECT * FROM UsersReview " +
-            "WHERE reviewCompanysIdx = ?1",
+            value="SELECT * " +            
+            "FROM UsersReview UR " +
+            "LEFT JOIN Companys C ON UR.reviewCompanysIdx = C.companysIdx " +
+            "LEFT JOIN Users U ON UR.reviewUsersIdx = U.usersIdx " +
+            "WHERE UR.reviewCompanysIdx = ?1",
             nativeQuery = true
     )
     List<SelectReviewEntity> selectUsersReviewByCompanysIdx(Long comapnysIdx);
