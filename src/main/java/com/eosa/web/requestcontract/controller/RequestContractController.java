@@ -1,5 +1,6 @@
 package com.eosa.web.requestcontract.controller;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -95,9 +96,10 @@ public class RequestContractController {
      * 계약서 저장
      * @param requestContract
      * @return
+     * @throws IOException
      */
     @PostMapping("/insertRequestContract")
-    public CustomResponseData insertRequestContract(RequestContract requestContract) {
+    public CustomResponseData insertRequestContract(RequestContract requestContract) throws IOException {
         CustomResponseData result = new CustomResponseData();
         // log.debug(requestContract.toString());
 

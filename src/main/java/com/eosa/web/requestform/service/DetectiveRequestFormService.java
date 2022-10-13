@@ -7,6 +7,9 @@ import com.eosa.web.requestform.repository.DetectiveRequestFormRepository;
 import com.eosa.web.requestform.repository.RequestFormRepository;
 import com.eosa.web.users.service.UsersService;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -21,12 +24,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class DetectiveRequestFormService implements DetectiveRequestFormRepository {
 
     @Autowired private DetectiveRequestFormRepository detectiveRequestFormRepository;
     @Autowired private UsersService usersService;
-    @Autowired private FirebaseCloudMessage firebaseCloudMessage; 
+    private final FirebaseCloudMessage firebaseCloudMessage; 
     
     /** 
      * @param requestFormIdx
@@ -94,15 +99,21 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
      */
     @Override
     public int updateRequestFormByEntity(RequestForm entity) throws IOException {
+        log.info("[entity] entity: {}", entity.toString());
         Long usersIdx = entity.getUsersIdx();        
-        String token = usersService.getTokenByUsersIdx(usersIdx);
-        String device = usersService.getDeviceByUsersIdx(usersIdx);
+        String token = usersService.getTokenByUsersIdx(151L);
+        String device = usersService.getDeviceByUsersIdx(151L);
+        log.info("l103 {} {} {}", 151L, token, device);
 
         if(entity.getRequestFormStatus().equals("의뢰거절")) { 
             // entity.setRequestFormAcceptDate(LocalDateTime.now());
             if(token != null) {
+                log.info("l104 {} {} {}", usersIdx, token, device);
                 firebaseCloudMessage.sendMessageTo(token, "의뢰가 거절되었습니다.", "/", device);
-            }           
+            }
+            else {
+                log.info("l111 {} {} {}", usersIdx, token, device);
+            }        
             entity.setRequestFormCompDate(LocalDateTime.now()); 
         }
         else if(entity.getRequestFormStatus().equals("계약진행")) {

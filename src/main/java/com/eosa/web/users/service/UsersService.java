@@ -294,27 +294,17 @@ public class UsersService implements UsersRepository {
     // Token 조회
     @Override
     public String getTokenByUsersIdx(Long usersIdx) {
-        String token = usersRepository.getTokenByUsersIdx(usersIdx);
-        if(token != null) {
-            return token;
-        }
-        else {
-            usersRepository.updateUsersToken(token, usersIdx);
-            return null;
-        }
+        System.err.println("service useIdx : "+usersIdx);
+        String token = usersRepository.getTokenByUsersIdx(usersIdx);       
+        System.err.println("service token : "+token);
+        return token;      
     }
 
     @Override
     public String getDeviceByUsersIdx(Long usersIdx) {
         return usersRepository.getDeviceByUsersIdx(usersIdx);
     }
-    
-    // Token 업데이트
-    @Override
-    public int updateUsersToken(String token, Long usersIdx) {
-        return usersRepository.updateUsersToken(token, usersIdx);
-    }
-    
+        
     /** 
      * @param sort
      * @return List<Users>
