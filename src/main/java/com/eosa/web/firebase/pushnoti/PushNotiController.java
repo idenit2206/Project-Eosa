@@ -47,7 +47,7 @@ public class PushNotiController {
         @RequestParam(value="device") String device
     ) {
         log.info("[getToken] token: {} , device: {}", token, device);
-        return "";
+        return token + " : " + device;
     }
 
 }
