@@ -27,9 +27,14 @@ public class CustomAdminLogoutSuccessHandler implements LogoutSuccessHandler {
     public void onLogoutSuccess(
         HttpServletRequest request, HttpServletResponse response, Authentication authentication
     ) throws IOException, ServletException {
-        String usersIp = request.getLocalAddr();        
-        log.info("[OK] {} signOut Success FROM {}",authentication.getName(),  usersIp);
-        response.sendRedirect("/admin");
+        if(authentication != null) { 
+            log.info("{} signOut Success FROM {}",authentication.getName());
+            response.sendRedirect("/admin");
+        }
+        else {
+            log.info("[관리자페이지] 이미 로그아웃 되어있습니다.");
+            response.sendRedirect("/admin");
+        }
     }
     
 }
