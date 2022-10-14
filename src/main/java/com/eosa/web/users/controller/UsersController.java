@@ -98,18 +98,18 @@ public class UsersController {
     @PostMapping(value="/sign/sendPhoneCheckMessage")
     public CustomResponseData sendOne(@RequestParam("usersPhone") String usersPhone) {
         CustomResponseData result = new CustomResponseData();
-        // String senderPhone = "01071899972";
-        // String senderPhone = "050431811611";
-        String senderPhone ="01071899972";
+        String senderPhone = "01071899972";
+        // String senderPhone ="07051589877";
         int usersPhoneCheck = usersService.selectUsersPhoneCheckByUsersPhone(usersPhone);
         log.debug("usersPhoneCheck result: {}", usersPhoneCheck);
 
+        // 하나의 K, V가 생성되면 동일한 K에 대한 V가 생성되지 않는 방식
         if(usersPhoneCheck != 1) {
             Message message = new Message();
             String authCode = smsCertificationService.createCertificationCode(usersPhone);
             if(authCode != null) {
                 /* 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다. */
-                message.setFrom("01071899972"); // 발신번호
+                message.setFrom("07051589877"); // 발신번호
                 message.setTo(usersPhone);  // 수신번호
                 message.setText("어사 회원가입 핸드폰 인증 단계입니다.\n다음의 번호를 입력해주세요.\n"+authCode); // 발신내용
                 log.info("[sendOne] usersPhone: {} 의 SMS 인증코드: {}",usersPhone, authCode);
@@ -131,7 +131,30 @@ public class UsersController {
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem(1);
             result.setResponseDateTime(LocalDateTime.now());
-        }       
+        }
+
+        // // K, V를 계속 생성 요청해도 마지막으로 생성된 K, V 1개 만 남는 방식
+        // if(usersPhoneCheck != 1) {
+        //     Message message = new Message();
+        //     String authCode = smsCertificationService.createCertificationCode(usersPhone);
+        //     /* 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다. */
+        //     message.setFrom("01071899972"); // 발신번호
+        //     message.setTo(usersPhone);  // 수신번호
+        //     message.setText("어사 회원가입 핸드폰 인증 단계입니다.\n다음의 번호를 입력해주세요.\n"+authCode); // 발신내용
+        //     log.info("[sendOne] usersPhone: {} 의 SMS 인증코드: {}",usersPhone, authCode);
+        //     SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+        //     // smsCertificationService.savedAuthCode(usersPhone, authCode);
+        
+        //     result.setStatusCode(HttpStatus.OK.value());
+        //     result.setResultItem(0);
+        //     result.setResponseDateTime(LocalDateTime.now());
+        // }
+        // else {
+        //     log.info("[sendOne] 이미 가입된 회원의 휴대폰 번호입니다.");
+        //     result.setStatusCode(HttpStatus.OK.value());
+        //     result.setResultItem(1);
+        //     result.setResponseDateTime(LocalDateTime.now());
+        // }       
         return result;
     }
 
@@ -276,6 +299,7 @@ public class UsersController {
 
     
     /** 
+     * 회원가입시 이메일의 중복여부 검사를 위한 컨트롤러
      * @return CustomResponseData
      */
     @GetMapping("/sign/usersEmailDupliCheck")
@@ -672,8 +696,8 @@ public class UsersController {
 
         if(usersAccount != null) {
             me.setAddress(usersEmail);
-            me.setTitle("도와조 고객센터 입니다. 신청하신 계정 정보를 발송합니다.");
-            me.setMessage("안녕하세요. 선택의 기준, 도와줘 고객센터 입니다.\n회원님의 아이디는 " + usersAccount + " 입니다.\n감사합니다.");
+            me.setTitle("어사 고객센터 입니다. 신청하신 계정 정보를 발송합니다.");
+            me.setMessage("안녕하세요. 선택의 기준, 어사 고객센터 입니다.\n회원님의 아이디는 " + usersAccount + " 입니다.\n감사합니다.");
             mailService.mailSend(me);
 
             result.setStatusCode(HttpStatus.OK.value());
@@ -705,8 +729,8 @@ public class UsersController {
         log.info("[resetUsersPassByUsersEmail] result New code: {}", code);
         if(updateUsers == 1) {
             me.setAddress(usersEmail);
-            me.setTitle("도와조 고객센터 입니다. 신청하신 계정 정보를 발송합니다.");
-            me.setMessage("안녕하세요. 선택의 기준, 도와줘 고객센터 입니다.\n회원님의 새로운 비밀번호는 " + code + " 입니다.\n로그인 후 반드시 비밀번호를 재설정 하시기 바랍니다.");
+            me.setTitle("어사 고객센터 입니다. 신청하신 계정 정보를 발송합니다.");
+            me.setMessage("안녕하세요. 선택의 기준, 어사 고객센터 입니다.\n회원님의 새로운 비밀번호는 " + code + " 입니다.\n로그인 후 반드시 비밀번호를 재설정 하시기 바랍니다.");
             mailService.mailSend(me);
 
             result.setStatusCode(HttpStatus.OK.value());

@@ -42,8 +42,8 @@ public class SwaggerConfig {
     public ApiInfo apiInfo() {
         return new ApiInfoBuilder()
             .title("Detective")
-            .version("0.1")
-            .description("도와조 프로젝트")
+            .version("1.0")
+            .description("프로젝트 어사")
             .build();
     }
 

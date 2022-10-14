@@ -58,8 +58,8 @@ function createEditorForNotice() {
         ],
         imageCompressor: {
             quality: 1.0, // default
-            maxWidth: 500, // default
-            maxHeight: 500, // default
+            maxWidth: '100%', // default
+            maxHeight: '100%', // default
             imageType: "image/jpeg", // default
         },
     };
