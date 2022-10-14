@@ -72,8 +72,9 @@ public class MypageController {
         JsonObject jsonObject = (JsonObject) JsonParser.parseString(param).getAsJsonObject();
         int updateRow = 0;
         Users paramUsers = new Users();
-        String newUsersPass = jsonObject.get("usersPass").getAsString();
-        if(newUsersPass.equals("") || newUsersPass.equals(null)) {
+        String newUsersPass = !jsonObject.get("usersPass").isJsonNull() ? jsonObject.get("usersPass").getAsString() : null;
+        
+        if(newUsersPass == null) {
             paramUsers.setUsersIdx(Long.parseLong(jsonObject.get("usersIdx").getAsString()));
             paramUsers.setUsersAccount(jsonObject.get("usersAccount").getAsString().toLowerCase());
             paramUsers.setUsersName(jsonObject.get("usersName").getAsString());
@@ -85,7 +86,9 @@ public class MypageController {
             int usersAge = Integer.parseInt(prevUsersAge.substring(0, 2));
             paramUsers.setUsersAge(usersAge);
             paramUsers.setUsersRegion1(jsonObject.get("usersRegion1").getAsString());
-            paramUsers.setUsersRegion2(jsonObject.get("usersRegion2").getAsString());
+            // if(jsonObject.get("usersRegion2") != null) {
+            //     paramUsers.setUsersRegion2(jsonObject.get("usersRegion2").getAsString());
+            // }
             
             // log.info("Update userInfo: {}", paramUsers.toString());
             updateRow = usersService.updateUserInfoExcludeUsersPass(paramUsers);
@@ -104,7 +107,10 @@ public class MypageController {
             int usersAge = Integer.parseInt(prevUsersAge.substring(0, 2));
             paramUsers.setUsersAge(usersAge);
             paramUsers.setUsersRegion1(jsonObject.get("usersRegion1").getAsString());
-            paramUsers.setUsersRegion2(jsonObject.get("usersRegion2").getAsString());
+            
+            // if(jsonObject.get("usersRegion2") != null) {
+            //     paramUsers.setUsersRegion2(jsonObject.get("usersRegion2").getAsString());
+            // }
             
             // log.info("Update userInfo: {}", paramUsers.toString());
             updateRow = usersService.updateUserInfo(paramUsers);
