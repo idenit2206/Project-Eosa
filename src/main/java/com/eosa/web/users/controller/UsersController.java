@@ -509,7 +509,7 @@ public class UsersController {
         CustomResponseData result = new CustomResponseData();
         // log.debug("# usersAccount : usersPass -> {} : {}", usersAccount, usersPass);
         FindByUsersAccountEntity transaction = usersService.checkMyPageByPass(usersAccount, usersPass);
-        // log.debug("# UserInfoByUsersAccount {}", transaction.getUsersAccount());
+        // log.info("[UserInfoByUsersAccount]: {}", transaction.getUsersAccount());
         
         if(transaction.getUsersAccount().equals(usersAccount)) {
             result.setStatusCode(HttpStatus.OK.value());
