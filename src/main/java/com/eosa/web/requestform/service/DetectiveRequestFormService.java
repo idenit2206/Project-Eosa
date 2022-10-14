@@ -120,6 +120,12 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
             }
             entity.setRequestFormCompDate(LocalDateTime.now()); 
         }
+        else if(entity.getRequestFormStatus().equals("의뢰대기")) {
+            if(detectivetoken != null) {
+                firebaseCloudMessage.sendMessageTo(detectivetoken,  "의뢰가 들어왔습니다.", "/", detectivedevice);
+            }
+        }
+
         else if(entity.getRequestFormStatus().equals("계약진행")) {
             if(clienttoken != null) {
                 firebaseCloudMessage.sendMessageTo(clienttoken, companysName + " 과 계약을 위해 계약서를 작성해야합니다.", "/", clientdevice);
@@ -158,6 +164,21 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
      */
     @Override
     public int updateRequestFormStatusByRequestFormIdxCaseConsultComplete(Long requestFormIdx, LocalDateTime requestFormAcceptDate, String requestFormStatus, String requestFormRejectMessage) {       
+        RequestForm rf = detectiveRequestFormRepository.selectRequestFormByRequestFormIdx(requestFormIdx);
+        SelectAllCompanysList c = companysService.selectCompanysByCompanysIdx(rf.getCompanysIdx());
+        String companysName = c.getCompanysName();       
+        String clienttoken = usersService.getTokenByUsersIdx(rf.getUsersIdx());
+        String clientdevice = usersService.getDeviceByUsersIdx(rf.getUsersIdx());
+        
+        if(clienttoken != null) {
+            try {
+                firebaseCloudMessage.sendMessageTo(clienttoken, companysName + " 과 상담을 진행합니다.", "/", clientdevice);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        
         return detectiveRequestFormRepository.updateRequestFormStatusByRequestFormIdxCaseConsultComplete(requestFormIdx, requestFormAcceptDate, requestFormStatus, requestFormRejectMessage);
     }
     
