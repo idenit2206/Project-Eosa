@@ -107,24 +107,17 @@ public class UsersController {
         if(usersPhoneCheck != 1) {
             Message message = new Message();
             String authCode = smsCertificationService.createCertificationCode(usersPhone);
-            if(authCode != null) {
-                /* 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다. */
-                message.setFrom("01071899972"); // 발신번호
-                message.setTo(usersPhone);  // 수신번호
-                message.setText("어사 회원가입 핸드폰 인증 단계입니다.\n다음의 번호를 입력해주세요.\n"+authCode); // 발신내용
-                log.info("[sendOne] usersPhone: {} 의 SMS 인증코드: {}",usersPhone, authCode);
-                SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
-                // smsCertificationService.savedAuthCode(usersPhone, authCode);
-            
-                result.setStatusCode(HttpStatus.OK.value());
-                result.setResultItem(0);
-                result.setResponseDateTime(LocalDateTime.now());
-            }
-            else {
-                result.setStatusCode(HttpStatus.OK.value());
-                result.setResultItem(-1);
-                result.setResponseDateTime(LocalDateTime.now());
-            }           
+            /* 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다. */
+            message.setFrom("01071899972"); // 발신번호
+            message.setTo(usersPhone);  // 수신번호
+            message.setText("어사 회원가입 핸드폰 인증 단계입니다.\n다음의 번호를 입력해주세요.\n"+authCode); // 발신내용
+            log.info("[sendOne] usersPhone: {} 의 SMS 인증코드: {}",usersPhone, authCode);
+            SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+            // smsCertificationService.savedAuthCode(usersPhone, authCode);
+        
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(0);
+            result.setResponseDateTime(LocalDateTime.now());
         }
         else {
             log.info("[sendOne] 이미 가입된 회원의 휴대폰 번호입니다.");

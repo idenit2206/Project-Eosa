@@ -36,8 +36,9 @@ public class SmsCertificationService {
 
         if(authKeyList.get(usersPhone) != null) {
             // log.info("not null: {}",authKeyList.toString());
-            log.info("이미 인증번호가 생성되어있습니다.");
-            return null;
+            authKeyList.clear();
+            authKeyList.put(usersPhone, result);
+            return result;
         }
         else {
             log.info("null: {}", authKeyList.toString());
