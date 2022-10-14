@@ -34,17 +34,30 @@ public class SmsCertificationService {
         log.info("[createCertificationCode] 서버에 새로운 인증코드 객체를 저장합니다.");
         log.debug("[createCertificationCode] 인증코드 usersPhone: {}  code: {}", usersPhone, result);
 
+        // // K, V가 생성되었다면 더 이상 생성 되지 않게 하는 방식
         if(authKeyList.get(usersPhone) != null) {
             // log.info("not null: {}",authKeyList.toString());
-            authKeyList.clear();
-            authKeyList.put(usersPhone, result);
-            return result;
+            log.info("이미 인증번호가 생성되어있습니다.");
+            return null;
         }
         else {
             log.info("null: {}", authKeyList.toString());
             authKeyList.put(usersPhone, result);
             return result;
-        }        
+        } 
+
+        // // 계속 K,V 가 생성되어도 마지막 하나의 K 하나의 V만 남기는 방식
+        // if(authKeyList.get(usersPhone) != null) {
+        //     // log.info("not null: {}",authKeyList.toString());
+        //     authKeyList.clear();
+        //     authKeyList.put(usersPhone, result);
+        //     return result;
+        // }
+        // else {
+        //     log.info("null: {}", authKeyList.toString());
+        //     authKeyList.put(usersPhone, result);
+        //     return result;
+        // }        
     }
 
     @Scheduled(fixedDelay = 600000)

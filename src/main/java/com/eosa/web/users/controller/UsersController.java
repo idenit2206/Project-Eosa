@@ -104,27 +104,58 @@ public class UsersController {
         int usersPhoneCheck = usersService.selectUsersPhoneCheckByUsersPhone(usersPhone);
         log.debug("usersPhoneCheck result: {}", usersPhoneCheck);
 
+        // 하나의 K, V가 생성되면 동일한 K에 대한 V가 생성되지 않는 방식
         if(usersPhoneCheck != 1) {
             Message message = new Message();
             String authCode = smsCertificationService.createCertificationCode(usersPhone);
-            /* 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다. */
-            message.setFrom("01071899972"); // 발신번호
-            message.setTo(usersPhone);  // 수신번호
-            message.setText("어사 회원가입 핸드폰 인증 단계입니다.\n다음의 번호를 입력해주세요.\n"+authCode); // 발신내용
-            log.info("[sendOne] usersPhone: {} 의 SMS 인증코드: {}",usersPhone, authCode);
-            SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
-            // smsCertificationService.savedAuthCode(usersPhone, authCode);
-        
-            result.setStatusCode(HttpStatus.OK.value());
-            result.setResultItem(0);
-            result.setResponseDateTime(LocalDateTime.now());
+            if(authCode != null) {
+                /* 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다. */
+                message.setFrom("01071899972"); // 발신번호
+                message.setTo(usersPhone);  // 수신번호
+                message.setText("어사 회원가입 핸드폰 인증 단계입니다.\n다음의 번호를 입력해주세요.\n"+authCode); // 발신내용
+                log.info("[sendOne] usersPhone: {} 의 SMS 인증코드: {}",usersPhone, authCode);
+                SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+                // smsCertificationService.savedAuthCode(usersPhone, authCode);
+            
+                result.setStatusCode(HttpStatus.OK.value());
+                result.setResultItem(0);
+                result.setResponseDateTime(LocalDateTime.now());
+            }
+            else {
+                result.setStatusCode(HttpStatus.OK.value());
+                result.setResultItem(-1);
+                result.setResponseDateTime(LocalDateTime.now());
+            }           
         }
         else {
             log.info("[sendOne] 이미 가입된 회원의 휴대폰 번호입니다.");
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem(1);
             result.setResponseDateTime(LocalDateTime.now());
-        }       
+        }
+
+        // // K, V를 계속 생성 요청해도 마지막으로 생성된 K, V 1개 만 남는 방식
+        // if(usersPhoneCheck != 1) {
+        //     Message message = new Message();
+        //     String authCode = smsCertificationService.createCertificationCode(usersPhone);
+        //     /* 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다. */
+        //     message.setFrom("01071899972"); // 발신번호
+        //     message.setTo(usersPhone);  // 수신번호
+        //     message.setText("어사 회원가입 핸드폰 인증 단계입니다.\n다음의 번호를 입력해주세요.\n"+authCode); // 발신내용
+        //     log.info("[sendOne] usersPhone: {} 의 SMS 인증코드: {}",usersPhone, authCode);
+        //     SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+        //     // smsCertificationService.savedAuthCode(usersPhone, authCode);
+        
+        //     result.setStatusCode(HttpStatus.OK.value());
+        //     result.setResultItem(0);
+        //     result.setResponseDateTime(LocalDateTime.now());
+        // }
+        // else {
+        //     log.info("[sendOne] 이미 가입된 회원의 휴대폰 번호입니다.");
+        //     result.setStatusCode(HttpStatus.OK.value());
+        //     result.setResultItem(1);
+        //     result.setResponseDateTime(LocalDateTime.now());
+        // }       
         return result;
     }
 
@@ -269,6 +300,7 @@ public class UsersController {
 
     
     /** 
+     * 회원가입시 이메일의 중복여부 검사를 위한 컨트롤러
      * @return CustomResponseData
      */
     @GetMapping("/sign/usersEmailDupliCheck")

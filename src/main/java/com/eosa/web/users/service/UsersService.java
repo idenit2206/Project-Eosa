@@ -95,6 +95,7 @@ public class UsersService implements UsersRepository {
 
     
     /** 
+     * 이메일로 유저유무 여부를 확인하는 서비스
      * @param usersEmail
      * @return Users
      */
