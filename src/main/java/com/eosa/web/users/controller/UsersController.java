@@ -697,8 +697,8 @@ public class UsersController {
 
         if(usersAccount != null) {
             me.setAddress(usersEmail);
-            me.setTitle("도와조 고객센터 입니다. 신청하신 계정 정보를 발송합니다.");
-            me.setMessage("안녕하세요. 선택의 기준, 도와줘 고객센터 입니다.\n회원님의 아이디는 " + usersAccount + " 입니다.\n감사합니다.");
+            me.setTitle("어사 고객센터 입니다. 신청하신 계정 정보를 발송합니다.");
+            me.setMessage("안녕하세요. 선택의 기준, 어사 고객센터 입니다.\n회원님의 아이디는 " + usersAccount + " 입니다.\n감사합니다.");
             mailService.mailSend(me);
 
             result.setStatusCode(HttpStatus.OK.value());
@@ -730,8 +730,8 @@ public class UsersController {
         log.info("[resetUsersPassByUsersEmail] result New code: {}", code);
         if(updateUsers == 1) {
             me.setAddress(usersEmail);
-            me.setTitle("도와조 고객센터 입니다. 신청하신 계정 정보를 발송합니다.");
-            me.setMessage("안녕하세요. 선택의 기준, 도와줘 고객센터 입니다.\n회원님의 새로운 비밀번호는 " + code + " 입니다.\n로그인 후 반드시 비밀번호를 재설정 하시기 바랍니다.");
+            me.setTitle("어사 고객센터 입니다. 신청하신 계정 정보를 발송합니다.");
+            me.setMessage("안녕하세요. 선택의 기준, 어사 고객센터 입니다.\n회원님의 새로운 비밀번호는 " + code + " 입니다.\n로그인 후 반드시 비밀번호를 재설정 하시기 바랍니다.");
             mailService.mailSend(me);
 
             result.setStatusCode(HttpStatus.OK.value());

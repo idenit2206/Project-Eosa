@@ -35,13 +35,22 @@
 			cursor: pointer;
 			font-weight: 600;
 		}
+		.sigh-form .btn-wrap {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			gap: 20px;
+		}
 	</style>
 </head>
 <body>
 	<div class="sign-form">
 		<input type="hidden" th:value="${path}" class="path">
 		<span>서명이 완료되었습니다.</span>
-		<button type="button" class="btn-return">돌아가기</button>
+		<div class="btn-wrap">
+			<button type="button" class="btn-return" onclick="location.href='/'">홈</button>
+			<button type="button" class="btn-return">돌아가기</button>
+		</div>
 	</div>
 </body>
 <script>
