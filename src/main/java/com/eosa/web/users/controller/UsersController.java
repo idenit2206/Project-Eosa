@@ -98,9 +98,8 @@ public class UsersController {
     @PostMapping(value="/sign/sendPhoneCheckMessage")
     public CustomResponseData sendOne(@RequestParam("usersPhone") String usersPhone) {
         CustomResponseData result = new CustomResponseData();
-        // String senderPhone = "01071899972";
-        // String senderPhone = "050431811611";
-        String senderPhone ="01071899972";
+        String senderPhone = "01071899972";
+        // String senderPhone ="07051589877";
         int usersPhoneCheck = usersService.selectUsersPhoneCheckByUsersPhone(usersPhone);
         log.debug("usersPhoneCheck result: {}", usersPhoneCheck);
 
@@ -110,7 +109,7 @@ public class UsersController {
             String authCode = smsCertificationService.createCertificationCode(usersPhone);
             if(authCode != null) {
                 /* 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다. */
-                message.setFrom("01071899972"); // 발신번호
+                message.setFrom("07051589877"); // 발신번호
                 message.setTo(usersPhone);  // 수신번호
                 message.setText("어사 회원가입 핸드폰 인증 단계입니다.\n다음의 번호를 입력해주세요.\n"+authCode); // 발신내용
                 log.info("[sendOne] usersPhone: {} 의 SMS 인증코드: {}",usersPhone, authCode);
