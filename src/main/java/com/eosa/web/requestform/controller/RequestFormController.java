@@ -243,7 +243,8 @@ public class RequestFormController {
         Map<String, Object> items = new HashMap<>();
 
         // List<RequestForm> list = requestFormService.findAll();
-        List<SelectRequestFormList> list = requestFormService.selectAllRequestFormList();
+        // List<SelectRequestFormList> list = requestFormService.selectAllRequestFormList();
+        List<SelectRequestFormList> list = requestFormBackupService.selectAllRequestFormList();
 
         if(list != null) {
             // log.debug("list: {}", list.get(0).toString());
@@ -328,7 +329,8 @@ public class RequestFormController {
     ) {
         log.info("[selectAllRequestFormListByUsersIdxOrderByDESC] usersIdx: {}", usersIdx);
         CustomResponseData result = new CustomResponseData();
-        List<SelectRequestFormList> list = requestFormService.selectAllRequestFormListByUsersIdxOrderByRequestFormDateDESC(usersIdx);
+        // List<SelectRequestFormList> list = requestFormService.selectAllRequestFormListByUsersIdxOrderByRequestFormDateDESC(usersIdx);
+        List<SelectRequestFormList> list = requestFormBackupService.selectAllRequestFormListByUsersIdxOrderByRequestFormDateDESC(usersIdx);
 
 
         if(list.size() != 0) {
