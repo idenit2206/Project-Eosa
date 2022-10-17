@@ -4,6 +4,7 @@ import com.eosa.web.companys.entity.SelectAllCompanysList;
 import com.eosa.web.companys.service.CompanysService;
 import com.eosa.web.firebase.pushnoti.service.FirebaseCloudMessage;
 import com.eosa.web.requestform.entity.RequestForm;
+import com.eosa.web.requestform.entity.RequestFormBackup;
 import com.eosa.web.requestform.entity.SelectRequestFormList;
 import com.eosa.web.requestform.repository.tablebackup.DetectiveRequestFormBackupRepository;
 import com.eosa.web.users.service.UsersService;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
+import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -40,7 +42,7 @@ public class DetectiveRequestFormBackupService implements DetectiveRequestFormBa
      * @return RequestForm
      */
     @Override
-    public RequestForm selectRequestFormByRequestFormIdx(Long requestFormIdx) {
+    public RequestFormBackup selectRequestFormByRequestFormIdx(Long requestFormIdx) {
         return detectiveRequestFormBackupRepository.selectRequestFormByRequestFormIdx(requestFormIdx);
     }
     
@@ -75,10 +77,10 @@ public class DetectiveRequestFormBackupService implements DetectiveRequestFormBa
     
     /** 
      * @param requestFormIdx
-     * @return RequestForm
+     * @return RequestFormBackup
      */
     @Override
-    public RequestForm selectDetectiveRequestFormInfoByRequestFormIdx(Long requestFormIdx) {
+    public RequestFormBackup selectDetectiveRequestFormInfoByRequestFormIdx(Long requestFormIdx) {
         return detectiveRequestFormBackupRepository.selectDetectiveRequestFormInfoByRequestFormIdx(requestFormIdx);
     }
 
@@ -95,57 +97,29 @@ public class DetectiveRequestFormBackupService implements DetectiveRequestFormBa
     }
     
     /** 
-     * @param entity
+     * @param RequestFormBackup
      * @return int
      * @throws IOException
      */
     @Override
-    public int updateRequestFormByEntity(RequestForm entity) throws IOException {
+    public int updateRequestFormByEntity(RequestFormBackup entity) throws IOException {
         // log.info("[entity] entity: {}", entity.toString());
         Long usersIdx = entity.getUsersIdx();
-        SelectAllCompanysList c = companysService.selectCompanysByCompanysIdx(entity.getCompanysIdx());
-        String companysName = c.getCompanysName();       
-        String clienttoken = usersService.getTokenByUsersIdx(usersIdx);
-        String clientdevice = usersService.getDeviceByUsersIdx(usersIdx);
-
-        Long companysCeoIdx = c.getCompanysCeoIdx();
-        String detectivetoken = usersService.getTokenByUsersIdx(companysCeoIdx);
-        String detectivedevice = usersService.getDeviceByUsersIdx(companysCeoIdx);
         
-        if(entity.getRequestFormStatus().equals("의뢰거절")) { 
-            if(clienttoken != null) {
-                firebaseCloudMessage.sendMessageTo(clienttoken,  companysName + "에 신청한 의뢰가 거절되었습니다.", "/", clientdevice);
-            }
+        if(entity.getRequestFormStatus().equals("의뢰거절")) {
             entity.setRequestFormCompDate(LocalDateTime.now()); 
         }
         else if(entity.getRequestFormStatus().equals("의뢰대기")) {
-            if(detectivetoken != null) {
-                firebaseCloudMessage.sendMessageTo(detectivetoken,  "의뢰가 들어왔습니다.", "/", detectivedevice);
-            }
         }
 
         else if(entity.getRequestFormStatus().equals("계약진행")) {
-            if(clienttoken != null) {
-                firebaseCloudMessage.sendMessageTo(clienttoken, companysName + " 과 계약을 위해 계약서를 작성해야합니다.", "/", clientdevice);
-            }
-
-            if(detectivetoken != null) {
-                firebaseCloudMessage.sendMessageTo(detectivetoken, "의뢰인과 계약을 위해 계약서를 작성해야합니다.", "/", detectivedevice);
-            }
-
             entity.setRequestFormAcceptDate(LocalDateTime.now());
             entity.setRequestFormStatus("계약진행"); 
         }
-        else if(entity.getRequestFormStatus().equals("임무진행")) { 
-            if(clienttoken != null) {
-                firebaseCloudMessage.sendMessageTo(clienttoken, companysName +  " 에서 임무를 진행합니다.", "/", clientdevice);
-            }
+        else if(entity.getRequestFormStatus().equals("임무진행")) {
             entity.setRequestFormAcceptDate(LocalDateTime.now()); 
         }
         else if(entity.getRequestFormStatus().equals("임무완료")) { 
-            if(clienttoken != null) {
-                firebaseCloudMessage.sendMessageTo(clienttoken, companysName + " 에서 임무를 완료했습니다.", "/", clientdevice);
-            }
             LocalDateTime requestFormAcceptDate = detectiveRequestFormBackupRepository.selectRequestFormByRequestFormIdx(entity.getRequestFormIdx()).getRequestFormAcceptDate();
             entity.setRequestFormAcceptDate(requestFormAcceptDate);
             entity.setRequestFormCompDate(LocalDateTime.now());
@@ -161,22 +135,7 @@ public class DetectiveRequestFormBackupService implements DetectiveRequestFormBa
      * @return int
      */
     @Override
-    public int updateRequestFormStatusByRequestFormIdxCaseConsultComplete(Long requestFormIdx, LocalDateTime requestFormAcceptDate, String requestFormStatus, String requestFormRejectMessage) {       
-        RequestForm rf = detectiveRequestFormBackupRepository.selectRequestFormByRequestFormIdx(requestFormIdx);
-        SelectAllCompanysList c = companysService.selectCompanysByCompanysIdx(rf.getCompanysIdx());
-        String companysName = c.getCompanysName();       
-        String clienttoken = usersService.getTokenByUsersIdx(rf.getUsersIdx());
-        String clientdevice = usersService.getDeviceByUsersIdx(rf.getUsersIdx());
-        
-        if(clienttoken != null) {
-            try {
-                firebaseCloudMessage.sendMessageTo(clienttoken, companysName + " 과 상담을 진행합니다.", "/", clientdevice);
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-        
+    public int updateRequestFormStatusByRequestFormIdxCaseConsultComplete(Long requestFormIdx, LocalDateTime requestFormAcceptDate, String requestFormStatus, String requestFormRejectMessage) {        
         return detectiveRequestFormBackupRepository.updateRequestFormStatusByRequestFormIdxCaseConsultComplete(requestFormIdx, requestFormAcceptDate, requestFormStatus, requestFormRejectMessage);
     }
     
@@ -191,266 +150,186 @@ public class DetectiveRequestFormBackupService implements DetectiveRequestFormBa
     public int updateRequestFormStatusByRequestFormIdxCaseMissionComplete(Long requestFormIdx, LocalDateTime requestFormCompDate, String requestFormStatus, String requestFormRejectMessage) {
         return detectiveRequestFormBackupRepository.updateRequestFormStatusByRequestFormIdxCaseMissionComplete(requestFormIdx, requestFormCompDate, requestFormStatus, requestFormRejectMessage);
     }
-    
-    /** 
-     * @return List<RequestForm>
-     */
-    @Override
-    public List<RequestForm> findAll() {
-        return null;
-    }
-    
-    /** 
-     * @param sort
-     * @return List<RequestForm>
-     */
-    @Override
-    public List<RequestForm> findAll(Sort sort) {
-        return null;
-    }
-    
-    /** 
-     * @param pageable
-     * @return Page<RequestForm>
-     */
-    @Override
-    public Page<RequestForm> findAll(Pageable pageable) {
-        return null;
-    }
-    
-    /** 
-     * @param longs
-     * @return List<RequestForm>
-     */
-    @Override
-    public List<RequestForm> findAllById(Iterable<Long> longs) {
-        return null;
-    }
-    
-    /** 
-     * @return long
-     */
-    @Override
-    public long count() {
-        return 0;
-    }
-    
-    /** 
-     * @param aLong
-     */
-    @Override
-    public void deleteById(Long aLong) {
 
-    }
-    
-    /** 
-     * @param entity
-     */
     @Override
-    public void delete(RequestForm entity) {
-
-    }
-    
-    /** 
-     * @param longs
-     */
-    @Override
-    public void deleteAllById(Iterable<? extends Long> longs) {
-
-    }
-    
-    /** 
-     * @param entities
-     */
-    @Override
-    public void deleteAll(Iterable<? extends RequestForm> entities) {
-
+    public List<RequestFormBackup> findAll() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     @Override
-    public void deleteAll() {
+    public List<RequestFormBackup> findAll(Sort sort) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-    }
-    
-    /** 
-     * @param entity
-     * @return S
-     */
     @Override
-    public <S extends RequestForm> S save(S entity) {
+    public List<RequestFormBackup> findAllById(Iterable<Long> ids) {
+        // TODO Auto-generated method stub
         return null;
     }
-    
-    /** 
-     * @param entities
-     * @return List<S>
-     */
+
     @Override
-    public <S extends RequestForm> List<S> saveAll(Iterable<S> entities) {
+    public <S extends RequestFormBackup> List<S> saveAll(Iterable<S> entities) {
+        // TODO Auto-generated method stub
         return null;
-    }
-    
-    /** 
-     * @param aLong
-     * @return Optional<RequestForm>
-     */
-    @Override
-    public Optional<RequestForm> findById(Long aLong) {
-        return Optional.empty();
-    }
-    
-    /** 
-     * @param aLong
-     * @return boolean
-     */
-    @Override
-    public boolean existsById(Long aLong) {
-        return false;
     }
 
     @Override
     public void flush() {
-
+        // TODO Auto-generated method stub
+        
     }
-    
-    /** 
-     * @param entity
-     * @return S
-     */
+
     @Override
-    public <S extends RequestForm> S saveAndFlush(S entity) {
+    public <S extends RequestFormBackup> S saveAndFlush(S entity) {
+        // TODO Auto-generated method stub
         return null;
     }
-    
-    /** 
-     * @param entities
-     * @return List<S>
-     */
+
     @Override
-    public <S extends RequestForm> List<S> saveAllAndFlush(Iterable<S> entities) {
+    public <S extends RequestFormBackup> List<S> saveAllAndFlush(Iterable<S> entities) {
+        // TODO Auto-generated method stub
         return null;
     }
-    
-    /** 
-     * @param entities
-     */
-    @Override
-    public void deleteAllInBatch(Iterable<RequestForm> entities) {
 
+    @Override
+    public void deleteAllInBatch(Iterable<RequestFormBackup> entities) {
+        // TODO Auto-generated method stub
+        
     }
-    
-    /** 
-     * @param longs
-     */
-    @Override
-    public void deleteAllByIdInBatch(Iterable<Long> longs) {
 
+    @Override
+    public void deleteAllByIdInBatch(Iterable<Long> ids) {
+        // TODO Auto-generated method stub
+        
     }
 
     @Override
     public void deleteAllInBatch() {
-
+        // TODO Auto-generated method stub
+        
     }
 
-    
-    /** 
-     * @param aLong
-     * @return RequestForm
-     */
     @Override
-    public RequestForm getOne(Long aLong) {
+    public RequestFormBackup getOne(Long id) {
+        // TODO Auto-generated method stub
         return null;
     }
 
-    
-    /** 
-     * @param aLong
-     * @return RequestForm
-     */
     @Override
-    public RequestForm getById(Long aLong) {
+    public RequestFormBackup getById(Long id) {
+        // TODO Auto-generated method stub
         return null;
     }
 
-    
-    /** 
-     * @param aLong
-     * @return RequestForm
-     */
     @Override
-    public RequestForm getReferenceById(Long aLong) {
+    public RequestFormBackup getReferenceById(Long id) {
+        // TODO Auto-generated method stub
         return null;
     }
 
-    
-    /** 
-     * @param example
-     * @return Optional<S>
-     */
     @Override
-    public <S extends RequestForm> Optional<S> findOne(Example<S> example) {
+    public <S extends RequestFormBackup> List<S> findAll(Example<S> example) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public <S extends RequestFormBackup> List<S> findAll(Example<S> example, Sort sort) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Page<RequestFormBackup> findAll(Pageable pageable) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public <S extends RequestFormBackup> S save(S entity) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Optional<RequestFormBackup> findById(Long id) {
+        // TODO Auto-generated method stub
         return Optional.empty();
     }
 
-    
-    /** 
-     * @param example
-     * @return List<S>
-     */
     @Override
-    public <S extends RequestForm> List<S> findAll(Example<S> example) {
-        return null;
-    }
-
-    
-    /** 
-     * @param example
-     * @param sort
-     * @return List<S>
-     */
-    @Override
-    public <S extends RequestForm> List<S> findAll(Example<S> example, Sort sort) {
-        return null;
-    }
-
-    
-    /** 
-     * @param example
-     * @param pageable
-     * @return Page<S>
-     */
-    @Override
-    public <S extends RequestForm> Page<S> findAll(Example<S> example, Pageable pageable) {
-        return null;
-    }
-
-    
-    /** 
-     * @param example
-     * @return long
-     */
-    @Override
-    public <S extends RequestForm> long count(Example<S> example) {
-        return 0;
-    }
-    
-    /** 
-     * @param example
-     * @return boolean
-     */
-    @Override
-    public <S extends RequestForm> boolean exists(Example<S> example) {
+    public boolean existsById(Long id) {
+        // TODO Auto-generated method stub
         return false;
     }
 
-    
-    /** 
-     * @param queryFunction
-     * @return R
-     */
     @Override
-    public <S extends RequestForm, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
+    public long count() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void delete(RequestFormBackup entity) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void deleteAllById(Iterable<? extends Long> ids) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void deleteAll(Iterable<? extends RequestFormBackup> entities) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void deleteAll() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public <S extends RequestFormBackup> Optional<S> findOne(Example<S> example) {
+        // TODO Auto-generated method stub
+        return Optional.empty();
+    }
+
+    @Override
+    public <S extends RequestFormBackup> Page<S> findAll(Example<S> example, Pageable pageable) {
+        // TODO Auto-generated method stub
         return null;
     }
+
+    @Override
+    public <S extends RequestFormBackup> long count(Example<S> example) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public <S extends RequestFormBackup> boolean exists(Example<S> example) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public <S extends RequestFormBackup, R> R findBy(Example<S> example,
+            Function<FetchableFluentQuery<S>, R> queryFunction) {
+        // TODO Auto-generated method stub
+        return null;
+    }    
 
 }

@@ -57,7 +57,13 @@ public class RequestFormController {
             entity.setRequestFormDate(LocalDateTime.now());
         RequestForm step1 = requestFormService.save(entity);
 
-        RequestFormBackup entityBackup = new RequestFormBackup();
+        log.debug("[requestFormRegister] step1: {}", step1.toString());
+
+        if(step1 != null) {
+            Long requestFormIdx = step1.getRequestFormIdx();
+            
+            RequestFormBackup entityBackup = new RequestFormBackup();
+            entityBackup.setRequestFormIdx(requestFormIdx);
             entityBackup.setUsersIdx(param.getUsersIdx());
             entityBackup.setCompanysIdx(param.getCompanysIdx());
             entityBackup.setRequestFormRegion1(param.getRequestFormRegion1());
@@ -65,13 +71,10 @@ public class RequestFormController {
             entityBackup.setRequestFormChannel("의뢰");
             entityBackup.setRequestFormStatus("상담대기");
             entityBackup.setRequestFormDate(LocalDateTime.now());
-        RequestFormBackup step1Backup = requestFormBackupService.save(entityBackup);
+            RequestFormBackup step1Backup = requestFormBackupService.save(entityBackup);
 
-        log.debug("[requestFormRegister] step1: {}", step1.toString());
+            Long requestFormBackupIdx = step1Backup.getRequestFormBackupIdx();
 
-        if(step1 != null && step1Backup != null) {
-            Long requestFormIdx = step1.getRequestFormIdx();
-            Long requestFormBackupIdx = step1Backup.getRequestFormIdx();
             for(int i = 0; i < requestFormCategory.size(); i++) {
                 RequestFormCategory entity2 = new RequestFormCategory();
                 String requestFormCategoryValue = requestFormCategory.get(i);
@@ -120,22 +123,27 @@ public class RequestFormController {
         entity.setRequestFormChannel("전화");
         entity.setRequestFormStatus("상담대기");
         entity.setRequestFormDate(LocalDateTime.now());
-        RequestForm step1 = requestFormService.save(entity);
 
-        RequestFormBackup entityBackup = new RequestFormBackup();
-        entityBackup.setUsersIdx(param.getUsersIdx());
-        entityBackup.setCompanysIdx(param.getCompanysIdx());
-        entityBackup.setRequestFormRegion1(param.getRequestFormRegion1());
-        // entity.setRequestFormRegion2(param.getRequestFormRegion2());
-        entityBackup.setRequestFormChannel("전화");
-        entityBackup.setRequestFormStatus("상담대기");
-        entityBackup.setRequestFormDate(LocalDateTime.now());
-        RequestFormBackup step1Backup = requestFormBackupService.save(entityBackup);
+        RequestForm step1 = requestFormService.save(entity);
+        
         log.debug("step1: {}", step1.toString());
 
-        if(step1 != null) {
+        if(step1 != null) {            
             Long requestFormIdx = step1.getRequestFormIdx();
+
+            RequestFormBackup entityBackup = new RequestFormBackup();
+            entityBackup.setRequestFormIdx(requestFormIdx);
+            entityBackup.setUsersIdx(param.getUsersIdx());
+            entityBackup.setCompanysIdx(param.getCompanysIdx());
+            entityBackup.setRequestFormRegion1(param.getRequestFormRegion1());
+            // entity.setRequestFormRegion2(param.getRequestFormRegion2());
+            entityBackup.setRequestFormChannel("전화");
+            entityBackup.setRequestFormStatus("상담대기");
+            entityBackup.setRequestFormDate(LocalDateTime.now());
+            RequestFormBackup step1Backup = requestFormBackupService.save(entityBackup);
+
             Long requestFormBackupIdx = step1Backup.getRequestFormIdx();
+
             for(int i = 0; i < requestFormCategory.size(); i++) {
                 RequestFormCategory entity2 = new RequestFormCategory();
                 String requestFormCategoryValue = requestFormCategory.get(i);
@@ -185,21 +193,23 @@ public class RequestFormController {
         entity.setRequestFormStatus("상담대기");
         entity.setRequestFormDate(LocalDateTime.now());
         RequestForm step1 = requestFormService.save(entity);
-
-        RequestFormBackup entityBackup = new RequestFormBackup();
-        entityBackup.setUsersIdx(param.getUsersIdx());
-        entityBackup.setCompanysIdx(param.getCompanysIdx());
-        entityBackup.setRequestFormRegion1(param.getRequestFormRegion1());
-        // entity.setRequestFormRegion2(param.getRequestFormRegion2());
-        entityBackup.setRequestFormChannel("채팅");
-        entityBackup.setRequestFormStatus("상담대기");
-        entityBackup.setRequestFormDate(LocalDateTime.now());
-        RequestFormBackup step1Backup = requestFormBackupService.save(entityBackup);
+        
         log.debug("step1: {}", step1.toString());
 
         if(step1 != null) {
             Long requestFormIdx = step1.getRequestFormIdx();
-            Long requestFormBackupIdx = step1Backup.getRequestFormIdx();
+
+            RequestFormBackup entityBackup = new RequestFormBackup();
+            entityBackup.setRequestFormIdx(requestFormIdx);
+            entityBackup.setUsersIdx(param.getUsersIdx());
+            entityBackup.setCompanysIdx(param.getCompanysIdx());
+            entityBackup.setRequestFormRegion1(param.getRequestFormRegion1());
+            // entity.setRequestFormRegion2(param.getRequestFormRegion2());
+            entityBackup.setRequestFormChannel("채팅");
+            entityBackup.setRequestFormStatus("상담대기");
+            entityBackup.setRequestFormDate(LocalDateTime.now());
+            RequestFormBackup step1Backup = requestFormBackupService.save(entityBackup);
+            Long requestFormBackupIdx = step1Backup.getRequestFormBackupIdx();
 
             for(int i = 0; i < requestFormCategory.size(); i++) {
                 RequestFormCategory entity2 = new RequestFormCategory();
@@ -211,7 +221,7 @@ public class RequestFormController {
 
                 RequestFormCategory entity2Backup = new RequestFormCategory();
                 log.debug("String: {}", requestFormCategoryValue);
-                entity2Backup.setRequestFormIdx(requestFormIdx);
+                entity2Backup.setRequestFormIdx(requestFormBackupIdx);
                 entity2Backup.setRequestFormCategoryValue(requestFormCategoryValue);
                 int step2Backup = requestFormCategoryBackupRepository.insertRequestFormCategory(entity2Backup);
             }

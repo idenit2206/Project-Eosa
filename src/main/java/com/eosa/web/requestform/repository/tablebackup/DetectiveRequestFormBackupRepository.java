@@ -1,6 +1,6 @@
 package com.eosa.web.requestform.repository.tablebackup;
 
-import com.eosa.web.requestform.entity.RequestForm;
+import com.eosa.web.requestform.entity.RequestFormBackup;
 import com.eosa.web.requestform.entity.SelectRequestFormList;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public interface DetectiveRequestFormBackupRepository extends JpaRepository<RequestForm, Long> {
+public interface DetectiveRequestFormBackupRepository extends JpaRepository<RequestFormBackup, Long> {
 
     @Query(
             value="SELECT " +
@@ -73,7 +73,7 @@ public interface DetectiveRequestFormBackupRepository extends JpaRepository<Requ
             "WHERE requestFormIdx = ?1",
             nativeQuery = true
     )
-    RequestForm selectDetectiveRequestFormInfoByRequestFormIdx(Long requestFormIdx);
+    RequestFormBackup selectDetectiveRequestFormInfoByRequestFormIdx(Long requestFormIdx);
 
     @Query(
         value =
@@ -89,7 +89,7 @@ public interface DetectiveRequestFormBackupRepository extends JpaRepository<Requ
         "GROUP BY R.requestFormIdx, R.usersIdx, R.companysIdx, R.requestFormRegion1, R.requestFormChannel, R.requestFormStatus, R.requestFormDate, R.requestConsultDate, R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage"
         ,nativeQuery = true
     )
-    RequestForm selectRequestFormByRequestFormIdx(Long requestFormIdx);
+    RequestFormBackup selectRequestFormByRequestFormIdx(Long requestFormIdx);
 
     @Transactional
     @Modifying
@@ -120,18 +120,20 @@ public interface DetectiveRequestFormBackupRepository extends JpaRepository<Requ
         "WHERE requestFormIdx = :#{#R.requestFormIdx}"
         ,nativeQuery = true
     )
-    int updateRequestFormByEntity(@Param("R") RequestForm entity) throws IOException;
+    int updateRequestFormByEntity(@Param("R") RequestFormBackup entity) throws IOException;
 
     @Transactional
     @Modifying
     @Query(value=
-        "UPDATE RequestFormBackup " +
+        "UPDATE RequestFormBackup R " +
         "SET " +
-        "requestConsultDate = :requestFormAcceptDate, " +
-        "requestFormStatus = :requestFormStatus, requestFormStatusChangeDate = NOW(), " + 
-        "requestFormRejectMessage = :requestFormRejectMessage, " +
-        "requestFormClientReadState = 0, requestFormClientReadDate = NOW(), " + 
-        "requestFormDetectiveReadState = 0 " +
+        "R.requestConsultDate = :requestFormAcceptDate, " +
+        "R.requestFormStatus = :requestFormStatus, " + 
+        "R.requestFormStatusChangeDate = NOW(), " + 
+        "R.requestFormRejectMessage = :requestFormRejectMessage, " +
+        "R.requestFormClientReadState = 0, " +
+        "R.requestFormClientReadDate = NOW(), " + 
+        "R.requestFormDetectiveReadState = 0 " +
         "WHERE requestFormIdx = :requestFormIdx",
         nativeQuery = true
     )

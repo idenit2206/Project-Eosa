@@ -18,10 +18,12 @@ import lombok.Data;
 @Entity
 @Table(name="RequestFormBackup")
 public class RequestFormBackup {
-    
+ 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long requestFormIdx;
+    private Long requestFormBackupIdx;
+
+    @Column private Long requestFormIdx;
 
     @Column(nullable=false) private Long usersIdx;
 

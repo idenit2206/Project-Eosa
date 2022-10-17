@@ -34,11 +34,9 @@ public class RequestFormBackupService implements RequestFormBackupRepository {
      */
     @Override
     public <S extends RequestFormBackup> S save(S entity) {
-        log.info(entity.toString());
         entity.setRequestFormStatusChangeDate(LocalDateTime.now());
         return requestFormBackupRepository.save(entity);
     }
-
     
     /** 
      * @param entity
