@@ -246,17 +246,20 @@ public class ChatRoomService implements ChatRoomRepository {
      * @param roomId
      * @return int
      */
-    public int setClientReadStatusRead(String roomId) {
-        ChatRoom c = null;
-        Iterator<String> keys = chatRooms.keySet().iterator();
-        while(keys.hasNext()) {
-            String key = keys.next();
-            c = chatRooms.get(key);
-            if(c.getRoomId() == roomId) {
-                c.setClientReadStatus(1);
-            }
-        }
-        return c.getClientReadStatus();
+    // public int setClientReadStatusRead(String roomId) {
+    //     ChatRoom c = null;
+    //     Iterator<String> keys = chatRooms.keySet().iterator();
+    //     while(keys.hasNext()) {
+    //         String key = keys.next();
+    //         c = chatRooms.get(key);
+    //         if(c.getRoomId() == roomId) {
+    //             c.setClientReadStatus(1);
+    //         }
+    //     }
+    //     return c.getClientReadStatus();
+    // }
+    public int setClientReadStatusRead(ChatRoom cr) {
+        return 0;
     }
 
     

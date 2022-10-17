@@ -11,6 +11,7 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.*;
 
 import com.eosa.web.chatting.entity.ChatMessage;
+import com.eosa.web.chatting.entity.ChatRoom;
 import com.eosa.web.chatting.entity.MessageType;
 
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,8 @@ public class ChatMessageController {
      */
     @MessageMapping("/chat/message")
     public void sendMessage(ChatMessage message) {
+        ChatRoom roomInfo = chatRoomService.selectChatRoomByChatRoomId(message.getRoomId());
+
         if((message.getMessageType()).equals(MessageType.ENTER)) {
             log.debug("sendMessage [ENTER]: {}", message.toString());
             message.setMessage(message.getSender() + "님이 입장했습니다.");
@@ -47,12 +50,14 @@ public class ChatMessageController {
         }
 
         if((message.getMessageType()).equals(MessageType.TALK)) {
-            log.debug("sendMessage [TALK]: {}", message.toString());
+            // log.info("sendMessage [TALK]: {}", message.toString());
+            // log.info("sendMessage[TALK] message.roomId: {}", message.getRoomId());
             chatMessageService.addMessage(message);
             chatMessageService.save(message);
             if(message.getSender().equals("client")) {
                 chatRoomService.setDetectiveReadStatusUnread(message.getRoomId());
-                chatRoomService.setClientReadStatusRead(message.getRoomId());
+                // chatRoomService.setClientReadStatusRead(message.getRoomId());
+                chatRoomService.setClientReadStatusRead(roomInfo);
             }
             else if(message.getSender().equals("ADMIN")) {
                 chatRoomService.setClientReadStatusUnread(message.getRoomId());

@@ -75,6 +75,7 @@ public class PushNotificationController {
 
     
     /** 
+     * 푸시알림(requestForm 대상) 상태변경(읽음으로 전환)
      * @return CustomResponseData
      */
     @PutMapping("/readPushNotification")
@@ -100,6 +101,7 @@ public class PushNotificationController {
 
     
     /** 
+     * 푸시알림(requestForm 대상 Detective회원) 상태변경(읽음으로 전환)
      * @return CustomResponseData
      */
     @PutMapping("/readPushNotificationDetective")
