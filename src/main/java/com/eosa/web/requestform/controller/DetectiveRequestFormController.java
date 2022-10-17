@@ -5,6 +5,8 @@ import com.eosa.web.requestform.entity.SelectRequestFormList;
 import com.eosa.web.requestform.service.DetectiveRequestFormService;
 import com.eosa.web.requestform.service.RequestFormCategoryService;
 import com.eosa.web.requestform.service.RequestFormService;
+import com.eosa.web.requestform.service.tablebackup.DetectiveRequestFormBackupService;
+import com.eosa.web.requestform.service.tablebackup.RequestFormCategoryBackupService;
 import com.eosa.web.users.service.UsersService;
 import com.eosa.web.util.CustomResponseData;
 import lombok.extern.slf4j.Slf4j;
@@ -21,12 +23,11 @@ import java.util.List;
 @RequestMapping("/api/requestForm")
 public class DetectiveRequestFormController {
 
-    @Autowired
-    private DetectiveRequestFormService detectiveRequestFormService;
-    @Autowired
-    private RequestFormCategoryService requestFormCategoryService;  
-    @Autowired
-    private UsersService usersService;
+    @Autowired private DetectiveRequestFormService detectiveRequestFormService;
+    @Autowired private DetectiveRequestFormBackupService detectiveRequestFormBackupService;
+    @Autowired private RequestFormCategoryService requestFormCategoryService;
+    @Autowired private RequestFormCategoryBackupService requestFormCategoryBackupService;  
+    @Autowired private UsersService usersService;
 
     /**
      * CompanysIdx가 일치하는 모든 RequestForm 조회
@@ -139,6 +140,7 @@ public class DetectiveRequestFormController {
 
     
     /** 
+     * requestFormIdx가 일치하는 requestForm의 데이터 변경
      * @param updateRequestFormStatusByRequestFormIdx(
      * @return CustomResponseData
      * @throws IOException
@@ -150,9 +152,7 @@ public class DetectiveRequestFormController {
             @RequestParam(name = "requestFormRejectMessage", required = false) String requestFormRejectMessage) throws IOException {
         CustomResponseData result = new CustomResponseData();
         RequestForm rf = detectiveRequestFormService.selectRequestFormByRequestFormIdx(requestFormIdx);
-        log.info("rf: {}", rf.toString());
-        RequestForm entity = new RequestForm();
-        // entity.setRequestFormIdx(requestFormIdx);
+        // log.info("rf: {}", rf.toString());
         rf.setRequestFormStatus(requestFormStatus);
         rf.setRequestFormRejectMessage(requestFormRejectMessage);
         rf.setRequestFormClientReadState(0);
@@ -162,30 +162,39 @@ public class DetectiveRequestFormController {
         );
 
         int updateRows = 0;
+        int updateBackupRows = 0;
         if(requestFormStatus.equals("상담완료")) {
             updateRows = detectiveRequestFormService.updateRequestFormStatusByRequestFormIdxCaseConsultComplete(
+                requestFormIdx, LocalDateTime.now(), requestFormStatus, requestFormRejectMessage
+            );
+            updateBackupRows = detectiveRequestFormBackupService.updateRequestFormStatusByRequestFormIdxCaseConsultComplete(
                 requestFormIdx, LocalDateTime.now(), requestFormStatus, requestFormRejectMessage
             );
         }
         else if (rf.getRequestFormStatus().equals("의뢰대기")) {
             rf.setRequestFormStatusChangeDate(LocalDateTime.now());
             updateRows = detectiveRequestFormService.updateRequestFormByEntity(rf);
+            updateBackupRows = detectiveRequestFormBackupService.updateRequestFormByEntity(rf);
         }
         else if(rf.getRequestFormStatus().equals("의뢰거절")) {
             rf.setRequestFormStatusChangeDate(LocalDateTime.now());
             updateRows = detectiveRequestFormService.updateRequestFormByEntity(rf);
+            updateBackupRows = detectiveRequestFormBackupService.updateRequestFormByEntity(rf);
         }
         else if(rf.getRequestFormStatus().equals("계약진행")) {
             rf.setRequestFormStatusChangeDate(LocalDateTime.now());
             updateRows = detectiveRequestFormService.updateRequestFormByEntity(rf);
+            updateBackupRows = detectiveRequestFormBackupService.updateRequestFormByEntity(rf);
         }
         else if(rf.getRequestFormStatus().equals("임무진행")) {
             rf.setRequestFormStatusChangeDate(LocalDateTime.now());
             updateRows = detectiveRequestFormService.updateRequestFormByEntity(rf);
+            updateBackupRows = detectiveRequestFormBackupService.updateRequestFormByEntity(rf);
         }
         else if(rf.getRequestFormStatus().equals("임무완료")) {
             rf.setRequestFormStatusChangeDate(LocalDateTime.now());
             updateRows = detectiveRequestFormService.updateRequestFormByEntity(rf);
+            updateBackupRows = detectiveRequestFormBackupService.updateRequestFormByEntity(rf);
         }
 
         if (updateRows == 1) {
@@ -200,88 +209,5 @@ public class DetectiveRequestFormController {
 
         return result;
     }
-
-    // // ** MISSION **
-
-    // /**
-    //  * CompanysIdx가 일치하는 모든 MissionForm 조회 날짜기준 내림차순 정렬
-    //  * 
-    //  * @param companysIdx
-    //  * @return
-    //  */
-    // @GetMapping("/selectDetectiveAllMissionFormListByCompanysIdxOrderByDESC")
-    // public CustomResponseData selectAllDetectiveMissionFormListByCompanysIdxOrderByDESC(
-    //         @RequestParam("companysIdx") Long companysIdx) {
-    //     // log.debug("usersIdx: {}", companysIdx);
-    //     CustomResponseData result = new CustomResponseData();
-    //     List<SelectMissionFormList> list = missionFormService
-    //             .selectAllDetectiveMissionFormListByCompanysIdxOrderByDESC(companysIdx);
-
-    //     if (list.size() != 0) {
-    //         result.setStatusCode(HttpStatus.OK.value());
-    //         result.setResultItem(list);
-    //         result.setResponseDateTime(LocalDateTime.now());
-    //     } else {
-    //         result.setStatusCode(HttpStatus.BAD_REQUEST.value());
-    //         result.setResultItem(null);
-    //         result.setResponseDateTime(LocalDateTime.now());
-    //     }
-
-    //     return result;
-    // }
-    // /**
-    // * CompanysIdx가 일치하는 모든 RequestForm 조회 날짜기준 오름차순 정렬
-    // * @param companysIdx
-    // * @return
-    // */
-    // @GetMapping("/selectDetectiveAllRequestFormListByCompanysIdxOrderByASC")
-    // public CustomResponseData
-    // selectAllDetectiveRequestFormListByCompanysIdxOrderByASC(
-    // @RequestParam("companysIdx") Long companysIdx
-    // ) {
-    //// log.debug("usersIdx: {}", companysIdx);
-    // CustomResponseData result = new CustomResponseData();
-    // List<SelectRequestFormList> list =
-    // detectiveRequestFormService.selectAllDetectiveRequestFormListByCompanysIdxOrderByASC(companysIdx);
-    //
-    // if(list.size() != 0) {
-    // log.debug("Client List: {}", list.toString());
-    // result.setStatusCode(HttpStatus.OK.value());
-    // result.setResultItem(list);
-    // result.setResponseDateTime(LocalDateTime.now());
-    // }
-    // else {
-    // result.setStatusCode(HttpStatus.BAD_REQUEST.value());
-    // result.setResultItem(null);
-    // result.setResponseDateTime(LocalDateTime.now());
-    // }
-    //
-    // return result;
-    // }
-
-    // /**
-    //  * missionFormIdx가 일치하는 requestForm 상세보기
-    //  * 
-    //  * @param missionFormIdx Long
-    //  * @return
-    //  */
-    // @GetMapping("/selectDetectiveMissionFormInfoByMissionFormIdx")
-    // public CustomResponseData selectDetectiveMissionFormInfoByMissionFormIdx(
-    //         @RequestParam("missionFormIdx") Long missionFormIdx) {
-    //     CustomResponseData result = new CustomResponseData();
-    //     MissionForm entity = missionFormService.selectDetectiveMissionFormInfoByMissionFormIdx(missionFormIdx);
-
-    //     if (entity != null) {
-    //         result.setStatusCode(HttpStatus.OK.value());
-    //         result.setResultItem(entity);
-    //         result.setResponseDateTime(LocalDateTime.now());
-    //     } else {
-    //         result.setStatusCode(HttpStatus.OK.value());
-    //         result.setResultItem(null);
-    //         result.setResponseDateTime(LocalDateTime.now());
-    //     }
-
-    //     return result;
-    // }
-
+    
 }

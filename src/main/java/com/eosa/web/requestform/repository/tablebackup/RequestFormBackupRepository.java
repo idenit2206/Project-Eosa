@@ -10,11 +10,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.eosa.web.requestform.entity.RequestForm;
+import com.eosa.web.requestform.entity.RequestFormBackup;
 import com.eosa.web.requestform.entity.SelectRequestFormList;
 
 @Repository
-public interface RequestFormBackupRepository extends JpaRepository<RequestForm, Long> {
+public interface RequestFormBackupRepository extends JpaRepository<RequestFormBackup, Long> {
 
     @Modifying
     @Transactional
@@ -25,7 +25,7 @@ public interface RequestFormBackupRepository extends JpaRepository<RequestForm, 
         ":#{#RequestFormBackup.requestFormRegion1}, :#{#RequestFormBackup.requestFormRegion2}," +
         ":#{#RequestFormBackup.requestFormStatus}, :#{#RequestFormBackup.requestFormDate})"
     ,nativeQuery=true)
-    int requestFormRegister(@Param("RequestFormBackup") RequestForm entity);
+    int requestFormRegister(@Param("RequestFormBackup") RequestFormBackup entity);
 
     @Query(
         value="SELECT " +
@@ -91,7 +91,7 @@ public interface RequestFormBackupRepository extends JpaRepository<RequestForm, 
     List<SelectRequestFormList> selectAllRequestFormListByUsersIdxOrderByRequestFormDateDESC(Long usersIdx);
 
     @Query(value = "SELECT * FROM RequestFormBackup R WHERE R.requestFormIdx = ?1", nativeQuery = true)
-    RequestForm selectOneRequestFormByRequsetFormIdx(Long requestFormIdx);
+    RequestFormBackup selectOneRequestFormByRequsetFormIdx(Long requestFormIdx);
 
 
     // 알림을 위한 조회 쿼리
@@ -111,7 +111,7 @@ public interface RequestFormBackupRepository extends JpaRepository<RequestForm, 
         "GROUP BY R.requestFormIdx, R.usersIdx, R.companysIdx, R.requestFormRegion1, R.requestFormChannel, R.requestFormStatus, R.requestFormDate, R.requestConsultDate, R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage " +
         "ORDER BY R.requestFormStatusChangeDate DESC"
     ,nativeQuery = true)
-    List<RequestForm> selectRequestFormByUsersIdx(Long usersIdx);
+    List<RequestFormBackup> selectRequestFormByUsersIdx(Long usersIdx);
 
     @Query(value =
         "SELECT R.requestFormIdx, R.usersIdx, R.companysIdx, R.requestFormRegion1, R.requestFormChannel, R.requestFormStatus, " +
@@ -126,7 +126,7 @@ public interface RequestFormBackupRepository extends JpaRepository<RequestForm, 
         "GROUP BY R.requestFormIdx, R.usersIdx, R.companysIdx, R.requestFormRegion1, R.requestFormChannel, R.requestFormStatus, R.requestFormDate, R.requestConsultDate, R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage " +
         "ORDER BY R.requestFormStatusChangeDate DESC"
     ,nativeQuery = true)
-    List<RequestForm> selectPushNotificationForDetective(Long companysIdx);
+    List<RequestFormBackup> selectPushNotificationForDetective(Long companysIdx);
 
     @Query(value =
         "SELECT R.requestFormIdx, R.usersIdx, R.companysIdx, R.requestFormRegion1, R.requestFormChannel, R.requestFormStatus, " +
@@ -140,7 +140,7 @@ public interface RequestFormBackupRepository extends JpaRepository<RequestForm, 
         "GROUP BY R.requestFormIdx, R.usersIdx, R.companysIdx, R.requestFormRegion1, R.requestFormChannel, R.requestFormStatus, R.requestFormDate, R.requestConsultDate, R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage " +
         "ORDER BY R.requestFormClientReadDate DESC"
     ,nativeQuery = true)
-    List<RequestForm> selectRequestFormByCompanysIdx(Long companysIdx);
+    List<RequestFormBackup> selectRequestFormByCompanysIdx(Long companysIdx);
 
     @Transactional
     @Modifying
@@ -161,4 +161,5 @@ public interface RequestFormBackupRepository extends JpaRepository<RequestForm, 
         ,nativeQuery = true
     )
     int updateReadStateReadDetective(Long requestFormIdx, Long companysIdx);
+
 }
