@@ -236,7 +236,6 @@ public interface CompanyMapper {
 
     /**
      * 업체 리뷰 조회 매퍼
-     *
      * @param map
      * @return ReviewDTO
      */

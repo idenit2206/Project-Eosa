@@ -78,6 +78,7 @@
                         <tr th:each="list : ${reportList}" class="js-modalShow report-btn" data-modal="report">
 
                             <input type="hidden" class="reportIdx" th:value="${list.idx}">
+                            <input type="hidden" class="usersIdx" th:value="${list.usersIdx}">
                             <input type="hidden" class="companyIdx" th:value="${list.companysIdx}">
 
                             <td class="check" onclick="event.cancelBubble=true"><input type="checkbox" name="listCheck"></td>
@@ -93,7 +94,7 @@
                                 </div>
                             </td>
                             <td>
-                                <span class="reportState" th:text="${list.reportCheckState}"></span>
+                                <span class="reportState reportCheckState" th:text="${list.reportCheckState}"></span>
                             </td>
                             <td>
                                 <span class="checkDate" th:text="${#dates.format(list.reportCheckDate, 'yyyy-MM-dd')}"></span>
@@ -148,6 +149,23 @@
                     <div class="table">
                         <table>
                             <tbody>
+                            <tr class="modal-tr-hidden">
+                                <td class="modal-th">usersIdx</td>
+                                <td class="modal-td r-usersIdx"></td>
+                            </tr>
+                            <tr class="modal-tr-hidden">
+                                <td class="modal-th">companysIdx</td>
+                                <td class="modal-td r-companysIdx"></td>
+                            </tr>
+                            <tr class="modal-tr-hidden">
+                                <td class="modal-th">처리상태</td>
+                                <td class="modal-td r-state">
+                                    <select id="r-reportCheckState"  class="r-reportCheckState">
+                                        <option id="reportCheckStateFalse" class="reportCheckStateFalse" value="0">미처리</option>
+                                        <option id="reportCheckStateTrue" class="reportCheckStateTrue" value="1">처리</option>
+                                    </select>
+                                </td>
+                            </tr>
                             <tr>
                                 <td class="modal-th">신고자</td>
                                 <td class="modal-td r-user"></td>

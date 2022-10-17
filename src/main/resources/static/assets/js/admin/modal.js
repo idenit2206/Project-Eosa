@@ -82,8 +82,10 @@ function reportDetailsModal() {
 
     for (let i = 0; i < btn.length; i++) {
         btn[i].addEventListener('click', e => {
+            // console.log(id[i].value, usersIdx[i].value);
+            console.log(document.querySelectorAll(".usersIdx")[i].value);
             mId.value = id[i].value;
-            mUsersIdx.innerHTML = usersIdx[i].value;
+            mUsersIdx.innerText = usersIdx[i].value;
             mCompanysIdx.innerHTML = cId[i].value;
             mUser.innerHTML = user[i].textContent;
             mCompany.innerHTML = cName[i].textContent;  

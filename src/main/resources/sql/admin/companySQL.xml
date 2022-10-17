@@ -419,7 +419,7 @@
     </select>
 
     <!-- 업체 리뷰 조회 -->
-    <select id="selectCompanysReview" resultType="ReviewDTO" parameterType="hashmap">
+    <!-- <select id="selectCompanysReview" resultType="ReviewDTO" parameterType="hashmap">
         SELECT R.idx,
                R.reviewCompanysIdx,
                R.resultScore,
@@ -434,6 +434,26 @@
                U.usersNick,
                C.companysName
         FROM UsersReview R
+                 JOIN Users U ON R.reviewUsersIdx = U.usersIdx
+                 JOIN Companys C ON R.reviewCompanysIdx = C.companysIdx
+        WHERE R.reviewCompanysIdx = #{companysIdx}
+        ORDER BY R.reviewDate DESC LIMIT #{startIndex}, #{pageSize}
+    </select> -->
+    <select id="selectCompanysReview" resultType="ReviewDTO" parameterType="hashmap">
+        SELECT R.usersReviewIdx,
+               R.reviewCompanysIdx,
+               R.resultScore,
+               R.communicationScore,
+               R.processScore,
+               R.specialityScore,
+               ROUND((R.resultScore + R.communicationScore + R.processScore + R.specialityScore) / 4, 2) average,
+               R.reviewDetail,
+               R.reviewDate,
+               U.usersAccount,
+               U.usersName,
+               U.usersNick,
+               C.companysName
+        FROM UsersReviewBackup R
                  JOIN Users U ON R.reviewUsersIdx = U.usersIdx
                  JOIN Companys C ON R.reviewCompanysIdx = C.companysIdx
         WHERE R.reviewCompanysIdx = #{companysIdx}
@@ -453,6 +473,7 @@
     <!-- 업체 신고 조회 -->
     <select id="selectCompanysReport" resultType="ReportDTO" parameterType="hashmap">
         SELECT R.idx,
+               R.usersIdx,
                R.companysIdx,
                R.reportDetail,
                R.reportCheckState,
@@ -511,9 +532,13 @@
     </select>
 
     <!-- 업체 개수 조회 -->
-    <select id="countCompany" resultType="int">
+    <!-- <select id="countCompany" resultType="int">
         SELECT COUNT(*)
         FROM Companys
+    </select> -->
+    <select id="countCompany" resultType="int">
+        SELECT COUNT(DISTINCT reviewCompanysIdx)
+        FROM UsersReviewBackup
     </select>
 
     <!-- 전체 통계 조회 -->
@@ -521,7 +546,7 @@
         SELECT RF.requestFormRegion1,
                RF.requestFormDate,
                IFNULL(U.usersAge, 0) usersAge
-        FROM RequestForm RF
+        FROM RequestFormBackup RF
                  LEFT JOIN Users U on RF.usersIdx = U.usersIdx
     </select>
 
