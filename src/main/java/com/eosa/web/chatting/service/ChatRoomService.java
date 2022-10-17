@@ -18,8 +18,11 @@ import java.util.function.Function;
 import javax.annotation.PostConstruct;
 
 import com.eosa.web.chatting.repository.ChatRoomRepository;
+import com.eosa.web.companys.entity.Companys;
 import com.eosa.web.companys.entity.SelectAllCompanysList;
 import com.eosa.web.companys.service.CompanysService;
+import com.eosa.web.users.service.UsersService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -38,6 +41,8 @@ public class ChatRoomService implements ChatRoomRepository {
 
     private Map<String, ChatRoom> chatRooms;
     private Set<String> chatRoomIdList;
+
+    @Autowired private UsersService usersService;
     
     @PostConstruct
     private void initChatRooms() {
@@ -259,6 +264,20 @@ public class ChatRoomService implements ChatRoomRepository {
     //     return c.getClientReadStatus();
     // }
     public int setClientReadStatusRead(ChatRoom cr) {
+        Long usersIdx = cr.getUsersIdx();
+        Long companysIdx = cr.getCompanysIdx();
+
+        SelectAllCompanysList c = (SelectAllCompanysList) companysService.selectCompanysByCompanysIdx(companysIdx);
+        Long companysCeoIdx = c.getCompanysCeoIdx();
+
+        String clienttoken = usersService.getTokenByUsersIdx(usersIdx);
+        String clientdevice = usersService.getDeviceByUsersIdx(usersIdx);
+
+        String detectivetoken = usersService.getTokenByUsersIdx(companysCeoIdx);
+        String detectivedevice = usersService.getDeviceByUsersIdx(companysCeoIdx);
+
+        log.info("{}, {}, {}", usersIdx, companysIdx, companysCeoIdx);
+        
         return 0;
     }
 

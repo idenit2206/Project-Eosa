@@ -112,8 +112,7 @@ public interface RequestFormRepository extends JpaRepository<RequestForm, Long> 
     RequestForm selectOneRequestFormByRequsetFormIdx(Long requestFormIdx);
 
 
-    // 알림을 위한 조회 쿼리
-
+    // 알림(requestForm)을 위한 조회 쿼리
     @Query(value =
         "SELECT R.requestFormIdx, R.usersIdx, R.companysIdx, R.requestFormRegion1, R.requestFormChannel, R.requestFormStatus, " +
         "R.requestFormStatusChangeDate, " +
