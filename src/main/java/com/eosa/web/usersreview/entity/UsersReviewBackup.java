@@ -4,17 +4,18 @@ import java.time.LocalDateTime;
 
 import javax.persistence.*;
 
-import com.eosa.web.users.entity.Users;
 import lombok.Data;
 
 @Data
 @Entity
-@Table(name="UsersReview")
-public class UsersReview {
+@Table(name="UsersReviewBackup")
+public class UsersReviewBackup {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long usersReviewIdx;
+    private Long usersReviewBackupIdx;
+
+    @Column private Long usersReviewIdx;
 
     @Column(nullable=false)
     private Long reviewUsersIdx;

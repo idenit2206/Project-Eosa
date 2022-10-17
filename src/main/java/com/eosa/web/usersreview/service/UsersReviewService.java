@@ -1,4 +1,4 @@
-package com.eosa.web.usersreview;
+package com.eosa.web.usersreview.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -7,6 +7,8 @@ import java.util.function.Function;
 
 import com.eosa.web.usersreview.entity.SelectReviewEntity;
 import com.eosa.web.usersreview.entity.UsersReview;
+import com.eosa.web.usersreview.repository.UsersReviewRepository;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -21,18 +23,16 @@ import org.springframework.stereotype.Service;
 public class UsersReviewService implements UsersReviewRepository{
 
     @Autowired UsersReviewRepository usersReviewRepository;
-
     
     /** 
      * @param entity
      * @return S
      */
     @Override
-    public <S extends UsersReview> S save(S entity) {
+    public <S extends UsersReview> S save(S entity) {        
         entity.setReviewDate(LocalDateTime.now());
         entity.setReviewDetail(entity.getReviewDetail().trim());
-//        log.debug("[save]: {]", entity.toString());
-        return null;
+        return usersReviewRepository.save(entity);
     }
 
     

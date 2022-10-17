@@ -1,10 +1,14 @@
-package com.eosa.web.usersreview;
+package com.eosa.web.usersreview.controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import com.eosa.web.usersreview.entity.SelectReviewEntity;
 import com.eosa.web.usersreview.entity.UsersReview;
+import com.eosa.web.usersreview.entity.UsersReviewBackup;
+import com.eosa.web.usersreview.service.UsersReviewBackupService;
+import com.eosa.web.usersreview.service.UsersReviewService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,20 +23,35 @@ import lombok.extern.slf4j.Slf4j;
 public class UsersReviewController {
 
     @Autowired UsersReviewService usersReviewService;
-
+    @Autowired UsersReviewBackupService usersReviewBackupService;
     
     /** 
+     * 리뷰 작성 컨트롤러
      * @param param
      * @return CustomResponseData
      */
     @PostMapping("/insertUsersReview")
     public CustomResponseData insertUsersReview(UsersReview param) {
-        log.debug("[insertUsersReview] 작동시작");
+        log.info("[insertUsersReview] 리뷰를 저장합니다.");
         CustomResponseData result = new CustomResponseData();
-        int transaction = usersReviewService.insertUsersReview(param);
-        log.debug("[insertUsersReview]: {}", String.valueOf(transaction));
+        // int transaction = usersReviewService.insertUsersReview(param);
+        UsersReview entity = usersReviewService.save(param);
 
-        if(transaction == 1) {
+        UsersReviewBackup entityBackup = new UsersReviewBackup();
+            entityBackup.setUsersReviewIdx(entity.getUsersReviewIdx());
+            entityBackup.setReviewUsersIdx(entity.getReviewUsersIdx());
+            entityBackup.setReviewCompanysIdx(entity.getReviewCompanysIdx());
+            entityBackup.setReviewRequestFormIdx(entity.getReviewRequestFormIdx());
+            entityBackup.setResultScore(entity.getResultScore());
+            entityBackup.setCommunicationScore(entity.getCommunicationScore());
+            entityBackup.setProcessScore(entity.getProcessScore());
+            entityBackup.setSpecialityScore(entity.getSpecialityScore());
+            entityBackup.setReviewDetail(entity.getReviewDetail());
+            entityBackup.setReviewDate(entity.getReviewDate());
+
+        UsersReviewBackup transaction2 = usersReviewBackupService.save(entityBackup);
+
+        if(transaction2 != null) {
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem("TRUE");
             result.setResponseDateTime(LocalDateTime.now());
