@@ -5,10 +5,6 @@ import java.util.List;
 
 import com.eosa.web.chatting.service.ChatMessageService;
 import com.eosa.web.chatting.service.ChatRoomService;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -19,7 +15,6 @@ import com.eosa.web.chatting.entity.MessageType;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController

@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 
 import com.eosa.web.requestform.entity.RequestFormBackup;
 import com.eosa.web.requestform.entity.SelectRequestFormList;
-import com.eosa.web.requestform.entity.SelectRequestFormList02;
 
 @Repository
 public interface RequestFormBackupRepository extends JpaRepository<RequestFormBackup, Long> {
@@ -43,18 +42,26 @@ public interface RequestFormBackupRepository extends JpaRepository<RequestFormBa
     List<SelectRequestFormList> findByCompanysIdxIdx(Long companysIdx);
 
     @Query(
-        value="SELECT " + 
+        value=
+        "SELECT " +
+        "R.requestFormIdx, R.usersIdx, " +
+        "U.usersAge, U.usersGender, R.companysIdx, " +
+        "C.companysPremium, " +
+        "GROUP_CONCAT(RFC.requestFormCategoryValue) AS RequestFormCategory, " +
+        "R.requestFormRegion1, R.requestFormRegion2, " +
+        "R.requestFormStatus, R.requestConsultDate, R.requestFormDate, " +
+        "R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage " +
+        "FROM RequestFormBackup R " +
+        "LEFT JOIN Users U ON U.usersIdx = R.usersIdx " +
+        "LEFT JOIN Companys C on R.companysIdx = C.companysIdx " +
+        "LEFT JOIN RequestFormCategoryBackup RFC ON R.requestFormBackupIdx = RFC.requestFormBackupIdx " +
+        "GROUP BY " +
         "R.requestFormIdx, R.usersIdx, " +
         "U.usersAge, U.usersGender, R.companysIdx, " +
         "C.companysPremium, " +
         "R.requestFormRegion1, R.requestFormRegion2, " +
         "R.requestFormStatus, R.requestConsultDate, R.requestFormDate, " +
-        "R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage, " +
-        "GROUP_CONCAT(RFC.requestFormCategoryValue) AS requestFormCategory " +
-        "FROM RequestFormBackup R INNER JOIN RequestFormCategoryBackup RFC ON R.requestFormIdx = RFC.requestFormIdx " +
-        "LEFT OUTER JOIN Users U ON U.usersIdx = R.usersIdx " +
-        "LEFT OUTER JOIN Companys C on R.companysIdx = C.companysIdx " +
-        "GROUP BY R.RequestFormIdx",
+        "R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage ",
         nativeQuery=true
     )
     List<SelectRequestFormList> selectAllRequestFormList();

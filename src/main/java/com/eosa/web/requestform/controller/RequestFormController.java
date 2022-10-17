@@ -14,7 +14,6 @@ import com.eosa.web.requestform.entity.RequestForm;
 import com.eosa.web.requestform.entity.RequestFormBackup;
 import com.eosa.web.requestform.entity.RequestFormCategory;
 import com.eosa.web.requestform.entity.SelectRequestFormList;
-import com.eosa.web.requestform.entity.SelectRequestFormList02;
 import com.eosa.web.requestform.repository.RequestFormCategoryRepository;
 import com.eosa.web.requestform.repository.tablebackup.RequestFormCategoryBackupRepository;
 import com.eosa.web.requestform.service.RequestFormService;

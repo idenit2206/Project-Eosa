@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import com.eosa.web.requestform.entity.RequestFormBackup;
 import com.eosa.web.requestform.entity.SelectRequestFormList;
-import com.eosa.web.requestform.entity.SelectRequestFormList02;
 import com.eosa.web.requestform.repository.tablebackup.RequestFormBackupRepository;
 
 import lombok.RequiredArgsConstructor;
