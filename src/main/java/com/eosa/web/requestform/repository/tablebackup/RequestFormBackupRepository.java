@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.eosa.web.requestform.entity.RequestFormBackup;
 import com.eosa.web.requestform.entity.SelectRequestFormList;
+import com.eosa.web.requestform.entity.SelectRequestFormList02;
 
 @Repository
 public interface RequestFormBackupRepository extends JpaRepository<RequestFormBackup, Long> {
@@ -73,18 +74,28 @@ public interface RequestFormBackupRepository extends JpaRepository<RequestFormBa
     List<SelectRequestFormList> selectAllRequestFormListByUsersIdx(Long usersIdx);
 
     @Query(
-    value="SELECT " +
-    "R.requestFormIdx, R.usersIdx, U.usersNick, R.companysIdx, " +
+    value=
+    "SELECT " +
+    // -- R.requestFormBackupIdx, 
+    "R.requestFormIdx, R.usersIdx, " +
+    "R.companysIdx, C.companysName, C.companysPremium, " +
+    "GROUP_CONCAT(RFC.requestFormCategoryValue SEPARATOR ',') AS RequestFormCategory, " +
+    "R.requestFormRegion1, R.requestFormRegion2, " +
+    "R.requestFormStatus, R.requestConsultDate, R.requestFormDate, " +
+    "R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage " +
+    "FROM RequestFormBackup R " +
+    "LEFT JOIN Users U ON R.usersIdx = U.usersIdx " +
+    "LEFT JOIN Companys C ON R.companysIdx = C.companysIdx " +
+    "LEFT JOIN RequestFormCategoryBackup RFC ON R.requestFormBackupIdx = RFC.requestFormBackupIdx " +
+    "WHERE R.usersIdx = ?1 " +
+    "GROUP BY " +
+    "R.requestFormIdx, R.usersIdx, " +
+    "R.companysIdx, " +
+    "R.usersIdx, " +
     "C.companysName, C.companysPremium, " +
     "R.requestFormRegion1, R.requestFormRegion2, " +
     "R.requestFormStatus, R.requestConsultDate, R.requestFormDate, " +
-    "R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage, " +
-    "GROUP_CONCAT(RFC.requestFormCategoryValue) AS requestFormCategory " +
-    "FROM RequestFormBackup R INNER JOIN RequestFormCategoryBackup RFC ON R.requestFormIdx = RFC.requestFormIdx " +
-    "JOIN Companys C ON R.companysIdx = C.companysIdx " +
-    "LEFT JOIN Users U ON R.usersIdx = U.usersIdx " +
-    "WHERE R.usersIdx = ?1 " +
-    "GROUP BY R.RequestFormIdx " +
+    "R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage " +
     "ORDER BY R.requestFormDate DESC",
     nativeQuery=true
     )

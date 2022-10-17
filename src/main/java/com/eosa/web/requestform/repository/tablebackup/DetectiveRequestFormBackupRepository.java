@@ -33,22 +33,31 @@ public interface DetectiveRequestFormBackupRepository extends JpaRepository<Requ
     List<SelectRequestFormList> selectAllDetectiveRequestFormListByCompanysIdx(Long companysIdx);
 
     @Query(
-            value="SELECT " +
-                    "R.requestFormIdx, R.usersIdx, " + 
-                    "Users.usersAccount, Users.usersNick, Users.usersAge, Users.usersGender, " +
-                    "R.companysIdx, " +
-                    "C.companysName, C.companysPremium, " +
-                    "R.requestFormRegion1, R.requestFormRegion2, " +
-                    "R.requestFormStatus, R.requestConsultDate, R.requestFormDate, " +
-                    "R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage, " +
-                    "GROUP_CONCAT(RFC.requestFormCategoryValue) AS requestFormCategory " +
-                    "FROM RequestFormBackup R INNER JOIN RequestFormCategoryBackup RFC ON R.requestFormIdx = RFC.requestFormIdx " +
-                    "INNER JOIN Users ON R.usersIdx = Users.usersIdx " +
-                    "LEFT JOIN Companys C ON R.companysIdx = C.companysIdx " +
-                    "WHERE R.companysIdx = ?1 " +
-                    "GROUP BY R.RequestFormIdx " +
-                    "ORDER BY R.requestFormDate DESC",
-            nativeQuery=true
+        value=
+        "SELECT " +
+        "R.requestFormIdx, R.usersIdx, " +
+        "U.usersAccount, U.usersNick, U.usersAge, U.usersGender, " +
+        "R.companysIdx, " +
+        "C.companysName, C.companysPremium, " +
+        "GROUP_CONCAT(RFC.requestFormCategoryValue) AS RequestFormCategory, " +
+        "R.requestFormRegion1, R.requestFormRegion2, " +
+        "R.requestFormStatus, R.requestConsultDate, R.requestFormDate, " +
+        "R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage " +
+        "FROM RequestFormBackup R " +
+        "LEFT JOIN Users U ON R.usersIdx = U.usersIdx " +
+        "LEFT JOIN Companys C ON R.companysIdx = C.companysIdx " +
+        "LEFT JOIN RequestFormCategoryBackup RFC ON R.requestFormBackupIdx = RFC.requestFormBackupIdx " +
+        "WHERE R.companysIdx = ?1 " +
+        "GROUP BY " +
+        "R.requestFormIdx, R.usersIdx, " +
+        "U.usersAccount, U.usersNick, U.usersAge, U.usersGender, " +
+        "R.companysIdx, " +
+        "C.companysName, C.companysPremium, " +
+        "R.requestFormRegion1, R.requestFormRegion2, " +
+        "R.requestFormStatus, R.requestConsultDate, R.requestFormDate, " +
+        "R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage " +
+        "ORDER BY R.requestFormDate DESC",
+        nativeQuery=true
     )
     List<SelectRequestFormList> selectAllDetectiveRequestFormListByCompanysIdxOrderByDESC(Long companysIdx);
 
