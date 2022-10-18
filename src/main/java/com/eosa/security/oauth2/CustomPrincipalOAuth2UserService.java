@@ -55,14 +55,14 @@ public class CustomPrincipalOAuth2UserService extends DefaultOAuth2UserService {
             customOAuth2UserInfo = new KakaoUserInfo(oAuth2User.getAttributes());
             platform = customOAuth2UserInfo.getProvider();
             usersEmail = customOAuth2UserInfo.getEmail();
-            log.debug("[loadUser] kakao 이메일: {}", customOAuth2UserInfo.getEmail());
+            log.info("[loadUser] kakao 이메일: {}", customOAuth2UserInfo.getEmail());
         }
         else if(provider.equals("google")) {
 //            log.debug("google_userInfo: {}", oAuth2User.toString());
             platform = provider;
             providerId = oAuth2User.getAttribute("sub");
             usersEmail = oAuth2User.getAttribute("email").toString();
-            log.debug("[loadUser] google 이메일: {}", usersEmail);
+            log.info("[loadUser] google 이메일: {}", usersEmail);
             customOAuth2UserInfo = new GoogleUserInfo(oAuth2User.getAttributes());
             
         }
@@ -71,7 +71,7 @@ public class CustomPrincipalOAuth2UserService extends DefaultOAuth2UserService {
             platform = provider;
             providerId = oAuth2User.getAttribute("sub");
             usersEmail = response.get("email").toString();
-            log.debug("[loadUser] naver 이메일: {}", usersEmail);
+            log.info("[loadUser] naver 이메일: {}", usersEmail);
         }
        
         log.debug("[loadUser] SNS 서비스: {}, 이메일: {}", platform, usersEmail);

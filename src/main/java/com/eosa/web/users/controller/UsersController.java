@@ -86,8 +86,6 @@ public class UsersController {
      */
     @GetMapping("/sign/test01")
     public String test01() throws UnknownHostException {
-        // String hostAddress = InetAddress.getLocalHost().getHostAddress();
-        // return hostAddress + "/api/user/test01";
         return myDomain; 
     }
     

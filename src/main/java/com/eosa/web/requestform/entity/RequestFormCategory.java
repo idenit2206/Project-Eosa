@@ -22,6 +22,6 @@ public class RequestFormCategory {
     @Column private Long requestFormIdx;
     @Column private String requestFormCategoryValue;
 
-    @ManyToOne(targetEntity=RequestForm.class, fetch=FetchType.EAGER)
-    private RequestForm requestForm;
+    // @ManyToOne(targetEntity=RequestForm.class, fetch=FetchType.EAGER)
+    // private RequestForm requestForm;
 }

@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.eosa.web.requestform.entity.RequestFormCategory;
+import com.eosa.web.requestform.entity.RequestFormCategoryBackup;
 
 @Repository
 public interface RequestFormCategoryBackupRepository extends JpaRepository<RequestFormCategory, Long> {
@@ -17,9 +18,9 @@ public interface RequestFormCategoryBackupRepository extends JpaRepository<Reque
     @Modifying
     @Query(
         value="INSERT INTO RequestFormCategoryBackup" + 
-        "(requestFormIdx, requestFormCategoryValue) " +
-        "VALUES(:#{#RequestFormCategory.requestFormIdx}, :#{#RequestFormCategory.requestFormCategoryValue})",
+        "(requestFormBackupIdx, requestFormCategoryValue) " +
+        "VALUES(:#{#RequestFormCategory.requestFormBackupIdx}, :#{#RequestFormCategory.requestFormCategoryValue})",
         nativeQuery=true
     )
-    int insertRequestFormCategory(@Param("RequestFormCategory") RequestFormCategory entity);
+    int insertRequestFormCategory(@Param("RequestFormCategory") RequestFormCategoryBackup entity);
 }

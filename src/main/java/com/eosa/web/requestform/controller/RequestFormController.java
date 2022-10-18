@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import com.eosa.web.requestform.entity.RequestForm;
 import com.eosa.web.requestform.entity.RequestFormBackup;
 import com.eosa.web.requestform.entity.RequestFormCategory;
+import com.eosa.web.requestform.entity.RequestFormCategoryBackup;
 import com.eosa.web.requestform.entity.SelectRequestFormList;
 import com.eosa.web.requestform.repository.RequestFormCategoryRepository;
 import com.eosa.web.requestform.repository.tablebackup.RequestFormCategoryBackupRepository;
@@ -55,11 +56,10 @@ public class RequestFormController {
             entity.setRequestFormChannel("의뢰");
             entity.setRequestFormStatus("상담대기");
             entity.setRequestFormDate(LocalDateTime.now());
-        RequestForm step1 = requestFormService.save(entity);
-
-        log.debug("[requestFormRegister] step1: {}", step1.toString());
+        RequestForm step1 = requestFormService.save(entity);       
 
         if(step1 != null) {
+            log.info("[requestFormRegister] step1: {}", step1.toString());
             Long requestFormIdx = step1.getRequestFormIdx();
             
             RequestFormBackup entityBackup = new RequestFormBackup();
@@ -74,20 +74,22 @@ public class RequestFormController {
             RequestFormBackup step1Backup = requestFormBackupService.save(entityBackup);
 
             Long requestFormBackupIdx = step1Backup.getRequestFormBackupIdx();
+            log.info("requestFormRegist] step1Backup Idx: {}", String.valueOf(requestFormBackupIdx));
 
             for(int i = 0; i < requestFormCategory.size(); i++) {
                 RequestFormCategory entity2 = new RequestFormCategory();
                 String requestFormCategoryValue = requestFormCategory.get(i);
-                log.debug("String: {}", requestFormCategoryValue);
+                // log.debug("String: {}", requestFormCategoryValue);
                 entity2.setRequestFormIdx(requestFormIdx);
                 entity2.setRequestFormCategoryValue(requestFormCategoryValue);
                 int step2 = requestFormCategoryRepository.insertRequestFormCategory(entity2);
 
-                RequestFormCategory entity2Backup = new RequestFormCategory();
+                RequestFormCategoryBackup entity2Backup = new RequestFormCategoryBackup();
                 String requestFormCategoryValueBackup = requestFormCategory.get(i);
-                log.debug("String: {}", requestFormCategoryValueBackup);
-                entity2Backup.setRequestFormIdx(requestFormBackupIdx);
+                // entity2Backup.setRequestFormIdx(requestFormBackupIdx);
+                entity2Backup.setRequestFormBackupIdx(requestFormBackupIdx);
                 entity2Backup.setRequestFormCategoryValue(requestFormCategoryValue);
+                // log.info(entity2Backup.toString());
                 int step2Backup = requestFormCategoryBackupRepository.insertRequestFormCategory(entity2Backup);
             }
             result.setStatusCode(HttpStatus.OK.value());
@@ -152,10 +154,10 @@ public class RequestFormController {
                 entity2.setRequestFormCategoryValue(requestFormCategoryValue);
                 int step2 = requestFormCategoryRepository.insertRequestFormCategory(entity2);
 
-                RequestFormCategory entity2Backup = new RequestFormCategory();
+                RequestFormCategoryBackup entity2Backup = new RequestFormCategoryBackup();
                 String requestFormCategoryValueBackup = requestFormCategory.get(i);
                 log.debug("String: {}", requestFormCategoryValueBackup);
-                entity2Backup.setRequestFormIdx(requestFormBackupIdx);
+                entity2Backup.setRequestFormBackupIdx(requestFormBackupIdx);
                 entity2Backup.setRequestFormCategoryValue(requestFormCategoryValue);
                 int step2Backup = requestFormCategoryBackupRepository.insertRequestFormCategory(entity2Backup);
             }
@@ -219,9 +221,9 @@ public class RequestFormController {
                 entity2.setRequestFormCategoryValue(requestFormCategoryValue);
                 int step2 = requestFormCategoryRepository.insertRequestFormCategory(entity2);
 
-                RequestFormCategory entity2Backup = new RequestFormCategory();
+                RequestFormCategoryBackup entity2Backup = new RequestFormCategoryBackup();
                 log.debug("String: {}", requestFormCategoryValue);
-                entity2Backup.setRequestFormIdx(requestFormBackupIdx);
+                entity2Backup.setRequestFormBackupIdx(requestFormBackupIdx);
                 entity2Backup.setRequestFormCategoryValue(requestFormCategoryValue);
                 int step2Backup = requestFormCategoryBackupRepository.insertRequestFormCategory(entity2Backup);
             }
