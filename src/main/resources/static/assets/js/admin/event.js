@@ -298,9 +298,9 @@ function updateUser() {
         formData.set('usersEmail', email.value);
         formData.set('usersAge', age.value);
         formData.set('usersRegion1', region01.value);
-        if (region01.value == '서울') {
-            formData.set('usersRegion2', region02.value);
-        }
+        // if (region01.value == '서울') {
+        //     formData.set('usersRegion2', region02.value);
+        // }
         formData.set('usersGender', gender.value);
 
         fetchApi('/admin/manage/user/update', 'post', formData, '수정되었습니다.');
