@@ -67,7 +67,8 @@ public class TempUserController {
             items.put("usersEmail", selectRows.getUsersEmail());
             items.put("usersName", "user"+selectRows.getUsersIdx());
             items.put("usersNick", "user"+selectRows.getUsersIdx());
-            items.put("usersRole", selectRows.getUsersRole());
+            items.put("usersRole", "TEMP");
+            log.info(items.toString());
 
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem(items);
