@@ -567,14 +567,12 @@ public class ChatRoomService implements ChatRoomRepository {
 
     @Override
     public int changeReadStatusReadFromClient(String roomId) {
-        // TODO Auto-generated method stub
-        return 0;
+        return chatRoomRepository.changeReadStatusReadFromClient(roomId);
     }
 
     @Override
     public int changeReadStatusReadFromDetective(String roomId) {
-        // TODO Auto-generated method stub
-        return 0;
+        return chatRoomRepository.changeReadStatusReadFromDetective(roomId);
     }
 
 

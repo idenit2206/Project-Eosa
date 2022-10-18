@@ -5,13 +5,16 @@ import java.util.*;
 
 import com.eosa.web.chatting.service.ChatMessageService;
 import com.eosa.web.util.CustomResponseData;
+
+import kotlin.reflect.jvm.internal.impl.descriptors.Visibilities.Local;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -218,6 +221,11 @@ public class ChatRoomController {
         return result;
     }
 
+    /**
+     * 채팅방의 읽음상태를 조회하는 컨트롤러
+     * @param roomId
+     * @return
+     */
     @GetMapping("/selectReadStatus")
     @ResponseBody
     public CustomResponseData selectReadStatus(@RequestParam("roomId") String roomId) {
@@ -235,6 +243,32 @@ public class ChatRoomController {
         else {
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
+    
+    @PostMapping("/updateReadStatus")
+    @ResponseBody
+    public CustomResponseData updateReadStatus(
+        @RequestParam("roomId") String roomId,
+        @RequestParam("usersRole") String usersRole
+    ) {
+        CustomResponseData result = new CustomResponseData();
+
+        ChatRoom cr = chatRoomService.selectChatRoomByChatRoomId(roomId);
+
+        if(usersRole.equals("CLIENT")) {
+            chatRoomService.changeReadStatusReadFromClient(roomId);
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(true);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else if(usersRole.equals("DETECTIVE")) {
+            chatRoomService.changeReadStatusReadFromDetective(roomId);
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(true);
             result.setResponseDateTime(LocalDateTime.now());
         }
 

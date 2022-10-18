@@ -111,4 +111,5 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
     @Query(value = "UPDATE ChatRoom CR SET CR.clientReadStatus = 0 WHERE CR.roomId = ?1", nativeQuery = true)
     int changeReadStatusUnreadFromDetective(String roomId);
 
+
 }
