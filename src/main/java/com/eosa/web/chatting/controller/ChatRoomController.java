@@ -271,6 +271,23 @@ public class ChatRoomController {
             result.setResultItem(true);
             result.setResponseDateTime(LocalDateTime.now());
         }
+        else if(usersRole.equals("SUPER_ADMIN")) {
+            chatRoomService.changeReadStatusReadFromDetective(roomId);
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(true);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else if(usersRole.equals("ADMIN")) {
+            chatRoomService.changeReadStatusReadFromDetective(roomId);
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(true);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(false);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
 
         return result;
     }
