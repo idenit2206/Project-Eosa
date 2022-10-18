@@ -1,6 +1,7 @@
 package com.eosa.web.requestform.service.tablebackup;
 
 import com.eosa.web.requestform.entity.RequestFormCategory;
+import com.eosa.web.requestform.entity.RequestFormCategoryBackup;
 import com.eosa.web.requestform.repository.tablebackup.RequestFormCategoryBackupRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class RequestFormCategoryBackupService implements RequestFormCategoryBack
      * @return int
      */
     @Override
-    public int insertRequestFormCategory(RequestFormCategory entity) {
+    public int insertRequestFormCategory(RequestFormCategoryBackup entity) {
         return requestFormCategoryBackupRepository.insertRequestFormCategory(entity);
     }
 
