@@ -49,7 +49,8 @@
                     <tbody th:if="${count} ne 0">
                     <tr th:each="list : ${reviewList}" class="js-modalShow review-btn" data-modal="review">
 
-                        <input type="hidden" class="reviewIdx" th:value="${list.idx}">
+                        <!-- <input type="hidden" class="reviewIdx" th:value="${list.idx}"> -->
+                        <input type="hidden" class="reviewIdx" th:value="${list.usersReviewIdx}">
                         <input type="hidden" class="companyIdx" th:value="${list.reviewCompanysIdx}">
                         <input type="hidden" class="resultScore" th:value="${list.resultScore}">
                         <input type="hidden" class="communicationScore" th:value="${list.communicationScore}">

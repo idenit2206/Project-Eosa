@@ -19,8 +19,33 @@
     </select>
 
     <!-- 리뷰 목록 조회 -->
-    <select id="selectReviewList" resultType="ReviewDTO" parameterType="hashmap">
+    <!-- <select id="selectReviewList" resultType="ReviewDTO" parameterType="hashmap">
         SELECT R.idx,
+               R.reviewCompanysIdx,
+               R.resultScore,
+               R.communicationScore,
+               R.processScore,
+               R.specialityScore,
+               ROUND((R.resultScore + R.communicationScore + R.processScore + R.specialityScore) / 4, 2) average,
+               R.reviewDetail,
+               R.reviewDate,
+               U.usersAccount,
+               C.companysName
+        FROM UsersReview R
+                 JOIN Users U ON R.reviewUsersIdx = U.usersIdx
+                 JOIN Companys C ON R.reviewCompanysIdx = C.companysIdx
+        <where>
+            <if test="company != null">
+                AND CONCAT(C.companysName) REGEXP #{search}
+            </if>
+            <if test="writer != null">
+                AND CONCAT(U.usersAccount) REGEXP #{search}
+            </if>
+        </where>
+        ORDER BY R.reviewDate DESC LIMIT #{startIndex}, #{pageSize}
+    </select> -->
+    <select id="selectReviewList" resultType="ReviewDTO" parameterType="hashmap">
+        SELECT R.usersReviewIdx,
                R.reviewCompanysIdx,
                R.resultScore,
                R.communicationScore,
@@ -46,17 +71,30 @@
     </select>
 
     <!-- 리뷰 삭제 -->
-    <delete id="deleteReview" parameterType="long">
+    <!-- <delete id="deleteReview" parameterType="long">
         DELETE
         FROM UsersReview
         WHERE idx = ${idx}
+    </delete> -->
+    <delete id="deleteReview" parameterType="long">
+        DELETE
+        FROM UsersReview
+        WHERE usersReviewIdx = ${usersReviewIdx}
     </delete>
 
     <!-- 리뷰 다중 삭제 -->
-    <delete id="deleteReviewMulti">
+    <!-- <delete id="deleteReviewMulti">
         DELETE
         FROM UsersReview
         WHERE idx IN
+        <foreach collection="array" item="arr" index="i" open="(" separator="," close=")">
+            #{arr}
+        </foreach>
+    </delete> -->
+    <delete id="deleteReviewMulti">
+        DELETE
+        FROM UsersReview
+        WHERE usersReviewIdx IN
         <foreach collection="array" item="arr" index="i" open="(" separator="," close=")">
             #{arr}
         </foreach>
