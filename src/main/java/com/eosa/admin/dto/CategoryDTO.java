@@ -10,6 +10,7 @@ public class CategoryDTO {
     private int categoryPrice;
     private String categoryIcon;
     private String categoryIconName;
+    private String categoryIconOriginalName;
 
     public CategoryDTO() {}
 

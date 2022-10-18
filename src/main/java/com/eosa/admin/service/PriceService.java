@@ -68,6 +68,7 @@ public class PriceService {
 
     
     /** 
+     * 지역&분야별 가격 관리 페이지에서 은행 정보를 수정하는 서비스
      * @param priceDTO
      * @param model
      * @return String
@@ -89,6 +90,7 @@ public class PriceService {
 
     
     /** 
+     * 지역&분야별 가격 관리 페이지에서 지역 정보를 수정하는 서비스
      * @param region
      * @param model
      * @return String
@@ -126,6 +128,7 @@ public class PriceService {
 
     
     /** 
+     * 지역&분야별 가격 관리 페이지에서 업무분야를 수정하는 서비스
      * @param category
      * @param categoryIconList
      * @param model
@@ -136,41 +139,56 @@ public class PriceService {
         List<MultipartFile> categoryIconList,
         Model model
     ) {
-        log.debug("[priceUpdateCategory] param String: {}", category.toString());
+        log.info("[priceUpdateCategory] param String: {}", category);
         JsonParser parser2 = new JsonParser();
         JsonArray categoryObject = (JsonArray) parser2.parse(category);
-
-        categoryMapper.truncateCategory();
-
-        for(int i = 0; i < categoryObject.size(); i++) {
-            log.info(categoryObject.get(i).toString());
-            JsonElement el = categoryObject.get(i);
-            if(el.getAsJsonObject().get("categoryIcon").getAsString().equals("")) {
-                for(int j = 0; j < categoryIconList.size(); j++) {
-                    List<String> file = awsS3Service.uploadSingleFile(categoryIconList.get(j), "categoryicon", Long.valueOf(j));
-                    String categoryIconName = file.get(0);
-                    String categoryIcon = file.get(1);
-
-                    Long categoryIdx = el.getAsJsonObject().get("categoryIdx").getAsLong();
-                    String categoryName = el.getAsJsonObject().get("categoryName").getAsString();
-                    int categoryPrice = el.getAsJsonObject().get("categoryPrice").getAsInt();
-                    
-                    CategoryDTO categoryDTO = new CategoryDTO(categoryIdx, categoryName, categoryPrice, categoryIcon, categoryIconName);
-                    categoryMapper.priceUpdateCategory(categoryDTO);
+        if(categoryObject != null) {
+            for(int i = 0; i < categoryObject.size(); i++) {
+                CategoryDTO insertCategory = new CategoryDTO();
+                // log.info("categoryIdx: {}", categoryObject.get(i).getAsJsonObject().get("categoryIdx").getAsString());
+                // log.info("categoryName: {}", categoryObject.get(i).getAsJsonObject().get("categoryName").getAsString());
+                insertCategory.setCategoryIdx(categoryObject.get(i).getAsJsonObject().get("categoryIdx").getAsLong());
+                insertCategory.setCategoryName(categoryObject.get(i).getAsJsonObject().get("categoryName").getAsString());
+                if(categoryObject.get(i).getAsJsonObject().get("categoryPrice").getAsString().equals("")) {
+                    // log.info("categoryPrice: {}", 0);
+                    insertCategory.setCategoryPrice(0);
                 }
+                else {
+                    insertCategory.setCategoryPrice(categoryObject.get(i).getAsJsonObject().get("categoryPrice").getAsInt());
+                }
+                if(categoryObject.get(i).getAsJsonObject().get("categoryIconName").equals("")) {
+                    insertCategory.setCategoryIconName("");
+                }
+                else {
+                    if(categoryIconList != null) {
+                        for(int j = 0; j < categoryIconList.size(); j++) {
+                            String fileNameOriginal = categoryIconList.get(j).getOriginalFilename();
+                            if(fileNameOriginal.equals(categoryObject.get(i).getAsJsonObject().get("categoryIconOriginalName").getAsString())) {
+                                List<String> file = awsS3Service.uploadSingleFile(categoryIconList.get(j), "categoryicon", Long.valueOf(j));
+                                // String categoryIconName = file.get(0);
+                                // String categoryIcon = file.get(1);
+                                insertCategory.setCategoryIconName(file.get(0));
+                                insertCategory.setCategoryIcon(file.get(1));                                
+                                
+                                log.info("신규파일이 포함된 DTO: {}", insertCategory.toString());
+                                categoryMapper.priceUpdateCategory(insertCategory);
+                            }
+                            
+                        }
+                    }
+                    else {
+                        insertCategory.setCategoryIcon(categoryObject.get(i).getAsJsonObject().get("categoryIcon").getAsString());
+                        log.info("신규파일이 없는 DTO: {}", insertCategory.toString());
+                        categoryMapper.priceUpdateCategory(insertCategory);
+                    }                    
+                }
+                
+                
+                // log.info("test: {}", insertCategory.toString());
             }
-            else {
-                Long categoryIdx = el.getAsJsonObject().get("categoryIdx").getAsLong();
-                String categoryName = el.getAsJsonObject().get("categoryName").getAsString();
-                int categoryPrice = el.getAsJsonObject().get("categoryPrice").getAsInt();
-                String categoryIcon = el.getAsJsonObject().get("categoryIcon").getAsString();
-                String categoryIconName = el.getAsJsonObject().get("categoryIconName").getAsString();
-
-                CategoryDTO categoryDTO = new CategoryDTO(categoryIdx, categoryName, categoryPrice, categoryIcon, categoryIconName);
-                categoryMapper.priceUpdateCategory(categoryDTO);
-            }
-            
         }
+            
+        
 
         PriceDTO price = priceMapper.selectPrice();
         List<RegionDTO> regionList = regionMapper.selectRegion();
@@ -183,6 +201,7 @@ public class PriceService {
 
     
     /** 
+     * 지역&분야별 가격 관리 페이지에서 지역을 잠금처리하는 서비스
      * @param regionIdx
      * @param model
      * @return String

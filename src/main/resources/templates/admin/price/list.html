@@ -115,6 +115,7 @@
                             <td class="categoryIcon">
                                 <img class="categoryIconPreview" th:src="${categorylist.categoryIcon}" />
                                 <input th:id="${index.count - 1}" class="categoryIconInputFile" onchange="categoryIconInputFileChange(this)" type="file" />
+                                <input class="hidden categoryIconOriginalName" type="text" />
                             </td>
                         </tr>
                         </tbody>

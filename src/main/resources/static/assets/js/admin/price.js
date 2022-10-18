@@ -174,8 +174,7 @@ const removeCategoryItem = () => {
                 window.location.reload();
             }
             else {
-                alert("다시 시도해주세요.")
-                window.location.reload();
+                alert("다시 시도해주세요.");
             } 
         })
     });
@@ -222,8 +221,10 @@ const addRegionItem = () => {
 const addCategoryItem = () => {
     const categoryAddBtn = document.querySelector(".category-add-btn");
     const categoryList = document.querySelector("#categoryList");
-
+    
     categoryAddBtn.addEventListener("click", () => {
+        const categoryTrList = document.querySelectorAll(".categoryTR");
+
         const categoryTr = document.createElement("tr");
         const categoryTdIdx = document.createElement("td");
         const categoryTdName = document.createElement("td");
@@ -235,6 +236,7 @@ const addCategoryItem = () => {
         const categoryInputPrice = document.createElement("input");
         const categoryIconPreview = document.createElement("img");
         const categoryIconInputFile = document.createElement("input");
+        const categoryIconOriginalName = document.createElement("input")
 
         categoryTr.setAttribute("class", "categoryTR");
         categoryTdIdx.setAttribute("class", "categoryIdx");
@@ -248,16 +250,20 @@ const addCategoryItem = () => {
         categoryInputName.setAttribute("class", "categoryNameValue");
         categoryInputPrice.setAttribute("type", "text");
         categoryInputPrice.setAttribute("class", "categoryPriceValue");
-        categoryIconPreview.setAttribute("class", "categoryIconPreview");       
+        categoryIconPreview.setAttribute("class", "categoryIconPreview");    
+        categoryIconInputFile.setAttribute("id", categoryTrList.length);   
         categoryIconInputFile.setAttribute("class", "categoryIconInputFile");
         categoryIconInputFile.setAttribute("onchange", "categoryIconInputFileChange(this)");
         categoryIconInputFile.setAttribute("type", "file");
+        categoryIconOriginalName.setAttribute("type", "text");
+        categoryIconOriginalName.setAttribute("class", "categoryIconOriginalName hiddenTd");
 
         categoryTdIdx.appendChild(categoryInputIdx);
         categoryTdName.appendChild(categoryInputName);
         categoryTdPrice.appendChild(categoryInputPrice);
         categoryTdIcon.appendChild(categoryIconPreview);
         categoryTdIcon.appendChild(categoryIconInputFile);
+        categoryTdIcon.appendChild(categoryIconOriginalName);
 
         categoryTr.appendChild(categoryTdIdx);
         categoryTr.appendChild(categoryTdName);
@@ -323,8 +329,11 @@ const FileUpProcess2 = (file, index) => {
     fileReader.readAsDataURL(file);
     fileReader.onloadend = function (e) {        
         const categoryIconPreview = document.querySelectorAll(".categoryIconPreview");
+        const categoryIconOriginalName = document.querySelectorAll(".categoryIconOriginalName");
         if(categoryIconPreview.length > 0) {
+            // console.log(file);
             categoryIconPreview[index].setAttribute("src", e.target.result);
+            categoryIconOriginalName[index].setAttribute("value", file.name);
         }
           
     };
@@ -342,11 +351,13 @@ const categoryIconInputFileChange = (event) => {
     let id = event.getAttribute("id"); // int | null
     const categoryTR = document.querySelectorAll(".categoryTR");
     // console.log(event.files[0]);
-    FileUpProcess2(event.files[0], id == null ? categoryTR.length-1 : id);   
+    // FileUpProcess2(event.files[0], id == null ? categoryTR.length : id);
+    FileUpProcess2(event.files[0], id);   
 }
 
 const modifyCategory = () => {
     const categoryModifyBtn = document.querySelector(".category-modify-btn");
+    let fetchAvailable = 0;
 
     categoryModifyBtn.addEventListener("click", () => {
         const categoryTR = document.querySelectorAll(".categoryTR");
@@ -354,6 +365,8 @@ const modifyCategory = () => {
         const categoryNameValue = document.querySelectorAll(".categoryNameValue");
         const categoryPriceValue = document.querySelectorAll(".categoryPriceValue");
         const categoryIconPreview = document.querySelectorAll(".categoryIconPreview");
+        const categoryIconName = document.querySelectorAll(".categoryIconName");
+        const categoryIconOriginalName = document.querySelectorAll(".categoryIconOriginalName");
         const categoryIcon = document.querySelectorAll(".categoryIconInputFile");
 
         let formData = new FormData();
@@ -365,23 +378,28 @@ const modifyCategory = () => {
                 categoryName: "",
                 categoryPrice: "",
                 categoryIcon: "",
-                categoryIconName: ""
+                categoryIconName: "",
+                categoryIconOriginalName: ""
             };
             category.categoryIdx = i + 1;
             category.categoryName = categoryNameValue[i].value;
             category.categoryPrice = categoryPriceValue[i].value;
+        
+            
+            
             // console.log(`regionName: ${region.regionName}`);
             if(categoryIcon[i].files[0] == null) {
                 console.log(categoryIcon[i].files[0]);
                 category.categoryIcon = categoryIconPreview[i].getAttribute("src") == null ? "" : categoryIconPreview[i].getAttribute("src");
-                category.categoryIconName = "";
+              
             }
             else {
                 console.log(categoryIcon[i].files[0]);
                 // formData.append("categoryIcon", categoryIcon[i].files[0]);
                 formData.append("categoryIcon", categoryIcon[i].files[0]);
+                category.categoryIconOriginalName = categoryIconOriginalName[i].getAttribute("value");
             }            
-
+            
             categoryList.push(category);
         }
         formData.append("category", new Blob([JSON.stringify(categoryList)]));
@@ -391,21 +409,37 @@ const modifyCategory = () => {
         // for (let value of formData.values()) {
         //     console.log(value);
         // }
-
-        fetch(`/admin/manage/price/updateCategory`, {
-            "method": "POST",
-            "body": formData,
-        })
-        .then(result => result)
-        .then(data => {
-            if(data.status == 200) {
-                alert("변경 되었습니다.")
-                window.location.reload();
+        for(let i = 0; i < categoryList.length; i++) {
+            if(categoryList[i].categoryName != "") {
+                // console.log(categoryList[i]);
+                fetchAvailable = 1;
             }
             else {
-                alert("다시 시도해주세요.")
-                window.location.reload();
-            } 
-        })
+                alert(`${i+1} 번째 항목의 분야명이 비어있습니다.`);
+                fetchAvailable = 0;
+            }
+           
+        }
+
+        if(fetchAvailable == 1) {
+            fetch(`/admin/manage/price/updateCategory`, {
+                "method": "POST",
+                "body": formData,
+            })
+            .then(result => result)
+            .then(data => {
+                if(data.status == 200) {
+                    alert("변경 되었습니다.")
+                    window.location.reload();
+                }
+                else {
+                    alert("변경에 실패했습니다.");
+                } 
+            })
+        }
+        else {
+            alert("변경할 내용이 없습니다.");
+        }
+                
     })
 }

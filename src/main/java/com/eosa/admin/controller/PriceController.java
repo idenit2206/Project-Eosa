@@ -51,6 +51,7 @@ public class PriceController {
 
     
     /** 
+     * 지역&분야별 가격 관리 페이지에서 은행 정보를 수정하는 컨트롤러
      * @param priceDTO
      * @param model
      * @return String
@@ -119,6 +120,7 @@ public class PriceController {
     
     
     /** 
+     * 지역&분야별 가격 관리 페이지에서 업무분야를 수정하는 컨트롤러
      * @param model
      * @return String
      */
@@ -128,7 +130,7 @@ public class PriceController {
         @RequestParam(name="categoryIcon", required = false) List<MultipartFile> categoryIcon,
         Model model
     ) {
-        if(categoryIcon != null) log.info("[priceUpdateCategory] {}", categoryIcon.get(0).getOriginalFilename());
+        // if(categoryIcon != null) log.info("[priceUpdateCategory] {}", categoryIcon.get(0).getOriginalFilename());
         return priceService.priceUpdateCategory(category, categoryIcon, model);
     }
 
