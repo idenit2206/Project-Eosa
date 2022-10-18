@@ -38,7 +38,7 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
                         "FROM Companys C " +
                         "LEFT JOIN CompanysActiveRegion CAR on C.companysIdx = CAR.companysIdx " +
                         "LEFT JOIN CompanysCategory CC on C.companysIdx = CC.companysIdx " +
-                        "WHERE C.companysIdx=?1 " +
+                        "WHERE C.companysIdx = ?1 " +
                         "GROUP BY C.companysIdx", nativeQuery = true)
         SelectCompanys selectOneCompanysByCompanysIdxTest(Long companysIdx);
 
@@ -356,16 +356,20 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         @Query(value = "SELECT * FROM Companys WHERE companysCeoIdx = ?1", nativeQuery = true)
         Companys selectCompanysPremiumEnabled(Long companysCeoIdx);
 
-        @Query(value = "SELECT C.companysIdx " +
-                        "FROM Companys C " +
-                        "LEFT JOIN CompanysActiveRegion CAR on C.companysIdx = CAR.companysIdx " +
-                        "LEFT JOIN CompanysCategory CC on C.companysIdx = CC.companysIdx " +
-                        "WHERE CC.companysCategoryValue LIKE CONCAT('%', ?1, '%') " +
-                        "AND " +
-                        "C.companysRegion1 LIKE CONCAT('%', ?2,'%') " +
-                        // "AND " +
-                        // "C.companysRegion2 LIKE CONCAT('%', ?3, '%') " +
-                        "GROUP BY C.companysIdx", nativeQuery = true)
+        @Query(value = 
+                "SELECT C.companysIdx " +
+                "FROM Companys C " +
+                "LEFT JOIN CompanysActiveRegion CAR on C.companysIdx = CAR.companysIdx " +
+                "LEFT JOIN CompanysCategory CC on C.companysIdx = CC.companysIdx " +
+                "WHERE CC.companysCategoryValue LIKE CONCAT('%', ?1, '%') " +
+                "AND " +
+                "C.companysRegion1 LIKE CONCAT('%', ?2,'%') " +
+                // "AND " +
+                // "C.companysRegion2 LIKE CONCAT('%', ?3, '%') " +
+                "AND " +
+                "C.companysEnabled = 1 " + 
+                "GROUP BY C.companysIdx", 
+        nativeQuery = true)
         List<Long> selectCompanysByFilter2(String companysCategory, String companysRegion1);
 
         @Query(value = "SELECT C.companysIdx " +
