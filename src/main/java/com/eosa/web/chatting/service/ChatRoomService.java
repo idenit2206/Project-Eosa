@@ -234,12 +234,12 @@ public class ChatRoomService implements ChatRoomRepository {
         log.info("roomId: {}, usersIdx: {}, companysIdx: {}", room.getRoomId(), usersIdx, companysIdx);
         if(usersIdx != null && companysIdx != null) {
             // 사용자가 DETECTIVE인 경우
-            log.info("DETECTIVE 또는 ADMIN이 메시지를 읽었습니다.");
+            // log.info("DETECTIVE 또는 ADMIN이 메시지를 읽었습니다.");
             chatRoomRepository.changeReadStatusReadFromDetective(roomId);
         }
         else {        
             // 사용자가 CLIENT인 경우
-            log.info("CLIENT가 메시지를 읽었습니다.");
+            // log.info("CLIENT가 메시지를 읽었습니다.");
             chatRoomRepository.changeReadStatusReadFromClient(roomId);
         }
     }

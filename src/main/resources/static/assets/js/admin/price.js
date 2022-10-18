@@ -84,8 +84,26 @@ const regionUnlock = () => {
 }
 
 const removeRegionItem = () => {
+    const allRegionIdxValue = document.querySelector("#allRegionIdxValue");
     const regionRemoveBtn = document.querySelector(".region-remove-btn");
-    regionRemoveBtn.addEventListener("click", () => {
+
+    allRegionIdxValue.addEventListener("click", () => {
+        const regionIdxValue = document.querySelectorAll(".regionIdxValue");
+        if(this.checked != true) {
+            this.checked = true;
+            for(let i = 0 ; i < regionIdxValue.length; i++) {
+                regionIdxValue[i].checked = true;
+            }
+        }
+        else {
+            this.checked = false;
+            for(let i = 0 ; i < regionIdxValue.length; i++) {
+                regionIdxValue[i].checked = false;
+            }
+        }
+    })
+
+    regionRemoveBtn.addEventListener("click", () => {        
         const regionIdxValue = document.querySelectorAll(".regionIdxValue")
         let regionIdxValueList = [];
         for(let i = 0; i < regionIdxValue.length; i++) {
@@ -115,7 +133,25 @@ const removeRegionItem = () => {
 }
 
 const removeCategoryItem = () => {
+    const allCategoryIdxValue = document.querySelector("#allCategoryIdxValue");
     const categoryRemoveBtn = document.querySelector(".category-remove-btn");
+
+    allCategoryIdxValue.addEventListener("click", () => {
+        const categoryIdxValue = document.querySelectorAll(".categoryIdxValue")
+        if(this.checked != true) {
+            this.checked = true;
+            for(let i = 0 ; i < categoryIdxValue.length; i++) {
+                categoryIdxValue[i].checked = true;
+            }
+        }
+        else {
+            this.checked = false;
+            for(let i = 0 ; i < categoryIdxValue.length; i++) {
+                categoryIdxValue[i].checked = false;
+            }
+        }
+    })
+
     categoryRemoveBtn.addEventListener("click", () => {
         const categoryIdxValue = document.querySelectorAll(".categoryIdxValue")
         let categoryIdxValueList = [];
