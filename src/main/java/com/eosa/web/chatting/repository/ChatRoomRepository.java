@@ -5,7 +5,6 @@ import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.eosa.web.chatting.entity.ChatRoom;
@@ -45,6 +44,11 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
     @Query(value="SELECT * FROM ChatRoom c WHERE c.roomId = ?1", nativeQuery = true)
     ChatRoom selectChatRoomByChatRoomId(String roomId);
 
+    /**
+     * roomId가 일치하는 채팅방을 DB에서 삭제하는 레포지터리
+     * @param roomId
+     * @return
+     */
     @Transactional
     @Modifying
     @Query(
@@ -58,4 +62,53 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
 
     @Query(value="SELECT roomId FROM ChatRoom WHERE usersIdx = ?1", nativeQuery = true)
     List<String> selectChatRoomIdListByUsersIdx(Long usersIdx);
+
+    /**
+     * roomId가 채팅방 읽음 상태 조회하는 목적의 레포지터리
+     * @param roomId
+     * @return
+     */
+    @Query(value = "SELECT * FROM ChatRoom CR WHERE CR.roomId = ?1", nativeQuery = true)
+    ChatRoom selectReadStatus(String roomId);
+
+    /**
+     * 읽음 상태로 변경(CLIENT)
+     * @param roomId
+     * @return
+     */
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE ChatRoom CR SET CR.clientReadStatus = 1 WHERE CR.roomId = ?1", nativeQuery = true)
+    int changeReadStatusReadFromClient(String roomId);
+
+    /**
+     * 읽음 상태로 변경(CLIENT)
+     * @param roomId
+     * @return
+     */
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE ChatRoom CR SET CR.detectiveReadStatus = 1 WHERE CR.roomId = ?1", nativeQuery = true)
+    int changeReadStatusReadFromDetective(String roomId);
+
+    /**
+     * 안읽음 상태로 변경(CLIENT) 레포지터리
+     * @param roomId
+     * @return
+     */
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE ChatRoom CR SET CR.detectiveReadStatus = 0 WHERE CR.roomId = ?1", nativeQuery = true)
+    int changeReadStatusUnreadFromClient(String roomId);
+
+    /**
+     * 안읽음 상태로 변경(DETECTIVE) 레포지터리
+     * @param roomId
+     * @return
+     */
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE ChatRoom CR SET CR.clientReadStatus = 0 WHERE CR.roomId = ?1", nativeQuery = true)
+    int changeReadStatusUnreadFromDetective(String roomId);
+
 }

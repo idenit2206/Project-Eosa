@@ -7,6 +7,7 @@ import com.eosa.web.chatting.service.ChatMessageService;
 import com.eosa.web.util.CustomResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -215,7 +216,30 @@ public class ChatRoomController {
             result = chatRoomService.getChatRoomListByUsersIdx(usersIdx);
         }
         return result;
-    }   
+    }
+
+    @GetMapping("/selectReadStatus")
+    @ResponseBody
+    public CustomResponseData selectReadStatus(@RequestParam("roomId") String roomId) {
+        CustomResponseData result = new CustomResponseData();
+        ChatRoom cr = chatRoomService.selectReadStatus(roomId);
+
+        if(cr != null) {
+            Map<String, Integer> items = new HashMap<>();
+            items.put("clientReadStatus", cr.getClientReadStatus());
+            items.put("detectiveReadStatus", cr.getDetectiveReadStatus());
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(items);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
 
     
     /** 

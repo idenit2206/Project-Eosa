@@ -43,6 +43,24 @@ public class FirebaseCloudMessage {
                 Response response = client.newCall(request).execute();
         }
 
+        // 메세지 보내기 타이틀 지정
+        public void sendMessageTo(String targetToken, String title, String body, String link, String device) throws IOException {
+                String message = makeMessage(targetToken, title, body, link, device);
+
+                OkHttpClient client = new OkHttpClient();
+                RequestBody requestBody = RequestBody.create(message,
+                        MediaType.get("application/json; charset=utf-8"));
+                Request request = new Request.Builder()
+                        .url(API_URL)
+                        .post(requestBody)
+                        .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + getAccessToken())
+                        .addHeader(HttpHeaders.CONTENT_TYPE, "application/json; UTF-8")
+                        .build();
+
+                Response response = client.newCall(request).execute();
+        }
+
+        // 메시지 만들기
         private String makeMessage(String targetToken, String body, String link, String device)
                         throws JsonParseException, JsonProcessingException {
                 FcmMessage fcmMessage = FcmMessage.builder()
@@ -62,6 +80,28 @@ public class FirebaseCloudMessage {
                                 .validateOnly(false).build();
                 return objectMapper.writeValueAsString(fcmMessage);
         }
+
+        // 메시지 만들기 타이틀 지정
+        private String makeMessage(String targetToken, String title, String body, String link, String device)
+                        throws JsonParseException, JsonProcessingException {
+                FcmMessage fcmMessage = FcmMessage.builder()
+                                .message(FcmMessage.Message.builder()
+                                        .token(targetToken)
+                                        .data(FcmMessage.data.builder()
+                                                .title(title)
+                                                .body(body)
+                                                .link("https://dowajo.co.kr" + link)
+                                                .build())
+                                        .notification(FcmMessage.Notification.builder()
+                                                .title(title)
+                                                .body(body)
+                                                .image(null)
+                                                .build())
+                                        .build())
+                                .validateOnly(false).build();
+                return objectMapper.writeValueAsString(fcmMessage);
+        }
+        
 
         // accessToken 생성
         private String getAccessToken() throws IOException {

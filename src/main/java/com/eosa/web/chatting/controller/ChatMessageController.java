@@ -1,10 +1,16 @@
 package com.eosa.web.chatting.controller;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
 import com.eosa.web.chatting.service.ChatMessageService;
 import com.eosa.web.chatting.service.ChatRoomService;
+import com.eosa.web.companys.entity.SelectAllCompanysList;
+import com.eosa.web.companys.service.CompanysService;
+import com.eosa.web.firebase.pushnoti.service.FirebaseCloudMessage;
+import com.eosa.web.users.service.UsersService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -31,6 +37,9 @@ public class ChatMessageController {
     
     @Autowired private ChatMessageService chatMessageService;
     @Autowired private ChatRoomService chatRoomService;
+    @Autowired private UsersService usersService;
+    @Autowired private CompanysService companysService;
+    private final FirebaseCloudMessage firebaseCloudMessage;
 
     List<Object> messageList = new LinkedList<>();
 
@@ -40,44 +49,64 @@ public class ChatMessageController {
      */
     @MessageMapping("/chat/message")
     public void sendMessage(ChatMessage message) {
-        ChatRoom roomInfo = chatRoomService.selectChatRoomByChatRoomId(message.getRoomId());
+        log.info("Message debug: {}", message.toString());
+        String senderRole = message.getSender();
+        ChatRoom roomInfo = chatRoomService.selectChatRoomByChatRoomId(message.getRoomId()); 
+        SelectAllCompanysList c = companysService.selectCompanysByCompanysIdx(roomInfo.getCompanysIdx());
+        Long clientIdx = roomInfo.getUsersIdx();
+        Long companysCeoIdx = c.getCompanysCeoIdx(); 
+
+        String clienttoken = usersService.getTokenByUsersIdx(clientIdx);
+        String clientdevice = usersService.getDeviceByUsersIdx(clientIdx);
+
+      
+        String detectivetoken = usersService.getTokenByUsersIdx(companysCeoIdx);
+        String detectivedevice = usersService.getDeviceByUsersIdx(companysCeoIdx);
 
         if((message.getMessageType()).equals(MessageType.ENTER)) {
             log.debug("sendMessage [ENTER]: {}", message.toString());
             message.setMessage(message.getSender() + "님이 입장했습니다.");
-            chatMessageService.addMessage(message);
+            // chatMessageService.addMessage(message);
             chatMessageService.save(message);
         }
 
         if((message.getMessageType()).equals(MessageType.TALK)) {
             // log.info("sendMessage [TALK]: {}", message.toString());
             // log.info("sendMessage[TALK] message.roomId: {}", message.getRoomId());
-            chatMessageService.addMessage(message);
+            // chatMessageService.addMessage(message);
+            if(senderRole.equals("client")) {
+                // CLIENT가 메시지를 보내는 경우
+                chatRoomService.changeReadStatusUnreadFromClient(message.getRoomId());
+                try {
+                    firebaseCloudMessage.sendMessageTo(clienttoken, "새로운 채팅 메시지가 도착했습니다.", "채팅방: "+roomInfo.getRoomName(), "/", clientdevice);
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            else if(senderRole.equals("companys")){
+                // DETECTIVE가 메시지를 보내는 경우
+                chatRoomService.changeReadStatusUnreadFromDetective(message.getRoomId());
+                try {
+                    firebaseCloudMessage.sendMessageTo(detectivetoken, "새로운 채팅 메시지가 도착했습니다.", "채팅방: "+roomInfo.getRoomName(), "/", detectivedevice);
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
             chatMessageService.save(message);
-            if(message.getSender().equals("client")) {
-                chatRoomService.setDetectiveReadStatusUnread(message.getRoomId());
-                // chatRoomService.setClientReadStatusRead(message.getRoomId());
-                chatRoomService.setClientReadStatusRead(roomInfo);
-            }
-            else if(message.getSender().equals("ADMIN")) {
-                chatRoomService.setClientReadStatusUnread(message.getRoomId());
-            }
-            else if(message.getSender().equals("detective")) {
-                chatRoomService.setClientReadStatusUnread(message.getRoomId());
-                chatRoomService.setDetectiveReadStatusRead(message.getRoomId());
-            }
         }
 
         if((message.getMessageType()).equals(MessageType.FILE)) {
             log.debug("sendMessage [FILE]: {}", message.toString());
-            chatMessageService.addMessage(message);
+            // chatMessageService.addMessage(message);
             chatMessageService.save(message);
         }
 
         if((message.getMessageType()).equals(MessageType.LEAVE)) {
             message.setMessage(message.getSender() + "님이 퇴장했습니다.");
             log.debug("sendMessage [LEAVE]: {}", message.toString());
-            chatMessageService.addMessage(message);
+            // chatMessageService.addMessage(message);
             chatMessageService.save(message);
         }    
 
@@ -95,14 +124,21 @@ public class ChatMessageController {
 
 
 /** 
+ * 채팅방 입장후 roomId 채팅방의 모든 메시지를 받아옵니다.
  * @return List<ChatMessage>
- */
+*/
 //    @GetMapping("/chat/message/selectChatMessageByRoomId/{roomId}")
 //    public List<ChatMessage> selectChatMessageByRoomId(@PathVariable String roomId) {
 //        return chatMessageService.selectChatMessageByByRoomId(roomId);
 //    }
     @GetMapping("/api/chat/message/selectChatMessageByRoomId")
-    public List<ChatMessage> selectChatMessageByRoomId(@RequestParam("roomId") String roomId) {
+    public List<ChatMessage> selectChatMessageByRoomId(
+        @RequestParam("roomId") String roomId,
+        @RequestParam("usersIdx") String usersIdx
+    ) {        
+        // log.info("roomId: {} , usersIdx: {}", roomId, usersIdx);
+        Long parseLongUsersIdx = Long.parseLong(usersIdx);
+        chatRoomService.changeReadStatus(roomId, parseLongUsersIdx);
         return chatMessageService.selectChatMessageByRoomId(roomId);
     }
 

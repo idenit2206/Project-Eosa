@@ -116,13 +116,13 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
         
         if(entity.getRequestFormStatus().equals("의뢰거절")) { 
             if(clienttoken != null) {
-                firebaseCloudMessage.sendMessageTo(clienttoken,  companysName + "에 신청한 의뢰가 거절되었습니다.", "/", clientdevice);
+                firebaseCloudMessage.sendMessageTo(clienttoken, companysName + "에 신청한 의뢰가 거절되었습니다.", "/", clientdevice);
             }
             entity.setRequestFormCompDate(LocalDateTime.now()); 
         }
         else if(entity.getRequestFormStatus().equals("의뢰대기")) {
             if(detectivetoken != null) {
-                firebaseCloudMessage.sendMessageTo(detectivetoken,  "의뢰가 들어왔습니다.", "/", detectivedevice);
+                firebaseCloudMessage.sendMessageTo(detectivetoken, "의뢰가 들어왔습니다.", "/", detectivedevice);
             }
         }
 

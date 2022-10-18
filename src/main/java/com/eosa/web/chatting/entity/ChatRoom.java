@@ -10,21 +10,16 @@ import lombok.Data;
 @Entity
 @Table(name="ChatRoom")
 public class ChatRoom {
-    // 방 고유키
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
     @Column private String roomId;
-    // 방 제목
     @Column private String roomName;
-    // 방 만든 사람 (회원의 색인 번호)
     @Column private Long usersIdx;
     @Column private Long companysIdx;
     @Column private int clientReadStatus;
     @Column private int detectiveReadStatus;
-    // 채팅 로그의 위치가 담긴 컬럼
     @Column private String dataInfo;
-    // 채팅방이 생성된 타임스탬프
     @Column private LocalDateTime createdDate;
     @Column private int usable;
 

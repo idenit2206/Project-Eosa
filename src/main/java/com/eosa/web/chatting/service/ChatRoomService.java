@@ -10,15 +10,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.UUID;
 import java.util.function.Function;
 
 import javax.annotation.PostConstruct;
 
 import com.eosa.web.chatting.repository.ChatRoomRepository;
-import com.eosa.web.companys.entity.Companys;
 import com.eosa.web.companys.entity.SelectAllCompanysList;
 import com.eosa.web.companys.service.CompanysService;
 import com.eosa.web.users.service.UsersService;
@@ -63,16 +60,16 @@ public class ChatRoomService implements ChatRoomRepository {
     @Autowired private CompanysService companysService;
 
     /**
-     * roomId가 일치하는 ChatRoom 찾기
+     * roomId가 일치하는 ChatRoom 찾기(Backend 서버 메모리에서) 서비스
      * @param roomId
      * @return
      */
     public ChatRoom findChatRoomByRoomId(String roomId) {
         return chatRooms.get(roomId);
     }
-
     
     /** 
+     * usersIdx가 일치하는 채팅방들을 List로 출력하는 서비스
      * @param usersIdx
      * @return List<ChatRoom>
      */
@@ -124,6 +121,7 @@ public class ChatRoomService implements ChatRoomRepository {
 
     
     /** 
+     * roomId가 일치하는 채팅방을 삭제하는 서비스
      * @param roomId
      * @return int
      */
@@ -134,6 +132,8 @@ public class ChatRoomService implements ChatRoomRepository {
 
     
     /** 
+     * roomId가 일치하는 채팅방을 Backend서버 메모리에서 삭제하고
+     * Backend 서버의 채팅방 List를 출력하는 서비스
      * @param roomId
      * @return List<ChatRoom>
      */
@@ -181,6 +181,7 @@ public class ChatRoomService implements ChatRoomRepository {
 
     
     /** 
+     * roomId가 일치하는 ChatRoom 찾기(DB에서)
      * @param roomId
      * @return ChatRoom
      */
@@ -205,100 +206,59 @@ public class ChatRoomService implements ChatRoomRepository {
         return result;
     }
     
-    
-    /** 
+    /**
+     * roomId와 일치하는 채팅방의 client와 detective의 읽음 상태를 출력하는 서비스
      * @param roomId
-     * @return int
+     * @return ChatRoom
      */
-    public int setClientReadStatusUnread(String roomId) {
-        ChatRoom c = null;
-        Iterator<String> keys = chatRooms.keySet().iterator();
-        while(keys.hasNext()) {
-            String key = keys.next();
-            c = chatRooms.get(key);
-            if(c.getRoomId() == roomId) {
-                c.setClientReadStatus(0);
-            }
-        }
-        if(c != null) {
-            return c.getClientReadStatus();
+    @Override
+    public ChatRoom selectReadStatus(String roomId) {
+        return chatRoomRepository.selectReadStatus(roomId);
+    }
+
+    /**
+     * 채팅방 읽음처리 서비스
+     * @param roomId
+     * @param usersIdx
+     */
+    public void changeReadStatus(String roomId, Long userIdx) {
+        ChatRoom room = selectChatRoomByChatRoomId(roomId);
+        Long usersIdx = 0L;
+        Long companysIdx = companysService.selectCompanysIdxByUsersIdx(userIdx);
+        if(companysIdx == null || companysIdx == 0) {
+            usersIdx = userIdx;
         }
         else {
-            return 0;
+            usersIdx = room.getUsersIdx();
+        }
+        log.info("roomId: {}, usersIdx: {}, companysIdx: {}", room.getRoomId(), usersIdx, companysIdx);
+        if(usersIdx != null && companysIdx != null) {
+            // 사용자가 DETECTIVE인 경우
+            log.info("DETECTIVE 또는 ADMIN이 메시지를 읽었습니다.");
+            chatRoomRepository.changeReadStatusReadFromDetective(roomId);
+        }
+        else {        
+            // 사용자가 CLIENT인 경우
+            log.info("CLIENT가 메시지를 읽었습니다.");
+            chatRoomRepository.changeReadStatusReadFromClient(roomId);
         }
     }
 
-    
-    /** 
-     * @param roomId
-     * @return int
+    /**
+     * Client가 roomId의 채팅방에 메시지를 보낼때 상대방의 읽음 상태를 안읽음으로 변경하는 서비스
      */
-    public int setDetectiveReadStatusUnread(String roomId) {
-        ChatRoom c = null;
-        Iterator<String> keys = chatRooms.keySet().iterator();
-        while(keys.hasNext()) {
-            String key = keys.next();
-            c = chatRooms.get(key);
-            if(c.getRoomId() == roomId) {
-                c.setDetectiveReadStatus(0);
-            }
-        }
-        return c.getDetectiveReadStatus();
+    @Override
+    public int changeReadStatusUnreadFromClient(String roomId) {
+        return chatRoomRepository.changeReadStatusUnreadFromClient(roomId);
     }
 
-    
-    /** 
-     * @param roomId
-     * @return int
+    /**
+     * Detective가 roomId의 채팅방에 메시지를 보낼때 상대방의 읽음 상태를 안읽음으로 변경하는 서비스
      */
-    // public int setClientReadStatusRead(String roomId) {
-    //     ChatRoom c = null;
-    //     Iterator<String> keys = chatRooms.keySet().iterator();
-    //     while(keys.hasNext()) {
-    //         String key = keys.next();
-    //         c = chatRooms.get(key);
-    //         if(c.getRoomId() == roomId) {
-    //             c.setClientReadStatus(1);
-    //         }
-    //     }
-    //     return c.getClientReadStatus();
-    // }
-    public int setClientReadStatusRead(ChatRoom cr) {
-        Long usersIdx = cr.getUsersIdx();
-        Long companysIdx = cr.getCompanysIdx();
-
-        SelectAllCompanysList c = (SelectAllCompanysList) companysService.selectCompanysByCompanysIdx(companysIdx);
-        Long companysCeoIdx = c.getCompanysCeoIdx();
-
-        String clienttoken = usersService.getTokenByUsersIdx(usersIdx);
-        String clientdevice = usersService.getDeviceByUsersIdx(usersIdx);
-
-        String detectivetoken = usersService.getTokenByUsersIdx(companysCeoIdx);
-        String detectivedevice = usersService.getDeviceByUsersIdx(companysCeoIdx);
-
-        log.info("{}, {}, {}", usersIdx, companysIdx, companysCeoIdx);
-        
-        return 0;
+    @Override
+    public int changeReadStatusUnreadFromDetective(String roomId) {
+        return chatRoomRepository.changeReadStatusUnreadFromDetective(roomId);
     }
-
-    
-    /** 
-     * @param roomId
-     * @return int
-     */
-    public int setDetectiveReadStatusRead(String roomId) {
-        ChatRoom c = null;
-        Iterator<String> keys = chatRooms.keySet().iterator();
-        while(keys.hasNext()) {
-            String key = keys.next();
-            c = chatRooms.get(key);
-            if(c.getRoomId() == roomId) {
-                c.setDetectiveReadStatus(1);
-            }
-        }
-        return c.getDetectiveReadStatus();
-    }
-
     
     /** 
      * @return List<ChatRoom>
@@ -604,6 +564,19 @@ public class ChatRoomService implements ChatRoomRepository {
     public List<String> selectChatRoomIdListByUsersIdx(Long usersIdx) {
         return chatRoomRepository.selectChatRoomIdListByUsersIdx(usersIdx);
     }
+
+    @Override
+    public int changeReadStatusReadFromClient(String roomId) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public int changeReadStatusReadFromDetective(String roomId) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
 
 //    @Override
 //    public int createChatRoom(ChatRoom chatRoom) {
