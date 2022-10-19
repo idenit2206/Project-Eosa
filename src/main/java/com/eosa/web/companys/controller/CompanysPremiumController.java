@@ -37,9 +37,11 @@ public class CompanysPremiumController {
 //        Parameter 조건에 해당하는 Companys가 DB에 존재하는지 확인
         Long searchCompanysIdx = companysService.selectCompanyIdxByComapnysNameAndCompanysCeoName(companysName.trim(), companysCeoName.trim());
         CompanysPremium cp = null;
+        
         if(searchCompanysIdx != null) {
             cp = companysPremiumService.selectCompanysPremiumByCompanysNameCompanysCeoName(companysName.trim(), companysCeoName.trim());
         }
+        
         if(cp == null) {
             log.info("[insertCompanyPremium] Premium 신청이 가능합니다. companysIdx: {}", String.valueOf(searchCompanysIdx));
             CompanysPremium entity = new CompanysPremium();

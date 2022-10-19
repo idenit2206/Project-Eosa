@@ -32,15 +32,20 @@ public class RequestContractService implements RequestContractRepository {
         entity.setRequestContractCreateDate(LocalDateTime.now());
         return requestContractRepository.save(entity);
     }
-
     
     /** 
+     * requestFormIdx와 일치하는 RequestContract를 조회하는 서비스
      * @param requestFormIdx
      * @return RequestContract
      */
     @Override
     public RequestContract selectRequestContractByRequestFormIdx(Long requestFormIdx) {
         return requestContractRepository.selectRequestContractByRequestFormIdx(requestFormIdx);
+    }
+
+    @Override
+    public int updateRequestContract(Long requestFormIdx, String requestContractContractId) {
+        return requestContractRepository.updateRequestContract(requestFormIdx, requestContractContractId);
     }
 
     
