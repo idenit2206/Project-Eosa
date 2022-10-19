@@ -44,8 +44,8 @@ public class RequestContractService implements RequestContractRepository {
     }
 
     @Override
-    public int updateRequestContract(Long requestFormIdx, String requestContractContractId) {
-        return requestContractRepository.updateRequestContract(requestFormIdx, requestContractContractId);
+    public int updateRequestContract(Long requestFormIdx, String requestContractContractId, String companysIdx, String usersIdx) {
+        return requestContractRepository.updateRequestContract(requestFormIdx, requestContractContractId, companysIdx, usersIdx);
     }
 
     

@@ -124,12 +124,14 @@ public class RequestContractController {
 
     @PostMapping("/updateRequestContract")
     public CustomResponseData updateRequestContract(
-        @RequestParam(value="requestFormIdx") Long requestFormIdx,
+        @RequestParam(value="requestFormIdx") Long requestFormIdx,      
+        @RequestParam(value="companysIdx") String companysIdx,
+        @RequestParam(value="usersIdx") String usersIdx,
         @RequestParam(value="requestContractContractId") String requestContractContractId
     ) {
         CustomResponseData result = new CustomResponseData();
 
-        int updateEntity = requestContractService.updateRequestContract(requestFormIdx, requestContractContractId);
+        int updateEntity = requestContractService.updateRequestContract(requestFormIdx, requestContractContractId, companysIdx, usersIdx);
 
         if(updateEntity == 1) {
             result.setStatusCode(HttpStatus.OK.value());

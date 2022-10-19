@@ -23,11 +23,15 @@ public interface RequestContractRepository extends JpaRepository<RequestContract
     @Query(value = 
         "UPDATE RequestContract " +
         "SET requestContractContractId = :requestContractContractId, " +
+        "companysIdx = :companysIdx, " +
+        "usersIdx = :usersIdx, " +
         "requestContractTurn = 1 " +
         "WHERE requestFormIdx = :requestFormIdx"
     ,nativeQuery = true)
     int updateRequestContract(
         @Param("requestFormIdx") Long requestFormIdx,
-        @Param("requestContractContractId") String requestContractContractId        
+        @Param("requestContractContractId") String requestContractContractId,
+        @Param("companysIdx") String companysIdx,
+        @Param("usersIdx") String usersIdx       
     );
 }
