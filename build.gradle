@@ -12,7 +12,7 @@ plugins {
 }
 
 group = 'com.eosa'
-version = '1.1019.1845'
+version = '1.1019.1850'
 sourceCompatibility = 11
 
 configurations {

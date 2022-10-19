@@ -3,10 +3,9 @@ package com.eosa.web.chatting.controller;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import com.eosa.web.chatting.service.ChatBlockListService;
 import com.eosa.web.chatting.service.ChatMessageService;
 import com.eosa.web.util.CustomResponseData;
-
-import kotlin.reflect.jvm.internal.impl.descriptors.Visibilities.Local;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.eosa.web.chatting.entity.ChatBlockList;
 import com.eosa.web.chatting.entity.ChatRoom;
 import com.eosa.web.chatting.service.ChatRoomService;
 
@@ -29,9 +29,10 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping("/api/chat")
 public class ChatRoomController {
+    
     @Autowired private ChatRoomService chatRoomService;
     @Autowired private ChatMessageService chatMessageService;
-
+    @Autowired private ChatBlockListService chatBlockListService;
 
 /** 
  * @return CustomResponseData
@@ -279,6 +280,31 @@ public class ChatRoomController {
         }
         else if(usersRole.equals("ADMIN")) {
             chatRoomService.changeReadStatusReadFromDetective(roomId);
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(true);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(false);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
+
+    /**
+     * 채팅 차단을 추가하는 컨트롤러
+     * @param ChatBlockList
+     * @return
+     */
+    @PostMapping("/addBlockList")
+    @ResponseBody
+    public CustomResponseData blockUser(ChatBlockList chatBlockList) {
+        CustomResponseData result = new CustomResponseData();
+        ChatBlockList saveEntity = chatBlockListService.save(chatBlockList);
+
+        if(saveEntity != null) {
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem(true);
             result.setResponseDateTime(LocalDateTime.now());
