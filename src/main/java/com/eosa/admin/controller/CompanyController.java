@@ -206,7 +206,6 @@ public class CompanyController {
     @ResponseBody
     @PostMapping("/flag/request")
     public int requestFlag(CompanysDTO companysDTO) {
-
         return companyService.requestFlag(companysDTO);
     }
 

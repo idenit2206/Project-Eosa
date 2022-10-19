@@ -635,11 +635,39 @@ function cancelPremium() {
  * 마패 신청
  */
 function requestFlag() {
+    // const region = document.querySelector('#region05');
+    // const category = document.querySelectorAll('input[name=f-category]:checked');
 
-    const region = document.querySelector('#region05');
+    // if (region.value == '') {
+    //     alert('광고 지역을 선택해 주세요.');
+    // } else if (category.length == 0) {
+    //     alert('광고 분야를 선택해 주세요.');
+    // } else {
+    //     const msg = confirm('마패를 신청하시겠습니까?');
+    //     if (msg) {
+    //         const formData = new FormData();
+
+    //         formData.set('companysIdx', document.querySelector('.companysIdx').value);
+    //         formData.set('companysName', document.querySelector('.f-name').textContent);
+    //         formData.set('companysCeoName', document.querySelector('.f-ceo').textContent);
+    //         formData.set('companysFlagRegion1', region.value);
+    //         if (region.value == '서울') formData.set('companysFlagRegion2', document.querySelector('#region06').value);
+
+    //         for (let i = 0; i < category.length; i++) {
+    //             formData.append('companysFlagCategory', category[i].value);
+    //         }
+
+    //         formData.set('flagPrice', document.querySelector('#localPremiumTotalPrice').textContent);
+    //         formData.set('flagPriceBank', document.querySelector('.f-bank').textContent);
+
+    //         fetchApi('/admin/manage/company/flag/request', 'post', formData, '마패가 신청되었습니다.');
+    //     }
+    // }
+
+    const region = document.querySelectorAll('input[name=f-region]:checked');
     const category = document.querySelectorAll('input[name=f-category]:checked');
 
-    if (region.value == '') {
+    if (region.length == 0) {
         alert('광고 지역을 선택해 주세요.');
     } else if (category.length == 0) {
         alert('광고 분야를 선택해 주세요.');
@@ -651,8 +679,9 @@ function requestFlag() {
             formData.set('companysIdx', document.querySelector('.companysIdx').value);
             formData.set('companysName', document.querySelector('.f-name').textContent);
             formData.set('companysCeoName', document.querySelector('.f-ceo').textContent);
-            formData.set('companysFlagRegion1', region.value);
-            if (region.value == '서울') formData.set('companysFlagRegion2', document.querySelector('#region06').value);
+            for(let i = 0; i < region.length; i++) {                
+                formData.append("companysFlagRegion1", region[i].value);
+            }
 
             for (let i = 0; i < category.length; i++) {
                 formData.append('companysFlagCategory', category[i].value);
@@ -660,7 +689,8 @@ function requestFlag() {
 
             formData.set('flagPrice', document.querySelector('#localPremiumTotalPrice').textContent);
             formData.set('flagPriceBank', document.querySelector('.f-bank').textContent);
-
+            
+            // console.log(formData.getAll("companysFlagRegion"));
             fetchApi('/admin/manage/company/flag/request', 'post', formData, '마패가 신청되었습니다.');
         }
     }
@@ -698,11 +728,12 @@ function approvalFlag() {
  * 마패 수정
  */
 function modifyFlag() {
-
-    const region = document.querySelector('#region03');
+    const region = document.querySelectorAll('input[name=m-region]:checked');
     const category = document.querySelectorAll('input[name=m-category]:checked');
-
-    if (category.length == 0) {
+    
+    if(region.length == 0) {
+        alert('지역을 선택해주세요.');
+    } else if (category.length == 0) {
         alert('광고 분야를 선택해 주세요.');
     } else {
         const msg = confirm('수정하시겠습니까?');
@@ -710,7 +741,9 @@ function modifyFlag() {
             const formData = new FormData();
 
             formData.set('companysFlagIdx', document.querySelector('.companysFlagIdx').value);
-            formData.set('companysFlagRegion1', region.value);
+            for(let i = 0; i < region.length; i++) {
+                formData.append('companysFlagRegion', region[i].value);
+            }
 
             for (let i = 0; i < category.length; i++) {
                 formData.append('companysFlagCategory', category[i].value);

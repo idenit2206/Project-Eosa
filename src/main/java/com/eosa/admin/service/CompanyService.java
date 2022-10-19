@@ -370,7 +370,7 @@ public class CompanyService {
      * @return int
      */
     public int requestFlag(CompanysDTO companysDTO) {
-
+        log.info("companysDTO: {}", companysDTO.toString());
         int result = companyMapper.insertFlag(companysDTO);
 
         companyMapper.insertFlagRegion(companysDTO);

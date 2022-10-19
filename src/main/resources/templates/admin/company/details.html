@@ -399,12 +399,20 @@
                             </tr>
                             <tr>
                                 <td class="modal-th">광고 지역</td>
-                                <td class="modal-td">
-                                    <div class="select-wrap">
+                                <td class="modal-td" >
+                                    <!-- <div class="select-wrap">
                                         <input type="hidden" class="m-region-price" value="0">
                                         <select class="select select-sm" id="region03">
                                             <option th:each="list : ${regionList}" th:data-price="${list.regionPrice}" th:value="${list.regionName}" th:selected="${list.regionName} eq ${details.companysFlagRegion1}" th:text="${list.regionName}"></option>
                                         </select>
+                                    </div> -->
+                                    <div id="localRegion" class="checkbox-wrap">
+                                        <div class="dt-check-wrap" th:each="list : ${regionList}">
+                                            <input type="hidden" class="m-region-price-add" th:value="${details.flagPrice}">
+                                            <input type="hidden" class="m-region-price" th:value="${list.regionPrice}">
+                                            <input type="checkbox" th:id="|m-region${listStat.count}|" name="m-region" th:value="${list.regionName}" th:checked="${#strings.contains(details.companysFlagRegion1, list.regionName)}">
+                                            <label th:for="|m-region${listStat.count}|" th:text="${list.regionName}"></label>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
