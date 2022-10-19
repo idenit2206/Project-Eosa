@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.eosa.web.companys.entity.Companys;
 import com.eosa.web.companys.entity.SelectAllCompanysList;
 import com.eosa.web.companys.service.CompanysService;
 import com.eosa.web.requestcontract.entity.RequestContract;
@@ -110,6 +109,29 @@ public class RequestContractController {
             log.debug(rf.toString());
             rf.setRequestFormStatus("계약진행");
             detectiveRequestFormService.updateRequestFormByEntity(rf);
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(true);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(false);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
+
+    @PostMapping("/updateRequestContract")
+    public CustomResponseData updateRequestContract(
+        @RequestParam(value="requestFormIdx") Long requestFormIdx,
+        @RequestParam(value="requestContractContractId") String requestContractContractId
+    ) {
+        CustomResponseData result = new CustomResponseData();
+
+        int updateEntity = requestContractService.updateRequestContract(requestFormIdx, requestContractContractId);
+
+        if(updateEntity == 1) {
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem(true);
             result.setResponseDateTime(LocalDateTime.now());
