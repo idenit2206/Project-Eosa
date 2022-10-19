@@ -29,14 +29,18 @@ public class CompanysPremiumController {
      */
     @PostMapping("/insertCompanysPremium")
     public CustomResponseData insertCompanysPremium(
-            @RequestParam("companysName") String companysName,
-            @RequestParam("companysCeoName") String companysCeoName
+        @RequestParam("companysName") String companysName,
+        @RequestParam("companysCeoName") String companysCeoName
     ) {
         log.info("제휴협회 신청자명: {}, 신청자회사명: {}", companysName, companysCeoName);
         CustomResponseData result = new CustomResponseData();
 //        Parameter 조건에 해당하는 Companys가 DB에 존재하는지 확인
         Long searchCompanysIdx = companysService.selectCompanyIdxByComapnysNameAndCompanysCeoName(companysName.trim(), companysCeoName.trim());
+        CompanysPremium cp = null;
         if(searchCompanysIdx != null) {
+            cp = companysPremiumService.selectCompanysPremiumByCompanysNameCompanysCeoName(companysName.trim(), companysCeoName.trim());
+        }
+        if(cp == null) {
             log.info("[insertCompanyPremium] Premium 신청이 가능합니다. companysIdx: {}", String.valueOf(searchCompanysIdx));
             CompanysPremium entity = new CompanysPremium();
             entity.setCompanysIdx(searchCompanysIdx);
@@ -49,7 +53,7 @@ public class CompanysPremiumController {
             result.setResponseDateTime(LocalDateTime.now());
         }
         else {
-            log.info("[insertCompanyPremium] Premium 신청이 불가합니다.");
+            log.info("[insertCompanyPremium] Premium 신청이 불가합니다 이미 신청이 되어있습니다.");
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem(null);
             result.setResponseDateTime(LocalDateTime.now());

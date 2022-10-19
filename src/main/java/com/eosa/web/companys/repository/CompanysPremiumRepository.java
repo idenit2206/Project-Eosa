@@ -35,4 +35,7 @@ public interface CompanysPremiumRepository extends JpaRepository<CompanysPremium
     )
     List<SelectCompanys> selectAllCompanysPremium();
 
+    @Query(value="SELECT * FROM CompanysPremium C WHERE C.companysName = ?1 AND C.companysCeoName = ?2", nativeQuery = true)
+    CompanysPremium selectCompanysPremiumByCompanysNameCompanysCeoName(String companysName, String companysCeoName);
+
 }

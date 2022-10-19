@@ -43,8 +43,21 @@ public class CompanysPremiumService implements CompanysPremiumRepository {
     @Override
     public List<SelectCompanys> selectAllCompanysPremium() {
         return companysPremiumRepository.selectAllCompanysPremium();
-    }
+    }    
 
+    /**
+     * companysName과 companysCeoName 이 일치하는 CompanysPremium을 검색합니다
+     * @param companysName
+     * @param companysCeoName
+     * @return CompanysPremium
+     */
+    @Override
+    public CompanysPremium selectCompanysPremiumByCompanysNameCompanysCeoName(
+        String companysName,
+        String companysCeoName
+    ) {
+        return companysPremiumRepository.selectCompanysPremiumByCompanysNameCompanysCeoName(companysName, companysCeoName);
+    }
     
     /** 
      * @return List<CompanysPremium>
@@ -313,4 +326,5 @@ public class CompanysPremiumService implements CompanysPremiumRepository {
     public <S extends CompanysPremium, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return null;
     }
+
 }
