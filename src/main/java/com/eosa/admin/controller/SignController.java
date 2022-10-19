@@ -7,6 +7,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * packageName    : com.eosa.admin.controller
  * fileName       : SignController
@@ -28,15 +31,17 @@ public class SignController {
      * 사인 성공 컨트롤러
      *
      * @param model
+     * @param request
+     * @param response
      * @param requestContractIdx
      * @param requestFormIdx
      * @param path
      * @return String
      */
     @GetMapping("/sign/success")
-    public String successSign(Model model, @RequestParam long requestContractIdx, @RequestParam long requestFormIdx, @RequestParam(required = false) String path) {
+    public String successSign(Model model, HttpServletRequest request, HttpServletResponse response, @RequestParam long requestContractIdx, @RequestParam long requestFormIdx, @RequestParam(required = false) String path) {
 
-        return signService.successSign(model, requestContractIdx, requestFormIdx, path);
+        return signService.successSign(model, request, response, requestContractIdx, requestFormIdx, path);
     }
 
 }

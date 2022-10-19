@@ -5,6 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * packageName    : com.eosa.admin.service
  * fileName       : SignService
@@ -26,13 +30,39 @@ public class SignService {
      * 사인 성공 서비스
      *
      * @param model
+     * @param request
+     * @param response
      * @param requestContractIdx
      * @param requestFormIdx
      * @return String
      */
-    public String successSign(Model model, long requestContractIdx, long requestFormIdx, String path) {
+    public String successSign(Model model, HttpServletRequest request, HttpServletResponse response, long requestContractIdx, long requestFormIdx, String path) {
 
-        signMapper.updateTurn(requestContractIdx);
+        Cookie[] cookies = request.getCookies();
+        int visitor = 0;
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("visit")) {
+                    visitor = 1;
+
+                    if (cookie.getValue().contains(request.getParameter("requestContractIdx"))) {
+
+                    } else {
+                        cookie.setValue(cookie.getValue() + "_" + request.getParameter("requestContractIdx"));
+                        response.addCookie(cookie);
+                        signMapper.updateTurn(requestContractIdx);
+                    }
+
+                }
+            }
+        }
+
+        if (visitor == 0) {
+            Cookie cookie1 = new Cookie("visit", request.getParameter("requestContractIdx"));
+            response.addCookie(cookie1);
+            signMapper.updateTurn(requestContractIdx);
+        }
 
         int turn = signMapper.selectTurn(requestContractIdx);
 
