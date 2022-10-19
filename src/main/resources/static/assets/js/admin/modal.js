@@ -148,6 +148,7 @@ function requestDetailsModel() {
     const mCompany = modal.querySelector('.r-company');
     const mRegion = modal.querySelector('#region01');
     const mCategory = modal.querySelectorAll('input[name=r-category]');
+    const mCategory02 = modal.querySelector("#r-category");
     const mState = modal.querySelector('.r-state');
 
     const id = document.querySelectorAll('.requestFormIdx');
@@ -180,20 +181,29 @@ function requestDetailsModel() {
                     mState.options[j].selected = true;
                 }
             }
-
-            mCategory.forEach(c => {
-                c.checked = false;
-            })
-
-            const cate = category[i].value.split('|');
-            for (let j = 0; j < cate.length; j++) {
-                for (let k = 0; k < mCategory.length; k++) {
-
-                    if (mCategory[k].value == cate[j]) {
-                        mCategory[k].checked = true;
-                    }
-                }
+            
+            // console.log(category[i].value);
+            if(category[i].value.indexOf("|") != -1) {
+                let temp = category[i].value.split("|");
+                mCategory02.innerHTML = temp;
             }
+            else {
+                mCategory02.innerHTML = category[i].value;
+            }
+           
+            // mCategory.forEach(c => {
+            //     c.checked = false;
+            // })
+
+            // const cate = category[i].value.split('|');
+            // for (let j = 0; j < cate.length; j++) {
+            //     for (let k = 0; k < mCategory.length; k++) {
+
+            //         if (mCategory[k].value == cate[j]) {
+            //             mCategory[k].checked = true;
+            //         }
+            //     }
+            // }
         });
     };
 
