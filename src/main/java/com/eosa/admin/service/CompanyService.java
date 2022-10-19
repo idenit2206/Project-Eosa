@@ -355,6 +355,15 @@ public class CompanyService {
     }
 
     /**
+     * 업체 제휴협회 삭제 서비스
+     * @param idx
+     * @return
+     */
+    public int deletePremium(long idx) {
+        return companyMapper.deletePremium(idx);
+    }
+
+    /**
      * 업체 마패 신청 서비스
      *
      * @param companysDTO
@@ -432,6 +441,15 @@ public class CompanyService {
         companyMapper.updateAd(map);
 
         return companyMapper.cancelFlag(companysIdx);
+    }
+
+    /**
+     * 업체 마패 삭제 서비스
+     * @param companysFlagIdx
+     * @return
+     */
+    public int deleteFlag(long companysFlagIdx) {
+        return companyMapper.deleteFlag(companysFlagIdx);
     }
 
     /**

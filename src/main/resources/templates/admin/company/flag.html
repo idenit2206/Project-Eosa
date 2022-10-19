@@ -62,7 +62,7 @@
 
                     <tbody th:if="${count} ne 0">
                     <tr th:each="list : ${flagList}" th:onclick="|linkTo(event,'/admin/manage/company/details?companysIdx=${list.companysIdx}')|">
-                        <td class="check"><input type="checkbox" name="listCheck"></td>
+                        <td class="check"><input type="checkbox" class="companysFlagIdx" name="listCheck" th:value="${list.companysFlagIdx}"></td>
                         <td>
                             <span th:text="${list.companysName}"></span>
                         </td>
@@ -124,6 +124,28 @@
             listCheck();
             telFormat();
             new Table(document.querySelector('#main table'));
+
+            const btnDelete = document.querySelector(".btn-delete")
+            btnDelete.addEventListener("click", () => {
+                const formData = new FormData();
+                const listCheck = document.querySelectorAll('input[name=listCheck]');
+                const listChecked = document.querySelectorAll('input[name=listCheck]:checked');
+                const companysFlagIdx = document.querySelectorAll('.companysFlagIdx');
+
+                if (listChecked.length == 0) {
+                    alert('삭제할 항목을 선택해주세요.');
+                } else {
+                    const msg = confirm('선택한 항목을 삭제하시겠습니까?');
+                    if (msg) {
+                        for (let i = 0; i < listCheck.length; i++) {
+                            if (listCheck[i].checked) {
+                                formData.append('companysFlagIdx', companysFlagIdx[i].value);
+                                fetchApi('/admin/manage/company/flag/delete', 'post', formData, '삭제되었습니다.');
+                            }
+                        }
+                    }
+                }
+            })
         });
     </script>
 </th:block>

@@ -124,6 +124,13 @@ public interface CompanyMapper {
     int cancelPremium(long companysIdx);
 
     /**
+     * 업체 제휴협회 삭제 매퍼
+     * @param idx
+     * @return
+     */
+    int deletePremium(long idx);
+
+    /**
      * 업체 마패 신청 매퍼
      *
      * @param companysDTO
@@ -185,6 +192,13 @@ public interface CompanyMapper {
      * @return int
      */
     int cancelFlag(long companysIdx);
+
+    /**
+     * 업체 마패 삭제 매퍼
+     * @param companysFlagIdx
+     * @return
+     */
+    int deleteFlag(long companysFlagIdx);
 
     /**
      * 업체 광고 상태 변경 매퍼

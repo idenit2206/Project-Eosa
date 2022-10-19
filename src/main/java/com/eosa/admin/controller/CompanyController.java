@@ -185,6 +185,17 @@ public class CompanyController {
 
         return companyService.cancelPremium(companysIdx);
     }
+    
+    /**
+     * 업체 제휴협회 삭제 컨트롤러
+     * @param idx
+     * @return
+     */
+    @ResponseBody
+    @PostMapping("/premium/delete")
+    public int deletePremium(@RequestParam long idx) {
+        return companyService.deletePremium(idx);
+    }
 
     /**
      * 업체 마패 신청 컨트롤러
@@ -236,6 +247,17 @@ public class CompanyController {
     public int cancelFlag(@RequestParam long companysIdx) {
 
         return companyService.cancelFlag(companysIdx);
+    }
+
+    /**
+     * 업체 마패 삭제 컨트롤러
+     * @param companysFlagIdx
+     * @return
+     */
+    @ResponseBody
+    @PostMapping("/flag/delete")
+    public int deleteFlag(@RequestParam long companysFlagIdx) {
+        return companyService.deleteFlag(companysFlagIdx);
     }
 
     /**
