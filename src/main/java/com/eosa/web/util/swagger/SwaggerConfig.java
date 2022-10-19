@@ -27,7 +27,7 @@ public class SwaggerConfig {
             .useDefaultResponseMessages(false)
             .select()
             // swagger를 적용할 클래스 패키지 지정
-            .apis(RequestHandlerSelectors.basePackage(CONTROLLERS))
+            .apis(RequestHandlerSelectors.basePackage("com.eosa.admin"))
             // 해당 package 하위에 있는 모든 url을 지정
             .paths(PathSelectors.any())
             .build()
@@ -41,9 +41,9 @@ public class SwaggerConfig {
      */
     public ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-            .title("Detective")
+            .title("EOSA-ADMIN")
             .version("1.0")
-            .description("프로젝트 어사")
+            .description("프로젝트 어사[관리자]")
             .build();
     }
 
