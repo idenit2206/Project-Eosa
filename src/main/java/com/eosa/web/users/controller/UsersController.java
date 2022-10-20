@@ -88,6 +88,23 @@ public class UsersController {
     public String test01() throws UnknownHostException {
         return myDomain; 
     }
+
+    /**
+     * SMS인증코드 초기화 하는 메서드
+     * @param usersPhone
+     * @return
+     */
+    @PostMapping(value="/sign/beforeSendPhoneCheckMessage")
+    public CustomResponseData beforeSendPhoneCheckMessage(@RequestParam("usersPhone") String usersPhone) {
+        CustomResponseData result = new CustomResponseData();
+        smsCertificationService.removeAuthCode(usersPhone);
+
+        result.setStatusCode(HttpStatus.OK.value());
+        result.setResultItem(true);
+        result.setResponseDateTime(LocalDateTime.now());
+
+        return result;
+    }
     
     /** 
      * @param usersPhone
@@ -104,6 +121,7 @@ public class UsersController {
         // 하나의 K, V가 생성되면 동일한 K에 대한 V가 생성되지 않는 방식
         if(usersPhoneCheck != 1) {
             Message message = new Message();
+            
             String authCode = smsCertificationService.createCertificationCode(usersPhone);
             if(authCode != null) {
                 /* 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다. */
@@ -415,7 +433,7 @@ public class UsersController {
                 PrintWriter w = response.getWriter();
                 // w.write("<script>alert('"+msg+"');</script>");
                 // w.println("<script>alert('" + "이미 가입된 이메일 주소입니다." + "'); location.href='http://"+ myDomain + ":" + myUiPort + "/"+"';</script> ");
-                w.println("<script>alert('" + "이미 비회원으로 가입된 이메일 주소입니다." + "'); location.href='http://"+ myDomain + ":" + myUiPort + "/"+"';</script> ");
+                w.println("<script>alert('" + "이미 비회원으로 가입된 이메일 주소입니다." + "'); location.href='http://"+ myDomain + ":" + myUiPort + "/user/signin"+"';</script> ");
                 // response.sendRedirect("http://" + myDomain + ":" + myUiPort + "/");
                 w.flush();
                 w.close();          

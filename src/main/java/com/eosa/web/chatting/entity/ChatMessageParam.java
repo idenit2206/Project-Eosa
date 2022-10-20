@@ -17,7 +17,7 @@ public class ChatMessageParam {
     private String roomId;
     private String sender;
     private String message;
-    private String fileMessage;
+    private Object fileMessage;
     private MultipartFile file;
     private String sendDate;    
 

@@ -3,7 +3,6 @@ package com.eosa.web.users.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -14,7 +13,7 @@ import java.util.Map;
 @Service
 public class SmsCertificationService {
 
-    private static Map<String, String> authKeyList = new HashMap<>();
+    // private static Map<String, String> authKeyList = new HashMap<>();
     @Autowired private RedisTemplate<String, String> redisTemplate;
     
     /** 
@@ -29,13 +28,13 @@ public class SmsCertificationService {
         log.debug("[createCertificationCode] 인증코드 usersPhone: {}  code: {}", usersPhone, result);
 
         // // K, V가 생성되었다면 더 이상 생성 되지 않게 하는 방식
-        if(authKeyList.get(usersPhone) != null) {
+        if(redisTemplate.opsForValue().get(usersPhone) != null) {
             log.info("이미 인증번호가 생성되어있습니다.");
             return null;
         }
         else {
             log.info("새로운 인증번호 객체를 생성합니다. {} : {}", usersPhone, result);
-            authKeyList.put(usersPhone, result);
+            // authKeyList.put(usersPhone, result);
             savedAuthCode(usersPhone, result);
             return result;
         } 
@@ -87,7 +86,7 @@ public class SmsCertificationService {
     public void removeAuthCode(String usersPhone) {
         redisTemplate.delete(usersPhone);
         log.info("[savedAuthCode] 서버의 인증정보를 삭제합니다.");
-        authKeyList.remove(usersPhone);
+        // authKeyList.remove(usersPhone);
     }
 
 }

@@ -116,8 +116,6 @@ public class ChatMessageController {
 
         if((message.getMessageType()).equals(MessageType.FILE)) {
             // log.debug("sendMessage [FILE]: {}", message.toString());
-            log.info("[FILE] message: {}", message.toString());
-            log.info("[FILE] file: {}", message.getFile().getOriginalFilename());
             // chatMessageService.addMessage(message);
             
             ChatMessage entity = new ChatMessage();
