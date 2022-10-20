@@ -208,6 +208,7 @@ public class CompanysService implements CompanysRepository {
 
     
     /** 
+     * companysName과 companysCeoName이 일치하는 companysIdx를 출력하는 서비스
      * @param companysName
      * @param companysCeoName
      * @return Long

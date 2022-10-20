@@ -122,20 +122,20 @@ public class CompanysFlagController {
                 }
 
                 result.setStatusCode(HttpStatus.OK.value());
-                result.setResultItem("TRUE");
+                result.setResultItem(1);
                 result.setResponseDateTime(LocalDateTime.now());
             }
             else {
-                log.info("[마패업체신청] 마패업체 신청이 불가합니다. 신청자 정보 회사명: {}", companysFlag.getCompanysName());
+                log.info("[마패업체신청] 마패업체 신청이 이미 되어있습니다. 신청자 정보 회사명: {}", companysFlag.getCompanysName());
                 result.setStatusCode(HttpStatus.OK.value());
-                result.setResultItem("FALSE");
+                result.setResultItem(-1);
                 result.setResponseDateTime(LocalDateTime.now());
             }
         }
         else {
-            log.info("[마패업체신청] 마패업체 신청이 불가합니다. 신청자 정보 회사명: {}", companysFlag.getCompanysName());
+            log.info("[마패업체신청] 마패업체 신청이 불가합니다. 유효하지 않은 업체입니다.");
             result.setStatusCode(HttpStatus.OK.value());
-            result.setResultItem("FALSE");
+            result.setResultItem(0);
             result.setResponseDateTime(LocalDateTime.now());
         }
 
