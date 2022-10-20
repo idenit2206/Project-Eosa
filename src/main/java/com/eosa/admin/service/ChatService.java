@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,9 +84,15 @@ public class ChatService {
      */
     public String chatDetails(Model model, String roomId) {
         // log.debug("[chatDetails] auth: {}", auth.getName());
-
-        List<ChatDTO> list = chatMapper.selectChat(roomId);
-
+        List<ChatDTO> list = new ArrayList<>();
+        if(roomId != null) {
+            list = chatMapper.selectChat(roomId);
+        }
+        else {
+            log.info("[chatDetails] roomId is null");
+            list = null;
+        }
+        
         model.addAttribute("chatList", list);
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -112,8 +119,11 @@ public class ChatService {
         log.info("usersIdx: {}, companysIdx: {} 가 해당되는 채팅방의 대화내용을 불러옵니다.", usersIdx, companysIdx);
         String roomId = chatMapper.selectChatByUsersIdxCompanysIdx(usersIdx, companysIdx);
         
-        if(roomId.equals(null)) {
-            return "null";
+        // if(roomId.equals(null)) {
+        //     return "null";
+        // }
+        if(roomId == null) {
+            return null;
         }
         else {
             log.info("chatListFromRequestList] roomId: {}", roomId);

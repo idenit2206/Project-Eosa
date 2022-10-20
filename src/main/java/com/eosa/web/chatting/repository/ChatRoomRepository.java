@@ -25,7 +25,7 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
 //    public int createChatRoom(@Param("LiveChat") ChatRoom chatRoom);
 
     /**
-     * usersIdx가 일치하는 List<ChatRoom>을 출력
+     * usersIdx가 일치하는 List<ChatRoom>을 출력하는 레포지터리
      * @param usersIdx
      * @return List
      */
@@ -34,6 +34,15 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
         nativeQuery = true
     )
     List<ChatRoom> selectChatRoomListByUsersIdx(Long usersIdx);
+
+    /**
+     * usersIdx가 일치하는 Chatroom(차단대상 제외)을 출력하는 레포지터리
+     * @param usersIdx
+     * @param usersIdxBlocked
+     * @return
+     */
+    @Query(value = "SELECT * FROM ChatRoom c WHERE c.usersIdx = ?1 AND c.companysIdx != ?2", nativeQuery = true)
+    ChatRoom selectselectChatRoomListByUsersIdx02(Long usersIdx, Long usersIdxBlocked);
 
     @Query(
         value="SELECT * FROM ChatRoom c WHERE c.companysIdx =?1"

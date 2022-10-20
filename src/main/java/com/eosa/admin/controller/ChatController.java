@@ -4,6 +4,10 @@ import com.eosa.admin.service.ChatService;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -78,11 +82,18 @@ public class ChatController {
     public String chatListFromRequestList(
         Model model,
         @RequestParam String usersIdx,
-        @RequestParam String companysIdx
+        @RequestParam String companysIdx,
+        HttpServletResponse res
     ) {
         Long longUsersIdx = Long.parseLong(usersIdx);
         Long longCompanysIdx = Long.parseLong(companysIdx);
-        return chatService.chatListFromRequestList(model, longUsersIdx, longCompanysIdx);
+        String result = chatService.chatListFromRequestList(model, longUsersIdx, longCompanysIdx);
+        if(result != null) {
+            return result;
+        }
+        else {
+            return null;
+        }
         // return chatList(model, "client", "", 1);
     }
 

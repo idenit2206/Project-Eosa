@@ -12,7 +12,7 @@
             <h2 class="section_title">메시지</h2>
 
             <div class="form form--xxl">
-                <div class="tab_cont">
+                <div th:if="${chatList ne null}" class="tab_cont">
                     <fieldset class="fieldset">
                         <div class="msg-form">
                             <div class="msg-top">
@@ -41,6 +41,45 @@
                                 <div class="message-input">
                                     <textarea class="chatTextInput" id="message" type="text" th:readonly="${chatList[0].roomName ne '상담사'}"></textarea>
                                     <input class="chatSendBtn" id="sendBtn" type="button" onclick="sendMessage()" value="보내기" th:disabled="${chatList[0].roomName ne '상담사'}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="form__action bottom">
+                        <a th:href="@{/admin/manage/chat/list}" class="btn-normal">목록가기</a>
+                        <a th:href="@{/admin/manage/company/details(companysIdx=${chatList[0].companysIdx})}" class="btn-prime">업체 바로가기</a>
+                    </div>
+                </div>
+                <!-- -->
+                <div th:unless="${chatList ne null}" class="tab_cont">
+                    <fieldset class="fieldset">
+                        <div class="msg-form">
+                            <div class="msg-top">
+                                <span class="msg-company"></span>
+                                <span class="msg-roomId"></span>
+                                <span class="msg-client"></span>
+                            </div>
+
+                            <div class="msg-body chatBody">
+                                <div class="msg-wrap chatMessageBoard2">
+                                    <div class="">
+                                        <div class="msg-date">
+                                            <hr>
+                                            <span></span>
+                                            <hr>
+                                        </div>
+                                        <div>
+                                            <div class="msg-content" ></div>
+                                            <div class="msg-time">오후 8:20</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="msg-bottom chatMessageInput">
+                                <div class="message-input">
+                                    <textarea class="chatTextInput" id="message" type="text"></textarea>
+                                    <input class="chatSendBtn" id="sendBtn" type="button" onclick="sendMessage()" value="보내기"/>
                                 </div>
                             </div>
                         </div>

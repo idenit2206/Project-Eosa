@@ -20,8 +20,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.eosa.web.chatting.entity.ChatBlockList;
+import com.eosa.web.chatting.entity.ChatBlockParam;
 import com.eosa.web.chatting.entity.ChatRoom;
 import com.eosa.web.chatting.service.ChatRoomService;
+import com.eosa.web.companys.entity.Companys;
+import com.eosa.web.companys.entity.SelectAllCompanysList;
+import com.eosa.web.companys.service.CompanysService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,6 +37,7 @@ public class ChatRoomController {
     @Autowired private ChatRoomService chatRoomService;
     @Autowired private ChatMessageService chatMessageService;
     @Autowired private ChatBlockListService chatBlockListService;
+    @Autowired private CompanysService companysService;
 
 /** 
  * @return CustomResponseData
@@ -103,7 +108,7 @@ public class ChatRoomController {
     }
 
     /**
-     * usersIdx가 참가한 모든 채팅방의 목록을 출력합니다.
+     * usersIdx가 참가한 모든 채팅방의 목록을 출력하는 컨트롤러
      * @param usersIdx
      * @return
      */
@@ -132,7 +137,7 @@ public class ChatRoomController {
     }
 
     /**
-     * CompanysIdx가 일치하는 채팅방을 조회합니다.
+     * CompanysIdx가 일치하는 채팅방을 조회하는 컨트롤러
      * @param companysIdx
      * @return
      */
@@ -161,7 +166,7 @@ public class ChatRoomController {
     }
 
     /**
-     * 채팅방 입장을 위한 메서드
+     * 채팅방 입장을 위한 컨트롤러
      * @param roomId
      * @param usersName
      * @return
@@ -179,7 +184,7 @@ public class ChatRoomController {
     }
 
     /**
-     * 채팅방에 접속한 후 채팅룸 내부에서 접속을 갱신하는 메서드
+     * 채팅방에 접속한 후 채팅룸 내부에서 접속을 갱신하는 컨트롤러
      * @param roomId
      * @return
      */
@@ -250,6 +255,12 @@ public class ChatRoomController {
         return result;
     }
     
+    /**
+     * 읽음 상태를 갱신하는 컨트롤러
+     * @param roomId
+     * @param usersRole
+     * @return
+     */
     @PostMapping("/updateReadStatus")
     @ResponseBody
     public CustomResponseData updateReadStatus(
@@ -300,9 +311,42 @@ public class ChatRoomController {
      */
     @PostMapping("/addBlockList")
     @ResponseBody
-    public CustomResponseData blockUser(ChatBlockList chatBlockList) {
+    public CustomResponseData blockUser(ChatBlockParam chatBlockParam) {
         CustomResponseData result = new CustomResponseData();
-        ChatBlockList saveEntity = chatBlockListService.save(chatBlockList);
+        ChatBlockList entity = new ChatBlockList();
+        
+        // log.info("[addBlockList] param: {}", chatBlockParam.toString());
+        Long usersIdxBlocker = 0l;
+        Long usersIdxBlocked = 0l;
+
+        ChatRoom roomInfo = chatRoomService.selectChatRoomByChatRoomId(chatBlockParam.getRoomId());
+        if(chatBlockParam.getUsersRole().equals("CLIENT")) {            
+            SelectAllCompanysList companysInfo = companysService.selectCompanysByCompanysIdx(roomInfo.getCompanysIdx());
+            usersIdxBlocker = chatBlockParam.getUsersIdx();
+            usersIdxBlocked = companysInfo.getCompanysCeoIdx();
+            entity.setUsersIdxBlocker(usersIdxBlocker);
+            entity.setUsersIdxBlocked(usersIdxBlocked);
+            entity.setChatBlockListDate(LocalDateTime.now());
+        }
+        else if(chatBlockParam.getUsersRole().equals("DETECTIVE")) {
+            usersIdxBlocker = chatBlockParam.getUsersIdx();
+            usersIdxBlocked = roomInfo.getUsersIdx();
+            entity.setUsersIdxBlocker(usersIdxBlocker);
+            entity.setUsersIdxBlocked(usersIdxBlocked);
+            entity.setChatBlockListDate(LocalDateTime.now());
+        }
+
+        ChatBlockList checkEntity = chatBlockListService.selectByBlockerBlocked(usersIdxBlocker, usersIdxBlocked);
+        ChatBlockList saveEntity = null;
+
+        if(checkEntity == null) {
+            log.info("[chatBlockList] 새로운 chatBlockList를 추가합니다.");
+            saveEntity = chatBlockListService.save(entity);
+        }
+        else {
+            log.info("[chatBlockList] 이미 존재하는 chatBlockList 입니다.");
+            saveEntity = checkEntity;
+        }        
 
         if(saveEntity != null) {
             result.setStatusCode(HttpStatus.OK.value());

@@ -15,6 +15,7 @@ import java.util.function.Function;
 
 import javax.annotation.PostConstruct;
 
+import com.eosa.web.chatting.repository.ChatBlockListRepository;
 import com.eosa.web.chatting.repository.ChatRoomRepository;
 import com.eosa.web.companys.entity.SelectAllCompanysList;
 import com.eosa.web.companys.service.CompanysService;
@@ -28,6 +29,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.stereotype.Service;
 
+import com.eosa.web.chatting.entity.ChatBlockList;
 import com.eosa.web.chatting.entity.ChatRoom;
 
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +42,9 @@ public class ChatRoomService implements ChatRoomRepository {
     private Set<String> chatRoomIdList;
 
     @Autowired private UsersService usersService;
+    @Autowired private CompanysService companysService;
+    @Autowired private ChatRoomRepository chatRoomRepository;
+    @Autowired private ChatBlockListRepository chatBlockListRepository;
     
     @PostConstruct
     private void initChatRooms() {
@@ -54,10 +59,7 @@ public class ChatRoomService implements ChatRoomRepository {
     public void testAllFlush() {
         chatRooms.clear();
         chatRoomIdList.clear();
-    }    
-
-    @Autowired private ChatRoomRepository chatRoomRepository;
-    @Autowired private CompanysService companysService;
+    }
 
     /**
      * roomId가 일치하는 ChatRoom 찾기(Backend 서버 메모리에서) 서비스
@@ -150,7 +152,26 @@ public class ChatRoomService implements ChatRoomRepository {
      */
     @Override
     public List<ChatRoom> selectChatRoomListByUsersIdx(Long usersIdx) {
+        List<ChatBlockList> blockList = chatBlockListRepository.selectChatBlockListsByBlocker(usersIdx);
+        // List<Long> blockedList = new ArrayList<>();
+        // if(blockList != null) {
+        //     for(int i = 0; i < blockList.size(); i++) {
+        //         blockedList.add(blockList.get(i).getUsersIdxBlocked());
+        //     }
+        // }
+
+        // List<ChatRoom> result = new ArrayList<>();
+        // if(blockedList == null) {
+        //     result = chatRoomRepository.selectChatRoomListByUsersIdx(usersIdx);
+        // }
+        // else {
+        //     for(int i = 0; i < blockedList.size(); i++) {
+        //         ChatRoom r = chatRoomRepository.selectselectChatRoomListByUsersIdx02(usersIdx, blockedList);
+        //     }
+        //     result.add()
+        // }
         List<ChatRoom> result = chatRoomRepository.selectChatRoomListByUsersIdx(usersIdx);
+        
         for(int i = 0; i < result.size(); i++) {
            chatRoomIdList.add(result.get(i).getRoomId());
         }
@@ -573,6 +594,12 @@ public class ChatRoomService implements ChatRoomRepository {
     @Override
     public int changeReadStatusReadFromDetective(String roomId) {
         return chatRoomRepository.changeReadStatusReadFromDetective(roomId);
+    }
+
+    @Override
+    public ChatRoom selectselectChatRoomListByUsersIdx02(Long usersIdx, Long usersIdxBlocked) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 

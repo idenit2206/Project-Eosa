@@ -30,6 +30,17 @@ public class ChatBlockListService implements ChatBlockListRepository {
         return chatBlockListRepository.save(entity);
     }
 
+    /**
+     * usersIdxBlocker, usersIdxBlocked 가 일치하는 Entity 조회
+     * @param usersIdxBlocker
+     * @param usersIdxBlocked
+     * @return
+     */
+    @Override
+    public ChatBlockList selectByBlockerBlocked(Long usersIdxBlocker, Long usersIdxBlocked) {
+        return chatBlockListRepository.selectByBlockerBlocked(usersIdxBlocker, usersIdxBlocked);
+    }
+
     @Override
     public List<ChatBlockList> findAll() {
         // TODO Auto-generated method stub
@@ -201,6 +212,12 @@ public class ChatBlockListService implements ChatBlockListRepository {
     @Override
     public <S extends ChatBlockList, R> R findBy(Example<S> example,
             Function<FetchableFluentQuery<S>, R> queryFunction) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<ChatBlockList> selectChatBlockListsByBlocker(Long usersIdxBlocker) {
         // TODO Auto-generated method stub
         return null;
     }
