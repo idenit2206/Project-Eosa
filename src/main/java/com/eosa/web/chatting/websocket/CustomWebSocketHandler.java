@@ -6,7 +6,13 @@ import com.eosa.web.chatting.service.ChatMessageService;
 import com.eosa.web.chatting.service.ChatRoomService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.ByteBuffer;
+
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.BinaryMessage;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
@@ -35,6 +41,11 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
 ////        session.sendMessage(tm);
 //        ChatMessage chatMessage = objectMapper.readValue(payload, ChatMessage.class);
 //        ChatRoom room = chatRoomService.findChatRoomByRoomId(chatMessage.getRoomId());
+    }
+
+    @Override
+    protected void handleBinaryMessage(WebSocketSession session, BinaryMessage message) {
+        ByteBuffer byteBuffer = message.getPayload();
     }
 
 }

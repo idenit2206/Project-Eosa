@@ -36,30 +36,37 @@ public class CompanysPremiumController {
         CustomResponseData result = new CustomResponseData();
 //        Parameter 조건에 해당하는 Companys가 DB에 존재하는지 확인
         Long searchCompanysIdx = companysService.selectCompanyIdxByComapnysNameAndCompanysCeoName(companysName.trim(), companysCeoName.trim());
-        CompanysPremium cp = null;
+        log.info("searchCompanysIdx: {}", searchCompanysIdx);
+        CompanysPremium cp = null;        
         
         if(searchCompanysIdx != null) {
             cp = companysPremiumService.selectCompanysPremiumByCompanysNameCompanysCeoName(companysName.trim(), companysCeoName.trim());
-        }
-        
-        if(cp == null) {
-            log.info("[insertCompanyPremium] Premium 신청이 가능합니다. companysIdx: {}", String.valueOf(searchCompanysIdx));
-            CompanysPremium entity = new CompanysPremium();
-            entity.setCompanysIdx(searchCompanysIdx);
-            entity.setCompanysName(companysName);
-            entity.setCompanysCeoName(companysCeoName);
-            CompanysPremium insertData = companysPremiumService.save(entity);
-
-            result.setStatusCode(HttpStatus.OK.value());
-            result.setResultItem(insertData);
-            result.setResponseDateTime(LocalDateTime.now());
+            if(cp == null) {
+                log.info("[insertCompanyPremium] Premium 신청이 가능합니다. companysIdx: {}", String.valueOf(searchCompanysIdx));
+                CompanysPremium entity = new CompanysPremium();
+                entity.setCompanysIdx(searchCompanysIdx);
+                entity.setCompanysName(companysName);
+                entity.setCompanysCeoName(companysCeoName);
+                CompanysPremium insertData = companysPremiumService.save(entity);
+    
+                result.setStatusCode(HttpStatus.OK.value());
+                result.setResultItem(1);
+                result.setResponseDateTime(LocalDateTime.now());
+            }
+            else {
+                log.info("[insertCompanyPremium] Premium 신청이 불가합니다 이미 신청이 되어있습니다.");
+                result.setStatusCode(HttpStatus.OK.value());
+                result.setResultItem(-1);
+                result.setResponseDateTime(LocalDateTime.now());
+            }
         }
         else {
-            log.info("[insertCompanyPremium] Premium 신청이 불가합니다 이미 신청이 되어있습니다.");
+            log.info("[insertCompanyPremium] Premium 신청이 불가합니다 존재하지 않은 업체입니다.");
             result.setStatusCode(HttpStatus.OK.value());
-            result.setResultItem(null);
+            result.setResultItem(0);
             result.setResponseDateTime(LocalDateTime.now());
-        }
+        }        
+        
 
         return result;
     }

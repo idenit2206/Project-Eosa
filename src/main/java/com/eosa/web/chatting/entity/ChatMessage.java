@@ -3,8 +3,6 @@ package com.eosa.web.chatting.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @Entity

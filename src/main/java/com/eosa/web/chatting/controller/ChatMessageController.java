@@ -17,6 +17,7 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.*;
 
 import com.eosa.web.chatting.entity.ChatMessage;
+import com.eosa.web.chatting.entity.ChatMessageParam;
 import com.eosa.web.chatting.entity.ChatRoom;
 import com.eosa.web.chatting.entity.MessageType;
 
@@ -48,7 +49,7 @@ public class ChatMessageController {
      * @param message
      */
     @MessageMapping("/chat/message")
-    public void sendMessage(ChatMessage message) {
+    public void sendMessage(ChatMessageParam message) {
         log.info("Message debug: {}", message.toString());
         String senderRole = message.getSender();
         ChatRoom roomInfo = chatRoomService.selectChatRoomByChatRoomId(message.getRoomId()); 
@@ -67,7 +68,15 @@ public class ChatMessageController {
             log.debug("sendMessage [ENTER]: {}", message.toString());
             message.setMessage(message.getSender() + "님이 입장했습니다.");
             // chatMessageService.addMessage(message);
-            chatMessageService.save(message);
+
+            ChatMessage entity = new ChatMessage();
+            entity.setMessageType(message.getMessageType());
+            entity.setRoomId(message.getRoomId());
+            entity.setMessage(message.getMessage());
+            entity.setSender(message.getSender());
+            entity.setSendDate(message.getSendDate());
+
+            chatMessageService.save(entity);
         }
 
         if((message.getMessageType()).equals(MessageType.TALK)) {
@@ -94,20 +103,46 @@ public class ChatMessageController {
                     e.printStackTrace();
                 }
             }
-            chatMessageService.save(message);
+            
+            ChatMessage entity = new ChatMessage();
+            entity.setMessageType(message.getMessageType());
+            entity.setRoomId(message.getRoomId());
+            entity.setMessage(message.getMessage());
+            entity.setSender(message.getSender());
+            entity.setSendDate(message.getSendDate());
+
+            chatMessageService.save(entity);
         }
 
         if((message.getMessageType()).equals(MessageType.FILE)) {
-            log.debug("sendMessage [FILE]: {}", message.toString());
+            // log.debug("sendMessage [FILE]: {}", message.toString());
+            log.info("[FILE] message: {}", message.toString());
+            log.info("[FILE] file: {}", message.getFile().getOriginalFilename());
             // chatMessageService.addMessage(message);
-            chatMessageService.save(message);
+            
+            ChatMessage entity = new ChatMessage();
+            entity.setMessageType(message.getMessageType());
+            entity.setRoomId(message.getRoomId());
+            entity.setMessage(message.getMessage());
+            entity.setSender(message.getSender());
+            entity.setSendDate(message.getSendDate());
+
+            chatMessageService.save(entity);
         }
 
         if((message.getMessageType()).equals(MessageType.LEAVE)) {
             message.setMessage(message.getSender() + "님이 퇴장했습니다.");
             log.debug("sendMessage [LEAVE]: {}", message.toString());
             // chatMessageService.addMessage(message);
-            chatMessageService.save(message);
+            
+            ChatMessage entity = new ChatMessage();
+            entity.setMessageType(message.getMessageType());
+            entity.setRoomId(message.getRoomId());
+            entity.setMessage(message.getMessage());
+            entity.setSender(message.getSender());
+            entity.setSendDate(message.getSendDate());
+
+            chatMessageService.save(entity);
         }    
 
         sendingOperations.convertAndSend("/topic/chat/room/" + message.getRoomId(), message);
