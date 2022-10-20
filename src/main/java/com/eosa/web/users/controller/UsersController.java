@@ -414,7 +414,8 @@ public class UsersController {
                 response.setContentType("text/html; charset=utf-8");
                 PrintWriter w = response.getWriter();
                 // w.write("<script>alert('"+msg+"');</script>");
-                w.println("<script>alert('" + "이미 가입된 이메일 주소입니다." + "'); location.href='http://"+ myDomain + ":" + myUiPort + "/"+"';</script> ");
+                // w.println("<script>alert('" + "이미 가입된 이메일 주소입니다." + "'); location.href='http://"+ myDomain + ":" + myUiPort + "/"+"';</script> ");
+                w.println("<script>alert('" + "이미 비회원으로 가입된 이메일 주소입니다." + "'); location.href='http://"+ myDomain + ":" + myUiPort + "/"+"';</script> ");
                 // response.sendRedirect("http://" + myDomain + ":" + myUiPort + "/");
                 w.flush();
                 w.close();          
