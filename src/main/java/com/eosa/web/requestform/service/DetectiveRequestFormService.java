@@ -136,7 +136,7 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
             }
 
             entity.setRequestFormAcceptDate(LocalDateTime.now());
-            entity.setRequestFormStatus("계약진행"); 
+            entity.setRequestFormStatus("계약진행");
         }
         else if(entity.getRequestFormStatus().equals("임무진행")) { 
             if(clienttoken != null) {

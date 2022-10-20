@@ -69,8 +69,8 @@ public class DetectiveRequestFormController {
             @RequestParam("companysIdx") Long companysIdx) {
         // log.debug("usersIdx: {}", companysIdx);
         CustomResponseData result = new CustomResponseData();
-        // List<SelectRequestFormList> list = detectiveRequestFormService.selectAllDetectiveRequestFormListByCompanysIdxOrderByDESC(companysIdx);
-        List<SelectRequestFormList> list = detectiveRequestFormBackupService.selectAllDetectiveRequestFormListByCompanysIdxOrderByDESC(companysIdx);
+        List<SelectRequestFormList> list = detectiveRequestFormService.selectAllDetectiveRequestFormListByCompanysIdxOrderByDESC(companysIdx);
+        // List<SelectRequestFormList> list = detectiveRequestFormBackupService.selectAllDetectiveRequestFormListByCompanysIdxOrderByDESC(companysIdx);
 
         if (list.size() != 0) {
             result.setStatusCode(HttpStatus.OK.value());

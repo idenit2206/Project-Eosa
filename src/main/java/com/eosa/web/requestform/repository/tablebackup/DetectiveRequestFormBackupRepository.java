@@ -86,16 +86,22 @@ public interface DetectiveRequestFormBackupRepository extends JpaRepository<Requ
 
     @Query(
         value =
-        "SELECT R.requestFormIdx, R.usersIdx, R.companysIdx, R.requestFormRegion1, R.requestFormChannel, R.requestFormStatus, " +
+        "SELECT " + 
+        "R.requestFormIdx, R.usersIdx, R.companysIdx, R.requestFormRegion1, R.requestFormChannel, R.requestFormStatus, " +
         "R.requestFormStatusChangeDate, " +
         "R.requestFormDate, R.requestConsultDate, R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage, " +
         "R.requestFormClientReadState, R.requestFormClientReadDate, " +
         "R.requestFormDetectiveReadState, R.requestFormDetectiveReadDate, " +
         "GROUP_CONCAT(RFC.requestFormCategoryValue) AS requestFormCategoryValue " +
         "FROM RequestFormBackup R " +
-        "LEFT JOIN RequestFormCategoryBackup RFC on R.requestFormIdx = RFC.requestFormIdx " +
+        "LEFT JOIN RequestFormCategoryBackup RFC on R.requestFormIdx = RFC.requestFormBackupIdx " +
         "WHERE R.requestFormIdx = ?1 " +
-        "GROUP BY R.requestFormIdx, R.usersIdx, R.companysIdx, R.requestFormRegion1, R.requestFormChannel, R.requestFormStatus, R.requestFormDate, R.requestConsultDate, R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage"
+        "GROUP BY " +
+        "R.requestFormIdx, R.usersIdx, R.companysIdx, R.requestFormRegion1, R.requestFormChannel, R.requestFormStatus, " +
+        "R.requestFormStatusChangeDate, " +
+        "R.requestFormDate, R.requestConsultDate, R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage, " +
+        "R.requestFormClientReadState, R.requestFormClientReadDate, " +
+        "R.requestFormDetectiveReadState, R.requestFormDetectiveReadDate"
         ,nativeQuery = true
     )
     RequestFormBackup selectRequestFormByRequestFormIdx(Long requestFormIdx);

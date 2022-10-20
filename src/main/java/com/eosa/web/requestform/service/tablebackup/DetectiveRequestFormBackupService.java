@@ -38,6 +38,7 @@ public class DetectiveRequestFormBackupService implements DetectiveRequestFormBa
     private final FirebaseCloudMessage firebaseCloudMessage; 
     
     /** 
+     * requestFormIdx가 일치하는 RequestFormBackup을 출력하는 서비스
      * @param requestFormIdx
      * @return RequestForm
      */
@@ -107,21 +108,26 @@ public class DetectiveRequestFormBackupService implements DetectiveRequestFormBa
         Long usersIdx = entity.getUsersIdx();
         
         if(entity.getRequestFormStatus().equals("의뢰거절")) {
+            log.info("[BACKUP] requestFormIdx: {}, 진행상태: {}", entity.getRequestFormIdx(), entity.getRequestFormStatus());
             entity.setRequestFormCompDate(LocalDateTime.now()); 
         }
         else if(entity.getRequestFormStatus().equals("의뢰대기")) {
+            log.info("[BACKUP] requestFormIdx: {}, 진행상태: {}", entity.getRequestFormIdx(), entity.getRequestFormStatus());
         }
 
         else if(entity.getRequestFormStatus().equals("계약진행")) {
+            log.info("[BACKUP] requestFormIdx: {}, 진행상태: {}", entity.getRequestFormIdx(), entity.getRequestFormStatus());
             entity.setRequestFormAcceptDate(LocalDateTime.now());
             entity.setRequestFormStatus("계약진행"); 
         }
         else if(entity.getRequestFormStatus().equals("임무진행")) {
+            log.info("[BACKUP] requestFormIdx: {}, 진행상태: {}", entity.getRequestFormIdx(), entity.getRequestFormStatus());
             entity.setRequestFormAcceptDate(LocalDateTime.now()); 
         }
         else if(entity.getRequestFormStatus().equals("임무완료")) { 
-            LocalDateTime requestFormAcceptDate = detectiveRequestFormBackupRepository.selectRequestFormByRequestFormIdx(entity.getRequestFormIdx()).getRequestFormAcceptDate();
-            entity.setRequestFormAcceptDate(requestFormAcceptDate);
+            log.info("[BACKUP] requestFormIdx: {}, 진행상태: {}", entity.getRequestFormIdx(), entity.getRequestFormStatus());
+            // LocalDateTime requestFormAcceptDate = detectiveRequestFormBackupRepository.selectRequestFormByRequestFormIdx(entity.getRequestFormIdx()).getRequestFormAcceptDate();
+            // entity.setRequestFormAcceptDate(requestFormAcceptDate);
             entity.setRequestFormCompDate(LocalDateTime.now());
         }
         return detectiveRequestFormBackupRepository.updateRequestFormByEntity(entity);

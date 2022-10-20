@@ -331,8 +331,8 @@ public class RequestFormController {
     ) {
         log.info("[selectAllRequestFormListByUsersIdxOrderByDESC] usersIdx: {}", usersIdx);
         CustomResponseData result = new CustomResponseData();
-        // List<SelectRequestFormList> list = requestFormService.selectAllRequestFormListByUsersIdxOrderByRequestFormDateDESC(usersIdx);
-        List<SelectRequestFormList> list = requestFormBackupService.selectAllRequestFormListByUsersIdxOrderByRequestFormDateDESC(usersIdx);
+        List<SelectRequestFormList> list = requestFormService.selectAllRequestFormListByUsersIdxOrderByRequestFormDateDESC(usersIdx);
+        // List<SelectRequestFormList> list = requestFormBackupService.selectAllRequestFormListByUsersIdxOrderByRequestFormDateDESC(usersIdx);
 
 
         if(list.size() != 0) {
