@@ -78,50 +78,59 @@ public class CompanysFlagController {
         // log.info("insertCompanysFlag: {}", companysFlag.toString());
         Long companysIdx = companysService.selectCompanyIdxByComapnysNameAndCompanysCeoName(companysFlag.getCompanysName(), companysFlag.getCompanysCeoName());
         if(companysIdx != null) {
-            companysFlag.setCompanysIdx(companysIdx);
-            log.info("[마패업체신청] 마패업체 신청이 가능합니다. 신청자 정보 회사명: {}", companysFlag.getCompanysName());
-            // log.info("insertCompanysFlag_Second: {}", companysFlag.toString());
-            List<String> flagRegion1s = stringsToArray(companysFlag.getFlagRegion1());
-            List<String> flagRegion2s = stringsToArray(companysFlag.getFlagRegion2());
-            List<String> companysFlagCategorys =  stringsToArray(companysFlagCategory.getCompanysFlagCategory());
+            CompanysFlag cf = companysFlagService.selectCompanysFlagByCompanysIdx(companysIdx);
+            if(cf == null) {
+                companysFlag.setCompanysIdx(companysIdx);
+                log.info("[마패업체신청] 마패업체 신청이 가능합니다. 신청자 정보 회사명: {}", companysFlag.getCompanysName());
+                // log.info("insertCompanysFlag_Second: {}", companysFlag.toString());
+                List<String> flagRegion1s = stringsToArray(companysFlag.getFlagRegion1());
+                List<String> flagRegion2s = stringsToArray(companysFlag.getFlagRegion2());
+                List<String> companysFlagCategorys =  stringsToArray(companysFlagCategory.getCompanysFlagCategory());
 
-            CompanysFlag insertCompanysFlag = companysFlagService.save(companysFlag);
-            int insertFlagRegionResult = 0;
-            int insertFlagCategoryResult = 0;
+                CompanysFlag insertCompanysFlag = companysFlagService.save(companysFlag);
+                int insertFlagRegionResult = 0;
+                int insertFlagCategoryResult = 0;
 
-            while(flagRegion2s.size() != flagRegion1s.size()) {
-                flagRegion2s.add("null");
+                while(flagRegion2s.size() != flagRegion1s.size()) {
+                    flagRegion2s.add("null");
+                }
+
+                for(int i = 0; i < flagRegion1s.size(); i++) {
+                    CompanysFlagRegion cfr = new CompanysFlagRegion();
+                    cfr.setCompanysFlagIdx(insertCompanysFlag.getCompanysFlagIdx());
+                    cfr.setCompanysFlagRegion1(flagRegion1s.get(i).trim());
+                    if(flagRegion2s.get(i) == null) {
+                        cfr.setCompanysFlagRegion2(null);
+                    }
+                    else {
+                        cfr.setCompanysFlagRegion2(flagRegion2s.get(i).trim());
+                    }
+                    CompanysFlagRegion insertFlagRegion = companysFlagRegionService.save(cfr);
+                    if(insertFlagRegion != null) {
+                        insertFlagRegionResult = 1;
+                    }
+                }
+
+                for(int i = 0; i < companysFlagCategorys.size(); i++) {
+                    CompanysFlagCategory cfc = new CompanysFlagCategory();
+                    cfc.setCompanysFlagIdx(insertCompanysFlag.getCompanysFlagIdx());
+                    cfc.setCompanysFlagCategory(companysFlagCategorys.get(i));
+                    CompanysFlagCategory insertFlagCategory = companysFlagCategoryService.save(cfc);
+                    if(insertFlagCategory != null) {
+                        insertFlagCategoryResult = 1;
+                    }
+                }
+
+                result.setStatusCode(HttpStatus.OK.value());
+                result.setResultItem("TRUE");
+                result.setResponseDateTime(LocalDateTime.now());
             }
-
-            for(int i = 0; i < flagRegion1s.size(); i++) {
-                CompanysFlagRegion cfr = new CompanysFlagRegion();
-                cfr.setCompanysFlagIdx(insertCompanysFlag.getCompanysFlagIdx());
-                cfr.setCompanysFlagRegion1(flagRegion1s.get(i).trim());
-                if(flagRegion2s.get(i) == null) {
-                    cfr.setCompanysFlagRegion2(null);
-                }
-                else {
-                    cfr.setCompanysFlagRegion2(flagRegion2s.get(i).trim());
-                }
-                CompanysFlagRegion insertFlagRegion = companysFlagRegionService.save(cfr);
-                if(insertFlagRegion != null) {
-                    insertFlagRegionResult = 1;
-                }
+            else {
+                log.info("[마패업체신청] 마패업체 신청이 불가합니다. 신청자 정보 회사명: {}", companysFlag.getCompanysName());
+                result.setStatusCode(HttpStatus.OK.value());
+                result.setResultItem("FALSE");
+                result.setResponseDateTime(LocalDateTime.now());
             }
-
-            for(int i = 0; i < companysFlagCategorys.size(); i++) {
-                CompanysFlagCategory cfc = new CompanysFlagCategory();
-                cfc.setCompanysFlagIdx(insertCompanysFlag.getCompanysFlagIdx());
-                cfc.setCompanysFlagCategory(companysFlagCategorys.get(i));
-                CompanysFlagCategory insertFlagCategory = companysFlagCategoryService.save(cfc);
-                if(insertFlagCategory != null) {
-                    insertFlagCategoryResult = 1;
-                }
-            }
-
-            result.setStatusCode(HttpStatus.OK.value());
-            result.setResultItem("TRUE");
-            result.setResponseDateTime(LocalDateTime.now());
         }
         else {
             log.info("[마패업체신청] 마패업체 신청이 불가합니다. 신청자 정보 회사명: {}", companysFlag.getCompanysName());

@@ -33,4 +33,7 @@ public interface CompanysFlagRepository extends JpaRepository<CompanysFlag, Long
     )
     List<SelectCompanys> selectAllCompanysFlag();
 
+    @Query(value = "SELECT * FROM CompanysFlag WHERE companysIdx = ?1", nativeQuery = true)
+    CompanysFlag selectCompanysFlagByCompanysIdx(Long companysIdx);
+
 }

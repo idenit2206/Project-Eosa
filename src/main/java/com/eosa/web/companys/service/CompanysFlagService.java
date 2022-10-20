@@ -26,6 +26,7 @@ public class CompanysFlagService implements CompanysFlagRepository {
 
     
     /** 
+     * companysFlag를 저장하는 서비스
      * @param entity
      * @return S
      */
@@ -39,11 +40,20 @@ public class CompanysFlagService implements CompanysFlagRepository {
 
     
     /** 
+     * 모든 CompanysFlag를 조회하는 서비스
      * @return List<SelectCompanys>
      */
     @Override
     public List<SelectCompanys> selectAllCompanysFlag() {
         return companysFlagRepository.selectAllCompanysFlag();
+    }
+
+    /**
+     * companysIdx가 일치하는 CompanysFlag를 조회하는 서비스
+     */
+    @Override
+    public CompanysFlag selectCompanysFlagByCompanysIdx(Long companysIdx) {
+        return companysFlagRepository.selectCompanysFlagByCompanysIdx(companysIdx);
     }
 
     
