@@ -407,10 +407,11 @@
                                         </select>
                                     </div> -->
                                     <div id="localRegion" class="checkbox-wrap">
-                                        <div class="dt-check-wrap" th:each="list : ${regionList}">
+                                        <div class="dt-check-wrap" th:if="${regionList} ne null" th:each="list : ${regionList}">
                                             <input type="hidden" class="m-region-price-add" th:value="${details.flagPrice}">
                                             <input type="hidden" class="m-region-price" th:value="${list.regionPrice}">
-                                            <input type="checkbox" th:id="|m-region${listStat.count}|" name="m-region" th:value="${list.regionName}" th:checked="${#strings.contains(details.companysFlagRegion1, list.regionName)}">
+                                            <!-- <input type="checkbox" th:id="|m-region${listStat.count}|" name="m-region" th:value="${list.regionName}" th:checked="${#strings.contains(details.companysFlagRegion1, list.regionName)}"> -->
+                                            <input type="checkbox" th:id="|m-region${listStat.count}|" name="m-region" th:value="${list.regionName}">
                                             <label th:for="|m-region${listStat.count}|" th:text="${list.regionName}"></label>
                                         </div>
                                     </div>
