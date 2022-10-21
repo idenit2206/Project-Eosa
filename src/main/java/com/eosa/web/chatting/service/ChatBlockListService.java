@@ -41,6 +41,14 @@ public class ChatBlockListService implements ChatBlockListRepository {
         return chatBlockListRepository.selectByBlockerBlocked(usersIdxBlocker, usersIdxBlocked);
     }
 
+    /**
+     * chatBlockListIdx와 일치하는 chatBlockList를 삭제하는 서비스
+     */
+    @Override
+    public int deleteChatBlockListByChatBlockListIdx(Long chatBlockListIdx) {
+        return chatBlockListRepository.deleteChatBlockListByChatBlockListIdx(chatBlockListIdx);
+    }
+
     @Override
     public List<ChatBlockList> findAll() {
         // TODO Auto-generated method stub
@@ -163,8 +171,7 @@ public class ChatBlockListService implements ChatBlockListRepository {
 
     @Override
     public void delete(ChatBlockList entity) {
-        // TODO Auto-generated method stub
-        
+        chatBlockListRepository.delete(entity);
     }
 
     @Override

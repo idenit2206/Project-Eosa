@@ -314,6 +314,7 @@ public class ChatRoomController {
     public CustomResponseData blockUser(ChatBlockParam chatBlockParam) {
         CustomResponseData result = new CustomResponseData();
         ChatBlockList entity = new ChatBlockList();
+        int resultStatus = 0;
         
         // log.info("[addBlockList] param: {}", chatBlockParam.toString());
         Long usersIdxBlocker = 0l;
@@ -342,13 +343,73 @@ public class ChatRoomController {
         if(checkEntity == null) {
             log.info("[chatBlockList] 새로운 chatBlockList를 추가합니다.");
             saveEntity = chatBlockListService.save(entity);
+            resultStatus = 1;
         }
         else {
             log.info("[chatBlockList] 이미 존재하는 chatBlockList 입니다.");
             saveEntity = checkEntity;
+            resultStatus = -1;
         }        
 
-        if(saveEntity != null) {
+        if(resultStatus == 1) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(resultStatus);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else if(resultStatus == 0) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(0);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else if(resultStatus == -1) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(resultStatus);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.NOT_FOUND.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
+
+    /**
+     * 채팅 차단 여부를 조회하는 컨트롤러
+     * @param chatBlockParam
+     * @return
+     */
+    @PostMapping("/selectBlockList")
+    @ResponseBody
+    public CustomResponseData selectBlockUser(ChatBlockParam chatBlockParam) {
+        CustomResponseData result = new CustomResponseData();
+        ChatBlockList entity = new ChatBlockList();
+        
+        // log.info("[addBlockList] param: {}", chatBlockParam.toString());
+        Long usersIdxBlocker = 0l;
+        Long usersIdxBlocked = 0l;
+
+        ChatRoom roomInfo = chatRoomService.selectChatRoomByChatRoomId(chatBlockParam.getRoomId());
+        if(chatBlockParam.getUsersRole().equals("CLIENT")) {            
+            SelectAllCompanysList companysInfo = companysService.selectCompanysByCompanysIdx(roomInfo.getCompanysIdx());
+            usersIdxBlocker = chatBlockParam.getUsersIdx();
+            usersIdxBlocked = companysInfo.getCompanysCeoIdx();
+            entity.setUsersIdxBlocker(usersIdxBlocker);
+            entity.setUsersIdxBlocked(usersIdxBlocked);
+            entity.setChatBlockListDate(LocalDateTime.now());
+        }
+        else if(chatBlockParam.getUsersRole().equals("DETECTIVE")) {
+            usersIdxBlocker = chatBlockParam.getUsersIdx();
+            usersIdxBlocked = roomInfo.getUsersIdx();
+            entity.setUsersIdxBlocker(usersIdxBlocker);
+            entity.setUsersIdxBlocked(usersIdxBlocked);
+            entity.setChatBlockListDate(LocalDateTime.now());
+        }
+
+        ChatBlockList checkEntity = chatBlockListService.selectByBlockerBlocked(usersIdxBlocker, usersIdxBlocked);
+
+        if(checkEntity != null) {
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem(true);
             result.setResponseDateTime(LocalDateTime.now());
@@ -356,6 +417,78 @@ public class ChatRoomController {
         else {
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem(false);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
+
+    /**
+     * 채팅 차단을 해제하는 컨트롤러
+     * @param ChatBlockList
+     * @return
+     */
+    @PostMapping("/deleteBlockList")
+    @ResponseBody
+    public CustomResponseData deleteblockUser(ChatBlockParam chatBlockParam) {
+        CustomResponseData result = new CustomResponseData();
+        ChatBlockList entity = new ChatBlockList();
+        int resultStatus = 0;
+        
+        // log.info("[addBlockList] param: {}", chatBlockParam.toString());
+        Long usersIdxBlocker = 0l;
+        Long usersIdxBlocked = 0l;
+
+        ChatRoom roomInfo = chatRoomService.selectChatRoomByChatRoomId(chatBlockParam.getRoomId());
+        if(chatBlockParam.getUsersRole().equals("CLIENT")) {            
+            SelectAllCompanysList companysInfo = companysService.selectCompanysByCompanysIdx(roomInfo.getCompanysIdx());
+            usersIdxBlocker = chatBlockParam.getUsersIdx();
+            usersIdxBlocked = companysInfo.getCompanysCeoIdx();
+            entity.setUsersIdxBlocker(usersIdxBlocker);
+            entity.setUsersIdxBlocked(usersIdxBlocked);
+            entity.setChatBlockListDate(LocalDateTime.now());
+        }
+        else if(chatBlockParam.getUsersRole().equals("DETECTIVE")) {
+            usersIdxBlocker = chatBlockParam.getUsersIdx();
+            usersIdxBlocked = roomInfo.getUsersIdx();
+            entity.setUsersIdxBlocker(usersIdxBlocker);
+            entity.setUsersIdxBlocked(usersIdxBlocked);
+            entity.setChatBlockListDate(LocalDateTime.now());
+        }
+        
+        ChatBlockList checkEntity = chatBlockListService.selectByBlockerBlocked(usersIdxBlocker, usersIdxBlocked);
+        ChatBlockList saveEntity = null;
+
+        if(checkEntity != null) {
+            log.info("[deleteChatBlockList] chatBlockListIdx: {} 와 일치하는 삭제합니다.", checkEntity.getChatBlockListIdx());
+            // chatBlockListService.deleteChatBlockListByChatBlockListIdx(checkEntity.getChatBlockListIdx());
+            chatBlockListService.delete(checkEntity);
+            resultStatus = 1;
+        }
+        // else {
+        //     log.info("[chatBlockList] 이미 존재하는 chatBlockList 입니다.");
+        //     saveEntity = checkEntity;
+        //     resultStatus = -1;
+        // }   
+
+        if(resultStatus == 1) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(resultStatus);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else if(resultStatus == 0) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(0);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else if(resultStatus == -1) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(resultStatus);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.NOT_FOUND.value());
+            result.setResultItem(null);
             result.setResponseDateTime(LocalDateTime.now());
         }
 
