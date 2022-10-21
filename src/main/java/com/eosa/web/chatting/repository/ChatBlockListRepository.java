@@ -20,6 +20,9 @@ public interface ChatBlockListRepository extends JpaRepository<ChatBlockList, Lo
     @Query(value = "SELECT * FROM ChatBlockList WHERE usersIdxBlocker = ?1", nativeQuery = true)
     List<ChatBlockList> selectChatBlockListsByBlocker(Long usersIdxBlocker);
 
+    @Query(value = "SELECT * FROM ChatBlockList WHERE usersIdxBlocked = ?1", nativeQuery = true)
+    List<ChatBlockList> selectChatBlockListByBlocked(Long usersIdxBlocked);
+
     @Transactional
     @Modifying
     @Query(value = "DELETE FROM ChatBlockList WHERE chatBlockListIdx = ?1", nativeQuery = true)

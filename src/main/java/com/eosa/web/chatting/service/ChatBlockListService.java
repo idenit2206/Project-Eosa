@@ -42,6 +42,24 @@ public class ChatBlockListService implements ChatBlockListRepository {
     }
 
     /**
+     * usersIdxBlocker와 일치하는 chatBlockList List 를 조회하는 서비스
+     */
+    @Override
+    public List<ChatBlockList> selectChatBlockListsByBlocker(Long usersIdxBlocker) {
+        return chatBlockListRepository.selectChatBlockListsByBlocker(usersIdxBlocker);
+    }
+
+    /**
+     * usersIdxBlocked와 일치하는 chatBlockList List 를 조회하는 서비스
+     * @param usersIdxBlocked
+     * @return
+     */
+    @Override
+    public List<ChatBlockList> selectChatBlockListByBlocked(Long usersIdxBlocked) {
+        return chatBlockListRepository.selectChatBlockListByBlocked(usersIdxBlocked);
+    }
+
+    /**
      * chatBlockListIdx와 일치하는 chatBlockList를 삭제하는 서비스
      */
     @Override
@@ -223,10 +241,5 @@ public class ChatBlockListService implements ChatBlockListRepository {
         return null;
     }
 
-    @Override
-    public List<ChatBlockList> selectChatBlockListsByBlocker(Long usersIdxBlocker) {
-        // TODO Auto-generated method stub
-        return null;
-    }
     
 }

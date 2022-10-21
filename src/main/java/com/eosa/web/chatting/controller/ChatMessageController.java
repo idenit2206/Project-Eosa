@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.eosa.web.chatting.service.ChatBlockListService;
 import com.eosa.web.chatting.service.ChatMessageService;
 import com.eosa.web.chatting.service.ChatRoomService;
 import com.eosa.web.companys.entity.SelectAllCompanysList;
@@ -16,6 +17,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.*;
 
+import com.eosa.web.chatting.entity.ChatBlockList;
 import com.eosa.web.chatting.entity.ChatMessage;
 import com.eosa.web.chatting.entity.ChatMessageParam;
 import com.eosa.web.chatting.entity.ChatRoom;
@@ -38,6 +40,7 @@ public class ChatMessageController {
     
     @Autowired private ChatMessageService chatMessageService;
     @Autowired private ChatRoomService chatRoomService;
+    @Autowired private ChatBlockListService chatBlockListService;
     @Autowired private UsersService usersService;
     @Autowired private CompanysService companysService;
     private final FirebaseCloudMessage firebaseCloudMessage;
@@ -92,26 +95,64 @@ public class ChatMessageController {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
+                ChatMessage entity = new ChatMessage();
+                entity.setMessageType(message.getMessageType());
+                entity.setRoomId(message.getRoomId());
+                entity.setMessage(message.getMessage());
+                entity.setSender(message.getSender());
+                entity.setSendDate(message.getSendDate());
+
+                chatMessageService.save(entity);
             }
             else if(senderRole.equals("companys")){
                 // DETECTIVE가 메시지를 보내는 경우
-                chatRoomService.changeReadStatusUnreadFromDetective(message.getRoomId());
-                try {
-                    firebaseCloudMessage.sendMessageTo(detectivetoken, "새로운 채팅 메시지가 도착했습니다.", "채팅방: "+roomInfo.getRoomName(), "/", detectivedevice);
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                List<ChatBlockList> blockedList = chatBlockListService.selectChatBlockListByBlocked(companysCeoIdx);
+                if(blockedList != null) {
+                    log.info("{}", blockedList.get(0).toString());
+                    log.info("clientIdx: {}, companysCeoIdx: {}", clientIdx, companysCeoIdx);
+                    for(int i = 0; i < blockedList.size(); i++) {
+                        if(blockedList.get(i).getUsersIdxBlocker().equals(clientIdx) && blockedList.get(i).getUsersIdxBlocked().equals(companysCeoIdx)) {
+                            // companysCeoIdx 는 usersIdx에게 차단 당한 상태
+                            log.info("companysCeoIdx: {} 는 usersIdx: {} 에 차단되었기 때문에 메시지를 전송하지 않습니다.", companysCeoIdx, clientIdx);
+                            
+                        }
+                        else {
+                            chatRoomService.changeReadStatusUnreadFromDetective(message.getRoomId());
+                            try {
+                                firebaseCloudMessage.sendMessageTo(detectivetoken, "새로운 채팅 메시지가 도착했습니다.", "채팅방: "+roomInfo.getRoomName(), "/", detectivedevice);
+                            } catch (IOException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+                            ChatMessage entity = new ChatMessage();
+                            entity.setMessageType(message.getMessageType());
+                            entity.setRoomId(message.getRoomId());
+                            entity.setMessage(message.getMessage());
+                            entity.setSender(message.getSender());
+                            entity.setSendDate(message.getSendDate());
+
+                            chatMessageService.save(entity);
+                        }
+                    }
+
                 }
+                // chatRoomService.changeReadStatusUnreadFromDetective(message.getRoomId());
+                // try {
+                //     firebaseCloudMessage.sendMessageTo(detectivetoken, "새로운 채팅 메시지가 도착했습니다.", "채팅방: "+roomInfo.getRoomName(), "/", detectivedevice);
+                // } catch (IOException e) {
+                //     // TODO Auto-generated catch block
+                //     e.printStackTrace();
+                // }
             }
             
-            ChatMessage entity = new ChatMessage();
-            entity.setMessageType(message.getMessageType());
-            entity.setRoomId(message.getRoomId());
-            entity.setMessage(message.getMessage());
-            entity.setSender(message.getSender());
-            entity.setSendDate(message.getSendDate());
+            // ChatMessage entity = new ChatMessage();
+            // entity.setMessageType(message.getMessageType());
+            // entity.setRoomId(message.getRoomId());
+            // entity.setMessage(message.getMessage());
+            // entity.setSender(message.getSender());
+            // entity.setSendDate(message.getSendDate());
 
-            chatMessageService.save(entity);
+            // chatMessageService.save(entity);
         }
 
         if((message.getMessageType()).equals(MessageType.FILE)) {
