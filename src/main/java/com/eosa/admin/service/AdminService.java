@@ -5,6 +5,9 @@ import com.eosa.admin.mapper.AdminMapper;
 import com.eosa.admin.pagination.Pagination;
 import com.eosa.security.CustomPrincipalDetails;
 import com.eosa.web.users.entity.Users;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,6 +28,7 @@ import java.util.Map;
  * -----------------------------------------------------------
  * 2022-09-08        Jihun Kim       최초 생성
  */
+@Slf4j
 @Service
 public class AdminService {
 
@@ -139,13 +143,19 @@ public class AdminService {
      * @return int
      */
     public int resetPwd(UsersDTO usersDTO) {
+        if(usersDTO.getProvider().equals("local")) {
+            // 비밀번호 인코딩
+            String rawPassword = usersDTO.getUsersAccount();
+            String encPassword = bCryptPasswordEncoder.encode(rawPassword);
+            usersDTO.setUsersPass(encPassword);
 
-        // 비밀번호 인코딩
-        String rawPassword = usersDTO.getUsersAccount();
-        String encPassword = bCryptPasswordEncoder.encode(rawPassword);
-        usersDTO.setUsersPass(encPassword);
-
-        return adminMapper.updatePwd(usersDTO);
+            return adminMapper.updatePwd(usersDTO);
+        }
+        else {
+            log.info("SNS계정 회원은 비밀번호를 변경할 수 없습니다.");
+            return -1;
+        }
+        
     }
 
     /**

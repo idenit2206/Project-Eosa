@@ -14,7 +14,11 @@ function fetchApi(url, method, formData, result, link) {
                 alert(result);
                 if (link) location.href = link;
                 else location.reload();
-            } else {
+            } else if(data == -1) {
+                alert("변경할 수 없습니다.");
+                location.reload();
+            }            
+            else {
                 alert('다시 시도해 주세요.');
                 location.reload();
             }
@@ -193,6 +197,7 @@ function resetPwd() {
     const msg = confirm('비밀번호를 초기화하시겠습니까?');
     if (msg) {
         const formData = new FormData();
+        formData.set("provider", document.querySelector("#provider").innerHTML);
         formData.set('usersIdx', document.querySelector('.usersIdx').value);
         formData.set('usersAccount', document.querySelector('.user-account').value);
 

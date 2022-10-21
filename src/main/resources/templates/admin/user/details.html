@@ -26,6 +26,10 @@
                     <fieldset class="fieldset">
                         <table class="dt-table">
                             <tbody>
+                                <tr class="invisible-row">
+                                    <th>가입유형</th>
+                                    <td id="provider" th:text="${details.provider}"></td>
+                                </tr>
                                 <tr>
                                     <th>회원번호</th>
                                     <td id="usersIdx" th:text="${details.usersIdx}"></td>
@@ -219,6 +223,11 @@
             </div>
         </div>
     </div>
+    <style>
+        .invisible-row {
+            display: none !important;
+        }
+    </style>
 
 </th:block>
 

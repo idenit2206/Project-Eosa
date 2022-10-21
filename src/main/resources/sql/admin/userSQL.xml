@@ -61,6 +61,7 @@
                U.usersJoinDate,
                U.usersNotice,
                U.usersDelete,
+               U.provider,
                T.terminateReason,
                T.terminateRequestDate,
                DATE_ADD(T.terminateRequestDate, INTERVAL -30 DAY) terminateCreateDate
