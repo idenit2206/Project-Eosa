@@ -245,6 +245,34 @@ public class RequestFormController {
         Map<String, Object> items = new HashMap<>();
 
         // List<RequestForm> list = requestFormService.findAll();
+        List<SelectRequestFormList> list = requestFormService.selectAllRequestFormList();
+        // List<SelectRequestFormList> list = requestFormBackupService.selectAllRequestFormList();
+
+        if(list != null) {
+            // log.debug("list: {}", list.get(0).toString());
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(list);
+            result.setResponseDateTime(LocalDateTime.now());
+        }       
+        else {
+            result.setStatusCode(HttpStatus.EXPECTATION_FAILED.value());
+            result.setResultItem("No Result");
+            result.setResponseDateTime(LocalDateTime.now());
+        }       
+
+        return result;
+    }
+
+    /**
+     * 모든 의뢰신청 내역 조회 통계용 백업 데이터를 조회
+     * @return
+    */
+    @GetMapping("/selectAllRequestFormListbackup")
+    public CustomResponseData selectAllRequestFormListbackup() {
+        CustomResponseData result = new CustomResponseData();
+        Map<String, Object> items = new HashMap<>();
+
+        // List<RequestForm> list = requestFormService.findAll();
         // List<SelectRequestFormList> list = requestFormService.selectAllRequestFormList();
         List<SelectRequestFormList> list = requestFormBackupService.selectAllRequestFormList();
 
@@ -333,6 +361,35 @@ public class RequestFormController {
         CustomResponseData result = new CustomResponseData();
         List<SelectRequestFormList> list = requestFormService.selectAllRequestFormListByUsersIdxOrderByRequestFormDateDESC(usersIdx);
         // List<SelectRequestFormList> list = requestFormBackupService.selectAllRequestFormListByUsersIdxOrderByRequestFormDateDESC(usersIdx);
+
+
+        if(list.size() != 0) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(list);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            result.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
+
+    /**
+     * 통계용를 위해 백업해놓은 데이터를 조회하는 컨트롤러
+     * @param usersIdx
+     * @return
+     */
+    @GetMapping("/selectAllRequestFormListByUsersIdxOrderByDESCbackup")
+    public CustomResponseData selectAllRequestFormListByUsersIdxOrderByDESCbackup(
+            @RequestParam("usersIdx") Long usersIdx
+    ) {
+        log.info("[selectAllRequestFormListByUsersIdxOrderByDESC] usersIdx: {}", usersIdx);
+        CustomResponseData result = new CustomResponseData();
+        // List<SelectRequestFormList> list = requestFormService.selectAllRequestFormListByUsersIdxOrderByRequestFormDateDESC(usersIdx);
+        List<SelectRequestFormList> list = requestFormBackupService.selectAllRequestFormListByUsersIdxOrderByRequestFormDateDESC(usersIdx);
 
 
         if(list.size() != 0) {

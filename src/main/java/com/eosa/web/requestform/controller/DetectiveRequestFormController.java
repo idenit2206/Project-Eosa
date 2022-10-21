@@ -86,6 +86,33 @@ public class DetectiveRequestFormController {
     }
 
     /**
+     * CompanysIdx가 일치하는 모든 RequestForm 조회 날짜기준 내림차순 정렬
+     * 통계를 위해 백업 데이터를 조회합니다. 
+     * @param companysIdx
+     * @return
+     */
+    @GetMapping("/selectDetectiveAllRequestFormListByCompanysIdxOrderByDESCbackup")
+    public CustomResponseData selectAllDetectiveRequestFormListByCompanysIdxOrderByDESCbackup(
+            @RequestParam("companysIdx") Long companysIdx) {
+        // log.debug("usersIdx: {}", companysIdx);
+        CustomResponseData result = new CustomResponseData();
+        // List<SelectRequestFormList> list = detectiveRequestFormService.selectAllDetectiveRequestFormListByCompanysIdxOrderByDESC(companysIdx);
+        List<SelectRequestFormList> list = detectiveRequestFormBackupService.selectAllDetectiveRequestFormListByCompanysIdxOrderByDESC(companysIdx);
+
+        if (list.size() != 0) {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(list);
+            result.setResponseDateTime(LocalDateTime.now());
+        } else {
+            result.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            result.setResultItem(null);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
+
+    /**
      * CompanysIdx가 일치하는 모든 RequestForm 조회 날짜기준 오름차순 정렬
      * 
      * @param companysIdx
