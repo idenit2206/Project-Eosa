@@ -29,6 +29,7 @@ public class MypageController {
 
     
     /** 
+     * 마이페이지 접근을 위해 비밀번호를 확인하는 컨트롤러
      * @return CustomResponseData
      */
     @PostMapping("/mypage/checkPass")
@@ -62,19 +63,21 @@ public class MypageController {
 
     
     /** 
+     * 회원정보를 수정하는 컨트롤러
      * @return CustomResponseData
      */
     @PostMapping("/mypage/updateUserInfo")
     public CustomResponseData updateUserInfo(
         @RequestBody String param
     ) {
+        log.info("회원정보 업데이트 파라미터: {}", param);
         CustomResponseData result = new CustomResponseData();
         JsonObject jsonObject = (JsonObject) JsonParser.parseString(param).getAsJsonObject();
         int updateRow = 0;
         Users paramUsers = new Users();
-        String newUsersPass = !jsonObject.get("usersPass").isJsonNull() ? jsonObject.get("usersPass").getAsString() : null;
+        String newUsersPass = jsonObject.get("usersPass").getAsString();
         
-        if(newUsersPass == null) {
+        if(newUsersPass.equals("")) {
             paramUsers.setUsersIdx(Long.parseLong(jsonObject.get("usersIdx").getAsString()));
             paramUsers.setUsersAccount(jsonObject.get("usersAccount").getAsString().toLowerCase());
             paramUsers.setUsersName(jsonObject.get("usersName").getAsString());
@@ -82,6 +85,9 @@ public class MypageController {
             paramUsers.setUsersPhone(jsonObject.get("usersPhone").getAsString());
             paramUsers.setUsersEmail(jsonObject.get("usersEmail").getAsString());
             paramUsers.setUsersRole(jsonObject.get("usersRole").getAsString().toUpperCase());
+            String paramUsersGender = jsonObject.get("usersGender").getAsString();
+            if(paramUsersGender.equals(("남자"))) { paramUsers.setUsersGender(0); }
+            else { paramUsers.setUsersGender(1); }
             String prevUsersAge = jsonObject.get("usersAge").getAsString();
             int usersAge = Integer.parseInt(prevUsersAge.substring(0, 2));
             paramUsers.setUsersAge(usersAge);
@@ -103,6 +109,9 @@ public class MypageController {
             paramUsers.setUsersPhone(jsonObject.get("usersPhone").getAsString());
             paramUsers.setUsersEmail(jsonObject.get("usersEmail").getAsString());
             paramUsers.setUsersRole(jsonObject.get("usersRole").getAsString().toUpperCase());
+            String paramUsersGender = jsonObject.get("usersGender").getAsString();
+            if(paramUsersGender.equals(("남자"))) { paramUsers.setUsersGender(0); }
+            else { paramUsers.setUsersGender(1); }
             String prevUsersAge = jsonObject.get("usersAge").getAsString();
             int usersAge = Integer.parseInt(prevUsersAge.substring(0, 2));
             paramUsers.setUsersAge(usersAge);
