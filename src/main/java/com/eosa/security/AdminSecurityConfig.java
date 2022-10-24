@@ -38,8 +38,8 @@ public class AdminSecurityConfig {
         http
             .antMatcher("/admin/**")
             .authorizeRequests()
-                .antMatchers(PERMIT_URL).permitAll()
-                .anyRequest().hasAnyAuthority("ADMIN", "SUPER_ADMIN")
+                .antMatchers(PERMIT_URL).permitAll()               
+                .anyRequest().hasAnyAuthority("ADMIN", "SUPER_ADMIN")                
                 // .anyRequest().permitAll()
         .and()
             .formLogin()
@@ -53,6 +53,26 @@ public class AdminSecurityConfig {
             .logout()
                     .logoutUrl("/admin/sign/signOut")
                         .logoutSuccessHandler(customAdminLogoutSuccessHandler);
+
+        return http.build();
+    }
+
+    @Bean
+    public SecurityFilterChain swaggerFilterChain(HttpSecurity http) throws Exception {
+        http
+            .antMatcher("/swagger-ui/**")
+            .authorizeRequests()            
+                .anyRequest().hasAnyAuthority("ADMIN", "SUPER_ADMIN")                
+                // .anyRequest().permitAll()
+        .and()
+            .formLogin()
+                .loginPage("/admin")
+                    .usernameParameter("usersAccount").passwordParameter("usersPass")
+                    .loginProcessingUrl("/admin/sign/signIn.do")
+                    .defaultSuccessUrl("/swagger-ui/index.html")
+                    // .successHandler(customAdminAuthSuccessHandler)
+                    .failureHandler(customAdminAuthFailureHandler);
+
 
         return http.build();
     }
