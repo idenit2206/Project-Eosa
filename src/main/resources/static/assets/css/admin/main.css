@@ -76,7 +76,8 @@ select:focus {
 /*BREAK POINTS*/
 /*PREFIX*/
 /*COMMOMN*/
-* {
+/* * { */
+*:not(.ql-editor) {
   box-sizing: border-box;
   color: #333333;
 }
