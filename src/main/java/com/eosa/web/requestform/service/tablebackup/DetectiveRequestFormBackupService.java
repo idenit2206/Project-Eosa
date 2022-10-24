@@ -122,12 +122,14 @@ public class DetectiveRequestFormBackupService implements DetectiveRequestFormBa
         }
         else if(entity.getRequestFormStatus().equals("임무진행")) {
             log.info("[BACKUP] requestFormIdx: {}, 진행상태: {}", entity.getRequestFormIdx(), entity.getRequestFormStatus());
+            entity.setRequestFormStatus("임무진행");
             entity.setRequestFormAcceptDate(LocalDateTime.now()); 
         }
         else if(entity.getRequestFormStatus().equals("임무완료")) { 
             log.info("[BACKUP] requestFormIdx: {}, 진행상태: {}", entity.getRequestFormIdx(), entity.getRequestFormStatus());
             // LocalDateTime requestFormAcceptDate = detectiveRequestFormBackupRepository.selectRequestFormByRequestFormIdx(entity.getRequestFormIdx()).getRequestFormAcceptDate();
             // entity.setRequestFormAcceptDate(requestFormAcceptDate);
+            entity.setRequestFormStatus("임무완료");
             entity.setRequestFormCompDate(LocalDateTime.now());
         }
         return detectiveRequestFormBackupRepository.updateRequestFormByEntity(entity);

@@ -20,9 +20,9 @@ import com.eosa.web.requestcontract.repository.RequestContractRepository;
 public class RequestContractService implements RequestContractRepository {
 
     @Autowired private RequestContractRepository requestContractRepository;
-
     
     /** 
+     * 새로운 RequestContract를 저장하는 서비스
      * @param entity
      * @return S
      */
@@ -43,9 +43,26 @@ public class RequestContractService implements RequestContractRepository {
         return requestContractRepository.selectRequestContractByRequestFormIdx(requestFormIdx);
     }
 
+    /**
+     * requestFormIdx와 일치하는 RequestContract를 수정하는 서비스
+    */
     @Override
     public int updateRequestContract(Long requestFormIdx, String requestContractContractId, String companysIdx, String usersIdx) {
         return requestContractRepository.updateRequestContract(requestFormIdx, requestContractContractId, companysIdx, usersIdx);
+    }
+
+    /** 
+     * requestFormIdx와 일치하는 RequestContract를 삭제
+     * @param id
+     */
+    @Override
+    public void deleteById(Long id) {
+        requestContractRepository.deleteById(id);
+    }
+
+    @Override
+    public int deleteByRequestFormIdx(Long requestFormIdx) {
+        return requestContractRepository.deleteByRequestFormIdx(requestFormIdx);
     }
 
     
@@ -243,17 +260,6 @@ public class RequestContractService implements RequestContractRepository {
         // TODO Auto-generated method stub
         return 0;
     }
-
-    
-    /** 
-     * @param id
-     */
-    @Override
-    public void deleteById(Long id) {
-        // TODO Auto-generated method stub
-        
-    }
-
     
     /** 
      * @param entity

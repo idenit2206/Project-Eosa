@@ -139,9 +139,12 @@ public class RequestContractController {
     ) {
         CustomResponseData result = new CustomResponseData();
 
-        int updateEntity = requestContractService.updateRequestContract(requestFormIdx, requestContractContractId, companysIdx, usersIdx);
+        int deleteRows = requestContractService.deleteByRequestFormIdx(requestFormIdx);
+        
+        RequestContract updateEntity = new RequestContract(requestFormIdx, requestContractContractId, companysIdx, usersIdx);
+        RequestContract updateRows = requestContractService.save(updateEntity);
 
-        if(updateEntity == 1) {
+        if(updateRows != null) {
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem(true);
             result.setResponseDateTime(LocalDateTime.now());

@@ -13,11 +13,24 @@ import com.eosa.web.requestcontract.entity.RequestContract;
 @Repository
 public interface RequestContractRepository extends JpaRepository<RequestContract, Long> {
 
+    /**
+     * requestFormIdx 가 일치하는 RequestContract를 조회하는 레포지터리
+     * @param requestFormIdx
+     * @return
+     */
     @Query(value=
         "SELECT * FROM RequestContract R WHERE R.requestFormIdx = ?1", nativeQuery = true
     )
     RequestContract selectRequestContractByRequestFormIdx(Long requestFormIdx);
 
+    /**
+     * requestFromIdx 가 일치하는 RequestContract를 수정하는 레포지터리
+     * @param requestFormIdx
+     * @param requestContractContractId
+     * @param companysIdx
+     * @param usersIdx
+     * @return
+     */
     @Transactional
     @Modifying
     @Query(value = 
@@ -34,4 +47,10 @@ public interface RequestContractRepository extends JpaRepository<RequestContract
         @Param("companysIdx") String companysIdx,
         @Param("usersIdx") String usersIdx       
     );
+
+
+    @Transactional
+    @Modifying
+    @Query(value = "DELETE FROM RequestContract r WHERE r.requestFormIdx = ?1", nativeQuery = true)
+    int deleteByRequestFormIdx(Long requestFormIdx);
 }
