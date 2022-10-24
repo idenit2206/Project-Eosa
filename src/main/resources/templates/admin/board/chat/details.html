@@ -47,7 +47,7 @@
                     </fieldset>
                     <div class="form__action bottom">
                         <a th:href="@{/admin/manage/chat/list}" class="btn-normal">목록가기</a>
-                        <a th:href="@{/admin/manage/company/details(companysIdx=${chatList[0].companysIdx})}" class="btn-prime">업체 바로가기</a>
+                        <a th:if="${chatList[0].companysIdx ne 0}" th:href="@{/admin/manage/company/details(companysIdx=${chatList[0].companysIdx})}" class="btn-prime">업체 바로가기</a>
                     </div>
                 </div>
                 <!-- -->
