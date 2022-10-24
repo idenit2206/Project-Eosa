@@ -118,7 +118,7 @@
                 <a class="modal-cross js-modalClose"></a>
             </div>
             <div class="details">
-                <input type="hidden" class="modal-id">
+                <input type="hidden" id="modal-requestFormIdx" class="modal-id">
                 <div class="details-body">
                     <div class="table">
                         <table>
@@ -238,10 +238,14 @@
                                     </div>
                                 </td>
                             </tr>
-                            <!-- <tr>
-                                <td class="modal-th">상담내역</td>
-                                <td id="btn-chatListView" class="modal-td">보기</td>
-                            </tr> -->
+                            <!-- <tr> -->
+                                <!-- <td class="modal-th">상담내역</td> -->
+                                <!-- <td id="btn-chatListView" class="modal-td">보기</td> -->
+                            <!-- </tr> -->
+                            <tr>
+                                <td class="modal-th">계약서</td>
+                                <td id="btn-selectReuqetContract" class="modal-td">계약서 보기</td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -295,6 +299,47 @@
                             }
                         }
                     })
+            })
+            // 계약서 조회
+            const selectRequestContractBtn = document.querySelector("#btn-selectReuqetContract");
+            selectRequestContractBtn.addEventListener("click", () => {
+                const modalRequestFormIdx = document.querySelector("#modal-requestFormIdx").value;
+                const selectRequestContractURL = `/admin/manage/request/selectRequestContract`;
+                
+                let formData = new FormData();
+                formData.append("requestFormIdx", modalRequestFormIdx);
+
+                fetch(selectRequestContractURL, {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(data => {
+                    if(data != "" || data != null) {
+                        // alert(data);
+                        const contractURL = `https://api.modusign.co.kr/documents/${data}/embedded-view`;
+                        fetch(contractURL, {
+                            method: "GET",
+                            headers: {
+                                accept: "application/json",
+                                authorization: "Basic IHByb2plY3Rlb3NhQG5hdmVyLmNvbTpZV0V4Tm1Jek5EZ3RPR1l3TUMwMFpXSXdMVGsxT0RVdE1tSTNPVFU0TjJNMFpqVm0="
+                            }
+                        })
+                        .then((response) => response.json())
+                        .then((response) => {
+                            window.open(
+                                response.embeddedUrl,
+                                "_blank",
+                                "top=10, left=10, width=1000, height=900"
+                            );
+                        })
+                        .catch((err) => console.error(err));
+                    }
+                    else {
+                        alert("확인된 계약서가 없습니다.");
+                    }
+                });
+                
             })
 
             // 의뢰 삭제

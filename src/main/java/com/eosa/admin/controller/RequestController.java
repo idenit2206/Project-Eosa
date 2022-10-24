@@ -71,4 +71,15 @@ public class RequestController {
         return requestService.updateRequest(requestDTO);
     }
 
+    /**
+     * requestFormIdx와 일치하는 RequestContract를 조회하는 컨트롤러
+     * @param requestFormIdx
+     * @return
+     */
+    @ResponseBody
+    @PostMapping("/selectRequestContract")
+    public String selectRequestContract(Long requestFormIdx) {
+        return requestService.selectRequestContract(requestFormIdx);
+    }
+
 }

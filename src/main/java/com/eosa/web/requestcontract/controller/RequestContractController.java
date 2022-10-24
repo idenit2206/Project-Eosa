@@ -33,8 +33,8 @@ public class RequestContractController {
     @Autowired private CompanysService companysService;
 
     /**
-     * companysIdx
-     * @param companysIdx로 계약서에 기입할 업체 정보 조회
+     * companysIdx로 계약서(RequestContract)에 기입할 업체 정보 조회
+     * @param companysIdx
      * @return
      */
     @GetMapping("/selectCompanysByCompanysIdxUseRequestContractController")
@@ -68,7 +68,7 @@ public class RequestContractController {
     }
 
     /**
-     * requestFormIdx에 해당하는 계약서 정보 가져오기
+     * requestFormIdx가 일치하는 RequestContract를 불러오는 컨트롤러
      * @param requestContract
      * @return
      */
@@ -92,7 +92,7 @@ public class RequestContractController {
     }
 
     /**
-     * 계약서 저장
+     * RequestContract를 저장하는 컨트롤러
      * @param requestContract
      * @return
      * @throws IOException
@@ -122,6 +122,14 @@ public class RequestContractController {
         return result;
     }
 
+    /**
+     * RequestContract를 수정하는 컨트롤러
+     * @param requestFormIdx
+     * @param companysIdx
+     * @param usersIdx
+     * @param requestContractContractId
+     * @return
+     */
     @PostMapping("/updateRequestContract")
     public CustomResponseData updateRequestContract(
         @RequestParam(value="requestFormIdx") Long requestFormIdx,      

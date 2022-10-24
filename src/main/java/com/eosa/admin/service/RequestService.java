@@ -1,8 +1,12 @@
 package com.eosa.admin.service;
 
+import com.eosa.admin.dto.RequestContractDTO;
 import com.eosa.admin.dto.RequestDTO;
+import com.eosa.admin.mapper.RequestContractMapper;
 import com.eosa.admin.mapper.RequestMapper;
 import com.eosa.admin.pagination.Pagination;
+import com.eosa.web.requestcontract.entity.RequestContract;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -27,6 +31,9 @@ public class RequestService {
 
     @Autowired
     private RequestMapper requestMapper;
+
+    @Autowired
+    private RequestContractMapper requestContractMapper;
 
     /**
      * 의뢰 목록 조회 서비스
@@ -102,6 +109,18 @@ public class RequestService {
         }
 
         return requestMapper.updateRequest(requestDTO);
+    }
+
+
+    /**
+     * requestFormIdx가 일치하는 RequestContract를 조회하는 서비스
+     * @param requestFormIdx
+     * @return
+     */
+    public String selectRequestContract(Long requestFormIdx) {
+        RequestContractDTO selectDTO = requestContractMapper.selectRequestContract(requestFormIdx);
+        String result = selectDTO.getRequestContractContractId();
+        return result;
     }
 
 }
