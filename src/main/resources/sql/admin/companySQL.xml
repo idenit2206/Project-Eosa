@@ -294,11 +294,22 @@
 
     <!-- 업체 마패 지역 등록 -->
     <insert id="insertFlagRegion" parameterType="CompanysDTO">
-        INSERT INTO CompanysFlagRegion (companysFlagIdx,
-                                        companysFlagRegion1)
-        VALUES (#{companysFlagIdx},
-                #{companysFlagRegion1})
+        INSERT INTO CompanysFlagRegion (
+            companysFlagIdx,
+            companysFlagRegion1
+        )
+        VALUES (
+            #{companysFlagIdx},
+            #{companysFlagRegion1}
+        )
     </insert>
+
+    <!-- 업체 마패 지역 삭제 -->
+    <delete id="deleteFlagRegion" parameterType="long">
+        DELETE
+        FROM CompanysFlagRegion
+        WHERE companysFlagIdx = #{companysFlagIdx}
+    </delete>
 
     <!-- 업체 마패 지역 수정 -->
     <update id="updateFlagRegion" parameterType="CompanysDTO">
@@ -410,10 +421,14 @@
                F.flagStartDate,
                F.flagEndDate,
                F.companysFlagEnabled,
-               R.companysFlagRegion1
+               CR.companysFlagRegion1
         FROM CompanysFlag F
                  JOIN Companys C on F.companysIdx = C.companysIdx
-                 JOIN CompanysFlagRegion R ON R.companysFlagIdx = F.companysFlagIdx
+                 <!-- JOIN CompanysFlagRegion R ON R.companysFlagIdx = F.companysFlagIdx -->
+                 JOIN (SELECT CFR.companysFlagIdx,
+                        GROUP_CONCAT(CFR.companysFlagRegion1 SEPARATOR ', ') companysFlagRegion1
+                        FROM CompanysFlagRegion CFR
+                GROUP BY CFR.companysFlagIdx) CR ON F.companysFlagIdx = CR.companysFlagIdx
         <where>
             <if test="enabled != null">
                 AND F.companysFlagEnabled = #{enabled}

@@ -231,7 +231,6 @@ public class CompanyController {
     @ResponseBody
     @PostMapping("/flag/update")
     public int updateFlag(CompanysDTO companysDTO) {
-
         return companyService.updateFlag(companysDTO);
     }
 

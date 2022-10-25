@@ -167,8 +167,7 @@ public class CompanyService {
     public String companyDetails(Model model, long companysIdx) {
        
         CompanysDTO details = companyMapper.selectCompanyDetails(companysIdx);
-        log.info("details: {}", details.toString());
-       
+        // log.info("details: {}", details.toString());       
 
         // 가격 조회
         PriceDTO price = priceMapper.selectPrice();
@@ -418,21 +417,27 @@ public class CompanyService {
      * @return int
      */
     public int updateFlag(CompanysDTO companysDTO) {
-
-        companyMapper.deleteFlagCategory(companysDTO.getCompanysFlagIdx());
-
         String region1[] = companysDTO.getCompanysFlagRegion1().split(",");
-
         String category[] = companysDTO.getCompanysFlagCategory().split(",");
+
+        companyMapper.deleteFlagRegion(companysDTO.getCompanysFlagIdx());
+        companyMapper.deleteFlagCategory(companysDTO.getCompanysFlagIdx());        
+
+        for (int i = 0; i < region1.length; i++) {
+            companysDTO.setCompanysFlagRegion1(region1[i]);
+            companyMapper.insertFlagRegion(companysDTO);
+        }       
 
         for (int i = 0; i < category.length; i++) {
             companysDTO.setCompanysFlagCategory(category[i]);
+            log.info("{}: {}", i , category[i]);
             companyMapper.insertFlagCategory(companysDTO);
         }
 
         companyMapper.updateFlagPrice(companysDTO);
 
-        return companyMapper.updateFlagRegion(companysDTO);
+        // return companyMapper.updateFlagRegion(companysDTO);
+        return 1;
     }
 
     /**

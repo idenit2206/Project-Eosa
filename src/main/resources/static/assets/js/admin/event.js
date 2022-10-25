@@ -746,8 +746,9 @@ function modifyFlag() {
             const formData = new FormData();
 
             formData.set('companysFlagIdx', document.querySelector('.companysFlagIdx').value);
+            
             for(let i = 0; i < region.length; i++) {
-                formData.append('companysFlagRegion', region[i].value);
+                formData.append('companysFlagRegion1', region[i].value);
             }
 
             for (let i = 0; i < category.length; i++) {

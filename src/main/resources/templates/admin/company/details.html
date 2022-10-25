@@ -381,7 +381,7 @@
     <div class="modal modal-request" data-modal="request" th:if="${details.companysFlagIdx} ne 0">
         <div class="modal__inner">
             <div class="modal-head">
-                <span class="modal__title">마패 신청서</span>
+                <span class="modal__title">마패 신청서 - 정보 수정</span>
                 <a class="modal-cross js-modalClose"></a>
             </div>
             <div class="details">
@@ -410,7 +410,7 @@
                                         <div class="dt-check-wrap" th:if="${regionList} ne null" th:each="list : ${regionList}">
                                             <input type="hidden" class="m-region-price-add" th:value="${details.flagPrice}">
                                             <input type="hidden" class="m-region-price" th:value="${list.regionPrice}">
-                                            <input type="checkbox" th:id="|m-region${listStat.count}|" name="m-region" th:value="${list.regionName}" th:checked="${#strings.contains(details.companysRegion1, list.regionName)}">
+                                            <input type="checkbox" th:id="|m-region${listStat.count}|" name="m-region" th:value="${list.regionName}" th:checked="${#strings.contains(details.companysFlagRegion1, list.regionName)}">
                                             <!-- <input type="checkbox" th:id="|m-region${listStat.count}|" name="m-region" th:value="${list.regionName}"> -->
                                             <label th:for="|m-region${listStat.count}|" th:text="${list.regionName}"></label>
                                         </div>
@@ -460,7 +460,7 @@
     <div class="modal modal-form" data-modal="form" th:if="${details.companysFlagIdx} eq 0">
         <div id="localPremiumModal" class="modal__inner">
             <div class="modal-head">
-                <span class="modal__title">마패 신청서</span>
+                <span class="modal__title">마패 신청서 - 신규 등록</span>
                 <a class="modal-cross js-modalClose"></a>
             </div>
             <div class="details">

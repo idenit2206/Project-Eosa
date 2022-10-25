@@ -162,6 +162,13 @@ public interface CompanyMapper {
     int insertFlagRegion(CompanysDTO companysDTO);
 
     /**
+     * 업체 마패 지역 삭제 매퍼
+     * @param companysDTO
+     * @return
+     */
+    int deleteFlagRegion(long companysFlagIdx);
+
+    /**
      * 업체 마패 지역 수정 매퍼
      *
      * @param companysDTO
