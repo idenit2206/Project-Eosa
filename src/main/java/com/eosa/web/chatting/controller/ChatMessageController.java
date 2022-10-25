@@ -108,8 +108,8 @@ public class ChatMessageController {
                 // DETECTIVE가 메시지를 보내는 경우
                 List<ChatBlockList> blockedList = chatBlockListService.selectChatBlockListByBlocked(companysCeoIdx);
                 if(blockedList != null) {
-                    log.info("{}", blockedList.get(0).toString());
-                    log.info("clientIdx: {}, companysCeoIdx: {}", clientIdx, companysCeoIdx);
+                    // log.info("{}", blockedList.get(0).toString());
+                    // log.info("clientIdx: {}, companysCeoIdx: {}", clientIdx, companysCeoIdx);
                     for(int i = 0; i < blockedList.size(); i++) {
                         if(blockedList.get(i).getUsersIdxBlocker().equals(clientIdx) && blockedList.get(i).getUsersIdxBlocked().equals(companysCeoIdx)) {
                             // companysCeoIdx 는 usersIdx에게 차단 당한 상태
@@ -117,6 +117,7 @@ public class ChatMessageController {
                             
                         }
                         else {
+                            // 차단당하지 않은 상태
                             chatRoomService.changeReadStatusUnreadFromDetective(message.getRoomId());
                             try {
                                 firebaseCloudMessage.sendMessageTo(detectivetoken, "새로운 채팅 메시지가 도착했습니다.", "채팅방: "+roomInfo.getRoomName(), "/", detectivedevice);
@@ -130,12 +131,12 @@ public class ChatMessageController {
                             entity.setMessage(message.getMessage());
                             entity.setSender(message.getSender());
                             entity.setSendDate(message.getSendDate());
-
+                            log.info("차단 당하지 않음: {}", entity.toString());
                             chatMessageService.save(entity);
                         }
                     }
 
-                }
+                }             
                 // chatRoomService.changeReadStatusUnreadFromDetective(message.getRoomId());
                 // try {
                 //     firebaseCloudMessage.sendMessageTo(detectivetoken, "새로운 채팅 메시지가 도착했습니다.", "채팅방: "+roomInfo.getRoomName(), "/", detectivedevice);
@@ -143,6 +144,13 @@ public class ChatMessageController {
                 //     // TODO Auto-generated catch block
                 //     e.printStackTrace();
                 // }
+                ChatMessage entity = new ChatMessage();
+                entity.setMessageType(message.getMessageType());
+                entity.setRoomId(message.getRoomId());
+                entity.setMessage(message.getMessage());
+                entity.setSender(message.getSender());
+                entity.setSendDate(message.getSendDate());
+                chatMessageService.save(entity);
             }
             
             // ChatMessage entity = new ChatMessage();
