@@ -119,7 +119,12 @@
                                          CR.companysFlagRegion1,
                                          FCT.companysFlagCategory
                                   FROM CompanysFlag F
-                                           JOIN CompanysFlagRegion CR on F.companysFlagIdx = CR.companysFlagIdx
+                                            <!-- JOIN CompanysFlagRegion CR on F.companysFlagIdx = CR.companysFlagIdx -->
+                                            JOIN (SELECT CFR.companysFlagIdx,
+                                                    GROUP_CONCAT(CFR.companysFlagRegion1 SEPARATOR '|') companysFlagRegion1
+                                                FROM CompanysFlagRegion CFR
+                                                GROUP BY CFR.companysFlagIdx) CR ON F.companysFlagIdx = CR.companysFlagIdx) D
+                                ON C.companysIdx = D.companysIdx
                                            JOIN (SELECT FT.companysFlagIdx,
                                                         GROUP_CONCAT(FT.companysFlagCategory SEPARATOR '|') companysFlagCategory
                                                  FROM CompanysFlagCategory FT

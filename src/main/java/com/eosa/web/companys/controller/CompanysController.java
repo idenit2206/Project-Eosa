@@ -14,8 +14,6 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.eosa.web.companys.repository.CompanysLicenseRepository;
-import com.eosa.web.users.entity.Users;
 import com.eosa.web.users.repository.UsersRepository;
 import com.eosa.web.util.CustomResponseData;
 import com.nimbusds.oauth2.sdk.ParseException;
@@ -577,7 +575,7 @@ public class CompanysController {
     }
 
     /**
-     * 업체 정보 수정
+     * 업체 정보를 수정하는 컨트롤러
      * 
      * @param companyInfo           Companys 타입
      * @param companysCategory      List(String)
@@ -663,6 +661,132 @@ public class CompanysController {
         entity.setCompanysRegion3(companyInfo.getCompanysRegion3());
         entity.setCompanysBankName(companyInfo.getCompanysBankName());
         entity.setCompanysBankNumber(companyInfo.getCompanysBankNumber());
+
+        Long companysIdx = entity.getCompanysIdx();
+        log.debug("[updateCompanys] update wait entity: {}", entity.toString());
+
+        int step1 = companysService.updateCompanys(entity);
+
+        if (step1 != 0) {
+            int deletePrevCategory = companysCategoryService.deleteCategoryByCompanysIdx(companysIdx);
+            int deletePrevActiveRegion = companysActiveRegionService.deleteActiveRegionByCompanysIdx(companysIdx);
+
+            for (int i = 0; i < companysCategory.size(); i++) {
+                CompanysCategory entity2 = new CompanysCategory();
+                entity2.setCompanysIdx(companysIdx);
+                entity2.setCompanysCategoryValue(companysCategory.get(i));
+                companysCategoryService.insertCompanysCategory(entity2);
+            }
+
+            for (int i = 0; i < companysActiveRegions.size(); i++) {
+                CompanysActiveRegion entity3 = new CompanysActiveRegion();
+                entity3.setCompanysIdx(companysIdx);
+                entity3.setActiveRegion(companysActiveRegions.get(i));
+                companysActiveRegionService.insertCompanysActiveRegion(entity3);
+            }
+
+            log.debug("[updateCompanys] line542 update Done");
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem("SUCCESS");
+            result.setResponseDateTime(LocalDateTime.now());
+        } else {
+            log.debug("[updateCompanys] line542 update FAIL");
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem("FAILURE");
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+
+        return result;
+    }
+
+    /**
+     * 업체 정보를 수정하는 컨트롤러
+     * 
+     * @param companyInfo           Companys 타입
+     * @param companysCategory      List(String)
+     * @param companysActiveRegions List(String)
+     * @param file1                 MultipartFile
+     * @param file2                 MultipartFile
+     * @param file3                 MultipartFile
+     * @return
+     * @throws JSONException
+     * @throws ParseException
+     * @throws IOException
+     */
+    @PutMapping("/updateCompanys02")
+    public CustomResponseData updateCompanys02(
+            @RequestPart("companyInfo") Companys companyInfo,
+            @RequestPart("companysCategory") List<String> companysCategory,
+            @RequestPart("companysActiveRegion") List<String> companysActiveRegions,
+            @RequestPart(value = "companysRegistCerti", required = false) MultipartFile file1,
+            @RequestPart(value = "companysLicense", required = false) MultipartFile file2,
+            @RequestPart(value = "companysProfileImage", required = false) MultipartFile file3)
+            throws JSONException, ParseException, IOException {
+        CustomResponseData result = new CustomResponseData();
+        log.debug("[updateCompanys] parameter companyInfo: {}", companyInfo.toString());
+        log.debug("[updateCompanys] parameter companysCategory: {}, companysActiveRegion: {}",
+                companysCategory.toString(), companysActiveRegions.toString());
+        if (file1 != null) {
+            log.debug("[updateCompanys] 새로운 사업자등록증: {}", file1.getOriginalFilename());
+        } else {
+            log.debug("[updateCompanys] 기존의 사업자 등록증: {}", companyInfo.getCompanysRegistCerti());
+        }
+
+        if (file2 != null) {
+            log.debug("[updateCompanys] 새로운 라이센스: {}", file2.getOriginalFilename());
+        } else {
+            log.debug("[updateCompanys] 기존의 라이센스: {}", companyInfo.getCompanysLicense());
+        }
+
+        if (file3 != null) {
+            log.debug("[updateCompanys] 새로운 프로필이미지: {}", file3.getOriginalFilename());
+        } else {
+            log.debug("[updateCompanys] 기존의 프로필이미지: {}", companyInfo.getCompanysProfileImage());
+        }
+
+        Companys entity = new Companys();
+        entity.setCompanysIdx(companyInfo.getCompanysIdx());
+
+        if (file1 != null) {
+            List<String> file1URL = awsS3Service.uploadSingleFile(file1, "registcerti", entity.getCompanysIdx());
+            entity.setCompanysRegistCerti(file1URL.get(1));
+            entity.setCompanysRegistCertiName(file1URL.get(0));
+        } else {
+            entity.setCompanysRegistCerti(companyInfo.getCompanysRegistCerti());
+            entity.setCompanysRegistCertiName(companyInfo.getCompanysRegistCertiName());
+        }
+
+        if (file2 != null) {
+            List<String> file2URL = awsS3Service.uploadSingleFile(file2, "license", entity.getCompanysIdx());
+            entity.setCompanysLicense(file2URL.get(1));
+            entity.setCompanysLicenseName(file2URL.get(0));
+        } else {
+            entity.setCompanysLicense(companyInfo.getCompanysLicense());
+            entity.setCompanysLicenseName(companyInfo.getCompanysLicenseName());
+        }
+
+        if (file3 != null) {
+            log.info("[updateCompanys] new file3: {}", file3.getOriginalFilename());
+            List<String> file3URL = awsS3Service.uploadSingleFile(file3, "profileimage", entity.getCompanysIdx());
+            entity.setCompanysProfileImage(file3URL.get(1));
+            entity.setCompanysProfileImageName(file3URL.get(0));
+        } else {
+            entity.setCompanysProfileImage(companyInfo.getCompanysProfileImage());
+            entity.setCompanysProfileImageName(companyInfo.getCompanysProfileImageName());
+        }
+
+        entity.setCompanysName(companyInfo.getCompanysName());
+        entity.setCompanysCeoName(companyInfo.getCompanysCeoName());
+        entity.setCompanysCeoIdx(companyInfo.getCompanysCeoIdx());
+        entity.setCompanysComment(companyInfo.getCompanysComment());
+        entity.setCompanysSpec(companyInfo.getCompanysSpec());
+        entity.setCompanysRegistCertiDate(companyInfo.getCompanysRegistCertiDate());
+        entity.setCompanysRegion1(companyInfo.getCompanysRegion1());
+        entity.setCompanysRegion2(companyInfo.getCompanysRegion2());
+        entity.setCompanysRegion3(companyInfo.getCompanysRegion3());
+        entity.setCompanysBankName(companyInfo.getCompanysBankName());
+        entity.setCompanysBankNumber(companyInfo.getCompanysBankNumber());
+        entity.setCompanysEnabled(0);
 
         Long companysIdx = entity.getCompanysIdx();
         log.debug("[updateCompanys] update wait entity: {}", entity.toString());

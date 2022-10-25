@@ -375,7 +375,7 @@ public class CompanyService {
         int result = companyMapper.insertFlag(companysDTO);
 
         String company[] = companysDTO.getCompanysFlagRegion1().split(",");
-        
+
         for (int i = 0; i < company.length; i++) {
             companysDTO.setCompanysFlagRegion1(company[i]);
             companyMapper.insertFlagRegion(companysDTO); 
@@ -419,6 +419,8 @@ public class CompanyService {
     public int updateFlag(CompanysDTO companysDTO) {
 
         companyMapper.deleteFlagCategory(companysDTO.getCompanysFlagIdx());
+
+        String region1[] = companysDTO.getCompanysFlagRegion1().split(",");
 
         String category[] = companysDTO.getCompanysFlagCategory().split(",");
 
