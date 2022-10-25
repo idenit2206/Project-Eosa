@@ -522,6 +522,7 @@ public class CompanysController {
             items.put("companysProfileImageName", step1.getCompanysProfileImageName());
             items.put("companysBankName", step1.getCompanysBankName());
             items.put("companysBankNumber", step1.getCompanysBankNumber());
+            items.put("companysEnabled", step1.isCompanysEnabled());
             items.put("companysCategory", companysCategory);
             items.put("companysActiveRegion", companysActiveRegion);
 

@@ -59,6 +59,9 @@ public class AdminSecurityConfig {
 
     @Bean
     public SecurityFilterChain swaggerFilterChain(HttpSecurity http) throws Exception {
+        
+        http.csrf().disable();
+
         http
             .antMatcher("/swagger-ui/**")
             .authorizeRequests()            

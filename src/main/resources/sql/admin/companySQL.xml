@@ -253,7 +253,8 @@
     <!-- 업체 제휴협회 삭제 -->
     <delete id="deletePremium" parameterType="long">
         DELETE FROM CompanysPremium
-        WHERE idx = #{idx}
+        <!-- WHERE idx = #{idx} -->
+        WHERE companysIdx = #{companysIdx}
     </delete>
 
     <!-- 업체 마패 신청 -->
@@ -330,7 +331,8 @@
     <!-- 업체 마패 삭제 -->
     <delete id="deleteFlag" parameterType="long">
         DELETE FROM CompanysFlag
-        WHERE companysFlagIdx = #{companysFlagIdx}
+        <!-- WHERE companysFlagIdx = #{companysFlagIdx} -->
+        WHERE companysIdx = #{companysIdx}
     </delete>
 
     <!-- 업체 광고 상태 변경 -->

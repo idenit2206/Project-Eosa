@@ -351,7 +351,8 @@ public class CompanyService {
 
         companyMapper.updateAd(map);
 
-        return companyMapper.cancelPremium(companysIdx);
+        // return companyMapper.cancelPremium(companysIdx);
+        return companyMapper.deletePremium(companysIdx);
     }
 
     /**
@@ -373,7 +374,13 @@ public class CompanyService {
         log.info("companysDTO: {}", companysDTO.toString());
         int result = companyMapper.insertFlag(companysDTO);
 
-        companyMapper.insertFlagRegion(companysDTO);
+        String company[] = companysDTO.getCompanysFlagRegion1().split(",");
+        
+        for (int i = 0; i < company.length; i++) {
+            companysDTO.setCompanysFlagRegion1(company[i]);
+            companyMapper.insertFlagRegion(companysDTO); 
+        }
+        // companyMapper.insertFlagRegion(companysDTO);
 
         String category[] = companysDTO.getCompanysFlagCategory().split(",");
 
@@ -440,7 +447,8 @@ public class CompanyService {
 
         companyMapper.updateAd(map);
 
-        return companyMapper.cancelFlag(companysIdx);
+        // return companyMapper.cancelFlag(companysIdx);
+        return companyMapper.deleteFlag(companysIdx);
     }
 
     /**
