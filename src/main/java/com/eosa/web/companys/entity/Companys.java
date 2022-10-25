@@ -79,7 +79,7 @@ public class Companys {
     private LocalDateTime companysRegistDate;
 
     @Column(nullable=false)
-    private boolean companysEnabled;   
+    private int companysEnabled;   
 
     @Column(nullable=false)
     @ColumnDefault("0")
