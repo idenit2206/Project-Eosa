@@ -371,7 +371,7 @@ public class CompanyService {
      * @return int
      */
     public int requestFlag(CompanysDTO companysDTO) {
-        log.info("companysDTO: {}", companysDTO.toString());
+        log.info("마패 신청 업체의 companysIdx: {}", companysDTO.getCompanysIdx());
         int result = companyMapper.insertFlag(companysDTO);
 
         String company[] = companysDTO.getCompanysFlagRegion1().split(",");
