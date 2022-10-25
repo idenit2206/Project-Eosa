@@ -83,8 +83,10 @@ public class Users {
     // OAuth2를 이용할 경우 플랫폼에서의 사용자 아이디
     @Column private String providerId;
 
+    // 모바일 앱 환경에서 접속했을때 google firebase 서비스에서 받는 토큰(push 알림에 활용)
     @Column private String token;
     
+    // 모바일 앱 환경에서 접속했을때 google firebase 서비스에서 받는 값(push 알림에 활용)
     @Column private String device;
 
     // OAuth2를 이용할 경우 프로필 이미지 파일 링크(사용하지 않음)

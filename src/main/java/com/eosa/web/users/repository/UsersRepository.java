@@ -272,6 +272,19 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     // @Query(value = "INSERT INTO Users(token) VALUES (:token) ON DUPLICATE KEY UPDATE usersIdx = :usersIdx, token = :token", nativeQuery = true)
     // int updateUsersToken(@Param("token") String token, @Param("usersIdx") Long usersIdx);
 
+    /**
+     * token을 활용해 Users정보를 Select하는 레포지터리 (token을 보유중인 Users를 조회)
+     * @param token
+     * @return
+     */
+    @Query(value = "SELECT * FROM Users u WHERE u.token = ?1", nativeQuery = true)
+    Users getUsersByToken(String token);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE Users SET token = '', device = '' WHERE usersIdx = ?1", nativeQuery = true)
+    int removeUsersTokenDevice(Long usersIdx);
+
     @Transactional
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     // @Query(value = "INSERT INTO Users(token, device) VALUES (:token, :device) ON DUPLICATE KEY UPDATE usersIdx = :usersIdx, token = :token, device = :device", nativeQuery = true)

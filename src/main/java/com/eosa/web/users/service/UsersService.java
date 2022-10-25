@@ -287,6 +287,13 @@ public class UsersService implements UsersRepository {
     
     public String getTokenCheck(Long usersIdx, String token, String device) {
         log.info("[getTokenCheck] {}, {}, {}", usersIdx, token, device);
+        Users checkToken = usersRepository.getUsersByToken(token);
+        int removeToken = 0;
+        
+        if(checkToken != null) {
+            removeToken = usersRepository.removeUsersTokenDevice(checkToken.getUsersIdx());
+        }        
+
         int tokenSave = usersRepository.updateUsersTokenDevice(usersIdx, token, device);
         return token;
     }
@@ -628,6 +635,22 @@ public class UsersService implements UsersRepository {
     public int updateUsersTokenDevice(Long usersIdx, String token, String device) {
         // TODO Auto-generated method stub
         return 0;
+    }
+
+    /**
+     * token을 보유중은 Users를 조회하는 서비스
+     */
+    @Override
+    public Users getUsersByToken(String token) {
+        return usersRepository.getUsersByToken(token);
+    }
+
+    /**
+     * usersIdx의 token과 device를 삭제하는 서비스
+     */
+    @Override
+    public int removeUsersTokenDevice(Long usersIdx) {
+        return usersRepository.removeUsersTokenDevice(usersIdx);
     }
 
 }
