@@ -124,6 +124,27 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
                         "WHERE companysIdx = :#{#Companys.companysIdx} ", nativeQuery = true)
         int updateCompanys(@Param("Companys") Companys entity);
 
+        @Transactional
+        @Modifying
+        @Query(value = "UPDATE Companys " +
+                        "SET companysName = :#{#Companys.companysName}, companysComment = :#{#Companys.companysComment}, companysSpec = :#{#Companys.companysSpec}, "
+                        +
+                        // "companysRegion1 = :#{#Companys.companysRegion1}, companysRegion2 =
+                        // :#{#Companys.companysRegion2}, companysRegion3 =
+                        // :#{#Companys.companysRegion3}, " +
+                        "companysRegion1 = :#{#Companys.companysRegion1}, companysRegion3 = :#{#Companys.companysRegion3}, "
+                        +
+                        "companysRegistCerti = :#{#Companys.companysRegistCerti}, companysLicense = :#{#Companys.companysLicense}, companysProfileImage = :#{#Companys.companysProfileImage}, "
+                        +
+                        "companysRegistCertiName = :#{#Companys.companysRegistCertiName}, companysLicenseName = :#{#Companys.companysLicenseName}, companysProfileImageName = :#{#Companys.companysProfileImageName}, "
+                        +
+                        "companysBankName = :#{#Companys.companysBankName}, companysBankNumber = :#{#Companys.companysBankNumber} "
+                        +
+                        "companysEnabled = :#{#Companys.companysEnabled} "
+                        +
+                        "WHERE companysIdx = :#{#Companys.companysIdx} ", nativeQuery = true)
+        int updateCompanys02(@Param("Companys") Companys entity);
+
         @Query(value = "SELECT 1 FROM Companys WHERE companysIdx = ?1", nativeQuery = true)
         int findByCompanysIdx(Long companysIdx);
 

@@ -362,12 +362,23 @@ public class CompanysService implements CompanysRepository {
 
     
     /** 
+     * 업체 정보를 수정하는 서비스
      * @param entity
      * @return int
      */
     @Override
     public int updateCompanys(Companys entity) {
         return companysRepository.updateCompanys(entity);
+    }
+
+    /** 
+     * 반려당한 업체를 재등록하는 서비스
+     * @param entity
+     * @return int
+     */
+    @Override
+    public int updateCompanys02(Companys entity) {
+        return companysRepository.updateCompanys02(entity);
     }
 
     

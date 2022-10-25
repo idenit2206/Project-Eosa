@@ -700,7 +700,7 @@ public class CompanysController {
     }
 
     /**
-     * 업체 정보를 수정하는 컨트롤러
+     * 반려 당한 업체 정보를 재등록하는 컨트롤러
      * 
      * @param companyInfo           Companys 타입
      * @param companysCategory      List(String)
@@ -791,7 +791,7 @@ public class CompanysController {
         Long companysIdx = entity.getCompanysIdx();
         log.debug("[updateCompanys] update wait entity: {}", entity.toString());
 
-        int step1 = companysService.updateCompanys(entity);
+        int step1 = companysService.updateCompanys02(entity);
 
         if (step1 != 0) {
             int deletePrevCategory = companysCategoryService.deleteCategoryByCompanysIdx(companysIdx);
