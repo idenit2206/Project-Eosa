@@ -167,6 +167,7 @@ public class CompanyService {
     public String companyDetails(Model model, long companysIdx) {
        
         CompanysDTO details = companyMapper.selectCompanyDetails(companysIdx);
+        log.info("details: {}", details.toString());
        
 
         // 가격 조회
