@@ -700,7 +700,7 @@ public class CompanysController {
     }
 
     /**
-     * 반려 당한 업체 정보를 재등록하는 컨트롤러
+     * 반려당한 업체정보를 재등록하는 컨트롤러
      * 
      * @param companyInfo           Companys 타입
      * @param companysCategory      List(String)

@@ -124,6 +124,11 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
                         "WHERE companysIdx = :#{#Companys.companysIdx} ", nativeQuery = true)
         int updateCompanys(@Param("Companys") Companys entity);
 
+        /**
+         * 반려당한 업체정보를 재등록하는 레포지터리
+         * @param entity
+         * @return
+         */
         @Transactional
         @Modifying
         @Query(value = "UPDATE Companys " +
@@ -138,7 +143,7 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
                         +
                         "companysRegistCertiName = :#{#Companys.companysRegistCertiName}, companysLicenseName = :#{#Companys.companysLicenseName}, companysProfileImageName = :#{#Companys.companysProfileImageName}, "
                         +
-                        "companysBankName = :#{#Companys.companysBankName}, companysBankNumber = :#{#Companys.companysBankNumber} "
+                        "companysBankName = :#{#Companys.companysBankName}, companysBankNumber = :#{#Companys.companysBankNumber}, "
                         +
                         "companysEnabled = :#{#Companys.companysEnabled} "
                         +

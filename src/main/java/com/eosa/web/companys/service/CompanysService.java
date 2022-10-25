@@ -372,7 +372,7 @@ public class CompanysService implements CompanysRepository {
     }
 
     /** 
-     * 반려당한 업체를 재등록하는 서비스
+     * 반려당한 업체정보를 재등록하는 서비스
      * @param entity
      * @return int
      */

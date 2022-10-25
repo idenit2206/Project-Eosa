@@ -108,28 +108,28 @@
                        GROUP BY CT.companysIdx) T ON C.companysIdx = T.companysIdx
                  LEFT OUTER JOIN CompanysPremium P ON C.companysIdx = P.companysIdx
                  LEFT OUTER JOIN (SELECT F.companysFlagIdx,
-                                         F.companysIdx,
-                                         F.companysName,
-                                         F.flagPrice,
-                                         F.flagPriceBank,
-                                         F.flagReqDate,
-                                         F.flagStartDate,
-                                         F.flagEndDate,
-                                         F.companysFlagEnabled,
-                                         CR.companysFlagRegion1,
-                                         FCT.companysFlagCategory
-                                  FROM CompanysFlag F
+                                        F.companysIdx,
+                                        F.companysName,
+                                        F.flagPrice,
+                                        F.flagPriceBank,
+                                        F.flagReqDate,
+                                        F.flagStartDate,
+                                        F.flagEndDate,
+                                        F.companysFlagEnabled,
+                                        CR.companysFlagRegion1,
+                                        FCT.companysFlagCategory
+                                    FROM CompanysFlag F
                                             <!-- JOIN CompanysFlagRegion CR on F.companysFlagIdx = CR.companysFlagIdx -->
                                             JOIN (SELECT CFR.companysFlagIdx,
-                                                    GROUP_CONCAT(CFR.companysFlagRegion1 SEPARATOR '|') companysFlagRegion1
-                                                FROM CompanysFlagRegion CFR
-                                                GROUP BY CFR.companysFlagIdx) CR ON F.companysFlagIdx = CR.companysFlagIdx) D
+                                                GROUP_CONCAT(CFR.companysFlagRegion1 SEPARATOR '|') companysFlagRegion1
+                                            FROM CompanysFlagRegion CFR
+                                            GROUP BY CFR.companysFlagIdx) CR ON F.companysFlagIdx = CR.companysFlagIdx) D
                                 ON C.companysIdx = D.companysIdx
-                                           JOIN (SELECT FT.companysFlagIdx,
-                                                        GROUP_CONCAT(FT.companysFlagCategory SEPARATOR '|') companysFlagCategory
-                                                 FROM CompanysFlagCategory FT
-                                                 GROUP BY FT.companysFlagIdx) FCT ON F.companysFlagIdx = FCT.companysFlagIdx) B
-                                 ON C.companysIdx = B.companysIdx
+                                            JOIN (SELECT FT.companysFlagIdx,
+                                                GROUP_CONCAT(FT.companysFlagCategory SEPARATOR '|') companysFlagCategory
+                                            FROM CompanysFlagCategory FT
+                                            GROUP BY FT.companysFlagIdx) FCT ON F.companysFlagIdx = FCT.companysFlagIdx) B
+                                ON C.companysIdx = B.companysIdx
                  LEFT OUTER JOIN (SELECT COUNT(UR.reviewCompanysIdx) reviewCount,
                                          UR.reviewCompanysIdx
                                   FROM UsersReview UR
