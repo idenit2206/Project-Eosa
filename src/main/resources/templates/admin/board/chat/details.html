@@ -29,7 +29,7 @@
                                             <span th:text="${#dates.format(list.sendDate, 'yyyy.MM.dd')}"></span>
                                             <hr>
                                         </div>
-                                        <div th:classappend="${list.sender} eq 'client' ? 'msg-right' : 'msg-left'">
+                                        <div th:classappend="${list.sender} eq 'client' ? 'msg-left' : 'msg-right'">
                                             <div class="msg-content" th:text="${list.message}"></div>
                                             <div class="msg-time" th:text="|${#dates.hour(list.sendDate) < 12 ? '오전' : '오후'} ${#dates.format(list.sendDate, 'h:mm')}|">오후 8:20</div>
                                         </div>
