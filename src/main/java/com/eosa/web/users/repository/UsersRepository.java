@@ -282,7 +282,7 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE Users SET token = '', device = '' WHERE usersIdx = ?1", nativeQuery = true)
+    @Query(value = "UPDATE Users SET token = NULL, device = NULL WHERE usersIdx = ?1", nativeQuery = true)
     int removeUsersTokenDevice(Long usersIdx);
 
     @Transactional

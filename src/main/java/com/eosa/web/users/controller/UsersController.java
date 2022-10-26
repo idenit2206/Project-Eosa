@@ -360,8 +360,8 @@ public class UsersController {
         // Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
         // authorities.stream().forEach(e -> log.debug("{}", e.getAuthority()));
         // log.debug(auth.toString());
-        String requester = req.getLocalAddr();
-        log.info("[OK] {} signIn Success FROM {}", usersAccount, requester);
+        
+        log.info("[signInSuccess] 사용자 usersAccount: {} 의 로그인 성공", usersAccount);
         CustomResponseData result = new CustomResponseData();
         LocalDateTime currentTime = LocalDateTime.now();
         
