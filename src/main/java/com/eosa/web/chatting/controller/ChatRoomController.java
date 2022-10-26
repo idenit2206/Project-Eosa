@@ -97,15 +97,15 @@ public class ChatRoomController {
         ChatRoom createRow = chatRoomService.save(entity);
 
         if(createRow != null) {
-            ChatMessage initMessage = new ChatMessage();
-            initMessage.setRoomId(createRow.getRoomId());
-            initMessage.setMessageType(MessageType.TALK);
-            initMessage.setSender("상담사");
-            initMessage.setSendDate(LocalDateTime.now().toString());
-            initMessage.setMessage("안녕하세요.\n어사 상담사 입니다.\n잠시만 기다려주세요.");
+            // ChatMessage initMessage = new ChatMessage();
+            // initMessage.setRoomId(createRow.getRoomId());
+            // initMessage.setMessageType(MessageType.TALK);
+            // initMessage.setSender("상담사");
+            // initMessage.setSendDate(LocalDateTime.now().toString());
+            // initMessage.setMessage("안녕하세요.\n어사 상담사 입니다.\n잠시만 기다려주세요.");
             
-            ChatMessage cm = chatMessageService.save(initMessage);
-            log.info("사용자 usersIdx: {} 가 '상담사'와 채팅을 요청합니다.", usersIdx);
+            // ChatMessage cm = chatMessageService.save(initMessage);
+            // log.info("사용자 usersIdx: {} 가 '상담사'와 채팅을 요청합니다.", usersIdx);
             
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem(createRow);

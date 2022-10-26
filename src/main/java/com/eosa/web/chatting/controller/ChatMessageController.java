@@ -147,6 +147,8 @@ public class ChatMessageController {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
+            
+                int cr = chatRoomService.changeReadStatusUnreadFromDetective(roomInfo.getRoomId());
 
                 ChatMessage entity = new ChatMessage();
                 entity.setMessageType(message.getMessageType());
