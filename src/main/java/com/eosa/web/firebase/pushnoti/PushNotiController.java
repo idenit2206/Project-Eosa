@@ -47,7 +47,7 @@ public class PushNotiController {
         @RequestParam(value="token", required = false) String token,
         @RequestParam(value="device", required = false) String device
     ) {
-        log.info("[getToken] usersIdx: {}, token: {} , device: {}",usersIdx, token, device);
+        log.info("[getTokenAndDevice] usersIdx: {}, token: {} , device: {}",usersIdx, token, device);
         return usersService.getTokenCheck(usersIdx, token, device);
     }
 

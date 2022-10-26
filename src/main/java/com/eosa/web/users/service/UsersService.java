@@ -291,6 +291,7 @@ public class UsersService implements UsersRepository {
         int removeToken = 0;
         
         if(checkToken != null) {
+            log.info("token: {} 을 usersIdx: {} 가 이미 보유중이기 때문에 삭제합니다.", token, checkToken.getUsersIdx());
             removeToken = usersRepository.removeUsersTokenDevice(checkToken.getUsersIdx());
         }        
 

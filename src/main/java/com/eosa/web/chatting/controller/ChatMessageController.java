@@ -90,7 +90,8 @@ public class ChatMessageController {
                 // CLIENT가 메시지를 보내는 경우
                 chatRoomService.changeReadStatusUnreadFromClient(message.getRoomId());
                 try {
-                    firebaseCloudMessage.sendMessageTo(clienttoken, "새로운 채팅 메시지가 도착했습니다.", "채팅방: "+roomInfo.getRoomName(), "/", clientdevice);
+                    log.info("(CLIENT가) 상대방에게 푸시알림을 보내기위한 정보 - detectivetoken: {}, detectivedevice: {}", detectivetoken, detectivedevice);
+                    firebaseCloudMessage.sendMessageTo(detectivetoken, "새로운 채팅 메시지가 도착했습니다.", "채팅방: "+roomInfo.getRoomName(), "/", detectivedevice);
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -107,52 +108,46 @@ public class ChatMessageController {
             else if(senderRole.equals("companys")){
                 // DETECTIVE가 메시지를 보내는 경우
                 List<ChatBlockList> blockedList = chatBlockListService.selectChatBlockListByBlocked(companysCeoIdx);
-                if(blockedList != null) {
+                
+                if(blockedList.size() > 0) {
                     // log.info("{}", blockedList.get(0).toString());
                     // log.info("clientIdx: {}, companysCeoIdx: {}", clientIdx, companysCeoIdx);
                     for(int i = 0; i < blockedList.size(); i++) {
                         if(blockedList.get(i).getUsersIdxBlocker().equals(clientIdx) && blockedList.get(i).getUsersIdxBlocked().equals(companysCeoIdx)) {
                             // companysCeoIdx 는 usersIdx에게 차단 당한 상태
                             log.info("companysCeoIdx: {} 는 usersIdx: {} 에 차단되었기 때문에 메시지를 전송하지 않습니다.", companysCeoIdx, clientIdx);
-                            
-                        }
-                        else {
-                            // 차단당하지 않은 상태
-                            chatRoomService.changeReadStatusUnreadFromDetective(message.getRoomId());
-                            try {
-                                firebaseCloudMessage.sendMessageTo(detectivetoken, "새로운 채팅 메시지가 도착했습니다.", "채팅방: "+roomInfo.getRoomName(), "/", detectivedevice);
-                            } catch (IOException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
-                            }
-                            ChatMessage entity = new ChatMessage();
-                            entity.setMessageType(message.getMessageType());
-                            entity.setRoomId(message.getRoomId());
-                            entity.setMessage(message.getMessage());
-                            entity.setSender(message.getSender());
-                            entity.setSendDate(message.getSendDate());
-                            log.info("차단 당하지 않음: {}", entity.toString());
-                            chatMessageService.save(entity);
-                        }
+                        }                       
                     }
-
-                }             
-                // chatRoomService.changeReadStatusUnreadFromDetective(message.getRoomId());
-                // try {
-                //     firebaseCloudMessage.sendMessageTo(detectivetoken, "새로운 채팅 메시지가 도착했습니다.", "채팅방: "+roomInfo.getRoomName(), "/", detectivedevice);
-                // } catch (IOException e) {
-                //     // TODO Auto-generated catch block
-                //     e.printStackTrace();
-                // }
-                ChatMessage entity = new ChatMessage();
-                entity.setMessageType(message.getMessageType());
-                entity.setRoomId(message.getRoomId());
-                entity.setMessage(message.getMessage());
-                entity.setSender(message.getSender());
-                entity.setSendDate(message.getSendDate());
-                chatMessageService.save(entity);
+                }
+                else {
+                    // 차단당하지 않은 상태
+                    chatRoomService.changeReadStatusUnreadFromDetective(message.getRoomId());
+                    try {
+                        log.info("(DETECTIVE가) 상대방에게 푸시알림을 보내기위한 정보 - clienttoken: {}, clientdevice: {}", clienttoken, clientdevice);
+                        firebaseCloudMessage.sendMessageTo(clienttoken, "새로운 채팅 메시지가 도착했습니다.", "채팅방: "+roomInfo.getRoomName(), "/", clientdevice);
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    ChatMessage entity = new ChatMessage();
+                    entity.setMessageType(message.getMessageType());
+                    entity.setRoomId(message.getRoomId());
+                    entity.setMessage(message.getMessage());
+                    entity.setSender(message.getSender());
+                    entity.setSendDate(message.getSendDate());
+                    log.info("차단 당하지 않음: {}", entity.toString());
+                    chatMessageService.save(entity);
+                }               
             }
             else if(senderRole.equals("상담사")) {
+                try {
+                    log.info("(상담사가) 상대방에게 푸시알림을 보내기위한 정보 - clienttoken: {}, clientdevice: {}", clienttoken, clientdevice);
+                    firebaseCloudMessage.sendMessageTo(clienttoken, "새로운 채팅 메시지가 도착했습니다.", "채팅방: "+roomInfo.getRoomName(), "/", clientdevice);
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
                 ChatMessage entity = new ChatMessage();
                 entity.setMessageType(message.getMessageType());
                 entity.setRoomId(message.getRoomId());
