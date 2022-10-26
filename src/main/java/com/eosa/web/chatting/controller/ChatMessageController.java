@@ -152,15 +152,16 @@ public class ChatMessageController {
                 entity.setSendDate(message.getSendDate());
                 chatMessageService.save(entity);
             }
-            
-            // ChatMessage entity = new ChatMessage();
-            // entity.setMessageType(message.getMessageType());
-            // entity.setRoomId(message.getRoomId());
-            // entity.setMessage(message.getMessage());
-            // entity.setSender(message.getSender());
-            // entity.setSendDate(message.getSendDate());
+            else if(senderRole.equals("상담사")) {
+                ChatMessage entity = new ChatMessage();
+                entity.setMessageType(message.getMessageType());
+                entity.setRoomId(message.getRoomId());
+                entity.setMessage(message.getMessage());
+                entity.setSender(message.getSender());
+                entity.setSendDate(message.getSendDate());
+                chatMessageService.save(entity);
+            }
 
-            // chatMessageService.save(entity);
         }
 
         if((message.getMessageType()).equals(MessageType.FILE)) {
