@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.eosa.web.chatting.entity.ChatBlockList;
 import com.eosa.web.chatting.entity.ChatBlockParam;
+import com.eosa.web.chatting.entity.ChatMessage;
 import com.eosa.web.chatting.entity.ChatRoom;
+import com.eosa.web.chatting.entity.MessageType;
 import com.eosa.web.chatting.service.ChatRoomService;
 import com.eosa.web.companys.entity.Companys;
 import com.eosa.web.companys.entity.SelectAllCompanysList;
@@ -88,13 +90,23 @@ public class ChatRoomController {
         @RequestParam("usersIdx") Long usersIdx
     ) {
         CustomResponseData result = new CustomResponseData();
-        log.debug("관리자와의 채팅을 요청 합니다. 요청한 사용자의 인덱스: {} 생성된 시간: {}", usersIdx, LocalDateTime.now());
+        log.debug("관리자(상담사)와의 채팅을 요청 합니다. 요청한 사용자의 인덱스: {} 생성된 시간: {}", usersIdx, LocalDateTime.now());
         ChatRoom entity = new ChatRoom();
             entity.setUsersIdx(usersIdx);
             entity.setCompanysIdx(Long.valueOf(0));
         ChatRoom createRow = chatRoomService.save(entity);
 
         if(createRow != null) {
+            ChatMessage initMessage = new ChatMessage();
+            initMessage.setRoomId(createRow.getRoomId());
+            initMessage.setMessageType(MessageType.TALK);
+            initMessage.setSender("상담사");
+            initMessage.setSendDate(LocalDateTime.now().toString());
+            initMessage.setMessage("안녕하세요.\n어사 상담사 입니다.\n잠시만 기다려주세요.");
+            
+            ChatMessage cm = chatMessageService.save(initMessage);
+            log.info("사용자 usersIdx: {} 가 '상담사'와 채팅을 요청합니다.", usersIdx);
+            
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem(createRow);
             result.setResponseDateTime(LocalDateTime.now());
