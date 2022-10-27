@@ -184,11 +184,11 @@ public class CompanysFlagController {
             result.setResponseDateTime(LocalDateTime.now());
         }
 
-        if (companysCategory.size() == 0 && companysRegion1.size() != 0) {
-            for (int i = 0; i < companysRegion1.size(); i++) {
-                companysIdxSet.addAll(companysService.selectCompanysFlagByFilter("", companysRegion1.get(i)));
-            }
-        }
+        // if (companysCategory.size() == 0 && companysRegion1.size() != 0) {
+        //     for (int i = 0; i < companysRegion1.size(); i++) {
+        //         companysIdxSet.addAll(companysService.selectCompanysFlagByFilter("", companysRegion1.get(i)));
+        //     }
+        // }
 
         if (companysCategory.size() == 0 && companysRegion1.size() != 0) {
             for (int i = 0; i < companysRegion1.size(); i++) {
