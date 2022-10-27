@@ -51,7 +51,7 @@
 /**
  * Modal 공지사항 상세보기에서 수정하기
 */
-const updateNoticeByNoticeIdx = () => {
+const updateNoticeByNoticeIdx = (editor) => {
     const modalNoticeIdx = document.querySelector("#idx");
     const modalNoticeTitle = document.querySelector("#title");
     // const modalNoticeContent = document.querySelector("#content");
@@ -61,8 +61,7 @@ const updateNoticeByNoticeIdx = () => {
         let formData = new FormData();
         formData.append("idx", modalNoticeIdx.value);
         formData.append("title", modalNoticeTitle.value);
-        const memo = document.querySelector('.ql-editor');
-        if (memo.innerText != '\n') formData.append('content', memo.innerHTML);
+        formData.append('content', editor.getHTML());
         fetch("/admin/manage/notice/updateByNoticeIdx", {method: "PUT", body: formData})
             .then(response => response)
             .then(data => {

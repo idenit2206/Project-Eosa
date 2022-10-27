@@ -394,7 +394,7 @@ public class CompanyController {
      */
     @PostMapping("/detailEditor")
     @ResponseBody
-    public String uploadNewsImage(
+    public String uploadDetailImage(
         @RequestParam("file") List<MultipartFile> file,
         @RequestParam("companysIdx") Long companysIdx
     ) {

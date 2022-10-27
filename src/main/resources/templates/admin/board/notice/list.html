@@ -63,12 +63,20 @@
                 <div class="table__action">
                     <button type="button" class="btn-normal btn-delete">삭제</button>
                     <button type="button" class="btn-normal">
-                        <a href="/admin/manage/notice/register">
+                        <!-- <a href="/admin/manage/notice/register">
                             작성하기
-                        </a>
+                        </a> -->
+                        <span class="btn-regist">작성하기</span>
                     </button>
-                </div>
-
+                </div>                
+                <script>
+                    const noticeIdx = document.querySelectorAll(".noticeIdx");
+                    const noticeRegistBtn = document.querySelector(".btn-regist");
+                    noticeRegistBtn.addEventListener("click", () => {
+                        const newNoticeIdx = parseInt(noticeIdx[0].innerHTML) + 1;
+                        window.location.href = `/admin/manage/notice/register?idx=${newNoticeIdx}`;
+                    })
+                </script>
                 <div class="table__paging">
                     <ul>
                         <li><a class="first" th:href="@{/admin/manage/notice/list(sort=${sort}, search=${search}, page=1)}"></a></li>

@@ -3,11 +3,13 @@
 <mapper namespace="com.eosa.admin.mapper.NoticeMapper">
 
     <insert id="insertNotice" parameterType="NoticeDTO">
-        INSERT INTO Notice (title,
+        INSERT INTO Notice (idx,
+                            title,
                             content,
                             author,
                             postDate)
-        VALUES (#{title},
+        VALUES (#{idx},
+                #{title},
                 #{content},
                 #{author},
                 NOW())

@@ -53,18 +53,23 @@
 </th:block>
 
 <th:block layout:fragment="script">
-    <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
-    <script src="https://unpkg.com/quill-image-compress@1.2.11/dist/quill.imageCompressor.min.js"></script>
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
     <script th:src="@{/assets/js/admin/library.js}"></script>
     <script>
         window.addEventListener('DOMContentLoaded', () => {
+            const currentURL = window.location.href;
+            const urlObject = new URL(currentURL);
+            const str = urlObject.searchParams.toString();
+            const idx = str.split("=")[1];
+            console.log(`현재 공지번호: ${idx}`);
+
             const editorWrap = document.querySelectorAll('.e-wrap');
             setTimeout(e => {
                 editorWrap[0].style.display = 'block';
             }, 500);
-            createEditorForNotice();
-            updateNoticeByNoticeIdx();
+            const editor = createEditorForNotice(idx);
+            updateNoticeByNoticeIdx(editor);
             deleteNoticeByIdx();
         });
 

@@ -2,6 +2,7 @@ package com.eosa.admin.controller;
 
 import com.eosa.admin.dto.NoticeDTO;
 import com.eosa.admin.service.NoticeService;
+import com.eosa.web.util.file.AwsS3Service;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -12,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Controller
@@ -20,6 +22,7 @@ public class NoticeController {
 
     @Autowired
     NoticeService noticeService;
+    @Autowired AwsS3Service awsS3Service;
     
     /**
      * 공지사항 목록 출력하기
@@ -112,5 +115,22 @@ public class NoticeController {
         int deleteRow =  noticeService.deleteByNoticeIdx(idx);
         log.debug("[deleteByNoticeIdx] delete result: {}", deleteRow);
     }
+
+    /**
+     * 업체 에디터 이미지 저장 서비스
+     *
+     * @param file
+     * @return String
+     */
+    @PostMapping("/noticeEditor")
+    @ResponseBody
+    public String uploadNoticeEditor(
+        @RequestParam("file") List<MultipartFile> file,
+        @RequestParam("noticeIdx") Long noticeIdx
+    ) {
+        log.info("[관리자] 새로운 공지사항 - noticeIdx: {}, fileName: {}", noticeIdx, file.get(0).getOriginalFilename());
+        List<String> uploadImage = awsS3Service.uploadSingleFile(file.get(0), "adminnotice", noticeIdx);
+        return "https://eosawebbucket.s3.ap-northeast-2.amazonaws.com/adminnotice/" + uploadImage.get(0);
+    } 
 
 }

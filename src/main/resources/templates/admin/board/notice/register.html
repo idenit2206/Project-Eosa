@@ -14,6 +14,10 @@
             <div class="form form--sm form-register" style="height: 100%;">
 
                 <fieldset class="fieldset"  style="height: 100%;">
+                    <div class="input-wrap" style="display: none;">
+                        <label class="label">번호</label>
+                        <input type="text" id="idx" class="input" spellcheck="false">
+                    </div>
                     <div class="input-wrap">
                         <label class="label">제목<i class="required">*</i></label>
                         <input type="text" id="title" class="input" spellcheck="false" placeholder="제목 입력">
@@ -48,22 +52,33 @@
 </th:block>
 
 <th:block layout:fragment="script">
-    <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
-    <script src="https://unpkg.com/quill-image-compress@1.2.11/dist/quill.imageCompressor.min.js"></script>
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
     <script th:src="@{/assets/js/admin/library.js}"></script>
     <script>
-        window.addEventListener('DOMContentLoaded', () => {            
+        window.addEventListener('DOMContentLoaded', () => {     
+            const currentURL = window.location.href;
+            const urlObject = new URL(currentURL);
+            const str = urlObject.searchParams.toString();
+            const idx = str.split("=")[1];
+            console.log(`새로운 공지번호: ${idx}`);
+
+            const idxInput = document.getElementById("idx");
+            idxInput.value = idx;
+            
+            const editor = createEditorForNotice(idx);
+            
             // 공지사항 등록
             const registerBtn = document.querySelector('.btn-register');
-            registerBtn.addEventListener('click', insertNotice);
+            registerBtn.addEventListener('click', e => { 
+                insertNotice(editor)
+            });
 
             const editorWrap = document.querySelectorAll('.e-wrap');
             setTimeout(e => {
                 editorWrap[0].style.display = 'block';
             }, 500);  
 
-            createEditorForNotice();
 
         });
 

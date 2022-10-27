@@ -539,13 +539,9 @@
    
 </th:block>
 
-<th:block layout:fragment="script">
-    <!-- <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet"> -->
-    <!-- <script src="//cdn.quilljs.com/1.3.6/quill.js"></script> -->
-    <!-- <script src="https://unpkg.com/quill-image-compress@1.2.11/dist/quill.imageCompressor.min.js"></script> -->
+<th:block layout:fragment="script">   
     <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
     <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
-
     <script th:src="@{/assets/js/admin/library.js}"></script>
     <script>
         window.addEventListener('load', function () {

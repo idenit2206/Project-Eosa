@@ -800,12 +800,9 @@ function modifyPolicy(num) {
 /**
  * 공지사항 등록
  */
-function insertNotice() {
+function insertNotice(editor) {
     const title = document.querySelector("#title");
-    const author = document.querySelector("#author");
-    // const content = document.querySelector("#content");
-    const content = document.querySelector("#editor");
-    
+    const author = document.querySelector("#author");    
 
     if(title.value == '') {
         alertFocus('제목을 입력해 주세요.', title);
@@ -817,8 +814,10 @@ function insertNotice() {
         formData.set("title", title.value);
         formData.set("author", author.value);
         // formData.set("content", content.value);
-        const memo = document.querySelector('.ql-editor');
-        if (memo.innerText != '\n') formData.append('content', memo.innerHTML);
+        // const memo = document.querySelector('.ql-editor');
+        // if (memo.innerText != '\n') formData.append('content', memo.innerHTML);
+        formData.set('content', editor.getHTML());
+  
         fetchApi('/admin/manage/notice/insert', 'post', formData, '공지사항이 등록되었습니다.', '/admin/manage/notice/list')
     }
 }
