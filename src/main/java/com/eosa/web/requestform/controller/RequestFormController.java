@@ -101,7 +101,7 @@ public class RequestFormController {
     }
 
     /**
-     * CLIENT회원의 전화상담 버튼을 통한 의뢰신청
+     * CLIENT회원의 전화상담 버튼을 통한 의뢰신청 컨트롤러
      * @param param
      * @param requestFormCategory
      * @return
@@ -133,8 +133,20 @@ public class RequestFormController {
         if(step1 != null) {            
             Long requestFormIdx = step1.getRequestFormIdx();
 
+            for(int i = 0; i < requestFormCategory.size(); i++) {
+                RequestFormCategory entity2 = new RequestFormCategory();
+                String requestFormCategoryValue = requestFormCategory.get(i);
+                log.info("의뢰내역서 의뢰지역: {}", requestFormCategoryValue);
+                entity2.setRequestFormIdx(requestFormIdx);
+                entity2.setRequestFormCategoryValue(requestFormCategoryValue);
+                int step2 = requestFormCategoryRepository.insertRequestFormCategory(entity2);
+            }
+        }
+
+        if(step1 != null) {            
+            // 의뢰내역서(백업) 저장   
             RequestFormBackup entityBackup = new RequestFormBackup();
-            entityBackup.setRequestFormIdx(requestFormIdx);
+            entityBackup.setRequestFormIdx(step1.getRequestFormIdx());
             entityBackup.setUsersIdx(param.getUsersIdx());
             entityBackup.setCompanysIdx(param.getCompanysIdx());
             entityBackup.setRequestFormRegion1(param.getRequestFormRegion1());
@@ -143,26 +155,25 @@ public class RequestFormController {
             entityBackup.setRequestFormStatus("상담대기");
             entityBackup.setRequestFormDate(LocalDateTime.now());
             RequestFormBackup step1Backup = requestFormBackupService.save(entityBackup);
-
-            Long requestFormBackupIdx = step1Backup.getRequestFormIdx();
-
+         
+            RequestFormCategoryBackup entity2Backup = new RequestFormCategoryBackup();
             for(int i = 0; i < requestFormCategory.size(); i++) {
-                RequestFormCategory entity2 = new RequestFormCategory();
-                String requestFormCategoryValue = requestFormCategory.get(i);
-                log.debug("String: {}", requestFormCategoryValue);
-                entity2.setRequestFormIdx(requestFormIdx);
-                entity2.setRequestFormCategoryValue(requestFormCategoryValue);
-                int step2 = requestFormCategoryRepository.insertRequestFormCategory(entity2);
-
-                RequestFormCategoryBackup entity2Backup = new RequestFormCategoryBackup();
                 String requestFormCategoryValueBackup = requestFormCategory.get(i);
-                log.debug("String: {}", requestFormCategoryValueBackup);
-                entity2Backup.setRequestFormBackupIdx(requestFormBackupIdx);
-                entity2Backup.setRequestFormCategoryValue(requestFormCategoryValue);
+                log.info("의뢰내역서(백업) 의뢰지역: {}", requestFormCategoryValueBackup);
+                entity2Backup.setRequestFormBackupIdx(step1Backup.getRequestFormBackupIdx());
+                entity2Backup.setRequestFormCategoryValue(requestFormCategory.get(i));
                 int step2Backup = requestFormCategoryBackupRepository.insertRequestFormCategory(entity2Backup);
+    
             }
+           
             result.setStatusCode(HttpStatus.OK.value());
             result.setResultItem("SUCCESS");
+            result.setResponseDateTime(LocalDateTime.now());        
+            
+        }
+        else {
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(null);
             result.setResponseDateTime(LocalDateTime.now());
         }
 
