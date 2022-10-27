@@ -458,8 +458,8 @@
     </select>
 
     <!-- 업체 리뷰 조회 -->
-    <!-- <select id="selectCompanysReview" resultType="ReviewDTO" parameterType="hashmap">
-        SELECT R.idx,
+    <select id="selectCompanysReview" resultType="ReviewDTO" parameterType="hashmap">
+        SELECT R.usersReviewidx,
                R.reviewCompanysIdx,
                R.resultScore,
                R.communicationScore,
@@ -477,8 +477,8 @@
                  JOIN Companys C ON R.reviewCompanysIdx = C.companysIdx
         WHERE R.reviewCompanysIdx = #{companysIdx}
         ORDER BY R.reviewDate DESC LIMIT #{startIndex}, #{pageSize}
-    </select> -->
-    <select id="selectCompanysReview" resultType="ReviewDTO" parameterType="hashmap">
+    </select>
+    <!-- <select id="selectCompanysReview" resultType="ReviewDTO" parameterType="hashmap">
         SELECT R.usersReviewIdx,
                R.reviewCompanysIdx,
                R.resultScore,
@@ -497,7 +497,7 @@
                  JOIN Companys C ON R.reviewCompanysIdx = C.companysIdx
         WHERE R.reviewCompanysIdx = #{companysIdx}
         ORDER BY R.reviewDate DESC LIMIT #{startIndex}, #{pageSize}
-    </select>
+    </select> -->
 
     <!-- 업체 신고 개수 조회 -->
     <select id="countCompanysReport" resultType="int" parameterType="hashmap">

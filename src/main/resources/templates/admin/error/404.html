@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+    <title>Title</title>
+    <style>
+        .error-form {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 50px;
+        }
+        .error-form .error-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+        .error-form .error-wrap div {
+            display: flex;
+            flex-direction: column;
+        }
+        .error-wrap .error-title span {
+            font-family: 'Pretendard';
+            font-size: 18px;
+            font-weight: 500;
+            color: #212121;
+            line-height: 140%;
+        }
+        .error-wrap .error-contents span {
+            font-family: 'Pretendard';
+            font-size: 16px;
+            font-weight: 300;
+            color: #424242;
+            line-height: 140%;
+        }
+        .error-wrap .error-btn {
+            width: 139px;
+            height: 46px;
+            border: none;
+            border-radius: 99px;
+            background: #347BFA;
+            font-family: 'Pretendard';
+            font-size: 16px;
+            color: #fff;
+            line-height: 46px;
+            letter-spacing: -1px;
+            cursor: pointer;
+        }
+        @media all and (max-width: 992px) {
+            .error-form {
+                flex-direction: column;
+            }
+            .error-form .error-wrap {
+                align-items: center;
+            }
+            .error-form .error-wrap div {
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="error-form">
+        <!-- <img th:src="@{/admin/images/404.png}"> -->
+        <div class="error-wrap">
+            <div class="error-title">
+                <span>죄송합니다.</span>
+                <span>요청하신 페이지를 찾을 수 없습니다.</span>
+            </div>
+            <div class="error-contents">
+                <span>잘못된 url 주소를 입력하셨거나 찾을 수 없는 경로입니다.</span>
+                <span>올바른 주소로 입력하였는지 다시 한번 확인해 주세요.</span>
+            </div>
+            <!-- <div> -->
+                <!-- <button type="button" class="error-btn" th:onclick="|history.back()|">돌아가기</button> -->
+            <!-- </div> -->
+        </div>
+    </div>
+</body>
+</html>

@@ -1,22 +1,16 @@
 package com.eosa;
 
-import java.time.LocalDate;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableScheduling;
 
-@EnableScheduling
 @SpringBootApplication
 public class EosaApplication {
-
 	
 	/** 
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		System.setProperty("CurrentTime",String.valueOf(LocalDate.now() + "-") + String.valueOf(System.currentTimeMillis()));
-		SpringApplication.run(EosaApplication.class, args);
+		SpringApplication.run(EosaApplication.class, args);		
 	}
 
 }
