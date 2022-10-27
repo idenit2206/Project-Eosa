@@ -24,15 +24,8 @@ function fetchApi(url, method, formData, result, link) {
             }
         })
         .catch(err => {
-            if(url.includes("/admin/manage/company/update")) {
-                alert("이미지 파일의 크기는 7MB 미만이어야 합니다.");
-                location.reload();
-            }
-            else {
-                console.log(err);
-                alert('다시 시도해 주세요.');
-                location.reload();
-            }
+            console.log(err);
+            alert('다시 시도해 주세요.');
         });
 };
 
@@ -456,7 +449,7 @@ function insertUser() {
 /**
  * 업체 수정
  */
-async function updateCompany() {
+async function updateCompany(editor, editor2) {
 
     const name = document.querySelector('.c-name');
     const region01 = document.querySelector('#region01');
@@ -547,15 +540,17 @@ async function updateCompany() {
             formData.set('companysIdx', document.querySelector('.companysIdx').value);
             formData.set('companysName', name.value);
             formData.set('companysComment', document.querySelector('.c-comment').value);
-            formData.set('companysSpec', document.querySelector('#editor .ql-editor').innerHTML);
+            // formData.set("companysSpec", document.querySelector("#editor").innerHTML);
+            formData.set("companysSpec", editor.getHTML());
             formData.set('companysRegion1', region01.value);
             // if (region01.value == '서울') formData.set('companysRegion2', document.querySelector('#region02').value);
             formData.set('companysRegion3', document.querySelector('.c-region3').value);
             formData.set('companysBankName', document.querySelector('.c-bank').value);
             formData.set('companysBankNumber', document.querySelector('.c-bank-num').value);
             formData.set('companysEnabled', enabled.value);
-            const memo = document.querySelector('#eEditor .ql-editor');
-            if (memo.innerText != '\n') formData.set('companysMemo', memo.innerHTML);
+            // const memo = document.querySelector('#eEditor .ql-editor');
+            // if (memo.innerText != '\n') formData.set('companysMemo', memo.innerHTML);
+            formData.set('companysMemo', editor2.getHTML());
 
             fetchApi('/admin/manage/company/update', 'post', formData, '수정되었습니다.');
         }

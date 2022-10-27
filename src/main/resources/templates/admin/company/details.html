@@ -277,7 +277,7 @@
                                     <th>어사인증</th>
                                     <td colspan="3">
                                         <div class="text-wrap e-wrap">
-                                            <div id="eEditor" th:utext="${details.companysMemo}"></div>
+                                            <div id="editor2" th:utext="${details.companysMemo}"></div>
                                         </div>
                                     </td>
                                 </tr>
@@ -536,16 +536,22 @@
             </div>
         </div>
     </div>
-
+   
 </th:block>
 
 <th:block layout:fragment="script">
-    <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
-    <script src="https://unpkg.com/quill-image-compress@1.2.11/dist/quill.imageCompressor.min.js"></script>
+    <!-- <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet"> -->
+    <!-- <script src="//cdn.quilljs.com/1.3.6/quill.js"></script> -->
+    <!-- <script src="https://unpkg.com/quill-image-compress@1.2.11/dist/quill.imageCompressor.min.js"></script> -->
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+
     <script th:src="@{/assets/js/admin/library.js}"></script>
     <script>
         window.addEventListener('load', function () {
+            const companysIdx = document.querySelector(".companysIdx").value;
+            console.log(`현재 페이지의 companysIdx: ${companysIdx}`);
+
             highlightMenu('list');
             onlyNum();
             changePrice();
@@ -555,7 +561,9 @@
                 editorWrap[0].style.display = 'block';
                 editorWrap[1].style.display = 'block';
             }, 500)
-            createEditor();
+
+            const editor = createEditor(companysIdx);
+            const editor2 = createEditor2(companysIdx);
 
             const flagIdx = document.querySelector('.companysFlagIdx');
             // 신청서 모달
@@ -570,7 +578,9 @@
 
             // 업체 수정
             const updateBtn = document.querySelector('.btn-update');
-            updateBtn.addEventListener('click', updateCompany);
+            updateBtn.addEventListener('click', e => {
+                updateCompany(editor, editor2);
+            });
 
             // 사업자 인증
             const checkCerti = document.querySelector('.certi-check');

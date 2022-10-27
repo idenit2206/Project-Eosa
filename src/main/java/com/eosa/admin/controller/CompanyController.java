@@ -2,10 +2,15 @@ package com.eosa.admin.controller;
 
 import com.eosa.admin.dto.CompanysDTO;
 import com.eosa.admin.service.CompanyService;
+import com.eosa.web.util.file.AwsS3Service;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -22,12 +27,14 @@ import java.util.Map;
  * -----------------------------------------------------------
  * 2022-09-15        Jihun Kim       최초 생성
  */
+@Slf4j
 @Controller
 @RequestMapping("/admin/manage/company")
 public class CompanyController {
 
     @Autowired
     private CompanyService companyService;
+    @Autowired private AwsS3Service awsS3Service;
 
     /**
      * 업체 목록 조회 컨트롤러
@@ -378,5 +385,22 @@ public class CompanyController {
 
         return companyService.chart(model, companysIdx);
     }
+
+    /**
+     * 업체 에디터 이미지 저장 서비스
+     *
+     * @param file
+     * @return String
+     */
+    @PostMapping("/detailEditor")
+    @ResponseBody
+    public String uploadNewsImage(
+        @RequestParam("file") List<MultipartFile> file,
+        @RequestParam("companysIdx") Long companysIdx
+    ) {
+        log.info("[관리자] admin Details - companysIdx: {}, fileName: {}", companysIdx, file.get(0).getOriginalFilename());
+        List<String> uploadImage = awsS3Service.uploadSingleFile(file.get(0), "admindetail", companysIdx);
+        return "https://eosawebbucket.s3.ap-northeast-2.amazonaws.com/admindetail/" + uploadImage.get(0);
+    }    
 
 }

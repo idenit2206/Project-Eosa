@@ -1,57 +1,86 @@
 "use strict";
 
-function createEditor() {
-    Quill.register("modules/imageCompressor", imageCompressor);
+function createEditor(companysIdx) {
 
-    const setModules = {
-        toolbar: [
-            //[{ 'font': [] }],
-            [{ header: [1, 2, false] }],
-            ["bold", "italic", "underline", "strike", "blockquote"],
-            [
-                { list: "ordered" },
-                { list: "bullet" },
-                { indent: "-1" },
-                { indent: "+1" },
-            ],
-            ["link", "image"],
-            [{ align: [] }, { color: [] }, { background: [] }], // dropdown with defaults from theme
-            ["clean"],
-        ],
-        imageCompressor: {
-            quality: 1.0, // default
-            maxWidth: 3840, // default
-            maxHeight: 10000, // default
-            imageType: "image/jpeg", // default
-        },
-    };
-
-    var quill = new Quill('#editor', {
-        modules: setModules,
-        theme: 'snow'
+    const onUploadImage = async (blob, callback) => {
+        const formData = new FormData();
+        formData.append("file", blob);
+        formData.append("companysIdx", companysIdx);
+        
+    //   console.log(blob.size);
+        if(blob.size > 7000000) {
+            alert("첨부 이미지의 크기는 7MB를 초과 할 수 없습니다.");
+        }
+        else {
+            fetch('/admin/manage/company/detailEditor', {
+                method: 'POST',
+                body: formData,
+            })
+                .then(res => res.text())
+                .then(data => {          
+                    callback(data, 'alt text');
+                    return data;
+                })
+                .catch(err => console.log(err))
+            return false;
+        }
+    }
+  
+    const editor = new toastui.Editor({
+      el: document.querySelector('#editor'),
+      language: 'ko',
+      height: '180px',
+      initialEditType: 'WYSIWYG',
+      previewStyle: 'vertical',
+      hooks: {
+        addImageBlobHook: onUploadImage
+      }
+  
     });
-
-    var eQuill = new Quill('#eEditor', {
-        modules: setModules,
-        theme: 'snow'
-    });
-
-    // const qlImage = document.querySelectorAll(".ql-image")
-    // for(let i = 0; i < qlImage.length; i++) {
-    //     qlImage[i].addEventListener("click", () => {
-    //         const inputFile = document.querySelector("input[type=file]");
-    //         let fr = new FileReader();
-
-    //         const maxSize = 7000000;
-            
-    //         if(inputFile.files[0].size > maxSize) {
-    //             alert("파일 사이즈가 7mb를 초과할 수 없습니다.");
-    //         }
-
-    //     })
-    // }
-    
+  
+    return editor;
 };
+
+function createEditor2(companysIdx) {
+
+    const onUploadImage = async (blob, callback) => {
+        const formData = new FormData();
+        formData.append("file", blob);
+        formData.append("companysIdx", companysIdx);
+
+        if(blob.size > 7000000) {
+            alert("첨부 이미지의 크기는 7MB를 초과 할 수 없습니다.");
+        }
+        else {
+            fetch('/admin/manage/company/detailEditor', {
+                method: "POST",
+                body: formData,
+            })
+                .then(res => res.text())
+                .then(data => {          
+                    callback(data, 'alt text');
+                    return data;
+                })
+                .catch(err => console.log(err))
+            return false;
+        }
+    }
+  
+    const editor = new toastui.Editor({
+      el: document.querySelector('#editor2'),
+      language: 'ko',
+      height: '180px',
+      initialEditType: 'WYSIWYG',
+      previewStyle: 'vertical',
+      hooks: {
+        addImageBlobHook: onUploadImage
+      }
+  
+    });
+  
+    return editor;
+};
+
 
 function createEditorForNotice() {
     Quill.register("modules/imageCompressor", imageCompressor);
