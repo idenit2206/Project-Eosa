@@ -20,8 +20,8 @@ function createEditor() {
         ],
         imageCompressor: {
             quality: 1.0, // default
-            maxWidth: 500, // default
-            maxHeight: 500, // default
+            maxWidth: 3840, // default
+            maxHeight: 10000, // default
             imageType: "image/jpeg", // default
         },
     };
@@ -35,6 +35,21 @@ function createEditor() {
         modules: setModules,
         theme: 'snow'
     });
+
+    // const qlImage = document.querySelectorAll(".ql-image")
+    // for(let i = 0; i < qlImage.length; i++) {
+    //     qlImage[i].addEventListener("click", () => {
+    //         const inputFile = document.querySelector("input[type=file]");
+    //         let fr = new FileReader();
+
+    //         const maxSize = 7000000;
+            
+    //         if(inputFile.files[0].size > maxSize) {
+    //             alert("파일 사이즈가 7mb를 초과할 수 없습니다.");
+    //         }
+
+    //     })
+    // }
     
 };
 

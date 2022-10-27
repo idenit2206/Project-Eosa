@@ -18,15 +18,21 @@ function fetchApi(url, method, formData, result, link) {
                 alert("변경할 수 없습니다.");
                 location.reload();
             }            
-            else {
+            else {               
                 alert('다시 시도해 주세요.');
-                location.reload();
+                location.reload(); 
             }
         })
         .catch(err => {
-            console.log(err);
-            alert('다시 시도해 주세요.');
-            location.reload();
+            if(url.includes("/admin/manage/company/update")) {
+                alert("이미지 파일의 크기는 7MB 미만이어야 합니다.");
+                location.reload();
+            }
+            else {
+                console.log(err);
+                alert('다시 시도해 주세요.');
+                location.reload();
+            }
         });
 };
 
