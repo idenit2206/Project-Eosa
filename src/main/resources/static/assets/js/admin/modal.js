@@ -65,6 +65,7 @@ function reportDetailsModal() {
     const mCompany = modal.querySelector('.r-name');
     const mState = modal.querySelector('.r-reportCheckState');
     const mDate = modal.querySelector('.r-date');
+    const mProcessDate = modal.querySelector('.r-stateDate');
     const mDetails = modal.querySelector('.r-details');
     const mBtn = modal.querySelector('.redirect-company');
 
@@ -82,8 +83,7 @@ function reportDetailsModal() {
 
     for (let i = 0; i < btn.length; i++) {
         btn[i].addEventListener('click', e => {
-            // console.log(id[i].value, usersIdx[i].value);
-            console.log(document.querySelectorAll(".usersIdx")[i].value);
+            console.log(`신고내역서 번호: ${id[i].vale}, 신고서 처리일: ${checkDate[i].innerHTML}`);
             mId.value = id[i].value;
             mUsersIdx.innerText = usersIdx[i].value;
             mCompanysIdx.innerHTML = cId[i].value;
@@ -91,7 +91,7 @@ function reportDetailsModal() {
             mCompany.innerHTML = cName[i].textContent;  
             mState.value = state[i].innerHTML;          
             mDate.innerHTML = reportDate[i].textContent;
-            mDetails.value = details[i].textContent;
+            if(mProcessDate != null) mProcessDate.innerHTML = checkDate[i].textContent;          
 
             while (mDetails.hasChildNodes()) {
                 mDetails.removeChild(mDetails.firstChild);
