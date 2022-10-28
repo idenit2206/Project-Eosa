@@ -7,6 +7,8 @@ import com.eosa.admin.mapper.RequestMapper;
 import com.eosa.admin.pagination.Pagination;
 import com.eosa.web.requestcontract.entity.RequestContract;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -26,6 +28,7 @@ import java.util.Map;
  * -----------------------------------------------------------
  * 2022-09-21        Jihun Kim       최초 생성
  */
+@Slf4j
 @Service
 public class RequestService {
 
@@ -119,7 +122,16 @@ public class RequestService {
      */
     public String selectRequestContract(Long requestFormIdx) {
         RequestContractDTO selectDTO = requestContractMapper.selectRequestContract(requestFormIdx);
-        String result = selectDTO.getRequestContractContractId();
+        String result = "";
+        if(selectDTO != null) {            
+            log.info("[selectRequestContract] result: {}", result);
+            result = selectDTO.getRequestContractContractId();
+        }
+        else {            
+            log.info("[selectRequestContract] result: {}", result);
+            result = null;
+        }
+        
         return result;
     }
 
