@@ -43,7 +43,7 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
     int initChatRoom(String roomId);
 
     /**
-     * usersIdx가 일치하는 List<ChatRoom>을 출력하는 레포지터리
+     * usersIdx가 일치하고 usable이 1인 List<ChatRoom>을 출력하는 레포지터리
      * @param usersIdx
      * @return List
      */
@@ -58,43 +58,56 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
      * @return
      */
     @Query(value = "SELECT * FROM ChatRoom c WHERE c.usersIdx = ?1 AND c.companysIdx != ?2", nativeQuery = true)
-    ChatRoom selectselectChatRoomListByUsersIdx02(Long usersIdx, Long usersIdxBlocked);
+    ChatRoom selectChatRoomListByUsersIdx02(Long usersIdx, Long usersIdxBlocked);
 
     /**
-     * companysIdx가 일치하는 채팅방 목록을 출력하는 레포지터리
+     * companysIdx가 일치하는 ChatRoom List를 출력하는 레포지터리
      * @param companysIdx
      * @return
      */
-    @Query(
-        value="SELECT * FROM ChatRoom c WHERE c.companysIdx =?1"
-        ,nativeQuery = true
-    )
+    @Query(value="SELECT * FROM ChatRoom c WHERE c.companysIdx = ?1", nativeQuery = true)
+    // @Query(value="SELECT * FROM ChatRoom c WHERE c.companysIdx = ?1 AND c.companysUsable = 1", nativeQuery = true)
     List<ChatRoom> selectChatRoomListByCompanysIdx(Long companysIdx);
 
+    /**
+     * roomId와 일치하는 ChatRoom을 출력하는 레포지터리
+     * @param roomId
+     * @return
+     */
     @Query(value="SELECT * FROM ChatRoom c WHERE c.roomId = ?1", nativeQuery = true)
     ChatRoom selectChatRoomByChatRoomId(String roomId);
 
     /**
-     * roomId가 일치하는 채팅방을 DB에서 삭제하는 레포지터리
+     * roomId가 일치하는 채팅방을 숨김처리하는 레포지터리
      * @param roomId
      * @return
      */
     @Transactional
     @Modifying
-    @Query(
-        value=
-        "UPDATE ChatRoom cr " +
-        "SET cr.usable = 0 " +
-        "WHERE cr.roomId = ?1"
-        ,nativeQuery = true
-    )
+    @Query(value = "UPDATE ChatRoom c SET c.usable = 0 WHERE c.roomId = ?1", nativeQuery = true)
+    // @Query(value = "DELETE FROM ChatRoom c WHERE c.roomId = ?1", nativeQuery = true)
+    // @Query(value = "UPDATE ChatRoom c SET c.usable = 0, c.usersUsable = 0, c.companysUsable = 0 WHERE c.roomId = ?1", nativeQuery = true)
     int deleteRoomByRoomId(String roomId);
 
-    @Query(value="SELECT roomId FROM ChatRoom WHERE usersIdx = ?1", nativeQuery = true)
+    /**
+     * usersIdx 가 일치하는 ChatRoom의 roomId를 출력하는 레포지터리
+     * @param usersIdx
+     * @return
+     */
+    @Query(value = "SELECT roomId FROM ChatRoom WHERE usersIdx = ?1", nativeQuery = true)
     List<String> selectChatRoomIdListByUsersIdx(Long usersIdx);
 
     /**
+     * usersIdx 가 일치하는 ChatRoom을 출력하는 레포지터리
+     * @param usersIdx
+     * @return
+     */
+    @Query(value = "SELECT * FROM ChatRoom c WHERE c.usersIdx = ?1", nativeQuery = true)
+    ChatRoom selectChatRoomByUsersIdx(Long usersIdx);
+
+    /**
      * roomId가 채팅방 읽음 상태 조회하는 목적의 레포지터리
+     * roomId가 일치하는 ChatRoom을 출력하는 레포지터리
      * @param roomId
      * @return
      */
@@ -102,7 +115,7 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
     ChatRoom selectReadStatus(String roomId);
 
     /**
-     * 읽음 상태로 변경(CLIENT)
+     * 읽음 상태로 변경(CLIENT)하는 레포지터리
      * @param roomId
      * @return
      */
@@ -112,7 +125,7 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
     int changeReadStatusReadFromClient(String roomId);
 
     /**
-     * 읽음 상태로 변경(CLIENT)
+     * 읽음 상태로 변경(CLIENT)하는 레포지터리
      * @param roomId
      * @return
      */

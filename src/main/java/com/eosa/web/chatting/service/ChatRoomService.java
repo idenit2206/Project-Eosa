@@ -103,7 +103,7 @@ public class ChatRoomService implements ChatRoomRepository {
     }
 
     /**
-     * 채팅방 생성하기2
+     * 채팅방 생성(2)하는 서비스
      * @param entity must not be {@literal null}.
      * @return
      * @param <S>
@@ -160,7 +160,7 @@ public class ChatRoomService implements ChatRoomRepository {
     }
 
     /**
-     * usersIdx가 일치하는 채팅방들을 List 형식으로 반환
+     * usersIdx가 일치하는 채팅방들을 List 형식으로 반환하는 서비스
      * @param usersIdx
      * @return
      */
@@ -201,7 +201,7 @@ public class ChatRoomService implements ChatRoomRepository {
 
 
     /**
-     * companysIdx가 일치하는 채팅방들을 List로 출력
+     * companysIdx가 일치하는 채팅방들을 List로 출력하는 서비스
      * @param companysIdx
      * @return
      */
@@ -216,7 +216,7 @@ public class ChatRoomService implements ChatRoomRepository {
 
     
     /** 
-     * roomId가 일치하는 ChatRoom 찾기(DB에서)
+     * roomId가 일치하는 ChatRoom 찾기(DB에서) 하는 서비스
      * @param roomId
      * @return ChatRoom
      */
@@ -226,7 +226,7 @@ public class ChatRoomService implements ChatRoomRepository {
     }
 
     /**
-     * 모든 채팅방 목록보기(테스트용)
+     * 모든 채팅방 목록보기(테스트용) 하는 서비스
      * @return
      */
     public List<ChatRoom> findAllRoom() {
@@ -252,7 +252,7 @@ public class ChatRoomService implements ChatRoomRepository {
     }
 
     /**
-     * 채팅방 읽음처리 서비스
+     * 채팅방 읽음처리하는 서비스
      * @param roomId
      * @param usersIdx
      */
@@ -592,35 +592,43 @@ public class ChatRoomService implements ChatRoomRepository {
     }
 
     /**
-     * usersIdx가 일치하는 List<roomId> 출력
+     * usersIdx가 일치하는 List<roomId> 출력하는 서비스
      */
     @Override
     public List<String> selectChatRoomIdListByUsersIdx(Long usersIdx) {
         return chatRoomRepository.selectChatRoomIdListByUsersIdx(usersIdx);
     }
 
+    /**
+     * * 읽음 상태로 변경(CLIENT)하는 서비스
+     */
     @Override
     public int changeReadStatusReadFromClient(String roomId) {
         return chatRoomRepository.changeReadStatusReadFromClient(roomId);
     }
 
+    /**
+     * 읽음 상태로 변경(CLIENT) 하는 서비스
+     */
     @Override
     public int changeReadStatusReadFromDetective(String roomId) {
         return chatRoomRepository.changeReadStatusReadFromDetective(roomId);
     }
 
+    /**
+     * usersIdx가 일치하는 Chatroom(차단대상 제외)을 조회하는 서비스
+     */
     @Override
-    public ChatRoom selectselectChatRoomListByUsersIdx02(Long usersIdx, Long usersIdxBlocked) {
-        // TODO Auto-generated method stub
-        return null;
+    public ChatRoom selectChatRoomListByUsersIdx02(Long usersIdx, Long usersIdxBlocked) {
+        return chatRoomRepository.selectChatRoomListByUsersIdx02(usersIdx, usersIdxBlocked);
     }
 
-
-//    @Override
-//    public int createChatRoom(ChatRoom chatRoom) {
-//        // TODO Auto-generated method stub
-//        return 0;
-//    }
-
+    /**
+     * usersIdx 가 일치하는 ChatRoom을 조회하는 서비스
+     */
+    @Override
+    public ChatRoom selectChatRoomByUsersIdx(Long usersIdx) {
+        return chatRoomRepository.selectChatRoomByUsersIdx(usersIdx);
+    }
 
 }
