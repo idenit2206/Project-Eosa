@@ -22,6 +22,8 @@ public class ChatRoom {
     @Column private String dataInfo;
     @Column private LocalDateTime createdDate;
     @Column private int usable;
+    @Column private int usersUsable;
+    @Column private int companysUsable;
 
 
 //    public static ChatRoom create(String roomName, Long usersIdx, Long companysIdx) {

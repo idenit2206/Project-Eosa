@@ -35,7 +35,9 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
         "SET " + 
         "c.clientReadStatus = 0, " +
         "c.detectiveReadStatus = 0, " +
-        "c.usable = 1 " + 
+        "c.usable = 1, " + 
+        "c.usersUsable = 1, " +
+        "c.companysUsable = 1 " +
         "WHERE c.roomId = ?1"
     , nativeQuery = true)
     int initChatRoom(String roomId);
@@ -45,8 +47,8 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
      * @param usersIdx
      * @return List
      */
-    @Query(
-        value = "SELECT * FROM ChatRoom c WHERE c.usersIdx = ?1 and c.usable = 1", nativeQuery = true)
+    // @Query(value = "SELECT * FROM ChatRoom c WHERE c.usersIdx = ?1 AND c.usable = 1 AND c.usersUsable = 1", nativeQuery = true)
+    @Query(value = "SELECT * FROM ChatRoom c WHERE c.usersIdx = ?1 AND c.usable = 1", nativeQuery = true)
     List<ChatRoom> selectChatRoomListByUsersIdx(Long usersIdx);
 
     /**
