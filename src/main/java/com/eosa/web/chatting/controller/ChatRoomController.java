@@ -41,15 +41,6 @@ public class ChatRoomController {
     @Autowired private ChatBlockListService chatBlockListService;
     @Autowired private CompanysService companysService;
 
-/** 
- * @return CustomResponseData
- */
-//    // 채팅 리스트 화면 MVC pattern
-//    @GetMapping("/room")
-//    public String room(Model model) {
-//        return "service/chatting/room";
-//    }
-
     // 채팅방 생성
     // @PostMapping("/room")
     @GetMapping("/createRoom")
@@ -59,22 +50,45 @@ public class ChatRoomController {
         @RequestParam("companysIdx") Long companysIdx
     ) {
         CustomResponseData result = new CustomResponseData();
-        log.debug("채팅방 생성을 요청 합니다. 요청한 사용자의 인덱스: {}, 대상 회사의 인덱스: {}, 생성된 시간: {}", usersIdx, companysIdx, LocalDateTime.now());
-        ChatRoom entity = new ChatRoom();
+        log.info("채팅방 생성을 요청 합니다. 요청한 사용자의 인덱스: {}, 대상 회사의 인덱스: {}", usersIdx, companysIdx);
+        ChatRoom selectRow = chatRoomService.selectChatRoomByUsersIdxCompanysIdx(usersIdx, companysIdx);
+        // log.info("채팅방을 생성하기 전 기존의 채팅방이 있는지 조회한 결과 입니다 : {}", selectRow.toString());
+
+        if(selectRow == null) {            
+            ChatRoom entity = new ChatRoom();
             entity.setUsersIdx(usersIdx);
             entity.setCompanysIdx(companysIdx);
-        ChatRoom createRow = chatRoomService.save(entity);
+            ChatRoom createRow = chatRoomService.save(entity);
 
-        if(createRow != null) {
-            result.setStatusCode(HttpStatus.OK.value());
-            result.setResultItem(createRow);
-            result.setResponseDateTime(LocalDateTime.now());
+            if(createRow != null) {
+                log.info("채팅방을 새로 생성합니다.");
+                result.setStatusCode(HttpStatus.OK.value());
+                result.setResultItem(createRow);
+                result.setResponseDateTime(LocalDateTime.now());
+            }
+            else {
+                log.info("채팅방 생성에 실패했습니다.");
+                result.setStatusCode(HttpStatus.OK.value());
+                result.setResultItem(null);
+                result.setResponseDateTime(LocalDateTime.now());
+            }
         }
         else {
-            result.setStatusCode(HttpStatus.OK.value());
-            result.setResultItem(null);
-            result.setResponseDateTime(LocalDateTime.now());
+            log.info("이미 채팅방이 존재합니다.");
+            int recoverChatRoom = chatRoomService.initChatRoom(selectRow.getRoomId());
+            if(recoverChatRoom == 1) {
+                result.setStatusCode(HttpStatus.OK.value());
+                result.setResultItem(selectRow);
+                result.setResponseDateTime(LocalDateTime.now());
+            }
+            else {
+                log.info("채팅방 재설정을 실패했습니다.");
+                result.setStatusCode(HttpStatus.OK.value());
+                result.setResultItem(null);
+                result.setResponseDateTime(LocalDateTime.now());
+            }           
         }
+
         return result;
     }
 
@@ -90,30 +104,42 @@ public class ChatRoomController {
         @RequestParam("usersIdx") Long usersIdx
     ) {
         CustomResponseData result = new CustomResponseData();
-        log.debug("관리자(상담사)와의 채팅을 요청 합니다. 요청한 사용자의 인덱스: {} 생성된 시간: {}", usersIdx, LocalDateTime.now());
-        ChatRoom entity = new ChatRoom();
+        log.info("관리자(상담사)와의 채팅을 요청 합니다. 요청한 사용자의 사용자 번호: {} 생성된 시간: {}", usersIdx);
+
+        ChatRoom selectRow = chatRoomService.selectChatRoomByUsersIdxCompanysIdx(usersIdx, 0L);
+        if(selectRow == null) {           
+            ChatRoom entity = new ChatRoom();
             entity.setUsersIdx(usersIdx);
             entity.setCompanysIdx(Long.valueOf(0));
-        ChatRoom createRow = chatRoomService.save(entity);
+            ChatRoom createRow = chatRoomService.save(entity);
 
-        if(createRow != null) {
-            // ChatMessage initMessage = new ChatMessage();
-            // initMessage.setRoomId(createRow.getRoomId());
-            // initMessage.setMessageType(MessageType.TALK);
-            // initMessage.setSender("상담사");
-            // initMessage.setSendDate(LocalDateTime.now().toString());
-            // initMessage.setMessage("안녕하세요.\n어사 상담사 입니다.\n잠시만 기다려주세요.");
-            
-            // ChatMessage cm = chatMessageService.save(initMessage);
-            // log.info("사용자 usersIdx: {} 가 '상담사'와 채팅을 요청합니다.", usersIdx);
-            
-            result.setStatusCode(HttpStatus.OK.value());
-            result.setResultItem(createRow);
-            result.setResponseDateTime(LocalDateTime.now());
+            if(createRow != null) {
+                log.info("새로운 채팅방을 생성합니다.");
+                // ChatMessage initMessage = new ChatMessage();
+                // initMessage.setRoomId(createRow.getRoomId());
+                // initMessage.setMessageType(MessageType.TALK);
+                // initMessage.setSender("상담사");
+                // initMessage.setSendDate(LocalDateTime.now().toString());
+                // initMessage.setMessage("안녕하세요.\n어사 상담사 입니다.\n잠시만 기다려주세요.");
+                
+                // ChatMessage cm = chatMessageService.save(initMessage);
+                // log.info("사용자 usersIdx: {} 가 '상담사'와 채팅을 요청합니다.", usersIdx);
+                
+                result.setStatusCode(HttpStatus.OK.value());
+                result.setResultItem(createRow);
+                result.setResponseDateTime(LocalDateTime.now());
+            }
+            else {
+                log.info("새로운 채팅방을 생성을 실패했습니다.");
+                result.setStatusCode(HttpStatus.OK.value());
+                result.setResultItem(null);
+                result.setResponseDateTime(LocalDateTime.now());
+            }
         }
         else {
+            log.info("이미 채팅방이 존재합니다.");
             result.setStatusCode(HttpStatus.OK.value());
-            result.setResultItem(null);
+            result.setResultItem(selectRow);
             result.setResponseDateTime(LocalDateTime.now());
         }
         return result;

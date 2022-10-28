@@ -89,6 +89,20 @@ public class ChatRoomService implements ChatRoomRepository {
     }
 
     /**
+    * usersIdx와 companysIdx가 일치하는 ChatRoom을 출력하는 서비스
+    */    
+    public ChatRoom selectChatRoomByUsersIdxCompanysIdx(Long usersIdx, Long companysIdx) {
+        return chatRoomRepository.selectChatRoomByUsersIdxCompanysIdx(usersIdx, companysIdx);
+    }
+
+    /**
+     * roomId와 일치하는 Chatroom을 초기화 하는 서비스
+     */
+    public int initChatRoom(String roomId) {
+        return chatRoomRepository.initChatRoom(roomId);
+    }
+
+    /**
      * 채팅방 생성하기2
      * @param entity must not be {@literal null}.
      * @return
@@ -252,7 +266,6 @@ public class ChatRoomService implements ChatRoomRepository {
         else {
             usersIdx = room.getUsersIdx();
         }
-        log.info("roomId: {}, usersIdx: {}, companysIdx: {}", room.getRoomId(), usersIdx, companysIdx);
         if(usersIdx != null && companysIdx != null) {
             // 사용자가 DETECTIVE인 경우
             // log.info("DETECTIVE 또는 ADMIN이 메시지를 읽었습니다.");

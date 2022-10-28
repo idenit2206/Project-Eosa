@@ -919,24 +919,22 @@ function deleteRequest() {
  */
 function updateRequest() {
 
-    const check = document.querySelectorAll('input[name=r-category]:checked');
-
-    if (check.length == 0) {
-        alert('의뢰 분야를 선택해 주세요.');
-    } else {
-        const msg = confirm('의뢰 내역을 수정하시겠습니까?');
-        if (msg) {
-            const formData = new FormData();
-            formData.set('requestFormIdx', document.querySelector('.modal-id').value);
-            formData.set('requestFormRegion1', document.querySelector('#region01').value);
-            formData.set('requestFormStatus', document.querySelector('.r-state').value);
-
-            for (let i = 0; i < check.length; i++) {
-                formData.append('requestFormCategoryValue', check[i].value);
-            }
-
-            fetchApi('/admin/manage/request/update', 'post', formData, '의뢰 내역이 수정되었습니다.');
+     // category가 input[type=checkbox] 였을 때
+    // const check = document.querySelectorAll('input[name=r-category]:checked');
+    const modalCategory = document.querySelector("#r-category").innerHTML;
+    const modalCategorys = modalCategory.split(",");
+    
+    const msg = confirm('의뢰 내역을 수정하시겠습니까?');
+    if (msg) {
+        const formData = new FormData();
+        formData.set('requestFormIdx', document.querySelector('.modal-id').value);
+        formData.set('requestFormRegion1', document.querySelector('#region01').value);
+        formData.set('requestFormStatus', document.querySelector('.r-state').value);
+        for (let i = 0; i < modalCategorys.length; i++) {
+            formData.append('requestFormCategoryValue', modalCategorys[i]);
         }
+
+        fetchApi('/admin/manage/request/update', 'post', formData, '의뢰 내역이 수정되었습니다.');
     }
 
 };

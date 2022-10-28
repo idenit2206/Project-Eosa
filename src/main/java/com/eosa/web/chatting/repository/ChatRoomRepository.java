@@ -14,15 +14,31 @@ import java.util.List;
 @Repository
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
 
-//    @Modifying
-//    @Transactional
-//    @Query(
-//        value="INSERT INTO LiveChat(roomId, roomName, usersIdx, companysIdx, dataInfo, createdDate, usable)" +
-//        "VALUES(:#{#LiveChat.roomId}, :#{#LiveChat.roomName}, :#{#LiveChat.usersIdx}, :#{#LiveChat.companysIdx}," +
-//        ":#{#LiveChat.dataInfo}, :#{#LiveChat.createdDate}, :#{#LiveChat.usable})"
-//        ,nativeQuery=true
-//    )
-//    public int createChatRoom(@Param("LiveChat") ChatRoom chatRoom);
+    /**
+     * usersIdx와 companysIdx가 일치하는 ChatRoom을 출력하는 Repository
+     * @param usersIdx
+     * @param companysIdx
+     * @return
+     */
+    @Query(value = "SELECT * FROM ChatRoom c WHERE c.usersIdx = ?1 AND c.companysIdx = ?2", nativeQuery = true)
+    ChatRoom selectChatRoomByUsersIdxCompanysIdx(Long usersIdx, Long companysIdx);
+
+    /**
+     * roomId가 일치하는 기존의 채팅방을 초기화하는 레포지터리
+     * @param roomId
+     * @return
+     */
+    @Transactional
+    @Modifying
+    @Query(value =
+        "UPDATE ChatRoom c " + 
+        "SET " + 
+        "c.clientReadStatus = 0, " +
+        "c.detectiveReadStatus = 0, " +
+        "c.usable = 1 " + 
+        "WHERE c.roomId = ?1"
+    , nativeQuery = true)
+    int initChatRoom(String roomId);
 
     /**
      * usersIdx가 일치하는 List<ChatRoom>을 출력하는 레포지터리
@@ -30,9 +46,7 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
      * @return List
      */
     @Query(
-        value="SELECT * FROM ChatRoom c WHERE c.usersIdx = ?1 and c.usable = 1",
-        nativeQuery = true
-    )
+        value = "SELECT * FROM ChatRoom c WHERE c.usersIdx = ?1 and c.usable = 1", nativeQuery = true)
     List<ChatRoom> selectChatRoomListByUsersIdx(Long usersIdx);
 
     /**
@@ -44,6 +58,11 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
     @Query(value = "SELECT * FROM ChatRoom c WHERE c.usersIdx = ?1 AND c.companysIdx != ?2", nativeQuery = true)
     ChatRoom selectselectChatRoomListByUsersIdx02(Long usersIdx, Long usersIdxBlocked);
 
+    /**
+     * companysIdx가 일치하는 채팅방 목록을 출력하는 레포지터리
+     * @param companysIdx
+     * @return
+     */
     @Query(
         value="SELECT * FROM ChatRoom c WHERE c.companysIdx =?1"
         ,nativeQuery = true
