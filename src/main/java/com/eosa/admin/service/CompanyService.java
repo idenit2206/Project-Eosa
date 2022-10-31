@@ -50,6 +50,9 @@ public class CompanyService {
     @Autowired
     private CategoryMapper categoryMapper;
 
+    @Autowired
+    private RequestService requestService;
+
     /**
      * 업체 목록 조회 서비스
      *
@@ -698,6 +701,37 @@ public class CompanyService {
      */
     public Map<String, Object> chartData(String sort, long companysIdx) {
 
+        List<RequestDTO> requestDTOList = requestService.requestDTOCompanysIdx(companysIdx);
+        List<RequestContractDTO> requestContractDTOList = new ArrayList<>();
+        int successRequestDTO = 0;
+
+        for(int i = 0; i < requestDTOList.size(); i++) {
+            log.info("requestDTO idx: {}", requestDTOList.get(i).getRequestFormIdx());
+
+            // requestFormIdx 와 일치하는 requestContract 가 존재하는지 select
+            if(requestService.seleRequestContractDTO2(requestDTOList.get(i).getRequestFormIdx()) != null) {
+                requestContractDTOList.add(requestService.seleRequestContractDTO2(requestDTOList.get(i).getRequestFormIdx()));
+            }
+
+            // requestFormStatus 가 "임무완료" 일 경우 successRequestDTO = successRequestDTO + 1
+            if(requestDTOList.get(i).getRequestFormStatus().equals("임무완료")) {
+                successRequestDTO = successRequestDTO + 1;
+            }
+
+        }
+    
+
+        int requestContractRate = (int) ((float) requestContractDTOList.size() / requestDTOList.size() * 100);
+        int requestSuccessRate =(int) ((float) successRequestDTO / requestDTOList.size() * 100);
+
+        log.info("companysIdx {} 의 임무완료 건수: {}", companysIdx, successRequestDTO);
+        
+        log.info("companysIdx {} 의 의뢰상담 개수: {}", companysIdx, requestDTOList.size());
+        log.info("companysIdx {} 의 실제 의뢰 개수: {}", companysIdx, requestContractDTOList.size());
+        log.info("의뢰 성사율: {} %", requestContractRate);
+        log.info("의뢰 성공률: {} %", requestSuccessRate);
+         
+
         List<ChartDTO> list =  new ArrayList<>();
         List<ChartDataDTO> cateList = new ArrayList<>();
 
@@ -830,6 +864,9 @@ public class CompanyService {
 
         Map<String, Object> map = new HashMap<>();
         map.put("size", list.size());
+        map.put("missionCount", requestContractDTOList.size());
+        map.put("missionSuccessRate", requestSuccessRate) ;
+        map.put("missionContractRate", requestContractRate);
         map.put("age", age);
         map.put("time", time);
         map.put("region", region);

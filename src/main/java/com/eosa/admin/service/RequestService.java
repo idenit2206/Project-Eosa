@@ -118,7 +118,7 @@ public class RequestService {
     /**
      * requestFormIdx가 일치하는 RequestContract를 조회하는 서비스
      * @param requestFormIdx
-     * @return
+     * @return String
      */
     public String selectRequestContract(Long requestFormIdx) {
         RequestContractDTO selectDTO = requestContractMapper.selectRequestContract(requestFormIdx);
@@ -133,6 +133,24 @@ public class RequestService {
         }
         
         return result;
+    }
+
+    /**
+     * requestFormIdx가 일치하는 RequestContract를 조회하는 서비스
+     * @param requestFormIdx
+     * @return RequestContractDTO
+     */
+    public RequestContractDTO seleRequestContractDTO2(Long requestFormIdx) {
+        return requestContractMapper.selectRequestContract(requestFormIdx);
+    }
+
+    /**
+     * companysIdx와 일치하는 RequestDTO List를 출력하는 서비스
+     * @param {Long} companysIdx
+     * @return List<RequestDTO>
+     */
+    public List<RequestDTO> requestDTOCompanysIdx(Long companysIdx) {
+        return requestMapper.requestDTOByCompanysIdx(companysIdx);
     }
 
 }

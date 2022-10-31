@@ -84,4 +84,29 @@
                 #{requestFormCategoryValue})
     </insert>
 
+    <!-- companysIdx가 일치하는 RequestDTO 조회 -->
+    <select id="requestDTOByCompanysIdx"  resultType="RequestDTO" parameterType="Long">
+        SELECT 
+        r.requestFormIdx,
+        r.usersIdx,
+        r.companysIdx,
+        r.requestFormRegion1,
+        r.requestFormChannel,
+        r.requestFormStatus,
+        r.requestConsultDate,
+        r.requestFormAcceptDate,
+        r.requestFormCompDate,
+        r.requestFormRejectMessage,
+        rc.requestFormCategoryValue,
+        u.usersAccount,
+        c.companysName
+        FROM RequestForm r
+        JOIN (SELECT RFC.requestFormIdx,
+                    GROUP_CONCAT(RFC.requestFormCategoryValue SEPARATOR '|') requestFormCategoryValue
+                FROM RequestFormCategory RFC GROUP BY RFC.requestFormIdx) rc ON r.requestFormIdx = rc.requestFormIdx
+        JOIN Users u ON r.usersIdx = u.usersIdx
+        JOIN Companys c ON r.companysIdx = c.companysIdx
+        WHERE r.companysIdx = #{companysIdx}
+    </select>
+
 </mapper>

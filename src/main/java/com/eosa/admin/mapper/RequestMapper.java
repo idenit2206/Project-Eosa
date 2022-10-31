@@ -68,4 +68,11 @@ public interface RequestMapper {
      */
     int insertRequestCategory(RequestDTO requestDTO);
 
+    /**
+     * companysIdx와 일치하는 RequestDTO List를 출력하는 매퍼
+     * @param {Long} companysIdx
+     * @return int
+     */
+    List<RequestDTO> requestDTOByCompanysIdx(long companysIdx);
+
 }

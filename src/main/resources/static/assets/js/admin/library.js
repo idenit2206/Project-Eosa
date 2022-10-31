@@ -138,7 +138,11 @@ function createChart(sort) {
     })
         .then(res => res.json())
         .then(data => {
-            document.querySelector('.requestCount').innerHTML = data.size + ' 건';
+            // document.querySelector('.requestCount').innerHTML = data.size + ' 건';
+            document.querySelector(".requestConsultCount").innerHTML = data.size + " 개";
+            document.querySelector(".requestCount").innerHTML = data.missionCount + " 개";
+            document.querySelector(".requestSuccessRate").innerHTML = data.missionSuccessRate + " %";
+            document.querySelector(".requestAcceptRate").innerHTML = data.missionContractRate + " %";
 
             const age = document.getElementById('ageChart').getContext('2d');
             const ageChart = new Chart(age, {
