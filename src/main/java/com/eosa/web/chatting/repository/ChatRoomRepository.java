@@ -47,8 +47,8 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
      * @param usersIdx
      * @return List
      */
-    // @Query(value = "SELECT * FROM ChatRoom c WHERE c.usersIdx = ?1 AND c.usable = 1 AND c.usersUsable = 1", nativeQuery = true)
-    @Query(value = "SELECT * FROM ChatRoom c WHERE c.usersIdx = ?1 AND c.usable = 1", nativeQuery = true)
+    // @Query(value = "SELECT * FROM ChatRoom c WHERE c.usersIdx = ?1 AND c.usable = 1", nativeQuery = true)
+    @Query(value = "SELECT * FROM ChatRoom c WHERE c.usersIdx = ?1 AND c.usersUsable = 1", nativeQuery = true)
     List<ChatRoom> selectChatRoomListByUsersIdx(Long usersIdx);
 
     /**
@@ -65,8 +65,8 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
      * @param companysIdx
      * @return
      */
-    @Query(value="SELECT * FROM ChatRoom c WHERE c.companysIdx = ?1", nativeQuery = true)
-    // @Query(value="SELECT * FROM ChatRoom c WHERE c.companysIdx = ?1 AND c.companysUsable = 1", nativeQuery = true)
+    // @Query(value="SELECT * FROM ChatRoom c WHERE c.companysIdx = ?1", nativeQuery = true)
+    @Query(value="SELECT * FROM ChatRoom c WHERE c.companysIdx = ?1 AND c.companysUsable = 1", nativeQuery = true)
     List<ChatRoom> selectChatRoomListByCompanysIdx(Long companysIdx);
 
     /**
@@ -88,6 +88,27 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
     // @Query(value = "DELETE FROM ChatRoom c WHERE c.roomId = ?1", nativeQuery = true)
     // @Query(value = "UPDATE ChatRoom c SET c.usable = 0, c.usersUsable = 0, c.companysUsable = 0 WHERE c.roomId = ?1", nativeQuery = true)
     int deleteRoomByRoomId(String roomId);
+
+    
+    /**
+     * roomId가 일치하는 채팅방을 숨김처리하는 레포지터리(CLIENT)
+     * @param roomId
+     * @return
+     */
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE ChatRoom c SET c.usersUsable = 0 WHERE c.roomId = ?1", nativeQuery = true)
+    int deleteRoomByRoomIdClient(String roomId);
+    
+    /**
+     * roomId가 일치하는 채팅방을 숨김처리하는 레포지터리(DETECTIVE)
+     * @param roomId
+     * @return
+     */
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE ChatRoom c SET c.companysUsable = 0 WHERE c.roomId = ?1", nativeQuery = true)
+    int deleteRoomByRoomIdDetective(String roomId);
 
     /**
      * usersIdx 가 일치하는 ChatRoom의 roomId를 출력하는 레포지터리

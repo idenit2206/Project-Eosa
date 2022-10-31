@@ -28,6 +28,8 @@ import com.eosa.web.chatting.service.ChatRoomService;
 import com.eosa.web.companys.entity.Companys;
 import com.eosa.web.companys.entity.SelectAllCompanysList;
 import com.eosa.web.companys.service.CompanysService;
+import com.eosa.web.users.entity.Users;
+import com.eosa.web.users.service.UsersService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,6 +41,7 @@ public class ChatRoomController {
     @Autowired private ChatRoomService chatRoomService;
     @Autowired private ChatMessageService chatMessageService;
     @Autowired private ChatBlockListService chatBlockListService;
+    @Autowired private UsersService usersService;
     @Autowired private CompanysService companysService;
 
     // 채팅방 생성
@@ -256,12 +259,25 @@ public class ChatRoomController {
         @RequestParam("usersIdx") Long usersIdx
     ) {
         List<ChatRoom> result = null;
-        int updateEnableZero = chatRoomService.deleteRoomByRoomId(roomId.trim());
+        // int updateEnableZero = chatRoomService.deleteRoomByRoomId(roomId.trim());
+        int updateEnableZero = 0;
+        Users userInfo = usersService.selectUsersByUsersIdx(usersIdx);
+
+        if(userInfo.getUsersRole().equals("CLIENT")) {
+            log.info("CLIENT usersIdx: {} 가 채팅방: {} 의 채팅 목록 제외를 요청합니다.", usersIdx, roomId);
+            updateEnableZero = chatRoomService.deleteRoomByRoomIdClient(roomId);
+        }
+        else if(userInfo.getUsersRole().equals("DETECTIVE")) {
+            log.info("DETECTIVE usersIdx: {} 가 채팅방: {} 의 채팅 목록 제외를 요청합니다.", usersIdx, roomId);
+            updateEnableZero = chatRoomService.deleteRoomByRoomIdDetective(roomId);
+        }
+        
         if(updateEnableZero == 1) {
             result = chatRoomService.selectRoomListOnServer(roomId);
         } else {
             result = chatRoomService.getChatRoomListByUsersIdx(usersIdx);
         }
+
         return result;
     }
 

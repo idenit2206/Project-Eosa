@@ -103,7 +103,7 @@ public class ChatRoomService implements ChatRoomRepository {
     }
 
     /**
-     * 채팅방 생성(2)하는 서비스
+     * 채팅방을 새로 생성하는 서비스
      * @param entity must not be {@literal null}.
      * @return
      * @param <S>
@@ -111,11 +111,14 @@ public class ChatRoomService implements ChatRoomRepository {
     @Override
     public <S extends ChatRoom> S save(S entity) {
         if(entity.getCompanysIdx() == 0) {
+            // 상담사와 채팅을 시작하는 경우
             entity.setRoomId(UUID.randomUUID().toString());
             entity.setRoomName("상담사");
             entity.setDataInfo("");
             entity.setCreatedDate(LocalDateTime.now());
             entity.setUsable(1);
+            entity.setUsersUsable(1);
+            entity.setCompanysUsable(1);
             chatRooms.put(entity.getRoomName(), entity);
             log.info("[save] insertRoomInfo: {}", entity.toString());
             return (S) chatRoomRepository.save(entity);
@@ -129,6 +132,8 @@ public class ChatRoomService implements ChatRoomRepository {
             entity.setDataInfo("");
             entity.setCreatedDate(LocalDateTime.now());
             entity.setUsable(1);
+            entity.setUsersUsable(1);
+            entity.setCompanysUsable(1);
             chatRooms.put(entity.getRoomName(), entity);
             log.info("[save] insertRoomInfo: {}", entity.toString());
             return (S) chatRoomRepository.save(entity);
@@ -144,6 +149,28 @@ public class ChatRoomService implements ChatRoomRepository {
     @Override
     public int deleteRoomByRoomId(String roomId) {
         return chatRoomRepository.deleteRoomByRoomId(roomId);
+
+
+    }
+
+    /** 
+     * roomId가 일치하는 채팅방을 삭제하는 서비스(CLIENT)
+     * @param roomId
+     * @return int
+     */
+    @Override
+    public int deleteRoomByRoomIdClient(String roomId) {
+        return chatRoomRepository.deleteRoomByRoomIdClient(roomId);
+    }
+
+    /** 
+     * roomId가 일치하는 채팅방을 삭제하는 서비스(DETECTIVE)
+     * @param roomId
+     * @return int
+     */
+    @Override
+    public int deleteRoomByRoomIdDetective(String roomId) {
+        return chatRoomRepository.deleteRoomByRoomIdDetective(roomId);
     }
 
     
