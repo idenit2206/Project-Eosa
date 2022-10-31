@@ -41,6 +41,13 @@ public class PushNotiController {
         return ResponseEntity.ok().build();
     }
     
+    /**
+     * FirebaseCloudMessage (FCM)에 활용할 token 값 device 값을 갱신하는 컨트롤러
+     * @param usersIdx
+     * @param token
+     * @param device
+     * @return
+     */
     @GetMapping("/getTokenAndDevice")
     public String getTokenAndDevice(
         @RequestParam(value="usersIdx", required = false) Long usersIdx,

@@ -11,7 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Service;
 
-import com.eosa.web.users.entity.Users;
+import com.eosa.web.users.entity.GetUsersInfoByUsersAccountEntity;
 import com.eosa.web.users.service.UsersService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +36,15 @@ public class CustomAdminAuthSuccessHandler implements AuthenticationSuccessHandl
         Authentication authentication)
     throws IOException, ServletException {
         log.info("Welcom Admin: {}", authentication.getName());
-        response.sendRedirect("/admin/manage/user/list");
+        GetUsersInfoByUsersAccountEntity user = usersService.getUsersInfoByUsersAccount(authentication.getName());
+
+        if(user.getUsersRole().equals("ADMIN") || user.getUsersRole().equals("SUPER_ADMIN")) {
+            response.sendRedirect("/admin/manage/user/list");
+        }
+        else {
+            response.sendRedirect("/admin");
+        }
+        
+       
     }
 }
