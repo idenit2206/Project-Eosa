@@ -60,6 +60,9 @@ public class RequestContractService implements RequestContractRepository {
         requestContractRepository.deleteById(id);
     }
 
+    /**
+     * requestFormIdx가 일치하는 RequestContract를 삭제(2)
+     */
     @Override
     public int deleteByRequestFormIdx(Long requestFormIdx) {
         return requestContractRepository.deleteByRequestFormIdx(requestFormIdx);
@@ -67,12 +70,12 @@ public class RequestContractService implements RequestContractRepository {
 
     
     /** 
+     * 모든 RequestContract 를 조회하는 서비스
      * @return List<RequestContract>
      */
     @Override
     public List<RequestContract> findAll() {
-        // TODO Auto-generated method stub
-        return null;
+        return requestContractRepository.findAll();
     }
 
     

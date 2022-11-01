@@ -1,7 +1,9 @@
 package com.eosa.admin.service;
 
+import com.eosa.admin.dto.RequestBackupDTO;
 import com.eosa.admin.dto.RequestContractDTO;
 import com.eosa.admin.dto.RequestDTO;
+import com.eosa.admin.mapper.RequestBackupMapper;
 import com.eosa.admin.mapper.RequestContractMapper;
 import com.eosa.admin.mapper.RequestMapper;
 import com.eosa.admin.pagination.Pagination;
@@ -30,10 +32,10 @@ import java.util.Map;
  */
 @Slf4j
 @Service
-public class RequestService {
+public class RequestBackupService {
 
     @Autowired
-    private RequestMapper requestMapper;
+    private RequestBackupMapper requestMapper;
 
     @Autowired
     private RequestContractMapper requestContractMapper;
@@ -70,7 +72,7 @@ public class RequestService {
         map.put("startIndex", pagination.getStartIndex());
         map.put("pageSize", pagination.getPageSize());
 
-        List<RequestDTO> list = requestMapper.selectRequestList(map);
+        List<RequestBackupDTO> list = requestMapper.selectRequestList(map);
 
         model.addAttribute("requestList", list);
         model.addAttribute("pagination", pagination);
@@ -101,7 +103,7 @@ public class RequestService {
      * @param requestDTO
      * @return int
      */
-    public int updateRequest(RequestDTO requestDTO) {
+    public int updateRequest(RequestBackupDTO requestDTO) {
 
         requestMapper.deleteRequestCategory(requestDTO.getRequestFormIdx());
 
@@ -149,7 +151,7 @@ public class RequestService {
      * @param {Long} companysIdx
      * @return List<RequestDTO>
      */
-    public List<RequestDTO> requestDTOCompanysIdx(Long companysIdx) {
+    public List<RequestBackupDTO> requestDTOCompanysIdx(Long companysIdx) {
         return requestMapper.requestDTOByCompanysIdx(companysIdx);
     }
 
@@ -157,7 +159,7 @@ public class RequestService {
      * 모든 RequestDTO List를 출력하는 서비스
      * @return
      */
-    public List<RequestDTO> selectAllRequestDTO() {
+    public List<RequestBackupDTO> selectAllRequestDTO() {
         return requestMapper.selectAllRequestDTO();
     }
 

@@ -7,6 +7,8 @@ import com.eosa.admin.mapper.PriceMapper;
 import com.eosa.admin.mapper.RegionMapper;
 import com.eosa.admin.pagination.Pagination;
 import com.eosa.admin.safety.Safety;
+import com.eosa.web.requestcontract.entity.RequestContract;
+import com.eosa.web.requestcontract.service.RequestContractService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -52,6 +54,12 @@ public class CompanyService {
 
     @Autowired
     private RequestService requestService;
+
+    @Autowired
+    private RequestBackupService requestBackupService;
+
+    @Autowired
+    private RequestContractService requestContractService;
 
     /**
      * 업체 목록 조회 서비스
@@ -687,60 +695,89 @@ public class CompanyService {
      * @param model
      * @return String
      */
-    public String wholeChart(Model model) {
-
+    public String wholeChart(Model model) {       
         model.addAttribute("company", companyMapper.countCompany());
 
         return "admin/board/chart/whole";
     }
 
     /**
-     * 통계 데이터 조회 서비스
-     *
+     * 통계 데이터 조회 서비스 
      * @return Map
      */
     public Map<String, Object> chartData(String sort, long companysIdx) {
 
-        List<RequestDTO> requestDTOList = requestService.requestDTOCompanysIdx(companysIdx);
-        List<RequestContractDTO> requestContractDTOList = new ArrayList<>();
-        int successRequestDTO = 0;
-
-        for(int i = 0; i < requestDTOList.size(); i++) {
-            log.info("requestDTO idx: {}", requestDTOList.get(i).getRequestFormIdx());
-
-            // requestFormIdx 와 일치하는 requestContract 가 존재하는지 select
-            if(requestService.seleRequestContractDTO2(requestDTOList.get(i).getRequestFormIdx()) != null) {
-                requestContractDTOList.add(requestService.seleRequestContractDTO2(requestDTOList.get(i).getRequestFormIdx()));
-            }
-
-            // requestFormStatus 가 "임무완료" 일 경우 successRequestDTO = successRequestDTO + 1
-            if(requestDTOList.get(i).getRequestFormStatus().equals("임무완료")) {
-                successRequestDTO = successRequestDTO + 1;
-            }
-
-        }
-    
-
-        int requestContractRate = (int) Math.round((float) requestContractDTOList.size() / requestDTOList.size() * 100);
-        int requestSuccessRate =(int) Math.round((float) successRequestDTO / requestDTOList.size() * 100);
-
-        log.info("companysIdx {} 의 임무완료 건수: {}", companysIdx, successRequestDTO);
-        
-        log.info("companysIdx {} 의 의뢰상담 개수: {}", companysIdx, requestDTOList.size());
-        log.info("companysIdx {} 의 실제 의뢰 개수: {}", companysIdx, requestContractDTOList.size());
-        log.info("의뢰 성사율: {} %", requestContractRate);
-        log.info("의뢰 성공률: {} %", requestSuccessRate);
-         
-
         List<ChartDTO> list =  new ArrayList<>();
         List<ChartDataDTO> cateList = new ArrayList<>();
+        List<RequestBackupDTO> requestDTOList = new ArrayList<>();
+
+        int contractedRequestCount = 0;
+        int successRequestDTO = 0;
+        int requestContractRate = 0;
+        int requestSuccessRate = 0;
 
         if (sort.equals("whole")) {
             list = companyMapper.selectChart();
             cateList = companyMapper.selectCategoryChart();
-        } else if (sort.equals("company")) {
+
+            // 전체 통계        
+            requestDTOList = requestBackupService.selectAllRequestDTO();
+            
+            int successRequestContractCountAllChart = 0;
+            int successRequestCountAllChart = 0;
+    
+            for(int i = 0; i < requestDTOList.size(); i++) {
+                // 상담에서 계약까지 성사된 RequestDTO의 수를 구합니다.
+                if(requestDTOList.get(i).getRequestFormStatus().equals("임무진행") || requestDTOList.get(i).getRequestFormStatus().equals("임무완료")) {
+                   contractedRequestCount = contractedRequestCount + 1;
+                }
+    
+                // 임무완료한 RequestDTO의 수를 구합니다.
+                if(requestDTOList.get(i).getRequestFormStatus().equals("임무완료")) {
+                    successRequestDTO = successRequestDTO + 1;
+                }
+            }
+        
+    
+            requestContractRate = (int) Math.round((float) contractedRequestCount / requestDTOList.size() * 100);
+            requestSuccessRate = (int) Math.round((float) successRequestDTO / requestDTOList.size() * 100);
+    
+            log.info("전체 의뢰상담 개수: {}", requestDTOList.size());
+            log.info("전체 의뢰(임무) 개수: {}", contractedRequestCount);
+            log.info("의뢰 성사율: {} %", requestContractRate);
+            log.info("의뢰 성공률: {} %", requestSuccessRate);
+          
+        } 
+        else if (sort.equals("company")) {
             list = companyMapper.selectCompanyChart(companysIdx);
             cateList = companyMapper.selectCompanyCategoryChart(companysIdx);
+
+            requestDTOList = requestBackupService.requestDTOCompanysIdx(companysIdx);
+            
+            for(int i = 0; i < requestDTOList.size(); i++) {
+                log.info("requestDTO idx: {}", requestDTOList.get(i).getRequestFormIdx());
+
+                // requestFormIdx 가 실제로 계약을 하고 임무를 진행중인 상담인가?
+                if(requestDTOList.get(i).getRequestFormStatus().equals("임무진행") || requestDTOList.get(i).getRequestFormStatus().equals("임무완료")) {
+                    contractedRequestCount = contractedRequestCount + 1;
+                }
+
+                // requestFormStatus 가 "임무완료" 일 경우 successRequestDTO = successRequestDTO + 1
+                if(requestDTOList.get(i).getRequestFormStatus().equals("임무완료")) {
+                    successRequestDTO = successRequestDTO + 1;
+                }
+
+            }        
+
+            requestContractRate = (int) Math.round((float) contractedRequestCount / requestDTOList.size() * 100);
+            requestSuccessRate = (int) Math.round((float) successRequestDTO / requestDTOList.size() * 100);
+            
+            log.info("companysIdx {} 의 의뢰상담 개수: {}", companysIdx, requestDTOList.size());
+            log.info("companysIdx {} 의 임무시작한 의뢰의 개수: {}", companysIdx, contractedRequestCount);
+            log.info("companysIdx {} 의 임무 완료한 의뢰의 개수: {}", companysIdx, successRequestDTO);
+            log.info("의뢰 성사율: {} %", requestContractRate);
+            log.info("의뢰 성공률: {} %", requestSuccessRate);
+
         }
 
         int[] age = new int[8];
@@ -862,11 +899,11 @@ public class CompanyService {
             categoryNum.add(cateList.get(i).getNum());
         }
 
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();       
         map.put("size", list.size());
-        map.put("missionCount", requestContractDTOList.size());
-        map.put("missionSuccessRate", requestSuccessRate) ;
+        map.put("missionCount", contractedRequestCount);
         map.put("missionContractRate", requestContractRate);
+        map.put("missionSuccessRate", requestSuccessRate) ;       
         map.put("age", age);
         map.put("time", time);
         map.put("region", region);

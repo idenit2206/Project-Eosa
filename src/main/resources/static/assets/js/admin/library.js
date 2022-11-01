@@ -138,11 +138,12 @@ function createChart(sort) {
     })
         .then(res => res.json())
         .then(data => {
-            // document.querySelector('.requestCount').innerHTML = data.size + ' 건';
+            console.log(`result: `);
+            console.log(data);
             document.querySelector(".requestConsultCount").innerHTML = data.size + " 개";
             document.querySelector(".requestCount").innerHTML = data.missionCount + " 개";
             document.querySelector(".requestSuccessRate").innerHTML = data.missionSuccessRate + " %";
-            document.querySelector(".requestAcceptRate").innerHTML = data.missionContractRate + " %";
+            document.querySelector(".requestAcceptRate").innerHTML = data.missionContractRate + " %";            
 
             const age = document.getElementById('ageChart').getContext('2d');
             const ageChart = new Chart(age, {
@@ -390,22 +391,15 @@ const option2 = {
     },
     scales: {
         x: {
-            display: true,
-            title: {
-                display: true
-            },
             grid: {
                 display: false,
             }
         },
         y: {
-            display: true,
-            title: {
+            ticks: {
                 display: false,
-            },
-            grid: {
-                display: true,
+                // stepSize: 
             }
-        }
+        },
     }
 };

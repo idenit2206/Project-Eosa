@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.eosa.admin.mapper.RequestMapper">
+<mapper namespace="com.eosa.admin.mapper.RequestBackupMapper">
 
     <!-- 의뢰 목록 개수 조회 -->
     <select id="countRequestList" resultType="int" parameterType="hashmap">
         SELECT COUNT(*)
-        FROM RequestForm R
+        FROM RequestFormBackup R
                  JOIN Users U on R.usersIdx = U.usersIdx
                  JOIN Companys C on R.companysIdx = C.companysIdx
         <where>
@@ -22,22 +22,24 @@
     </select>
 
     <!-- 의뢰 목록 조회 -->
-    <select id="selectRequestList" resultType="RequestDTO" parameterType="hashmap">
-        SELECT R.requestFormIdx,
-               R.usersIdx,
-               R.companysIdx,
-               R.requestFormRegion1,
-               R.requestFormChannel,
-               R.requestFormStatus,
-               R.requestFormDate,
-               RC.requestFormCategoryValue,
-               U.usersAccount,
-               C.companysName
-        FROM RequestForm R
-                 JOIN (SELECT RFC.requestFormIdx,
+    <select id="selectRequestList" resultType="RequestBackupDTO" parameterType="hashmap">
+        SELECT
+            R.requestFormBackupIdx,
+            R.requestFormIdx,
+            R.usersIdx,
+            R.companysIdx,
+            R.requestFormRegion1,
+            R.requestFormChannel,
+            R.requestFormStatus,
+            R.requestFormDate,
+            RC.requestFormCategoryValue,
+            U.usersAccount,
+            C.companysName
+        FROM RequestFormBackup R
+                 JOIN (SELECT RFC.requestFormBackupIdx,
                               GROUP_CONCAT(RFC.requestFormCategoryValue SEPARATOR '|') requestFormCategoryValue
-                       FROM RequestFormCategory RFC
-                       GROUP BY RFC.requestFormIdx) RC ON R.requestFormIdx = RC.requestFormIdx
+                       FROM RequestFormCategoryBackup RFC
+                       GROUP BY RFC.requestFormBackupIdx) RC ON R.requestFormBackupIdx = RC.requestFormBackupIdx
                  JOIN Users U on R.usersIdx = U.usersIdx
                  JOIN Companys C on R.companysIdx = C.companysIdx
         <where>
@@ -57,27 +59,27 @@
     <!-- 의뢰 삭제 -->
     <delete id="deleteRequest" parameterType="long">
         DELETE
-        FROM RequestForm
+        FROM RequestFormBackup
         WHERE requestFormIdx = #{requestFormIdx}
     </delete>
 
     <!-- 의뢰 분야 삭제 -->
     <delete id="deleteRequestCategory" parameterType="long">
         DELETE
-        FROM RequestFormCategory
-        WHERE requestFormIdx = #{requestFormIdx}
+        FROM RequestFormCategoryBackup
+        WHERE requestFormBackupIdx = #{requestFormBackupIdx}
     </delete>
 
     <!-- 의뢰 수정 -->
-    <update id="updateRequest" parameterType="RequestDTO">
-        UPDATE RequestForm
+    <update id="updateRequest" parameterType="RequestBackupDTO">
+        UPDATE RequestFormBackup
         SET requestFormRegion1 = #{requestFormRegion1},
             requestFormStatus  = #{requestFormStatus}
-        WHERE requestFormIdx = #{requestFormIdx}
+        WHERE requestFormBackupIdx = #{requestFormBackupIdx}
     </update>
 
     <!-- 의뢰 분야 등록 -->
-    <insert id="insertRequestCategory" parameterType="RequestDTO">
+    <insert id="insertRequestCategory" parameterType="RequestBackupDTO">
         INSERT INTO RequestFormCategory (requestFormIdx,
                                          requestFormCategoryValue)
         VALUES (#{requestFormIdx},
@@ -85,8 +87,9 @@
     </insert>
 
     <!-- companysIdx가 일치하는 RequestDTO 조회 -->
-    <select id="requestDTOByCompanysIdx"  resultType="RequestDTO" parameterType="Long">
-        SELECT 
+    <select id="requestDTOByCompanysIdx"  resultType="RequestBackupDTO" parameterType="Long">
+        SELECT
+        r.requestFormBackupIdx,
         r.requestFormIdx,
         r.usersIdx,
         r.companysIdx,
@@ -100,18 +103,19 @@
         rc.requestFormCategoryValue,
         u.usersAccount,
         c.companysName
-        FROM RequestForm r
-        JOIN (SELECT RFC.requestFormIdx,
+        FROM RequestFormBackup r
+        JOIN (SELECT RFC.requestFormBackupIdx,
                     GROUP_CONCAT(RFC.requestFormCategoryValue SEPARATOR '|') requestFormCategoryValue
-                FROM RequestFormCategory RFC GROUP BY RFC.requestFormIdx) rc ON r.requestFormIdx = rc.requestFormIdx
+                FROM RequestFormCategoryBackup RFC GROUP BY RFC.requestFormBackupIdx) rc ON r.requestFormBackupIdx = rc.requestFormBackupIdx
         JOIN Users u ON r.usersIdx = u.usersIdx
         JOIN Companys c ON r.companysIdx = c.companysIdx
         WHERE r.companysIdx = #{companysIdx}
     </select>
 
     <!-- 모든 RequestDTO 조회 -->
-    <select id="selectAllRequestDTO"  resultType="RequestDTO" parameterType="Long">
+    <select id="selectAllRequestDTO"  resultType="RequestBackupDTO">
         SELECT 
+        r.requestFormBackupIdx,
         r.requestFormIdx,
         r.usersIdx,
         r.companysIdx,
@@ -122,13 +126,11 @@
         r.requestFormAcceptDate,
         r.requestFormCompDate,
         r.requestFormRejectMessage,
-        rc.requestFormCategoryValue,
-        u.usersAccount,
-        c.companysName
-        FROM RequestForm r
-        JOIN (SELECT RFC.requestFormIdx,
-                GROUP_CONCAT(RFC.requestFormCategoryValue SEPARATOR '|') requestFormCategoryValue
-            FROM RequestFormCategoryBackup RFC GROUP BY RFC.requestFormBaIdx) rc ON r.requestFormIdx = rc.requestFormIdx
+        rc.requestFormCategoryValue
+        FROM RequestFormBackup r
+        JOIN (SELECT RFC.requestFormBackupIdx,
+                    GROUP_CONCAT(RFC.requestFormCategoryValue SEPARATOR '|') requestFormCategoryValue
+                FROM RequestFormCategoryBackup RFC GROUP BY RFC.requestFormBackupIdx) rc ON r.requestFormBackupIdx = rc.requestFormBackupIdx
     </select>
-
+    
 </mapper>
