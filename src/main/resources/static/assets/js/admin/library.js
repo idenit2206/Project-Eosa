@@ -133,6 +133,14 @@ let ageChartDatasets = [
     }
 ];
 let timeChart;
+let timeChartDatasets = [{
+    label: '시간',
+    data: null,
+    tension: 0,
+    borderColor: "#64B5F6",
+    barThickness: 7,
+    pointRadius: 0,
+}]
 let areaChart;
 let categoryChart;
 let monthChart
@@ -169,34 +177,18 @@ function createChart(sort) {
                 data: {
                     labels: ['10대', '20대', '30대', '40대', '50대', '60대', '70대', '80대 이상'],
                     datasets: ageChartDatasets
-                    // {
-                    //     label: '연령(2)',
-                    //     data: [10, 20, 30, 40, 20, 15, 50, 90, 20],
-                    //     tension: 0,
-                    //     borderColor: "#BDBDBD",
-                    //     barThickness: 7,
-                    //     pointRadius: 0,
-                    // }
                 },
                 options: option2,
                 
             });
             
-
+            timeChartDatasets[0].data = data.time;
             const time = document.getElementById('timeChart').getContext('2d');
             timeChart = new Chart(time, {
                 type: 'line',
                 data: {
                     labels: ['8시', '10시', '12시', '14시', '16시', '18시', '20시', '22시', '24시', '2시', '4시', '6시'],
-                    datasets: [{
-                        label: '시간',
-                        data: data.time,
-                        // backgroundColor: "#64B5F6",
-                        tension: 0,
-                        borderColor: "#64B5F6",
-                        barThickness: 7,
-                        pointRadius: 0,
-                    }]
+                    datasets: timeChartDatasets
                 },
                 options: option2,
             });
@@ -253,33 +245,57 @@ function createChart(sort) {
 };
 
 function createChartAllData() {
+    let viewAVG = document.querySelector("#viewAVG");
+    
+    if(viewAVG.checked) {
+        console.log('checked');
 
-    const formData = new FormData();
-    formData.set('sort', "whole");
-    formData.set('companysIdx', 0);
+        const formData = new FormData();
+        formData.set('sort', "whole");
+        formData.set('companysIdx', 0);
 
-    fetch('/admin/manage/company/chart/whole/data', {
-        method: 'post',
-        body: formData,
-    })
-    .then(res => { res.json(); })
-    .then(data => {
-        console.log(`whole chart result: `);
-        console.log(data);
-        ageChartDatasets.push(
-            {
-                label: '전체연령',
-                data: [10, 20, 30, 40, 20, 15, 50, 90],
+        fetch('/admin/manage/company/chart/whole/data', {
+            method: 'post',
+            body: formData,
+        })
+        .then(res =>  res.json())
+        .then(data => {
+            console.log(data);
+
+            ageChartDatasets.push(
+                {
+                    label: '전체연령',
+                    data: data.ageAllChart,
+                    tension: 0,
+                    borderColor: "#BDBDBD",
+                    barThickness: 7,
+                    pointRadius: 0,
+                }
+            )
+
+            timeChartDatasets.push({
+                label: '전체시간',
+                data: data.timeAllChart,
                 tension: 0,
                 borderColor: "#BDBDBD",
                 barThickness: 7,
                 pointRadius: 0,
-            }
-        )
-    })
-    .catch(err => {
-        console.log(err);
-    })
+            })
+
+            ageChart.update();
+            timeChart.update();
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    }else {
+        ageChartDatasets.pop();
+        timeChartDatasets.pop();
+
+        ageChart.update();
+        timeChart.update();
+    }
+    
 
 };
 
