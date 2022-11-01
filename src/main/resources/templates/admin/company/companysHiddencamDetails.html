@@ -101,13 +101,6 @@
             highlightMenu('hiddencam');
             onlyNum();
 
-            const editorWrap = document.querySelectorAll('.e-wrap');
-            setTimeout(e => {
-                editorWrap[0].style.display = 'block';
-                editorWrap[1].style.display = 'block';
-            }, 500)
-            createEditor();
-
             // 달력, 시간
             const datePickers = document.querySelectorAll('.datepicker');
             for(let datepicker of datePickers) new DatePicker(datepicker);

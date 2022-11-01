@@ -721,8 +721,8 @@ public class CompanyService {
         }
     
 
-        int requestContractRate = (int) ((float) requestContractDTOList.size() / requestDTOList.size() * 100);
-        int requestSuccessRate =(int) ((float) successRequestDTO / requestDTOList.size() * 100);
+        int requestContractRate = (int) Math.round((float) requestContractDTOList.size() / requestDTOList.size() * 100);
+        int requestSuccessRate =(int) Math.round((float) successRequestDTO / requestDTOList.size() * 100);
 
         log.info("companysIdx {} 의 임무완료 건수: {}", companysIdx, successRequestDTO);
         
