@@ -262,10 +262,10 @@ function createChartAllData() {
         method: 'post',
         body: formData,
     })
-    .then(res => res.json())
+    .then(res => { res.json(); })
     .then(data => {
         console.log(`whole chart result: `);
-        console.log(data); 
+        console.log(data);
         ageChartDatasets.push(
             {
                 label: '전체연령',
@@ -276,7 +276,6 @@ function createChartAllData() {
                 pointRadius: 0,
             }
         )
-        console.log(ageChartDatasets);
     })
     .catch(err => {
         console.log(err);
