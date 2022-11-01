@@ -110,6 +110,11 @@
         window.addEventListener('load', function () {
             highlightMenu('list');
             createChart('company');
+
+            const viewAVGBtn = document.querySelector("#viewAVG");
+            viewAVGBtn.addEventListener("click", () => {
+                createChartAllData();
+            })
         });
     </script>
 </th:block>

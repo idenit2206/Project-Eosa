@@ -309,11 +309,25 @@ public interface CompanyMapper {
     List<ChartDTO> selectChart();
 
     /**
+     * 전체 통계 조회 매퍼
+     * (RequestFormBackup)
+     * @return ChartDTO
+     */
+    List<ChartDTO> selectChart2();
+
+    /**
      * 분야 통계 조회 매퍼
      *
      * @return ChartDataDTO
      */
     List<ChartDataDTO> selectCategoryChart();
+
+    /**
+     * 분야 통계 조회 매퍼
+     * (RequestFormCategoryBackup)
+     * @return ChartDataDTO
+     */
+    List<ChartDataDTO> selectCategoryChart2();
 
     /**
      * 업체 통계 조회 매퍼

@@ -1,9 +1,7 @@
 package com.eosa.web.requestform.service.tablebackup;
 
-import com.eosa.web.companys.entity.SelectAllCompanysList;
 import com.eosa.web.companys.service.CompanysService;
 import com.eosa.web.firebase.pushnoti.service.FirebaseCloudMessage;
-import com.eosa.web.requestform.entity.RequestForm;
 import com.eosa.web.requestform.entity.RequestFormBackup;
 import com.eosa.web.requestform.entity.SelectRequestFormList;
 import com.eosa.web.requestform.repository.tablebackup.DetectiveRequestFormBackupRepository;
@@ -17,7 +15,6 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.stereotype.Service;
 

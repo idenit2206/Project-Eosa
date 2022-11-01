@@ -589,6 +589,15 @@
         GROUP BY C.categoryName;
     </select>
 
+    <!-- 분야 통계 조회 RequestFormCategoryBackup -->
+    <select id="selectCategoryChart2" resultType="ChartDataDTO">
+        SELECT C.categoryName,
+               COUNT(R.requestFormCategoryValue) num
+        FROM Category C
+                 LEFT JOIN RequestFormCategoryBackup R ON C.categoryName = R.requestFormCategoryValue
+        GROUP BY C.categoryName;
+    </select>
+
     <!-- 업체 통계 조회 -->
     <select id="selectCompanyChart" resultType="ChartDTO" parameterType="long">
         SELECT RF.requestFormRegion1,

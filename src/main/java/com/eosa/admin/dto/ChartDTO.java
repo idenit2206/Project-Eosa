@@ -32,6 +32,8 @@ public class ChartDTO {
     private int requestCount;               // 업체 의뢰 건수
     private BigDecimal average;             // 업체 평점
 
+    private long requestFormBackupIdx;
+
     private long requestFormIdx;            // 의뢰의 고유 번호
     private String requestFormRegion1;      // 의뢰 요청 지역
     private Timestamp requestFormDate;      // 의뢰일

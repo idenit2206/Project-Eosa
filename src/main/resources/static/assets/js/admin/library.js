@@ -121,6 +121,22 @@ function createEditorForNotice(noticeIdx) {
     return editor;
 };
 
+let ageChart;
+let ageChartDatasets = [
+    {
+        label: '연령',
+        data: null,
+        tension: 0,
+        borderColor: "#64B5F6",
+        barThickness: 7,
+        pointRadius: 0,
+    }
+];
+let timeChart;
+let areaChart;
+let categoryChart;
+let monthChart
+
 function createChart(sort) {
 
     const formData = new FormData();
@@ -140,32 +156,35 @@ function createChart(sort) {
         .then(data => {
             console.log(`result: `);
             console.log(data);
+            ageChartDatasets[0].data = data.age;
+
             document.querySelector(".requestConsultCount").innerHTML = data.size + " 개";
             document.querySelector(".requestCount").innerHTML = data.missionCount + " 개";
             document.querySelector(".requestSuccessRate").innerHTML = data.missionSuccessRate + " %";
-            document.querySelector(".requestAcceptRate").innerHTML = data.missionContractRate + " %";            
+            document.querySelector(".requestAcceptRate").innerHTML = data.missionContractRate + " %"; 
 
             const age = document.getElementById('ageChart').getContext('2d');
-            const ageChart = new Chart(age, {
+            ageChart = new Chart(age, {
                 type: 'line',
                 data: {
                     labels: ['10대', '20대', '30대', '40대', '50대', '60대', '70대', '80대 이상'],
-                    datasets: [{
-                        label: '연령',
-                        data: data.age,
-                        // backgroundColor: "#64B5F6",
-                        tension: 0,
-                        borderColor: "#64B5F6",
-                        barThickness: 7,
-                        pointRadius: 0,
-                    }]
+                    datasets: ageChartDatasets
+                    // {
+                    //     label: '연령(2)',
+                    //     data: [10, 20, 30, 40, 20, 15, 50, 90, 20],
+                    //     tension: 0,
+                    //     borderColor: "#BDBDBD",
+                    //     barThickness: 7,
+                    //     pointRadius: 0,
+                    // }
                 },
                 options: option2,
                 
             });
+            
 
             const time = document.getElementById('timeChart').getContext('2d');
-            const timeChart = new Chart(time, {
+            timeChart = new Chart(time, {
                 type: 'line',
                 data: {
                     labels: ['8시', '10시', '12시', '14시', '16시', '18시', '20시', '22시', '24시', '2시', '4시', '6시'],
@@ -183,7 +202,7 @@ function createChart(sort) {
             });
 
             const area = document.getElementById('areaChart').getContext('2d');
-            const areaChart = new Chart(area, {
+            areaChart = new Chart(area, {
                 type: 'bar',
                 data: {
                     labels: ['서울', '경기', '대전/충남/세종', '인천/부천', '강원', '전주/전북', '청주/충북', '대구/경북', '부산/울산/경남', '광주/전남', '제주'],
@@ -198,7 +217,7 @@ function createChart(sort) {
             });
 
             const category = document.getElementById('categoryChart').getContext('2d');
-            const categoryChart = new Chart(category, {
+            categoryChart = new Chart(category, {
                 type: 'bar',
                 data: {
                     labels: data.category,
@@ -213,7 +232,7 @@ function createChart(sort) {
             });
 
             const month = document.getElementById('monthChart').getContext('2d');
-            const monthChart = new Chart(month, {
+            monthChart = new Chart(month, {
                 type: 'bar',
                 data: {
                     labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
@@ -230,6 +249,38 @@ function createChart(sort) {
         .catch(err => {
             console.log(err);
         })
+
+};
+
+function createChartAllData() {
+
+    const formData = new FormData();
+    formData.set('sort', "whole");
+    formData.set('companysIdx', 0);
+
+    fetch('/admin/manage/company/chart/whole/data', {
+        method: 'post',
+        body: formData,
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log(`whole chart result: `);
+        console.log(data); 
+        ageChartDatasets.push(
+            {
+                label: '전체연령',
+                data: [10, 20, 30, 40, 20, 15, 50, 90],
+                tension: 0,
+                borderColor: "#BDBDBD",
+                barThickness: 7,
+                pointRadius: 0,
+            }
+        )
+        console.log(ageChartDatasets);
+    })
+    .catch(err => {
+        console.log(err);
+    })
 
 };
 
