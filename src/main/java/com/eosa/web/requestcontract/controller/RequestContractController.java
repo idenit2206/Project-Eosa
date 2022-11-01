@@ -48,6 +48,7 @@ public class RequestContractController {
         if(selectResult != null) {
             Map<String, Object> item = new HashMap<>();
             item.put("companysName", selectResult.getCompanysName());
+            item.put("companysCeoName", selectResult.getCompanysCeoName());
             item.put("companysAddress", selectResult.getCompanysRegion1() + " " + selectResult.getCompanysRegion3());
             item.put("companysPhone", selectResult.getCompanysPhone());
             item.put("companysRegistCertiDate", selectResult.getCompanysRegistCertiDate());

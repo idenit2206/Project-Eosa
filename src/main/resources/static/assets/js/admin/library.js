@@ -146,32 +146,39 @@ function createChart(sort) {
 
             const age = document.getElementById('ageChart').getContext('2d');
             const ageChart = new Chart(age, {
-                type: 'bar',
+                type: 'line',
                 data: {
                     labels: ['10대', '20대', '30대', '40대', '50대', '60대', '70대', '80대 이상'],
                     datasets: [{
                         label: '연령',
                         data: data.age,
-                        backgroundColor: "#64B5F6",
+                        // backgroundColor: "#64B5F6",
+                        tension: 0,
+                        borderColor: "#64B5F6",
                         barThickness: 7,
+                        pointRadius: 0,
                     }]
                 },
-                options: option,
+                options: option2,
+                
             });
 
             const time = document.getElementById('timeChart').getContext('2d');
             const timeChart = new Chart(time, {
-                type: 'bar',
+                type: 'line',
                 data: {
                     labels: ['8시', '10시', '12시', '14시', '16시', '18시', '20시', '22시', '24시', '2시', '4시', '6시'],
                     datasets: [{
                         label: '시간',
                         data: data.time,
-                        backgroundColor: "#64B5F6",
+                        // backgroundColor: "#64B5F6",
+                        tension: 0,
+                        borderColor: "#64B5F6",
                         barThickness: 7,
+                        pointRadius: 0,
                     }]
                 },
-                options: option,
+                options: option2,
             });
 
             const area = document.getElementById('areaChart').getContext('2d');
@@ -356,6 +363,48 @@ const option = {
             },
             grid: {
                 display: false,
+            }
+        }
+    }
+};
+
+const option2 = {
+    maintainAspectRatio :false,
+    responsive: true,
+    plugins: {
+        title: {
+            display: false,
+        },
+        tooltip: {
+            enabled: false,
+            position: 'nearest',
+            external: externalTooltipHandler
+        },
+        legend: {
+            display: false,
+        },
+    },
+    interaction: {
+        mode: 'index',
+        intersect: false,
+    },
+    scales: {
+        x: {
+            display: true,
+            title: {
+                display: true
+            },
+            grid: {
+                display: false,
+            }
+        },
+        y: {
+            display: true,
+            title: {
+                display: false,
+            },
+            grid: {
+                display: true,
             }
         }
     }
