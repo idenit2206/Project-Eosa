@@ -132,5 +132,31 @@
                     GROUP_CONCAT(RFC.requestFormCategoryValue SEPARATOR '|') requestFormCategoryValue
                 FROM RequestFormCategoryBackup RFC GROUP BY RFC.requestFormBackupIdx) rc ON r.requestFormBackupIdx = rc.requestFormBackupIdx
     </select>
+
+    <!-- 모든 RequestDTO 조회2 -->
+    <select id="selectAllRequestDTO2"  resultType="RequestBackupDTO">
+        SELECT 
+        r.requestFormBackupIdx,
+        r.requestFormIdx,
+        r.usersIdx,
+        u.usersGender,
+        u.usersAge,
+        r.companysIdx,
+        r.requestFormRegion1,
+        r.requestFormChannel,
+        r.requestFormStatus,
+        r.requestConsultDate,
+        r.requestFormAcceptDate,
+        r.requestFormCompDate,
+        r.requestFormRejectMessage,
+        rc.requestFormCategoryValue
+        FROM RequestFormBackup r
+        JOIN (SELECT RFC.requestFormBackupIdx,
+                    GROUP_CONCAT(RFC.requestFormCategoryValue SEPARATOR '|') requestFormCategoryValue
+                FROM RequestFormCategoryBackup RFC GROUP BY RFC.requestFormBackupIdx) rc ON r.requestFormBackupIdx = rc.requestFormBackupIdx
+        JOIN Users u ON r.usersIdx = u.usersIdx 
+    </select>
+
+
     
 </mapper>

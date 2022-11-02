@@ -710,7 +710,9 @@ public class CompanyService {
         List<ChartDTO> list =  new ArrayList<>();
         List<ChartDataDTO> cateList = new ArrayList<>();
         List<RequestBackupDTO> requestDTOList = new ArrayList<>();
+        List<RequestBackupDTO> requestDTOListWhole = new ArrayList<>();
 
+        // 전체 통계를 위한 변수
         int contractedRequestCount = 0;
         int successRequestDTO = 0;
         int requestContractRate = 0;
@@ -727,15 +729,21 @@ public class CompanyService {
         SimpleDateFormat hourAllChart = new SimpleDateFormat("HH");
         SimpleDateFormat mFormatAllChart = new SimpleDateFormat("MM");
 
+        // companysIdx 기준 통계를 위한 변수
+        int[] age = new int[8];
+        int[] time = new int[12];
+        int[] region = new int[11];
+        int[] month = new int[12];
+        List<String> category = new ArrayList<>();
+        List<Integer> categoryNum = new ArrayList<>();
+
         if (sort.equals("whole")) {
             list = companyMapper.selectChart();
             cateList = companyMapper.selectCategoryChart2();
 
             // 전체 통계        
-            requestDTOList = requestBackupService.selectAllRequestDTO();
-            
-            int successRequestContractCountAllChart = 0;
-            int successRequestCountAllChart = 0;
+            requestDTOList = requestBackupService.selectAllRequestDTO2();
+            requestDTOListWhole = requestDTOList;            
     
             for(int i = 0; i < requestDTOList.size(); i++) {
                 // 상담에서 계약까지 성사된 RequestDTO의 수를 구합니다.
@@ -747,11 +755,12 @@ public class CompanyService {
                 if(requestDTOList.get(i).getRequestFormStatus().equals("임무완료")) {
                     successRequestDTO = successRequestDTO + 1;
                 }
+
             }        
     
             requestContractRate = (int) Math.round((float) contractedRequestCount / requestDTOList.size() * 100);
-            requestSuccessRate = (int) Math.round((float) successRequestDTO / requestDTOList.size() * 100);
-    
+            requestSuccessRate = (int) Math.round((float) successRequestDTO / requestDTOList.size() * 100);    
+
             for (int i = 0; i < list.size(); i++) {
     
                 // 연령
@@ -866,7 +875,7 @@ public class CompanyService {
             log.info("의뢰 성사율: {} %", requestContractRate);
             log.info("의뢰 성공률: {} %", requestSuccessRate);
           
-        } 
+        }
         else if (sort.equals("company")) {
             list = companyMapper.selectCompanyChart(companysIdx);
             cateList = companyMapper.selectCompanyCategoryChart(companysIdx);
@@ -897,14 +906,7 @@ public class CompanyService {
             log.info("의뢰 성사율: {} %", requestContractRate);
             log.info("의뢰 성공률: {} %", requestSuccessRate);
 
-        }
-
-        int[] age = new int[8];
-        int[] time = new int[12];
-        int[] region = new int[11];
-        int[] month = new int[12];
-        List<String> category = new ArrayList<>();
-        List<Integer> categoryNum = new ArrayList<>();
+        }       
 
         SimpleDateFormat hour = new SimpleDateFormat("HH");
         SimpleDateFormat mFormat = new SimpleDateFormat("MM");
@@ -1018,11 +1020,12 @@ public class CompanyService {
             categoryNum.add(cateList.get(i).getNum());
         }
 
-        Map<String, Object> map = new HashMap<>();       
+        Map<String, Object> map = new HashMap<>();
+        map.put("requestList", requestDTOList);
         map.put("size", list.size());
         map.put("missionCount", contractedRequestCount);
         map.put("missionContractRate", requestContractRate);
-        map.put("missionSuccessRate", requestSuccessRate) ;       
+        map.put("missionSuccessRate", requestSuccessRate) ;    
         map.put("age", age);
         map.put("time", time);
         map.put("region", region);
@@ -1031,6 +1034,7 @@ public class CompanyService {
         map.put("categoryNum", categoryNum);
 
         // 전체 통계
+        map.put("requestListWhole", requestDTOListWhole);
         map.put("ageAllChart", ageAllChart);
         map.put("timeAllChart", timeAllChart);
         map.put("regionAllChart", regionAllChart);

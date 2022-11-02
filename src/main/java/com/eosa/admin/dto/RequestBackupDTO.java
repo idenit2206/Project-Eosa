@@ -18,7 +18,7 @@ import java.sql.Timestamp;
 @Data
 public class RequestBackupDTO {
 
-    private long requestFormBackupIdx;
+    private long requestFormBackupIdx;      // 의뢰백업의 고유 번호
     private long requestFormIdx;            // 의뢰의 고유 번호
     private long usersIdx;                  // 의뢰인의 고유 번호
     private long companysIdx;               // 의뢰 업체의 고유 번호
@@ -38,4 +38,6 @@ public class RequestBackupDTO {
     private String usersAccount;            // 의뢰인의 계정
     private String companysName;            // 의뢰 업체의 이름
 
+    private int usersGender;                // 의뢰인의 성별
+    private int usersAge;                   // 의뢰인의 연령대
 }

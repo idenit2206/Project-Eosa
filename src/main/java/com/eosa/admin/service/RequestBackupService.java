@@ -163,4 +163,12 @@ public class RequestBackupService {
         return requestMapper.selectAllRequestDTO();
     }
 
+    /**
+     * 모든 RequestDTO List를 출력하는 서비스 (사용자의 성별추가)
+     * @return
+     */
+    public List<RequestBackupDTO> selectAllRequestDTO2() {
+        return requestMapper.selectAllRequestDTO2();
+    }
+
 }

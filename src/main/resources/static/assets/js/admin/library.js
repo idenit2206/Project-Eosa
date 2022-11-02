@@ -341,10 +341,13 @@ function createChartAllData() {
         areaChart.update();
         categoryChart.update();
         monthChart.update();
-    }
-    
+    }   
 
 };
+
+const reloadAgeChart = (gender) => {
+    alert(gender);
+}
 
 /**
  * 툴팁

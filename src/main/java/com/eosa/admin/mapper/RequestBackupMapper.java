@@ -81,4 +81,10 @@ public interface RequestBackupMapper {
      * @return
      */
     List<RequestBackupDTO> selectAllRequestDTO();
+
+    /**
+     * 모든 RequestDTO 를 List로 출력하는 매퍼 (사용자의 성별, 나이 추가)
+     * @return
+     */
+    List<RequestBackupDTO> selectAllRequestDTO2();
 }
