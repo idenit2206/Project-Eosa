@@ -740,8 +740,8 @@ public class CompanyService {
         int[] fAge = new int[8];
         int[] time = new int[12];
         int[] region = new int[11];
-        // int[] month = new int[12];
-        int[] month = new int[13];
+        int[] month = new int[12];
+        
         List<String> yearMonth = new ArrayList<>();
         List<String> category = new ArrayList<>();
         List<Integer> categoryNum = new ArrayList<>();
@@ -816,7 +816,7 @@ public class CompanyService {
             }
     
             requestContractRate = (int) Math.round((float) contractedRequestCount / requestDTOList.size() * 100);
-            requestSuccessRate = (int) Math.round((float) successRequestDTO / requestDTOList.size() * 100);    
+            requestSuccessRate = (int) Math.round((float) successRequestDTO / requestDTOList.size() * 100);
 
             for (int i = 0; i < list.size(); i++) {
     
@@ -890,12 +890,9 @@ public class CompanyService {
                     regionAllChart[9] = regionAllChart[9] + 1;
                 } else if (list.get(i).getRequestFormRegion1().equals("제주")) {
                     regionAllChart[10] = regionAllChart[10] + 1;
-                }
-    
+                }    
+              
                 // 월
-                String fYearMonth = ymFormat.format(list.get(i).getRequestFormDate());
-                yearMonthAllChart.add(fYearMonth);
-
                 String fMonth = mFormat.format(list.get(i).getRequestFormDate());
                 if (fMonth.equals("01")) {
                     monthAllChart[0] = monthAllChart[0] + 1;
@@ -941,9 +938,10 @@ public class CompanyService {
             cateList = companyMapper.selectCompanyCategoryChart(companysIdx);
 
             requestDTOList = requestBackupService.requestDTOCompanysIdx(companysIdx);
+            requestDTOListWhole = requestBackupService.selectAllRequestDTO2();
             
             for(int i = 0; i < requestDTOList.size(); i++) {
-                log.info("requestDTO idx: {}", requestDTOList.get(i).getRequestFormIdx());
+                // log.info("requestDTO idx: {}", requestDTOList.get(i).getRequestFormIdx());
 
                 // requestFormIdx 가 실제로 계약을 하고 임무를 진행중인 상담인가?
                 if(requestDTOList.get(i).getRequestFormStatus().equals("임무진행") || requestDTOList.get(i).getRequestFormStatus().equals("임무완료")) {
@@ -955,7 +953,13 @@ public class CompanyService {
                     successRequestDTO = successRequestDTO + 1;
                 }
 
-            }        
+            }
+            
+            for(int i = 0; i < requestDTOListWhole.size(); i++) {
+                // log.info("date: {}", requestDTOListWhole.get(i));
+                String fYearMonth = ymFormat.format(requestDTOListWhole.get(i).getRequestFormDate());
+                yearMonthAllChart.add(fYearMonth);
+            }
 
             requestContractRate = (int) Math.round((float) contractedRequestCount / requestDTOList.size() * 100);
             requestSuccessRate = (int) Math.round((float) successRequestDTO / requestDTOList.size() * 100);
@@ -1089,37 +1093,35 @@ public class CompanyService {
                 region[9] = region[9] + 1;
             } else if (list.get(i).getRequestFormRegion1().equals("제주")) {
                 region[10] = region[10] + 1;
-            }           
-          
-            String fYearMonth = ymFormat.format(list.get(i).getRequestFormDate());
-            yearMonth.add(fYearMonth);
-           
-            // 월
+            }
+
+            // 월            
             String fMonth = mFormat.format(list.get(i).getRequestFormDate());
+            yearMonth.add(ymFormat.format(list.get(i).getRequestFormDate()));
             if (fMonth.equals("01")) {
-                month[1] = month[1] + 1;
+                month[0] = month[0] + 1;
             } else if (fMonth.equals("02")) {
-                month[2] = month[2] + 1;
+                month[1] = month[1] + 1;
             } else if (fMonth.equals("03")) {
-                month[3] = month[3] + 1;
+                month[2] = month[2] + 1;
             } else if (fMonth.equals("04")) {
-                month[4] = month[4] + 1;
+                month[3] = month[3] + 1;
             } else if (fMonth.equals("05")) {
-                month[5] = month[5] + 1;
+                month[4] = month[4] + 1;
             } else if (fMonth.equals("06")) {
-                month[6] = month[6] + 1;
+                month[5] = month[5] + 1;
             } else if (fMonth.equals("07")) {
-                month[7] = month[7] + 1;
+                month[6] = month[6] + 1;
             } else if (fMonth.equals("08")) {
-                month[8] = month[8] + 1;
+                month[7] = month[7] + 1;
             } else if (fMonth.equals("09")) {
-                month[9] = month[9] + 1;
+                month[8] = month[8] + 1;
             } else if (fMonth.equals("10")) {
-                month[10] = month[10] + 1;
+                month[9] = month[9] + 1;
             } else if (fMonth.equals("11")) {
-                month[11] = month[11] + 1;
+                month[10] = month[10] + 1;
             } else if (fMonth.equals("12")) {
-                month[12] = month[12] + 1;
+                month[11] = month[11] + 1;
             }
 
         }

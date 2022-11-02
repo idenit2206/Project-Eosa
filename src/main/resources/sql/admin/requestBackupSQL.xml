@@ -147,16 +147,17 @@
         r.requestFormRegion1,
         r.requestFormChannel,
         r.requestFormStatus,
+        r.requestFormDate,
         r.requestConsultDate,
         r.requestFormAcceptDate,
         r.requestFormCompDate,
         r.requestFormRejectMessage,
         rc.requestFormCategoryValue
         FROM RequestFormBackup r
-        JOIN (SELECT RFC.requestFormBackupIdx,
+        LEFT JOIN (SELECT RFC.requestFormBackupIdx,
                     GROUP_CONCAT(RFC.requestFormCategoryValue SEPARATOR '|') requestFormCategoryValue
                 FROM RequestFormCategoryBackup RFC GROUP BY RFC.requestFormBackupIdx) rc ON r.requestFormBackupIdx = rc.requestFormBackupIdx
-        JOIN Users u ON r.usersIdx = u.usersIdx 
+        LEFT JOIN Users u ON r.usersIdx = u.usersIdx 
     </select>
 
 

@@ -218,6 +218,7 @@ async function createChart(sort) {
             console.log(data);
             chartData = data;
             yearMonth = data.yearMonth;
+            yearMonthWhole = data.yearMonthAllChart;
 
             ageChartDatasets[0].data = data.age;
             mAgeChartDatasets[0].data = data.mAge;
@@ -225,7 +226,7 @@ async function createChart(sort) {
             timeChartDatasets[0].data = data.time;
             areaChartDatasets[0].data = data.region;
             categoryChartDatasets[0].data = data.categoryNum;
-            monthChartDatasets[0].data = data.month.slice(1, data.month.length);
+            monthChartDatasets[0].data = data.month;
 
             document.querySelector(".requestConsultCount").innerHTML = data.size + " 개";
             document.querySelector(".requestCount").innerHTML = data.missionCount + " 개";
@@ -284,7 +285,7 @@ async function createChart(sort) {
                 options: option,
             });
 
-            replaceYearInMonthChart(data.yearMonth);
+            replaceYearInMonthChart(yearMonth);
         })
         .catch(err => {
             console.log(err);
@@ -310,7 +311,6 @@ function createChartAllData() {
         .then(data => {
             console.log("result whole: ");
             chartDataWhole = data;
-            chartDataWhole.yearMonth = yearMonth;
             console.log(data);
 
             ageChartDatasets.push(
@@ -360,7 +360,7 @@ function createChartAllData() {
             categoryChart.update();
             monthChart.update();
             
-            replaceYearInMonthChart(data.yearMonthAllChart);
+            replaceYearInMonthChart(yearMonthWhole);
         })
         .catch(err => {
             console.log(err);
@@ -411,8 +411,8 @@ const reloadAgeChart = (gender) => {
 }
 
 const replaceYearInMonthChart = (param) => {
-//     console.log("replaceYearInMonthChart() :");
-//     console.log(param);
+    // console.log("replaceYearInMonthChart() :");
+    // console.log(param);
     let sortedParam = param.sort();
     sortedParam = sortedParam.reverse();
     
