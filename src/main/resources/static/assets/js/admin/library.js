@@ -133,17 +133,43 @@ let ageChartDatasets = [
     }
 ];
 let timeChart;
-let timeChartDatasets = [{
-    label: '시간',
-    data: null,
-    tension: 0,
-    borderColor: "#64B5F6",
-    barThickness: 7,
-    pointRadius: 0,
-}]
+let timeChartDatasets = [
+    {
+        label: '시간',
+        data: null,
+        tension: 0,
+        borderColor: "#64B5F6",
+        barThickness: 7,
+        pointRadius: 0,
+    }
+];
 let areaChart;
+let areaChartDatasets = [
+    {       
+        label: '지역',
+        data: null,
+        backgroundColor: "#64B5F6",
+        barThickness: 7,
+    }
+];
 let categoryChart;
-let monthChart
+let categoryChartDatasets = [
+    {
+        label: '분야',
+        data: null,
+        backgroundColor: "#64B5F6",
+        barThickness: 7,
+    }
+];
+let monthChart;
+let monthChartDatasets = [
+    {
+        label: '월',
+        data: null,
+        backgroundColor: "#64B5F6",
+        barThickness: 7,
+    }
+];
 
 function createChart(sort) {
 
@@ -164,7 +190,12 @@ function createChart(sort) {
         .then(data => {
             console.log(`result: `);
             console.log(data);
+            
             ageChartDatasets[0].data = data.age;
+            timeChartDatasets[0].data = data.time;
+            areaChartDatasets[0].data = data.region;
+            categoryChartDatasets[0].data = data.categoryNum;
+            monthChartDatasets[0].data = data.month;
 
             document.querySelector(".requestConsultCount").innerHTML = data.size + " 개";
             document.querySelector(".requestCount").innerHTML = data.missionCount + " 개";
@@ -198,12 +229,7 @@ function createChart(sort) {
                 type: 'bar',
                 data: {
                     labels: ['서울', '경기', '대전/충남/세종', '인천/부천', '강원', '전주/전북', '청주/충북', '대구/경북', '부산/울산/경남', '광주/전남', '제주'],
-                    datasets: [{
-                        label: '지역',
-                        data: data.region,
-                        backgroundColor: "#64B5F6",
-                        barThickness: 7,
-                    }]
+                    datasets: areaChartDatasets
                 },
                 options: option,
             });
@@ -213,12 +239,7 @@ function createChart(sort) {
                 type: 'bar',
                 data: {
                     labels: data.category,
-                    datasets: [{
-                        label: '분야',
-                        data: data.categoryNum,
-                        backgroundColor: "#64B5F6",
-                        barThickness: 7,
-                    }]
+                    datasets: categoryChartDatasets
                 },
                 options: option,
             });
@@ -228,12 +249,7 @@ function createChart(sort) {
                 type: 'bar',
                 data: {
                     labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-                    datasets: [{
-                        label: '월',
-                        data: data.month,
-                        backgroundColor: "#64B5F6",
-                        barThickness: 7,
-                    }]
+                    datasets: monthChartDatasets
                 },
                 options: option,
             });
@@ -264,7 +280,7 @@ function createChartAllData() {
 
             ageChartDatasets.push(
                 {
-                    label: '전체연령',
+                    label: '전체 연령',
                     data: data.ageAllChart,
                     tension: 0,
                     borderColor: "#BDBDBD",
@@ -274,7 +290,7 @@ function createChartAllData() {
             )
 
             timeChartDatasets.push({
-                label: '전체시간',
+                label: '전체 시간',
                 data: data.timeAllChart,
                 tension: 0,
                 borderColor: "#BDBDBD",
@@ -282,8 +298,33 @@ function createChartAllData() {
                 pointRadius: 0,
             })
 
+            areaChartDatasets.push({                   
+                label: '전체 지역',
+                data: data.regionAllChart,
+                backgroundColor: "#BDBDBD",
+                barThickness: 7,
+            })
+            
+            categoryChartDatasets.push({
+                label: '전체 분야',
+                data: data.categoryNumAllChart,
+                backgroundColor: "#BDBDBD",
+                barThickness: 7,
+            })
+
+            monthChartDatasets.push({
+                label: '전체 월',
+                data: data.monthAllChart,
+                backgroundColor: "#BDBDBD",
+                barThickness: 7,
+            })
+
             ageChart.update();
             timeChart.update();
+            areaChart.update();
+            categoryChart.update();
+            monthChart.update();
+            
         })
         .catch(err => {
             console.log(err);
@@ -291,9 +332,15 @@ function createChartAllData() {
     }else {
         ageChartDatasets.pop();
         timeChartDatasets.pop();
+        areaChartDatasets.pop();
+        categoryChartDatasets.pop();
+        monthChartDatasets.pop();
 
         ageChart.update();
         timeChart.update();
+        areaChart.update();
+        categoryChart.update();
+        monthChart.update();
     }
     
 

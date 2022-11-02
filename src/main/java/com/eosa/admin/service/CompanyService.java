@@ -724,7 +724,7 @@ public class CompanyService {
         List<String> categoryAllChart = new ArrayList<>();
         List<Integer> categoryNumAllChart = new ArrayList<>();
 
-        SimpleDateFormat hourAllChart = new SimpleDateFormat("hh");
+        SimpleDateFormat hourAllChart = new SimpleDateFormat("HH");
         SimpleDateFormat mFormatAllChart = new SimpleDateFormat("MM");
 
         if (sort.equals("whole")) {
@@ -906,7 +906,7 @@ public class CompanyService {
         List<String> category = new ArrayList<>();
         List<Integer> categoryNum = new ArrayList<>();
 
-        SimpleDateFormat hour = new SimpleDateFormat("hh");
+        SimpleDateFormat hour = new SimpleDateFormat("HH");
         SimpleDateFormat mFormat = new SimpleDateFormat("MM");
 
         for (int i = 0; i < list.size(); i++) {
