@@ -97,6 +97,8 @@
                     <div class="chart-month">
                         <div class="chart-label-wrap">
                             <span class="w-label">월별 통계</span>
+                            <span class="w-label" style="margin-left: 80%">연도: </label>
+                            <select id="monthChartYear" name="monthChartYear"></select>                          
                         </div>
                         <div class="chart-wrap-sm">
                             <canvas id="monthChart"></canvas>
@@ -118,14 +120,19 @@
             createChart('company');
 
             const viewAVGBtn = document.querySelector("#viewAVG");
-            viewAVGBtn.addEventListener("click", () => {
+            viewAVGBtn.addEventListener("click", async() => {
                 createChartAllData();
             });
 
             const ageChartGenderSelect = document.querySelector("#ageChartGender");
             ageChartGenderSelect.addEventListener("change", (e) => {
                 reloadAgeChart(e.target.value);
-            });
+            });            
+
+            const monthChartYearSelect = document.querySelector("#monthChartYear");
+            monthChartYearSelect.addEventListener("change", (e) => {
+                changeYearMonthChart(e.target.value);
+            })
         });
     </script>
 </th:block>

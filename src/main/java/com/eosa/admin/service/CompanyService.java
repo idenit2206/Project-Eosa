@@ -726,12 +726,13 @@ public class CompanyService {
         int[] timeAllChart = new int[12];
         int[] regionAllChart = new int[11];
         int[] monthAllChart = new int[12];
-
+        List<String> yearMonthAllChart = new ArrayList<>();
         List<String> categoryAllChart = new ArrayList<>();
         List<Integer> categoryNumAllChart = new ArrayList<>();
 
-        SimpleDateFormat hourAllChart = new SimpleDateFormat("HH");
-        SimpleDateFormat mFormatAllChart = new SimpleDateFormat("MM");
+        SimpleDateFormat hour = new SimpleDateFormat("HH");
+        SimpleDateFormat mFormat = new SimpleDateFormat("MM");
+        SimpleDateFormat ymFormat = new SimpleDateFormat("yyyy-MM");
 
         // companysIdx 기준 통계를 위한 변수
         int[] age = new int[8];
@@ -739,7 +740,9 @@ public class CompanyService {
         int[] fAge = new int[8];
         int[] time = new int[12];
         int[] region = new int[11];
-        int[] month = new int[12];
+        // int[] month = new int[12];
+        int[] month = new int[13];
+        List<String> yearMonth = new ArrayList<>();
         List<String> category = new ArrayList<>();
         List<Integer> categoryNum = new ArrayList<>();
 
@@ -837,7 +840,7 @@ public class CompanyService {
                 }
     
                 // 시간
-                String fTime = hourAllChart.format(list.get(i).getRequestFormDate());
+                String fTime = hour.format(list.get(i).getRequestFormDate());
                 if (fTime.equals("07") || fTime.equals("08")) {
                     timeAllChart[0] = timeAllChart[0] + 1;
                 } else if (fTime.equals("09") || fTime.equals("10")) {
@@ -890,7 +893,10 @@ public class CompanyService {
                 }
     
                 // 월
-                String fMonth = mFormatAllChart.format(list.get(i).getRequestFormDate());
+                String fYearMonth = ymFormat.format(list.get(i).getRequestFormDate());
+                yearMonthAllChart.add(fYearMonth);
+
+                String fMonth = mFormat.format(list.get(i).getRequestFormDate());
                 if (fMonth.equals("01")) {
                     monthAllChart[0] = monthAllChart[0] + 1;
                 } else if (fMonth.equals("02")) {
@@ -960,11 +966,7 @@ public class CompanyService {
             log.info("의뢰 성사율: {} %", requestContractRate);
             log.info("의뢰 성공률: {} %", requestSuccessRate);
 
-        }       
-
-        SimpleDateFormat hour = new SimpleDateFormat("HH");
-        SimpleDateFormat mFormat = new SimpleDateFormat("MM");
-
+        }
 
         for (int i = 0; i < requestDTOList.size(); i++) {
             if(requestDTOList.get(i).getUsersGender() == 0) {
@@ -1087,34 +1089,37 @@ public class CompanyService {
                 region[9] = region[9] + 1;
             } else if (list.get(i).getRequestFormRegion1().equals("제주")) {
                 region[10] = region[10] + 1;
-            }
-
+            }           
+          
+            String fYearMonth = ymFormat.format(list.get(i).getRequestFormDate());
+            yearMonth.add(fYearMonth);
+           
             // 월
             String fMonth = mFormat.format(list.get(i).getRequestFormDate());
             if (fMonth.equals("01")) {
-                month[0] = month[0] + 1;
-            } else if (fMonth.equals("02")) {
                 month[1] = month[1] + 1;
-            } else if (fMonth.equals("03")) {
+            } else if (fMonth.equals("02")) {
                 month[2] = month[2] + 1;
-            } else if (fMonth.equals("04")) {
+            } else if (fMonth.equals("03")) {
                 month[3] = month[3] + 1;
-            } else if (fMonth.equals("05")) {
+            } else if (fMonth.equals("04")) {
                 month[4] = month[4] + 1;
-            } else if (fMonth.equals("06")) {
+            } else if (fMonth.equals("05")) {
                 month[5] = month[5] + 1;
-            } else if (fMonth.equals("07")) {
+            } else if (fMonth.equals("06")) {
                 month[6] = month[6] + 1;
-            } else if (fMonth.equals("08")) {
+            } else if (fMonth.equals("07")) {
                 month[7] = month[7] + 1;
-            } else if (fMonth.equals("09")) {
+            } else if (fMonth.equals("08")) {
                 month[8] = month[8] + 1;
-            } else if (fMonth.equals("10")) {
+            } else if (fMonth.equals("09")) {
                 month[9] = month[9] + 1;
-            } else if (fMonth.equals("11")) {
+            } else if (fMonth.equals("10")) {
                 month[10] = month[10] + 1;
-            } else if (fMonth.equals("12")) {
+            } else if (fMonth.equals("11")) {
                 month[11] = month[11] + 1;
+            } else if (fMonth.equals("12")) {
+                month[12] = month[12] + 1;
             }
 
         }
@@ -1134,6 +1139,7 @@ public class CompanyService {
         map.put("fAge", fAge);
         map.put("time", time);
         map.put("region", region);
+        map.put("yearMonth", yearMonth);
         map.put("month", month);
         map.put("category", category);
         map.put("categoryNum", categoryNum);
@@ -1145,6 +1151,7 @@ public class CompanyService {
         map.put("timeAllChart", timeAllChart);
         map.put("regionAllChart", regionAllChart);
         map.put("monthAllChart", monthAllChart);
+        map.put("yearMonthAllChart", yearMonthAllChart);
         map.put("categoryNumAllChart", categoryNumAllChart);
 
         return map;

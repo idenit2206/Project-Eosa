@@ -194,7 +194,10 @@ let monthChartDatasets = [
     }
 ];
 
-function createChart(sort) {
+let yearMonth = [];
+let yearMonthWhole = [];
+
+async function createChart(sort) {
 
     const formData = new FormData();
     formData.set('sort', sort);
@@ -205,7 +208,7 @@ function createChart(sort) {
         formData.set('companysIdx', 0);
     }
 
-    fetch('/admin/manage/company/chart/whole/data', {
+    await fetch('/admin/manage/company/chart/whole/data', {
         method: 'post',
         body: formData,
     })
@@ -214,14 +217,15 @@ function createChart(sort) {
             console.log(`result: `);
             console.log(data);
             chartData = data;
-            
+            yearMonth = data.yearMonth;
+
             ageChartDatasets[0].data = data.age;
             mAgeChartDatasets[0].data = data.mAge;
             fAgeChartDatasets[0].data = data.fAge;
             timeChartDatasets[0].data = data.time;
             areaChartDatasets[0].data = data.region;
             categoryChartDatasets[0].data = data.categoryNum;
-            monthChartDatasets[0].data = data.month;
+            monthChartDatasets[0].data = data.month.slice(1, data.month.length);
 
             document.querySelector(".requestConsultCount").innerHTML = data.size + " 개";
             document.querySelector(".requestCount").innerHTML = data.missionCount + " 개";
@@ -279,6 +283,8 @@ function createChart(sort) {
                 },
                 options: option,
             });
+
+            replaceYearInMonthChart(data.yearMonth);
         })
         .catch(err => {
             console.log(err);
@@ -303,8 +309,9 @@ function createChartAllData() {
         .then(res =>  res.json())
         .then(data => {
             console.log("result whole: ");
-            console.log(data);
             chartDataWhole = data;
+            chartDataWhole.yearMonth = yearMonth;
+            console.log(data);
 
             ageChartDatasets.push(
                 {
@@ -353,6 +360,7 @@ function createChartAllData() {
             categoryChart.update();
             monthChart.update();
             
+            replaceYearInMonthChart(data.yearMonthAllChart);
         })
         .catch(err => {
             console.log(err);
@@ -401,6 +409,40 @@ const reloadAgeChart = (gender) => {
         ageChart.update();
     }
 }
+
+const replaceYearInMonthChart = (param) => {
+//     console.log("replaceYearInMonthChart() :");
+//     console.log(param);
+    let sortedParam = param.sort();
+    sortedParam = sortedParam.reverse();
+    
+    let yearList = [];
+
+    for(let i = 0; i < sortedParam.length; i++) {
+        let tempDate = new Date(sortedParam[i]);
+        yearList.push(tempDate.getFullYear());
+    }
+
+    const yearSet = new Set(yearList);
+    const newYearList = [...yearSet];
+
+    const monthChartYearSelect = document.querySelector("#monthChartYear");
+    if(monthChartYearSelect.hasChildNodes()) {
+        monthChartYearSelect.removeChild(monthChartYearSelect.childNodes[0]);
+    }    
+
+    for(let i = 0; i < newYearList.length; i++) {
+        const defaultOptionElement = document.createElement("option");    
+        defaultOptionElement.setAttribute("value", newYearList[i]);
+        defaultOptionElement.textContent = newYearList[i];          
+        monthChartYearSelect.appendChild(defaultOptionElement);   
+    }
+
+};
+
+const changeYearMonthChart = (param) => {
+
+};
 
 /**
  * 툴팁
