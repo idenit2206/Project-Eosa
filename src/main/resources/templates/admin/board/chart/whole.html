@@ -42,6 +42,12 @@
                         <div class="chart-age">
                             <div class="age-wrap">
                                 <span class="w-label">연령별 통계</span>
+                                <!-- <span class="w-label">성별: </label>
+                                <select id="ageChartGender" name="ageChartGender">
+                                    <option value="1">전체</option>
+                                    <option value="2">남</option>
+                                    <option value="3">여</option>
+                                </select> -->
                             </div>
                             <div class="chart-wrap-sm">
                                 <canvas id="ageChart"></canvas>
@@ -79,6 +85,8 @@
                     <div class="chart-month">
                         <div class="chart-label-wrap">
                             <span class="w-label">월별 통계</span>
+                            <!-- <span class="w-label" style="margin-left: 80%">연도: </label>
+                            <select id="monthChartYear" name="monthChartYear"></select> -->
                         </div>
                         <div class="chart-wrap-sm">
                             <canvas id="monthChart"></canvas>
@@ -98,6 +106,21 @@
         window.addEventListener('load', function () {
             highlightMenu('chart');
             createChart('whole');
+
+            const viewAVGBtn = document.querySelector("#viewAVG");
+            viewAVGBtn.addEventListener("click", async() => {
+                createChartAllData();
+            });
+
+            const ageChartGenderSelect = document.querySelector("#ageChartGender");
+            ageChartGenderSelect.addEventListener("change", (e) => {
+                reloadAgeChart(e.target.value);
+            });            
+
+            const monthChartYearSelect = document.querySelector("#monthChartYear");
+            monthChartYearSelect.addEventListener("change", (e) => {
+                changeYearMonthChart(e.target.value);
+            });
         });
     </script>
 </th:block>
