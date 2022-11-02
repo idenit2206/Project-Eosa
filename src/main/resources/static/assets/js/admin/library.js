@@ -197,6 +197,65 @@ let monthChartDatasets = [
 let yearMonth = [];
 let yearMonthWhole = [];
 
+let yearMonth2 = [];
+let yearMonthWhole2 = [];
+
+const monthChartData = (param) => {
+    let tempArrArr = [];    // yearMonth에서 year만 추출한 2차원 배열
+    let tempArr = [];
+
+    for(let i = 0; i < param.length; i++) {
+        // console.log(i, param[i]);
+        const tempDate = new Date(param[i]);               
+        tempArr.push(tempDate.getFullYear());
+    }
+    let tempYearSet = new Set(tempArr);
+    tempArr = [];
+    // console.log(tempYearSet);
+    tempYearSet.forEach(item => {
+        let tempArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        tempArray[0] = item;
+        tempArrArr.push(tempArray);
+    })
+    // console.log(tempArrArr);
+
+    for(let i = 0; i < param.length; i++) {
+        for(let j = 0; j < tempArrArr.length; j++) {
+            const tempDate = new Date(param[i]);
+            if(tempDate.getFullYear() == tempArrArr[j][0]) {
+                if(tempDate.getMonth() == 0) {
+                    tempArrArr[j][1] = tempArrArr[j][1] + 1;
+                } else if(tempDate.getMonth() == 1) {
+                    tempArrArr[j][2] = tempArrArr[j][2] + 1;
+                } else if(tempDate.getMonth() == 2) {
+                    tempArrArr[j][3] = tempArrArr[j][3] + 1;
+                } else if(tempDate.getMonth() == 3) {
+                    tempArrArr[j][4] = tempArrArr[j][4] + 1;
+                } else if(tempDate.getMonth() == 4) {
+                    tempArrArr[j][5] = tempArrArr[j][5] + 1;
+                } else if(tempDate.getMonth() == 5) {
+                    tempArrArr[j][6] = tempArrArr[j][6] + 1;
+                } else if(tempDate.getMonth() == 6) {
+                    tempArrArr[j][7] = tempArrArr[j][7] + 1;
+                } else if(tempDate.getMonth() == 7) {
+                    tempArrArr[j][8] = tempArrArr[j][8] + 1;
+                } else if(tempDate.getMonth() == 8) {
+                    tempArrArr[j][9] = tempArrArr[j][9] + 1;
+                } else if(tempDate.getMonth() == 9) {
+                    tempArrArr[j][10] = tempArrArr[j][10] + 1;
+                } else if(tempDate.getMonth() == 10) {
+                    tempArrArr[j][11] = tempArrArr[j][11] + 1;
+                } else if(tempDate.getMonth() == 11) {
+                    tempArrArr[j][12] = tempArrArr[j][12] + 1;
+                }                        
+            }
+        }
+    }
+    // console.log(tempArrArr);
+    tempArrArr.reverse();
+    return tempArrArr;
+}
+
 async function createChart(sort) {
 
     const formData = new FormData();
@@ -219,6 +278,11 @@ async function createChart(sort) {
             chartData = data;
             yearMonth = data.yearMonth;
             yearMonthWhole = data.yearMonthAllChart;
+            
+            yearMonth2 = monthChartData(data.yearMonth);
+            yearMonthWhole2 = monthChartData(data.yearMonthAllChart);
+
+            // console.log(yearMonthWhole2[0]);
 
             ageChartDatasets[0].data = data.age;
             mAgeChartDatasets[0].data = data.mAge;
@@ -285,7 +349,7 @@ async function createChart(sort) {
                 options: option,
             });
 
-            replaceYearInMonthChart(yearMonth);
+            replaceYearInMonthChart(yearMonth2);
         })
         .catch(err => {
             console.log(err);
@@ -349,7 +413,7 @@ function createChartAllData() {
 
             monthChartDatasets.push({
                 label: '전체 월',
-                data: data.monthAllChart,
+                data: yearMonthWhole2[0].slice(1, 12),
                 backgroundColor: "#BDBDBD",
                 barThickness: 7,
             })
@@ -360,7 +424,7 @@ function createChartAllData() {
             categoryChart.update();
             monthChart.update();
             
-            replaceYearInMonthChart(yearMonthWhole);
+            replaceYearInMonthChart(yearMonthWhole2);
         })
         .catch(err => {
             console.log(err);
@@ -377,6 +441,8 @@ function createChartAllData() {
         areaChart.update();
         categoryChart.update();
         monthChart.update();
+
+        replaceYearInMonthChart(yearMonth2);
     }   
 
 };
@@ -410,37 +476,47 @@ const reloadAgeChart = (gender) => {
     }
 }
 
-const replaceYearInMonthChart = (param) => {
-    // console.log("replaceYearInMonthChart() :");
-    // console.log(param);
-    let sortedParam = param.sort();
-    sortedParam = sortedParam.reverse();
-    
-    let yearList = [];
+const replaceYearInMonthChart = (param) => {    
+    const monthChartYearSelect = document.querySelector("#monthChartYear");    
+    monthChartYearSelect.replaceChildren();    
 
-    for(let i = 0; i < sortedParam.length; i++) {
-        let tempDate = new Date(sortedParam[i]);
-        yearList.push(tempDate.getFullYear());
-    }
-
-    const yearSet = new Set(yearList);
-    const newYearList = [...yearSet];
-
-    const monthChartYearSelect = document.querySelector("#monthChartYear");
-    if(monthChartYearSelect.hasChildNodes()) {
-        monthChartYearSelect.removeChild(monthChartYearSelect.childNodes[0]);
-    }    
-
-    for(let i = 0; i < newYearList.length; i++) {
-        const defaultOptionElement = document.createElement("option");    
-        defaultOptionElement.setAttribute("value", newYearList[i]);
-        defaultOptionElement.textContent = newYearList[i];          
-        monthChartYearSelect.appendChild(defaultOptionElement);   
+    for(let i = 0; i < param.length; i++) {
+        const optionElement = document.createElement("option");
+        optionElement.setAttribute("value", param[i][0]);
+        optionElement.textContent = param[i][0];
+        monthChartYearSelect.appendChild(optionElement);        
     }
 
 };
 
 const changeYearMonthChart = (param) => {
+    const viewAVG = document.querySelector("#viewAVG");    
+
+    if(viewAVG.checked == true) {
+        for(let i = 0; i < yearMonthWhole2.length; i++) {                    
+            if(param == yearMonthWhole2[i][0]) {                   
+                monthChartDatasets[1].data = yearMonthWhole2[i].slice(1, 12);                  
+            }
+        }
+        for(let j = 0; j < yearMonth2.length; j++) {    
+            if(param == yearMonth2[j][0]) {
+                monthChartDatasets[0].data = yearMonth2[j].slice(1, 12);
+            }
+            else {
+                monthChartDatasets[0].data = null;
+            }
+        }
+        monthChart.update();
+    }
+    else {
+        for(let i = 0; i < yearMonth2.length; i++) {
+            if(param == yearMonth2[i][0]) {
+                monthChartDatasets[0].data = yearMonth2[i].slice(1, 12);
+                monthChart.update();
+                break;
+            }
+        }        
+    }
 
 };
 
