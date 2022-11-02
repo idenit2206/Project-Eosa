@@ -121,6 +121,9 @@ function createEditorForNotice(noticeIdx) {
     return editor;
 };
 
+let chartData;
+let chartDataWhole;
+
 let ageChart;
 let ageChartDatasets = [
     {
@@ -132,6 +135,26 @@ let ageChartDatasets = [
         pointRadius: 0,
     }
 ];
+let mAgeChartDatasets = [
+    {
+        label: '연령',
+        data: null,
+        tension: 0,
+        borderColor: "#64B5F6",
+        barThickness: 7,
+        pointRadius: 0,
+    }
+]
+let fAgeChartDatasets = [
+    {
+        label: '연령',
+        data: null,
+        tension: 0,
+        borderColor: "#64B5F6",
+        barThickness: 7,
+        pointRadius: 0,
+    }
+]
 let timeChart;
 let timeChartDatasets = [
     {
@@ -190,8 +213,11 @@ function createChart(sort) {
         .then(data => {
             console.log(`result: `);
             console.log(data);
+            chartData = data;
             
             ageChartDatasets[0].data = data.age;
+            mAgeChartDatasets[0].data = data.mAge;
+            fAgeChartDatasets[0].data = data.fAge;
             timeChartDatasets[0].data = data.time;
             areaChartDatasets[0].data = data.region;
             categoryChartDatasets[0].data = data.categoryNum;
@@ -260,9 +286,9 @@ function createChart(sort) {
 
 };
 
-function createChartAllData() {
-    let viewAVG = document.querySelector("#viewAVG");
-    
+
+function createChartAllData() {    
+    const viewAVG = document.querySelector("#viewAVG");
     if(viewAVG.checked) {
         console.log('checked');
 
@@ -276,7 +302,9 @@ function createChartAllData() {
         })
         .then(res =>  res.json())
         .then(data => {
+            console.log("result whole: ");
             console.log(data);
+            chartDataWhole = data;
 
             ageChartDatasets.push(
                 {
@@ -346,7 +374,32 @@ function createChartAllData() {
 };
 
 const reloadAgeChart = (gender) => {
-    alert(gender);
+    const viewAVG = document.querySelector("#viewAVG");
+    if(gender == 1) {
+        ageChartDatasets[0].data = chartData.age;
+        ageChart.update();
+    }
+    else if(gender == 2) {
+        ageChartDatasets[0].data = chartData.mAge;
+        ageChart.update();
+    }
+    else if(gender == 3) {
+        ageChartDatasets[0].data = chartData.fAge;
+        ageChart.update();
+    }
+
+    if(gender == 1 && viewAVG.checked) {
+        ageChartDatasets[1].data = chartDataWhole.age;
+        ageChart.update();
+    }
+    else if(gender == 2 && viewAVG.checked) {
+        ageChartDatasets[1].data = chartDataWhole.mAge;
+        ageChart.update();
+    }
+    else if(gender == 3 && viewAVG.checked) {
+        ageChartDatasets[1].data = chartDataWhole.fAge;
+        ageChart.update();
+    }
 }
 
 /**

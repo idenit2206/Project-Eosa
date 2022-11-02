@@ -102,6 +102,8 @@
         r.requestFormRejectMessage,
         rc.requestFormCategoryValue,
         u.usersAccount,
+        u.usersGender,
+        u.usersAge,
         c.companysName
         FROM RequestFormBackup r
         JOIN (SELECT RFC.requestFormBackupIdx,
@@ -138,9 +140,9 @@
         SELECT 
         r.requestFormBackupIdx,
         r.requestFormIdx,
-        r.usersIdx,
-        u.usersGender,
+        r.usersIdx,       
         u.usersAge,
+        u.usersGender,
         r.companysIdx,
         r.requestFormRegion1,
         r.requestFormChannel,

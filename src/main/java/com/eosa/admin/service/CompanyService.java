@@ -710,6 +710,8 @@ public class CompanyService {
         List<ChartDTO> list =  new ArrayList<>();
         List<ChartDataDTO> cateList = new ArrayList<>();
         List<RequestBackupDTO> requestDTOList = new ArrayList<>();
+        List<RequestBackupDTO> requestDTOListMale = new ArrayList<>();
+        List<RequestBackupDTO> requestDTOListFemale = new ArrayList<>();
         List<RequestBackupDTO> requestDTOListWhole = new ArrayList<>();
 
         // 전체 통계를 위한 변수
@@ -719,6 +721,8 @@ public class CompanyService {
         int requestSuccessRate = 0;
 
         int[] ageAllChart = new int[8];
+        int[] mAgeAllChart = new int[8];
+        int[] fAgeAllChart = new int[8];
         int[] timeAllChart = new int[12];
         int[] regionAllChart = new int[11];
         int[] monthAllChart = new int[12];
@@ -731,6 +735,8 @@ public class CompanyService {
 
         // companysIdx 기준 통계를 위한 변수
         int[] age = new int[8];
+        int[] mAge = new int[8];
+        int[] fAge = new int[8];
         int[] time = new int[12];
         int[] region = new int[11];
         int[] month = new int[12];
@@ -756,7 +762,55 @@ public class CompanyService {
                     successRequestDTO = successRequestDTO + 1;
                 }
 
-            }        
+                // RequestDTO 의뢰자의 성별을 구분합니다.
+                if(requestDTOList.get(i).getUsersGender() == 0) {
+                    requestDTOListMale.add(requestDTOList.get(i));
+                }
+                else {
+                    requestDTOListFemale.add(requestDTOList.get(i));
+                }
+
+            }
+    
+            for (int i = 0; i < requestDTOListMale.size(); i++) {
+                if(requestDTOListMale.get(i).getUsersAge() == 10) {
+                    mAgeAllChart[0] = mAgeAllChart[0] + 1;
+                } else if(requestDTOListMale.get(i).getUsersAge() == 20) {
+                    mAgeAllChart[1] = mAgeAllChart[1] + 1;
+                } else if(requestDTOListMale.get(i).getUsersAge() == 30) {
+                    mAgeAllChart[2] = mAgeAllChart[2] + 1;
+                } else if(requestDTOListMale.get(i).getUsersAge() == 40) {
+                    mAgeAllChart[3] = mAgeAllChart[3] + 1;
+                } else if(requestDTOListMale.get(i).getUsersAge() == 50) {
+                    mAgeAllChart[4] = mAgeAllChart[4] + 1;
+                } else if(requestDTOListMale.get(i).getUsersAge() == 60) {
+                    mAgeAllChart[5] = mAgeAllChart[5] + 1;
+                } else if(requestDTOListMale.get(i).getUsersAge() == 70) {
+                    mAgeAllChart[6] = mAgeAllChart[6] + 1;
+                } else if(requestDTOListMale.get(i).getUsersAge() == 80) {
+                    mAgeAllChart[7] = mAgeAllChart[7] + 1;
+                }
+            }
+    
+            for (int i = 0; i < requestDTOListFemale.size(); i++) {
+                if(requestDTOListFemale.get(i).getUsersAge() == 10) {
+                    fAgeAllChart[0] = fAgeAllChart[0] + 1;
+                } else if(requestDTOListFemale.get(i).getUsersAge() == 20) {
+                    fAgeAllChart[1] = fAgeAllChart[1] + 1;
+                } else if(requestDTOListFemale.get(i).getUsersAge() == 30) {
+                    fAgeAllChart[2] = fAgeAllChart[2] + 1;
+                } else if(requestDTOListFemale.get(i).getUsersAge() == 40) {
+                    fAgeAllChart[3] = fAgeAllChart[3] + 1;
+                } else if(requestDTOListFemale.get(i).getUsersAge() == 50) {
+                    fAgeAllChart[4] = fAgeAllChart[4] + 1;
+                } else if(requestDTOListFemale.get(i).getUsersAge() == 60) {
+                    fAgeAllChart[5] = fAgeAllChart[5] + 1;
+                } else if(requestDTOListFemale.get(i).getUsersAge() == 70) {
+                    fAgeAllChart[6] = fAgeAllChart[6] + 1;
+                } else if(requestDTOListFemale.get(i).getUsersAge() == 80) {
+                    fAgeAllChart[7] = fAgeAllChart[7] + 1;
+                }
+            }
     
             requestContractRate = (int) Math.round((float) contractedRequestCount / requestDTOList.size() * 100);
             requestSuccessRate = (int) Math.round((float) successRequestDTO / requestDTOList.size() * 100);    
@@ -911,6 +965,56 @@ public class CompanyService {
         SimpleDateFormat hour = new SimpleDateFormat("HH");
         SimpleDateFormat mFormat = new SimpleDateFormat("MM");
 
+
+        for (int i = 0; i < requestDTOList.size(); i++) {
+            if(requestDTOList.get(i).getUsersGender() == 0) {
+                requestDTOListMale.add(requestDTOList.get(i));
+            }
+            else {
+                requestDTOListFemale.add(requestDTOList.get(i));
+            }
+        }
+
+        for (int i = 0; i < requestDTOListMale.size(); i++) {
+            if(requestDTOListMale.get(i).getUsersAge() == 10) {
+                mAge[0] = mAge[0] + 1;
+            } else if(requestDTOListMale.get(i).getUsersAge() == 20) {
+                mAge[1] = mAge[1] + 1;
+            } else if(requestDTOListMale.get(i).getUsersAge() == 30) {
+                mAge[2] = mAge[2] + 1;
+            } else if(requestDTOListMale.get(i).getUsersAge() == 40) {
+                mAge[3] = mAge[3] + 1;
+            } else if(requestDTOListMale.get(i).getUsersAge() == 50) {
+                mAge[4] = mAge[4] + 1;
+            } else if(requestDTOListMale.get(i).getUsersAge() == 60) {
+                mAge[5] = mAge[5] + 1;
+            } else if(requestDTOListMale.get(i).getUsersAge() == 70) {
+                mAge[6] = mAge[6] + 1;
+            } else if(requestDTOListMale.get(i).getUsersAge() == 80) {
+                mAge[7] = mAge[7] + 1;
+            }
+        }
+
+        for (int i = 0; i < requestDTOListFemale.size(); i++) {
+            if(requestDTOListFemale.get(i).getUsersAge() == 10) {
+                fAge[0] = fAge[0] + 1;
+            } else if(requestDTOListFemale.get(i).getUsersAge() == 20) {
+                fAge[1] = fAge[1] + 1;
+            } else if(requestDTOListFemale.get(i).getUsersAge() == 30) {
+                fAge[2] = fAge[2] + 1;
+            } else if(requestDTOListFemale.get(i).getUsersAge() == 40) {
+                fAge[3] = fAge[3] + 1;
+            } else if(requestDTOListFemale.get(i).getUsersAge() == 50) {
+                fAge[4] = fAge[4] + 1;
+            } else if(requestDTOListFemale.get(i).getUsersAge() == 60) {
+                fAge[5] = fAge[5] + 1;
+            } else if(requestDTOListFemale.get(i).getUsersAge() == 70) {
+                fAge[6] = fAge[6] + 1;
+            } else if(requestDTOListFemale.get(i).getUsersAge() == 80) {
+                fAge[7] = fAge[7] + 1;
+            }
+        }
+
         for (int i = 0; i < list.size(); i++) {
 
             // 연령
@@ -1021,12 +1125,13 @@ public class CompanyService {
         }
 
         Map<String, Object> map = new HashMap<>();
-        map.put("requestList", requestDTOList);
         map.put("size", list.size());
         map.put("missionCount", contractedRequestCount);
         map.put("missionContractRate", requestContractRate);
         map.put("missionSuccessRate", requestSuccessRate) ;    
         map.put("age", age);
+        map.put("mAge", mAge);
+        map.put("fAge", fAge);
         map.put("time", time);
         map.put("region", region);
         map.put("month", month);
@@ -1034,8 +1139,9 @@ public class CompanyService {
         map.put("categoryNum", categoryNum);
 
         // 전체 통계
-        map.put("requestListWhole", requestDTOListWhole);
         map.put("ageAllChart", ageAllChart);
+        map.put("mAgeAllChart", mAgeAllChart);
+        map.put("fAgeAllChart", fAgeAllChart);
         map.put("timeAllChart", timeAllChart);
         map.put("regionAllChart", regionAllChart);
         map.put("monthAllChart", monthAllChart);
