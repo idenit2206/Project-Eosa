@@ -31,8 +31,6 @@ public class BannerService {
     @Autowired private BannerMapper bannerMapper;
     @Autowired private AwsS3Service awsS3Service;
     
-
-    
     /** 
      * @param bannerFile
      * @param bannerItem

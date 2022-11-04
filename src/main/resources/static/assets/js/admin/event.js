@@ -452,6 +452,8 @@ function insertUser() {
 async function updateCompany(editor, editor2) {
 
     const name = document.querySelector('.c-name');
+    const profileImageSrc = document.querySelector("#company-profile-img");
+    const profileImageName = document.querySelector("#company-profile-img-file-name");
     const region01 = document.querySelector('#region01');
     const activeRegion = document.querySelectorAll('input[name=area]:checked');
     const category = document.querySelectorAll('input[name=category]:checked');
@@ -539,6 +541,8 @@ async function updateCompany(editor, editor2) {
 
             formData.set('companysIdx', document.querySelector('.companysIdx').value);
             formData.set('companysName', name.value);
+            formData.set('companysProfileImage', profileImageSrc.getAttribute("src"));
+            formData.set('companysProfileImageName', profileImageName.value);
             formData.set('companysComment', document.querySelector('.c-comment').value);
             // formData.set("companysSpec", document.querySelector("#editor").innerHTML);
             formData.set("companysSpec", editor.getHTML());

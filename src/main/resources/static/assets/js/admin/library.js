@@ -9,7 +9,7 @@ function createEditor(companysIdx) {
         
     //   console.log(blob.size);
         if(blob.size > 7000000) {
-            alert("첨부 이미지의 크기는 7MB를 초과 할 수 없습니다.");
+            alert("첨부 이미지의 크기는 7MB를 초과할 수 없습니다.");
         }
         else {
             fetch('/admin/manage/company/detailEditor', {
@@ -49,7 +49,7 @@ function createEditor2(companysIdx) {
         formData.append("companysIdx", companysIdx);
 
         if(blob.size > 7000000) {
-            alert("첨부 이미지의 크기는 7MB를 초과 할 수 없습니다.");
+            alert("첨부 이미지의 크기는 7MB를 초과할 수 없습니다.");
         }
         else {
             fetch('/admin/manage/company/detailEditor', {
@@ -89,7 +89,7 @@ function createEditorForNotice(noticeIdx) {
         formData.append("noticeIdx", noticeIdx);
 
         if(blob.size > 7000000) {
-            alert("첨부 이미지의 크기는 7MB를 초과 할 수 없습니다.");
+            alert("첨부 이미지의 크기는 7MB를 초과할 수 없습니다.");
         }
         else {
             fetch('/admin/manage/notice/noticeEditor', {

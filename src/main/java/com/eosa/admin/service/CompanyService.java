@@ -9,6 +9,7 @@ import com.eosa.admin.pagination.Pagination;
 import com.eosa.admin.safety.Safety;
 import com.eosa.web.requestcontract.entity.RequestContract;
 import com.eosa.web.requestcontract.service.RequestContractService;
+import com.eosa.web.util.file.AwsS3Service;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.security.NoSuchAlgorithmException;
@@ -60,6 +62,9 @@ public class CompanyService {
 
     @Autowired
     private RequestContractService requestContractService;
+
+    @Autowired    
+    private AwsS3Service awsS3Service;
 
     /**
      * 업체 목록 조회 서비스
@@ -217,6 +222,20 @@ public class CompanyService {
         }
 
         return answer;        
+    }
+
+    /**
+     * 업체 프로필 이미지 변경 서비스
+     * @param file
+     * @return
+     */
+    public Map<String, Object> updateProfileImage(MultipartFile file, Long companysIdx) {
+        List<String> s3step = awsS3Service.uploadSingleFile(file, "companyProfileImage", companysIdx);
+        Map<String, Object> result = new HashMap<>();
+        result.put("companysProfileImage", s3step.get(1));
+        result.put("companysProfileImageName", s3step.get(0));
+
+        return result;
     }
 
     /**

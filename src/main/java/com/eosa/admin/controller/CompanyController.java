@@ -100,6 +100,20 @@ public class CompanyController {
     }
 
     /**
+     * 업체 프로필 이미지 수정 컨트롤러
+     * @param file
+     * @return
+     */
+    @ResponseBody
+    @PostMapping("/updateProfileImage")
+    public Map<String, Object> updateProfileImage(
+        @RequestParam(name = "file") MultipartFile file, 
+        @RequestParam(name = "companysIdx") Long companysIdx
+    ) {
+        return companyService.updateProfileImage(file, companysIdx);
+    }
+
+    /**
      * 업체 수정 컨트롤러
      *
      * @param companysDTO
@@ -108,7 +122,6 @@ public class CompanyController {
     @ResponseBody
     @PostMapping("/update")
     public int updateCompanys(CompanysDTO companysDTO) {
-
         return companyService.updateCompany(companysDTO);
     }
 

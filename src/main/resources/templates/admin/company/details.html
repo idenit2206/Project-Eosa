@@ -32,7 +32,7 @@
                         <table class="dt-table">
                             <tbody>
                                 <tr>
-                                    <td colspan="4">
+                                    <!-- <td colspan="4">
                                         <input type="hidden" class="companysIdx" th:value="${details.companysIdx}">
                                         <div class="company-profile-wrap">
                                             <div class="p-wrap">
@@ -47,6 +47,34 @@
                                                     <div id="editor" th:utext="${details.companysSpec}"></div>
                                                 </div>
                                             </div>
+                                        </div>
+                                    </td> -->
+                                    <td rowspan="2" colspan="1">
+                                        <input type="hidden" class="companysIdx" th:value="${details.companysIdx}">
+                                        <input type="file" class="hidden" id="newProfileImage" accept="image/png, image/jpeg" />
+                                        <div class="company-profile-wrap">
+                                            <div class="">
+                                                <img th:if="${details.companysProfileImage} eq null" id="company-profile-img" class="company-profile-img" th:src="@{/assets/images/ico/ico-logo.svg}">
+                                                <img th:if="${details.companysProfileImage} ne null" id="company-profile-img" class="company-profile-img profile-link" th:onclick="profileImageClick()" th:src="@{${details.companysProfileImage}}"> <!-- th:onclick="|window.open('@{${details.companysProfileImage}}')|" -->
+                                                <input type="hidden" id="company-profile-img-file-name" />
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <div class="company-description-wrap">                                   
+                                    <td colspan="3">
+                                        <div class="input-wrap">
+                                            <label for="c-comment">간단 소개글</label>
+                                        </div>                                        
+                                        <div class="input-wrap">
+                                            <input type="text" spellcheck="false" class="input c-comment" th:value="${details.companysComment}">
+                                        </div>                                      
+                                    </td>
+                                    </div>                                           
+                                </tr>
+                                <tr>
+                                    <td colspan="3" style="padding-bottom: 50px;">
+                                        <div class="text-wrap editor-details-wrap e-wrap">
+                                            <div id="editor" th:utext="${details.companysSpec}"></div>
                                         </div>
                                     </td>
                                 </tr>
@@ -544,13 +572,53 @@
     <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
     <script th:src="@{/assets/js/admin/library.js}"></script>
     <script>
+        const ImageUpProcess = () => {
+            const newProfileImage = document.querySelector("#newProfileImage");
+            const newProfileImageFileNameElement = document.querySelector("#company-profile-img-file-name");
+            const prevProfileImage = document.querySelector("#company-profile-img");
+            const companysIdxElement = document.querySelector("#companysIdx");
+
+            let formData = new FormData();
+           
+            if(newProfileImage.files[0].size > 7000000) {
+                alert("이미지 크기는 7MB를 초과할 수 없습니다.")
+            }
+
+            formData.append("file", newProfileImage.files[0]);
+            formData.append("companysIdx", companysIdxElement.innerHTML);
+
+            fetch("/admin/manage/company/updateProfileImage", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // console.log(data);
+                prevProfileImage.removeAttribute("src");
+                prevProfileImage.setAttribute("src", data.companysProfileImage);
+                newProfileImageFileNameElement.value = data.companysProfileImageName;
+            })
+            
+        }
+
+        const profileImageClick = () => {
+            const newProfileImage = document.querySelector("#newProfileImage");
+            let profileImageChange = confirm("프로필 이미지를 변경하시겠습니까?");
+            if(profileImageChange) {
+                // alert("이미지를 변경합니다.");
+                newProfileImage.click();
+                newProfileImage.addEventListener("change", ImageUpProcess);
+            }else {
+                // alert("이미지를 변경하지 않습니다.");
+            }
+        }
         window.addEventListener('load', function () {
             const companysIdx = document.querySelector(".companysIdx").value;
             console.log(`현재 페이지의 companysIdx: ${companysIdx}`);
 
             highlightMenu('list');
             onlyNum();
-            changePrice();
+            changePrice();            
 
             const editorWrap = document.querySelectorAll('.e-wrap');
             setTimeout(e => {
