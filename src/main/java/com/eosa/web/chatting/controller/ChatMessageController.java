@@ -47,7 +47,6 @@ public class ChatMessageController {
 
     List<Object> messageList = new LinkedList<>();
 
-    
     /** 
      * @param message
      */
@@ -62,7 +61,6 @@ public class ChatMessageController {
 
         String clienttoken = usersService.getTokenByUsersIdx(clientIdx);
         String clientdevice = usersService.getDeviceByUsersIdx(clientIdx);
-
       
         String detectivetoken = usersService.getTokenByUsersIdx(companysCeoIdx);
         String detectivedevice = usersService.getDeviceByUsersIdx(companysCeoIdx);
@@ -80,6 +78,7 @@ public class ChatMessageController {
             entity.setSendDate(message.getSendDate());
 
             chatMessageService.save(entity);
+            sendingOperations.convertAndSend("/topic/chat/room/" + message.getRoomId(), message);
         }
 
         if((message.getMessageType()).equals(MessageType.TALK)) {
@@ -104,6 +103,7 @@ public class ChatMessageController {
                 entity.setSendDate(message.getSendDate());
 
                 chatMessageService.save(entity);
+                sendingOperations.convertAndSend("/topic/chat/room/" + message.getRoomId(), message);
             }
             else if(senderRole.equals("companys")){
                 // DETECTIVE가 메시지를 보내는 경우
@@ -137,6 +137,7 @@ public class ChatMessageController {
                     entity.setSendDate(message.getSendDate());
                     log.info("차단 당하지 않음: {}", entity.toString());
                     chatMessageService.save(entity);
+                    sendingOperations.convertAndSend("/topic/chat/room/" + message.getRoomId(), message);
                 }               
             }
             else if(senderRole.equals("상담사")) {
@@ -157,6 +158,7 @@ public class ChatMessageController {
                 entity.setSender(message.getSender());
                 entity.setSendDate(message.getSendDate());
                 chatMessageService.save(entity);
+                sendingOperations.convertAndSend("/topic/chat/room/" + message.getRoomId(), message);
             }
 
         }
@@ -173,6 +175,7 @@ public class ChatMessageController {
             entity.setSendDate(message.getSendDate());
 
             chatMessageService.save(entity);
+            sendingOperations.convertAndSend("/topic/chat/room/" + message.getRoomId(), message);
         }
 
         if((message.getMessageType()).equals(MessageType.LEAVE)) {
@@ -188,9 +191,10 @@ public class ChatMessageController {
             entity.setSendDate(message.getSendDate());
 
             chatMessageService.save(entity);
+            sendingOperations.convertAndSend("/topic/chat/room/" + message.getRoomId(), message);
         }    
 
-        sendingOperations.convertAndSend("/topic/chat/room/" + message.getRoomId(), message);
+        // sendingOperations.convertAndSend("/topic/chat/room/" + message.getRoomId(), message);
     }
 
     
