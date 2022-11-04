@@ -33,9 +33,16 @@ public class SmsCertificationService {
             return null;
         }
         else {
-            log.info("새로운 인증번호 객체를 생성합니다. {} : {}", usersPhone, result);
-            // authKeyList.put(usersPhone, result);
-            savedAuthCode(usersPhone, result);
+            // Apple 앱 심사를 위한 테스트용 코드 생성
+            if(usersPhone.equals("01000000001") || usersPhone.equals("01000000002")) {
+                log.info("Apple Test전용의 객체를 생성합니다. {} : {}", usersPhone, "123456");
+                savedAuthCode(usersPhone, "123456");
+            }
+            else {
+                log.info("새로운 인증번호 객체를 생성합니다. {} : {}", usersPhone, result);
+                // authKeyList.put(usersPhone, result);
+                savedAuthCode(usersPhone, result);
+            }
             return result;
         } 
 
@@ -64,9 +71,17 @@ public class SmsCertificationService {
      * @param code
      */
     public void savedAuthCode(String usersPhone, String code) {
-        log.info("[savedAuthCode] 인증코드 객체를 저장합니다.");
-        redisTemplate.opsForValue()
-            .set(usersPhone, code, Duration.ofSeconds(180));
+        // Apple Test용
+        if(usersPhone.equals("01000000001") || usersPhone.equals("01000000002")) {
+            log.info("[savedAuthCode] Apple Test용 인증코드 객체를 저장합니다.");
+            redisTemplate.opsForValue()
+                .set(usersPhone, code, Duration.ofSeconds(36000));
+        }
+        else {
+            log.info("[savedAuthCode] 인증코드 객체를 저장합니다.");
+            redisTemplate.opsForValue()
+                .set(usersPhone, code, Duration.ofSeconds(180));
+        }
     }
     
     /** 
