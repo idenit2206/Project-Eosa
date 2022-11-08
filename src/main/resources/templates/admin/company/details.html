@@ -49,7 +49,7 @@
                                             </div>
                                         </div>
                                     </td> -->
-                                    <td rowspan="2" colspan="1">
+                                    <td rowspan="2" colspan="1" style="text-align: center;">
                                         <input type="hidden" class="companysIdx" th:value="${details.companysIdx}">
                                         <input type="file" class="hidden" id="newProfileImage" accept="image/png, image/jpeg" />
                                         <div class="company-profile-wrap">
@@ -59,6 +59,9 @@
                                                 <input type="hidden" id="company-profile-img-file-name" />
                                             </div>
                                         </div>
+                                        <button>
+                                            <a id="companyProfileImageDownBtn" th:href="${details.companysProfileImage}">보기</a>
+                                        </button>
                                     </td>
                                     <div class="company-description-wrap">                                   
                                     <td colspan="3">
@@ -612,6 +615,7 @@
                 // alert("이미지를 변경하지 않습니다.");
             }
         }
+
         window.addEventListener('load', function () {
             const companysIdx = document.querySelector(".companysIdx").value;
             console.log(`현재 페이지의 companysIdx: ${companysIdx}`);
