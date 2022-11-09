@@ -222,6 +222,12 @@ public class DetectiveRequestFormController {
             updateRows = detectiveRequestFormService.updateRequestFormByEntity(rf);
             updateBackupRows = detectiveRequestFormBackupService.updateRequestFormByEntity(rfbackup);
         }
+        else if(rf.getRequestFormStatus().equals("의뢰취소")) {
+            rf.setRequestFormStatusChangeDate(LocalDateTime.now());
+            rfbackup.setRequestFormStatusChangeDate(LocalDateTime.now());
+            updateRows = detectiveRequestFormService.updateRequestFormByEntity(rf);
+            updateBackupRows = detectiveRequestFormBackupService.updateRequestFormByEntity(rfbackup);
+        }
         else if(rf.getRequestFormStatus().equals("계약진행")) {
             rf.setRequestFormStatusChangeDate(LocalDateTime.now());
             rfbackup.setRequestFormStatusChangeDate(LocalDateTime.now());

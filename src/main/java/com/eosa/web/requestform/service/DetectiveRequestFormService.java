@@ -116,9 +116,9 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
         
         if(entity.getRequestFormStatus().equals("상담취소")) {
             log.info("[updateRequestFormByEntity] requestForm 번호 {} 의 상담이 취소되었습니다.", entity.getRequestFormIdx());
-            if(clienttoken != null) {
-                firebaseCloudMessage.sendMessageTo(clienttoken, companysName + "에 신청한 상담이 취소되었습니다.", "/", clientdevice);
-            }
+            // if(clienttoken != null) {
+            //     firebaseCloudMessage.sendMessageTo(clienttoken, companysName + "에 신청한 상담이 취소되었습니다.", "/", clientdevice);
+            // }
             entity.setRequestFormStatus("상담취소");
             entity.setRequestFormCompDate(LocalDateTime.now());
         }
@@ -135,7 +135,10 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
                 firebaseCloudMessage.sendMessageTo(detectivetoken, "의뢰가 들어왔습니다.", "/", detectivedevice);
             }
         }
-
+        else if(entity.getRequestFormStatus().equals("의뢰취소")) {
+            log.info("[updateRequestFormByEntity] requestForm 번호 {} 의 의뢰가 계약이전에 취소되었습니다.", entity.getRequestFormIdx());
+            entity.setRequestFormCompDate(LocalDateTime.now());
+        }
         else if(entity.getRequestFormStatus().equals("계약진행")) {
             log.info("[updateRequestFormByEntity] requestForm 번호 {} 에 대해 의뢰 계약서 작성을 진행합니다.", entity.getRequestFormIdx());
 
