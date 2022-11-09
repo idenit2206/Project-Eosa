@@ -87,10 +87,13 @@
                                     <th>상태</th>
                                     <td>
                                         <div class="input-wrap approval-wrap">
-                                            <select class="select width-100-per c-enabled">
+                                            <select th:if="${details.companysEnabled} ne 2" class="select width-100-per c-enabled">
                                                 <option value="1" th:selected="${details.companysEnabled} eq 1">승인</option>
                                                 <option value="0" th:selected="${details.companysEnabled} eq 0">대기</option>
                                                 <option value="-1" th:selected="${details.companysEnabled} eq -1">반려</option>
+                                            </select>
+                                            <select th:unless="${details.companysEnabled} ne 2" class="select width-100-per c-enabled">
+                                                <option value="2" th:selected="${details.companysEnabled} eq 2">탈퇴한 회원</option>
                                             </select>
                                         </div>
                                     </td>

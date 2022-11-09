@@ -157,7 +157,7 @@
         UPDATE Companys
         SET companysName       = #{companysName},
             companysProfileImage = #{companysProfileImage},
-            companysProfileImagename = #{companysProfileImageName},
+            <!-- companysProfileImagename = #{companysProfileImageName}, -->
             companysComment    = #{companysComment},
             companysSpec       = #{companysSpec},
             companysPhone      = #{companysPhone},

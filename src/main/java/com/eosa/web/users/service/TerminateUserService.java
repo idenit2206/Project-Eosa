@@ -23,6 +23,7 @@ public class TerminateUserService implements TerminateUserRepository {
     
     
     /** 
+     * 탈퇴회원 목록을 추가하는 서비스
      * @param entity
      * @return S
      */
@@ -30,6 +31,11 @@ public class TerminateUserService implements TerminateUserRepository {
     public <S extends TerminateUser> S save(S entity) {
         entity.setTerminateRequestDate(LocalDateTime.now());      
         return terminateUserRepository.save(entity);
+    }
+
+    @Override
+    public int deleteByUsersIdx(Long usersIdx) {
+        return terminateUserRepository.deleteByUsersIdx(usersIdx);
     }
 
     

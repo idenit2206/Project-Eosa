@@ -202,8 +202,7 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     @Transactional
     @Query(
         value="UPDATE Users " +
-        "SET usersEnabled=0, " +
-        "usersDelete=1 " +
+        "SET usersEnabled = 0 " +
         "WHERE usersIdx=?1"
         ,nativeQuery=true
     )

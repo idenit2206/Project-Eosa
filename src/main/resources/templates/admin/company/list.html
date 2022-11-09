@@ -17,6 +17,7 @@
                             <button class="btn tab-menu enabled1" th:onclick="|goTo('/admin/manage/company/list?enabled=1')|">승인</button>
                             <button class="btn tab-menu enabled0" th:onclick="|goTo('/admin/manage/company/list?enabled=0')|">대기</button>
                             <button class="btn tab-menu enabled-1" th:onclick="|goTo('/admin/manage/company/list?enabled=-1')|">반려</button>
+                            <button class="btn tab-menu enabled-2" th:onclick="|goTo('/admin/manage/company/list?enabled=2')|">탈퇴회원</button>
                         </div>
                         <div class="header-wrap">
                             <span class="table__count" th:if="${enabled == 0}">전체<i class="value" th:text="${count-1}"></i></span>

@@ -461,7 +461,7 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
          */
         @Modifying
         @Transactional
-        @Query(value = "UPDATE Companys c SET c.companysEnabled = 0, c.companysDelete = 1 WHERE c.companysCeoIdx = ?1", nativeQuery = true)
+        @Query(value = "UPDATE Companys c SET c.companysEnabled = 2, c.companysDelete = 0 WHERE c.companysCeoIdx = ?1", nativeQuery = true)
         int deleteCompanysByCompanysCeoIdx02(Long companysCeoIdx);
 
 }
