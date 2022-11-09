@@ -236,7 +236,7 @@ public class UsersService implements UsersRepository {
     }
 
     /**
-     * 사용자 서비스 탈퇴를 수행하는 메서드 
+     * 사용자 서비스 탈퇴(정보 즉시 삭제)를 수행하는 메서드 
     */
     public int deleteUserInfo(Long usersIdx) {
         int companysDelete = companysRepository.deleteCompanysByCompanysCeoIdx(usersIdx);
@@ -252,6 +252,25 @@ public class UsersService implements UsersRepository {
             log.info("[deleteUserInfo] 회원탈퇴 usersIdx: {} 회원의 업체 정보를 삭제합니다.", String.valueOf(usersIdx));
         }
         return usersRepository.deleteUserInfo(usersIdx);
+    }
+
+    /**
+     * 사용자 서비스 탈퇴(즉시 삭제를 하지 않고 숨김처리)를 수행하는 메서드 
+    */
+    public int deleteUserInfo02(Long usersIdx) {
+        int companysDelete = companysRepository.deleteCompanysByCompanysCeoIdx02(usersIdx);
+        List<String> selectChatRoomList = chatRoomRepository.selectChatRoomIdListByUsersIdx(usersIdx);
+        if(selectChatRoomList.size() > 0 || selectChatRoomList != null) {
+            for(int i = 0; i < selectChatRoomList.size(); i++) {
+                log.info("[deleteUserInfo] 회원탈퇴 usersIdx: {} 와 관련된 채팅데이터를 삭제합니다.", String.valueOf(usersIdx));
+                chatMessageRepository.deleteByRoomId(selectChatRoomList.get(i));
+                chatRoomRepository.deleteRoomByRoomId(selectChatRoomList.get(i));
+            }
+        }
+        if(companysDelete == 1) {
+            log.info("[deleteUserInfo] 회원탈퇴 usersIdx: {} 회원의 업체 정보를 삭제합니다.", String.valueOf(usersIdx));
+        }
+        return usersRepository.deleteUserInfo02(usersIdx);
     }
 
     

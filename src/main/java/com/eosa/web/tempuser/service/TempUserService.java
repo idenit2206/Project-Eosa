@@ -31,7 +31,7 @@ public class TempUserService implements TempUserRepository {
      */
     @Override
     public <S extends Users> S save(S entity) {
-        entity.setUsersAccount(entity.getUsersEmail().split("@")[0]);
+        entity.setUsersAccount("TEMP"+entity.getUsersEmail().split("@")[0].substring(0, 6));
         entity.setUsersPass(passwordEncoder.encode(entity.getUsersPass()));
         entity.setUsersRole("TEMP");
         entity.setUsersJoinDate(LocalDateTime.now());

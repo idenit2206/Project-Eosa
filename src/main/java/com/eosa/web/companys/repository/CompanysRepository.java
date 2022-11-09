@@ -444,9 +444,24 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         nativeQuery = true)
         List<Long> selectCompanysFlagByFilter(String companysCategory, String companysRegion1);
 
+        /**
+         * 업체정보를 삭제하는 레포지터리
+         * @param companysCeoIdx
+         * @return
+         */
         @Modifying
         @Transactional
         @Query(value = "DELETE FROM Companys WHERE companysCeoIdx = ?1", nativeQuery = true)
         int deleteCompanysByCompanysCeoIdx(Long companysCeoIdx);
+
+        /**
+         * 업체정보를 삭제대기하는 레포지터리
+         * @param companysCeoIdx
+         * @return
+         */
+        @Modifying
+        @Transactional
+        @Query(value = "UPDATE Companys c SET c.companysEnabled = 0, c.companysDelete = 1 WHERE c.companysCeoIdx = ?1", nativeQuery = true)
+        int deleteCompanysByCompanysCeoIdx02(Long companysCeoIdx);
 
 }

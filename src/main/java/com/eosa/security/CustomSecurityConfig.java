@@ -76,7 +76,7 @@ public class CustomSecurityConfig {
                     .usernameParameter("usersAccount").passwordParameter("usersPass")                       
                     .successForwardUrl("/api/user/sign/signIn.success")
                     // .successHandler(new FormLoginSuccessHandler())
-                    .failureForwardUrl("/api/user/sign/signIn.failure")            
+                    .failureForwardUrl("/api/user/sign/signIn.failure")
         .and()
             .oauth2Login()
                 .loginPage("http://" + myDomain + ":3000/user/signin")

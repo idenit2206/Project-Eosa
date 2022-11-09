@@ -177,23 +177,13 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
         ,nativeQuery=true
     )
     int updateAdminUserInfo(@Param("Users") Users param);
-
+  
     /**
-     * 회원탈퇴
+     * 회원정보 삭제
+     * usersIdx와 일치하는 엔티티를 삭제하는 레포지터리
      * @param usersIdx
      * @return
      */
-    // @Modifying
-    // @Transactional
-    // @Query(
-    //     value="UPDATE Users " +
-    //     "SET usersEnabled=0, " +
-    //     "usersDelete=1 " +
-    //     "WHERE usersIdx=?1"
-    //     ,nativeQuery=true
-    // )
-    // int deleteUserInfo(Long usersIdx);
-
     @Modifying
     @Transactional
     @Query(
@@ -202,6 +192,22 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
         ,nativeQuery = true
     )
     int deleteUserInfo(Long usersIdx);
+
+    /**
+     * 회원탈퇴
+     * @param usersIdx
+     * @return
+     */
+    @Modifying
+    @Transactional
+    @Query(
+        value="UPDATE Users " +
+        "SET usersEnabled=0, " +
+        "usersDelete=1 " +
+        "WHERE usersIdx=?1"
+        ,nativeQuery=true
+    )
+    int deleteUserInfo02(Long usersIdx);
 
     @Transactional
     @Query(

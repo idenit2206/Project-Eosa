@@ -32,7 +32,6 @@ public class CompanysService implements CompanysRepository {
 
     @Autowired
     private CompanysRepository companysRepository;
-
     
     /** 
      * @param entity
@@ -660,6 +659,12 @@ public class CompanysService implements CompanysRepository {
     @Override
     public int deleteCompanysByCompanysCeoIdx(Long companysCeoIdx) {
         // TODO Auto-generated method stub
+        return 0;
+    }
+
+
+    @Override
+    public int deleteCompanysByCompanysCeoIdx02(Long companysCeoIdx) {
         return 0;
     }
 
