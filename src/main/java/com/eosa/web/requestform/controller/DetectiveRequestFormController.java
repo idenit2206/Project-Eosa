@@ -198,7 +198,11 @@ public class DetectiveRequestFormController {
 
         int updateRows = 0;
         int updateBackupRows = 0;
-        if(requestFormStatus.equals("상담완료")) {
+        if(requestFormStatus.equals("상담취소")) {
+            updateRows = detectiveRequestFormService.updateRequestFormByEntity(rf);
+            updateBackupRows = detectiveRequestFormBackupService.updateRequestFormByEntity(rfbackup);
+        }
+        else if(requestFormStatus.equals("상담완료")) {
             updateRows = detectiveRequestFormService.updateRequestFormStatusByRequestFormIdxCaseConsultComplete(
                 requestFormIdx, LocalDateTime.now(), requestFormStatus, requestFormRejectMessage
             );
