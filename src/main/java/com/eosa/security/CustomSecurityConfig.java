@@ -51,9 +51,6 @@ public class CustomSecurityConfig {
     private String[] ANYONE_PERMIT = {
         "/oauth2/**", "/api/user/**", "/api/mail/**",
     };
-
-    
-
     
     /** 
      * @param http

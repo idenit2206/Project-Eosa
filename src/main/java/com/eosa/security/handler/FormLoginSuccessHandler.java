@@ -23,10 +23,12 @@ public class FormLoginSuccessHandler implements AuthenticationSuccessHandler {
      * @throws ServletException
      */
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-            Authentication authentication) throws IOException, ServletException {
-
-                log.debug(authentication.toString());        
+    public void onAuthenticationSuccess(
+        HttpServletRequest request, 
+        HttpServletResponse response,
+        Authentication authentication
+    ) throws IOException, ServletException {
+        log.info(authentication.toString());
     }
     
 }
