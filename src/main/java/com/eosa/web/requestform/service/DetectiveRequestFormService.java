@@ -114,19 +114,31 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
         String detectivetoken = usersService.getTokenByUsersIdx(companysCeoIdx);
         String detectivedevice = usersService.getDeviceByUsersIdx(companysCeoIdx);
         
-        if(entity.getRequestFormStatus().equals("의뢰거절")) { 
+        if(entity.getRequestFormStatus().equals("상담취소")) {
+            log.info("[updateRequestFormByEntity] requestForm 번호 {} 의 상담이 취소되었습니다.", entity.getRequestFormIdx());
+            if(clienttoken != null) {
+                firebaseCloudMessage.sendMessageTo(clienttoken, companysName + "에 신청한 상담이 취소되었습니다.", "/", clientdevice);
+            }
+            entity.setRequestFormStatus("상담취소");
+            entity.setRequestFormCompDate(LocalDateTime.now());
+        }
+        else if(entity.getRequestFormStatus().equals("의뢰거절")) { 
+            log.info("[updateRequestFormByEntity] requestForm 번호 {} 의 의뢰가 거절되었습니다.", entity.getRequestFormIdx());
             if(clienttoken != null) {
                 firebaseCloudMessage.sendMessageTo(clienttoken, companysName + "에 신청한 의뢰가 거절되었습니다.", "/", clientdevice);
             }
-            entity.setRequestFormCompDate(LocalDateTime.now()); 
+            entity.setRequestFormCompDate(LocalDateTime.now());
         }
         else if(entity.getRequestFormStatus().equals("의뢰대기")) {
+            log.info("[updateRequestFormByEntity] requestForm 번호 {} 에 대해 의뢰가 신청이 발생했습니다.", entity.getRequestFormIdx());
             if(detectivetoken != null) {
                 firebaseCloudMessage.sendMessageTo(detectivetoken, "의뢰가 들어왔습니다.", "/", detectivedevice);
             }
         }
 
         else if(entity.getRequestFormStatus().equals("계약진행")) {
+            log.info("[updateRequestFormByEntity] requestForm 번호 {} 에 대해 의뢰 계약서 작성을 진행합니다.", entity.getRequestFormIdx());
+
             if(clienttoken != null) {
                 firebaseCloudMessage.sendMessageTo(clienttoken, companysName + " 과 계약을 위해 계약서를 작성해야합니다.", "/", clientdevice);
             }
@@ -139,12 +151,14 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
             entity.setRequestFormStatus("계약진행");
         }
         else if(entity.getRequestFormStatus().equals("임무진행")) { 
+            log.info("[updateRequestFormByEntity] requestForm 번호 {} 의 임무를 시작합니다.", entity.getRequestFormIdx());
             if(clienttoken != null) {
                 firebaseCloudMessage.sendMessageTo(clienttoken, companysName +  " 에서 임무를 진행합니다.", "/", clientdevice);
             }
             entity.setRequestFormAcceptDate(LocalDateTime.now()); 
         }
         else if(entity.getRequestFormStatus().equals("임무완료")) { 
+            log.info("[updateRequestFormByEntity] requestForm 번호 {} 의 임무가 완료되었습니다.", entity.getRequestFormIdx());
             if(clienttoken != null) {
                 firebaseCloudMessage.sendMessageTo(clienttoken, companysName + " 에서 임무를 완료했습니다.", "/", clientdevice);
             }
