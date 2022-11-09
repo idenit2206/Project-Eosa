@@ -616,27 +616,57 @@ public class UsersController {
     ) {
         CustomResponseData result = new CustomResponseData();
         Map<String, Object> item = new HashMap<>();
-        LocalDateTime currentTime = LocalDateTime.now();        
-       
-        int transaction = usersService.deleteUserInfo02(usersIdx);
-        if(transaction == 1) {
-            TerminateUser entity = new TerminateUser();
-            entity.setUsersIdx(usersIdx);
-            entity.setTerminateReason(terminateReason);
-            TerminateUser step2 = terminateUserService.save(entity);
-            if(step2 != null) {
+        LocalDateTime currentTime = LocalDateTime.now();   
+        
+        Users deleteuserInfo = usersService.selectUsersByUsersIdx(usersIdx);
+        if(deleteuserInfo.getUsersRole().equals("DETECTIVE")) {
+            int transaction = usersService.deleteUserInfo02(usersIdx);
+            if(transaction == 1) {
+                TerminateUser entity = new TerminateUser();
+                entity.setUsersIdx(usersIdx);
+                entity.setTerminateReason(terminateReason);
+                TerminateUser step2 = terminateUserService.save(entity);
+                if(step2 != null) {
+                    log.info("회원번호 {} 의 회원탈퇴가 완료되었습니다.", usersIdx);
+                    result.setStatusCode(HttpStatus.OK.value());
+                    item.put("message", "회원탈퇴가 완료되었습니다. ");
+                    result.setResultItem(item);
+                    result.setResponseDateTime(currentTime);
+                }
+            }
+            else {
+                log.info("회원번호 {} 의 회원탈퇴가 실패했습니다.", usersIdx);
                 result.setStatusCode(HttpStatus.OK.value());
-                item.put("message", "회원탈퇴가 완료되었습니다. ");
+                item.put("message", "회원탈퇴에 실패했습니다 사용자의 사용자번호 idx: " + String.valueOf(usersIdx) );
                 result.setResultItem(item);
                 result.setResponseDateTime(currentTime);
             }
         }
-        else {
-            result.setStatusCode(HttpStatus.BAD_REQUEST.value());
-            item.put("message", "회원탈퇴에 실패했습니다 사용자의 사용자번호 idx: " + String.valueOf(usersIdx) );
-            result.setResultItem(item);
-            result.setResponseDateTime(currentTime);
+        else if(deleteuserInfo.getUsersRole().equals("CLIENT")) {
+            int transaction = usersService.deleteUserInfo(usersIdx);
+            if(transaction == 1) {
+                TerminateUser entity = new TerminateUser();
+                entity.setUsersIdx(usersIdx);
+                entity.setTerminateReason(terminateReason);
+                TerminateUser step2 = terminateUserService.save(entity);
+                if(step2 != null) {
+                    log.info("회원번호 {} 의 회원탈퇴가 완료되었습니다.", usersIdx);
+                    result.setStatusCode(HttpStatus.OK.value());
+                    item.put("message", "회원탈퇴가 완료되었습니다. ");
+                    result.setResultItem(item);
+                    result.setResponseDateTime(currentTime);
+                }
+            }
+            else {
+                log.info("회원번호 {} 의 회원탈퇴가 실패했습니다.", usersIdx);
+                result.setStatusCode(HttpStatus.OK.value());
+                item.put("message", "회원탈퇴에 실패했습니다 사용자의 사용자번호 idx: " + String.valueOf(usersIdx) );
+                result.setResultItem(item);
+                result.setResponseDateTime(currentTime);
+            }
         }
+       
+        
         
 
         // if(transaction == 1) {
