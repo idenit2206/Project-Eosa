@@ -1,6 +1,9 @@
 package com.eosa.admin.controller;
 
 import com.eosa.admin.service.ReviewService;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
  * -----------------------------------------------------------
  * 2022-09-20        Jihun Kim       최초 생성
  */
+@Slf4j
 @Controller
 @RequestMapping("/admin/manage/review")
 public class ReviewController {
@@ -35,10 +39,11 @@ public class ReviewController {
      */
     @GetMapping("/list")
     public String reviewList(Model model,
-                             @RequestParam(defaultValue = "company") String sort,
-                             @RequestParam(defaultValue = "") String search,
-                             @RequestParam(defaultValue = "1") int page) {
-
+        @RequestParam(defaultValue = "company") String sort,
+        @RequestParam(defaultValue = "") String search,
+        @RequestParam(defaultValue = "1") int page
+    ) {
+        log.info("[관리자] 리뷰를 조회합니다.");
         return reviewService.reviewList(model, sort, search, page);
     }
 

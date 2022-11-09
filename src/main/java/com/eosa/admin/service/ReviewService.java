@@ -3,6 +3,9 @@ package com.eosa.admin.service;
 import com.eosa.admin.dto.ReviewDTO;
 import com.eosa.admin.mapper.ReviewMapper;
 import com.eosa.admin.pagination.Pagination;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -22,6 +25,7 @@ import java.util.Map;
  * -----------------------------------------------------------
  * 2022-09-20        Jihun Kim       최초 생성
  */
+@Slf4j
 @Service
 public class ReviewService {
 
@@ -59,6 +63,8 @@ public class ReviewService {
         map.put("pageSize", pagination.getPageSize());
 
         List<ReviewDTO> list = reviewMapper.selectReviewList(map);
+        log.info("[list] {}", list.toString());
+        log.info("[count] {}", count);
 
         model.addAttribute("reviewList", list);
         model.addAttribute("pagination", pagination);

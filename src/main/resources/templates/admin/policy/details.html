@@ -19,6 +19,7 @@
                 <div class="tab_nav form-tab">
                     <span class="tab-nav__btn tabBtn btn tab-menu on activate" th:text="${policy[0].policyTitle}"></span>
                     <span class="tab-nav__btn tabBtn btn tab-menu" th:text="${policy[1].policyTitle}"></span>
+                    <span class="tab-nav__btn tabBtn btn tab-menu" th:text="${policy[2].policyTitle}"></span>
                 </div>
 
                 <div class="tab_cont">
@@ -65,6 +66,32 @@
                                     </div>
                                     <div>
                                         <span th:text="|${policy[1].policyTitle} 등록일: ${#dates.format(policy[1].policyCreateDate, 'yyyy-MM-dd')}|"></span>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="form__action bottom m-b-30">
+                            <button type="button" class="btn-normal" onclick="location.reload()">돌아가기</button>
+                            <button type="button" class="btn-prime policy-modify">적용</button>
+                        </div>
+                    </div>
+
+                    <div class="tab-cont__item tabItem">
+                        <div class="tab_cont_item">
+                            <fieldset class="fieldset">
+                                <input type="hidden" class="policyIdx" th:value="${policy[2].policyIdx}">
+                                <div class="input-wrap input-wrap--area">
+                                    <textarea class="textarea policyContents" spellcheck="false" th:text="${policy[2].policyContents}"></textarea>
+                                </div>
+                            </fieldset>
+                            <hr class="policy-hr">
+                            <fieldset class="fieldset">
+                                <div class="tab-wrap">
+                                    <div>
+                                        <span th:text="|수정일 : ${#dates.format(policy[2].modifiedDate, 'yyyy-MM-dd')}|"></span>
+                                    </div>
+                                    <div>
+                                        <span th:text="|${policy[1].policyTitle} 등록일: ${#dates.format(policy[2].policyCreateDate, 'yyyy-MM-dd')}|"></span>
                                     </div>
                                 </div>
                             </fieldset>
