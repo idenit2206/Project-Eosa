@@ -153,6 +153,9 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
             entity.setRequestFormAcceptDate(LocalDateTime.now());
             entity.setRequestFormStatus("계약진행");
         }
+        else if(entity.getRequestFormStatus().equals("계약취소")) {
+            log.info("[updateRequestFormByEntity] requestForm 번호 {} 의 계약이 취소되었습니다.", entity.getRequestFormIdx());
+        }
         else if(entity.getRequestFormStatus().equals("임무진행")) { 
             log.info("[updateRequestFormByEntity] requestForm 번호 {} 의 임무를 시작합니다.", entity.getRequestFormIdx());
             if(clienttoken != null) {
@@ -169,6 +172,10 @@ public class DetectiveRequestFormService implements DetectiveRequestFormReposito
             entity.setRequestFormAcceptDate(requestFormAcceptDate);
             entity.setRequestFormCompDate(LocalDateTime.now());
         }
+        else if(entity.getRequestFormStatus().equals("임무취소")) {
+            log.info("[updateRequestFormByEntity] requestForm 번호 {} 의 임무가 취소되었습니다.", entity.getRequestFormIdx());
+        }
+        
         return detectiveRequestFormRepository.updateRequestFormByEntity(entity);
     }
     

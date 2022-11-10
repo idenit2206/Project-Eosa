@@ -210,6 +210,22 @@ public class DetectiveRequestFormController {
                 requestFormIdx, LocalDateTime.now(), requestFormStatus, requestFormRejectMessage
             );
         }
+        else if(requestFormStatus.equals("계약취소")) {
+            rf.setRequestFormStatus("계약취소");
+            rfbackup.setRequestFormStatus("계약취소");
+            rf.setRequestFormStatusChangeDate(LocalDateTime.now());
+            rfbackup.setRequestFormStatusChangeDate(LocalDateTime.now());
+            updateRows = detectiveRequestFormService.updateRequestFormByEntity(rf);
+            updateBackupRows = detectiveRequestFormBackupService.updateRequestFormByEntity(rfbackup);
+        }
+        else if(requestFormStatus.equals("임무취소")) {
+            rf.setRequestFormStatus("임무취소");
+            rfbackup.setRequestFormStatus("임무취소");
+            rf.setRequestFormStatusChangeDate(LocalDateTime.now());
+            rfbackup.setRequestFormStatusChangeDate(LocalDateTime.now());
+            updateRows = detectiveRequestFormService.updateRequestFormByEntity(rf);
+            updateBackupRows = detectiveRequestFormBackupService.updateRequestFormByEntity(rfbackup);
+        }     
         else if (rf.getRequestFormStatus().equals("의뢰대기")) {
             rf.setRequestFormStatusChangeDate(LocalDateTime.now());
             rfbackup.setRequestFormStatusChangeDate(LocalDateTime.now());
@@ -234,6 +250,14 @@ public class DetectiveRequestFormController {
             updateRows = detectiveRequestFormService.updateRequestFormByEntity(rf);
             updateBackupRows = detectiveRequestFormBackupService.updateRequestFormByEntity(rfbackup);
         }
+        else if(requestFormStatus.equals("계약취소")) {
+            rf.setRequestFormStatus("계약취소");
+            rfbackup.setRequestFormStatus("계약취소");
+            rf.setRequestFormStatusChangeDate(LocalDateTime.now());
+            rfbackup.setRequestFormStatusChangeDate(LocalDateTime.now());
+            updateRows = detectiveRequestFormService.updateRequestFormByEntity(rf);
+            updateBackupRows = detectiveRequestFormBackupService.updateRequestFormByEntity(rfbackup);
+        }
         else if(rf.getRequestFormStatus().equals("임무진행")) {
             rf.setRequestFormStatusChangeDate(LocalDateTime.now());
             rfbackup.setRequestFormStatusChangeDate(LocalDateTime.now());
@@ -246,6 +270,7 @@ public class DetectiveRequestFormController {
             updateRows = detectiveRequestFormService.updateRequestFormByEntity(rf);
             updateBackupRows = detectiveRequestFormBackupService.updateRequestFormByEntity(rfbackup);
         }
+       
 
         if (updateRows == 1) {
             result.setStatusCode(HttpStatus.OK.value());
