@@ -103,6 +103,10 @@ public interface DetectiveRequestFormRepository extends JpaRepository<RequestFor
         "R.requestFormDate, R.requestConsultDate, R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage, " +
         "R.requestFormClientReadState, R.requestFormClientReadDate, " +
         "R.requestFormDetectiveReadState, R.requestFormDetectiveReadDate, " +
+        "R.requestFormContractClientDelegate, " +
+        "R.requestFormContractClientAddress, " +
+        "R.requestFormContractClientBirth, " +
+        "R.requestFormContractClientContact, " +
         "GROUP_CONCAT(RFC.requestFormCategoryValue) AS requestFormCategoryValue " +
         "FROM RequestForm R " +
         "LEFT JOIN RequestFormCategory RFC on R.requestFormIdx = RFC.requestFormIdx " +
