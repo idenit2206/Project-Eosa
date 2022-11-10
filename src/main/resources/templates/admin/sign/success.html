@@ -106,7 +106,7 @@
 		checkDocumentResult = result;
 		if(checkDocumentResult == 1) {
 			console.log("사용자의 계약서 서명 거절로 인한 계약 취소");
-			let subFetchURL = `http://localhost:8081/api/requestForm/updateRequestFormStatusByRequestFormIdx`;
+			let subFetchURL = `http://dowajo.co.kr:8081/api/requestForm/updateRequestFormStatusByRequestFormIdx`;
 			let formData = new FormData();
 			formData.set("requestFormIdx", requestFormIdx);
 			formData.set("requestFormStatus", "계약취소");
