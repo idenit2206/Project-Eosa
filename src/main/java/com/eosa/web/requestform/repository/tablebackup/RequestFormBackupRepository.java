@@ -111,9 +111,6 @@ public interface RequestFormBackupRepository extends JpaRepository<RequestFormBa
     @Query(value = "SELECT * FROM RequestFormBackup R WHERE R.requestFormIdx = ?1", nativeQuery = true)
     RequestFormBackup selectOneRequestFormByRequsetFormIdx(Long requestFormIdx);
 
-
-    // 알림을 위한 조회 쿼리
-
     @Query(value =
         "SELECT R.requestFormIdx, R.usersIdx, R.companysIdx, R.requestFormRegion1, R.requestFormChannel, R.requestFormStatus, " +
         "R.requestFormStatusChangeDate, " +
@@ -179,5 +176,23 @@ public interface RequestFormBackupRepository extends JpaRepository<RequestFormBa
         ,nativeQuery = true
     )
     int updateReadStateReadDetective(Long requestFormIdx, Long companysIdx);
+
+    /**
+     * CLIENT 회원의 의뢰 임무 계약서 작성을 위한 정보 업데이트 레포지터리(백업 데이터)
+     * @param requestForm
+     * @return
+     */
+    @Transactional
+    @Modifying
+    @Query(value = 
+        "UPDATE RequestFormBackup R " +
+        "SET R.requestFormContractClientDelegate = :#{#RequestForm.requestFormContractClientDelegate}, " +
+        "R.requestFormContractClientAddress = :#{#RequestForm.requestFormContractClientAddress}, " +
+        "R.requestFormContractClientBirth = :#{#RequestForm.requestFormContractClientBirth}, " +
+        "R.requestFormContractClientContact = :#{#RequestForm.requestFormContractClientContact} " +
+        "WHERE R.requestFormIdx = :#{#RequestForm.requestFormIdx} ",
+        nativeQuery = true
+    )
+    int updateRequestFormContractData(@Param("RequestForm") RequestFormBackup requestForm);
 
 }

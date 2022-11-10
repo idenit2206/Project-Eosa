@@ -22,4 +22,9 @@ public interface SelectRequestFormList {
     LocalDateTime getRequestFormCompDate();
     String getRequestFormRejectMessage();
     List<String> getRequestFormCategory();
+
+    String getRequestFormContractClientDelegate();
+    String getRequestFormContractClientAddress();
+    String getRequestFormContractClientBirth();
+    String getRequestFormContractClientContact();
 }

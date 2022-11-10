@@ -141,6 +141,13 @@ public class RequestFormService implements RequestFormRepository {
         return requestFormRepository.selectOneRequestFormByRequsetFormIdx(requestFormIdx);
     }
 
+    /**
+     * CLIENT 회원의 의뢰 임무 계약서 작성을 위한 정보 업데이트 서비스
+     */
+    @Override
+    public int updateRequestFormContractData(RequestForm requestForm) {
+        return requestFormRepository.updateRequestFormContractData(requestForm);
+    }
     
     /** 
      * @param sort

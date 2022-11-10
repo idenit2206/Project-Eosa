@@ -43,8 +43,10 @@ public class RequestForm {
     @Column(nullable=false) private int requestFormDetectiveReadState;
     @Column private LocalDateTime requestFormDetectiveReadDate;
 
-//    @OneToMany(mappedBy = "requestForm")
-//    private List<RequestFormCategory> requestFormCategory = new ArrayList<>();
+    @Column private String requestFormContractClientDelegate;
+    @Column private String requestFormContractClientAddress;
+    @Column private String requestFormContractClientBirth;
+    @Column private String requestFormContractClientContact;
 
     public RequestForm() {}
 

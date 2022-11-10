@@ -106,6 +106,13 @@ public class RequestFormBackupService implements RequestFormBackupRepository {
         return requestFormBackupRepository.selectOneRequestFormByRequsetFormIdx(requestFormIdx);
     }
 
+    /**
+     * CLIENT 회원의 의뢰 임무 계약서 작성을 위한 정보 업데이트 서비스(백업 데이터)
+     */
+    @Override
+    public int updateRequestFormContractData(RequestFormBackup requestForm) {
+        return requestFormBackupRepository.updateRequestFormContractData(requestForm);
+    }
 
     @Override
     public List<RequestFormBackup> findAll(Sort sort) {

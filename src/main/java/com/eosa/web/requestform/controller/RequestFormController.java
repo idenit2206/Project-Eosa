@@ -474,4 +474,41 @@ public class RequestFormController {
         return result;
     }
 
+    /**
+     * CLIENT의 의뢰 임무 계약서 작성을 위한 정보 업데이트
+     * @param requestForm
+     * @return
+     */
+    @PutMapping("/updateRequestFormContractData")
+    public CustomResponseData updateRequestFormContractData(
+        RequestForm requestForm
+    ) {
+        CustomResponseData result = new CustomResponseData();
+        
+        RequestFormBackup backup = new RequestFormBackup();
+        backup.setRequestFormIdx(requestForm.getRequestFormIdx());
+        backup.setRequestFormContractClientDelegate(requestForm.getRequestFormContractClientDelegate());
+        backup.setRequestFormContractClientAddress(requestForm.getRequestFormContractClientAddress());
+        backup.setRequestFormContractClientBirth(requestForm.getRequestFormContractClientBirth());
+        backup.setRequestFormContractClientContact(requestForm.getRequestFormContractClientContact());
+
+        int updateRow = requestFormService.updateRequestFormContractData(requestForm);
+        int updateBackupRow = requestFormBackupService.updateRequestFormContractData(backup);
+
+        if(updateRow == 1 && updateBackupRow == 1) {
+            log.info("의뢰내역서 번호 {} 의 의뢰 임무 계약서 작성을 위한 정보를 업데이트 합니다.", requestForm.getRequestFormIdx());
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(true);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        else {
+            log.info("의뢰내역서 번호 {} 의 의뢰 임무 계약서 작성을 위한 정보를 업데이트를 실패했습니다.", requestForm.getRequestFormIdx());
+            result.setStatusCode(HttpStatus.OK.value());
+            result.setResultItem(false);
+            result.setResponseDateTime(LocalDateTime.now());
+        }
+        
+        return result;
+    }
+
 }

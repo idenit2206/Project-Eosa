@@ -65,6 +65,7 @@ public interface RequestFormRepository extends JpaRepository<RequestForm, Long> 
         "RequestForm.requestFormRegion1, RequestForm.requestFormRegion2, " +
         "RequestForm.requestFormStatus, RequestForm.requestConsultDate, RequestForm.requestFormDate, " +
         "RequestForm.requestFormAcceptDate, RequestForm.requestFormCompDate, RequestForm.requestFormRejectMessage, " +
+        "RequestForm.requestFormContractClientDelegate, RequestForm.requestFormContractClientAddress, RequestForm.requestFormContractClientBirth, RequestForm.requestFormContractClientContact, " +
         "GROUP_CONCAT(RequestFormCategory.requestFormCategoryValue) AS requestFormCategory " +
         "FROM RequestForm INNER JOIN RequestFormCategory ON RequestForm.requestFormIdx = RequestFormCategory.requestFormIdx " +
         "WHERE RequestForm.usersIdx = ?1 " +
@@ -119,6 +120,7 @@ public interface RequestFormRepository extends JpaRepository<RequestForm, Long> 
         "R.requestFormDate, R.requestConsultDate, R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage, " +
         "R.requestFormClientReadState, R.requestFormClientReadDate, " +
         "R.requestFormDetectiveReadState, R.requestFormDetectiveReadDate, " +
+        "R.requestFormContractClientDelegate, R.requestFormContractClientAddress, R.requestFormContractClientBirth, R.requestFormContractClientContact, " +
         "GROUP_CONCAT(RFC.requestFormCategoryValue) AS requestFormCategoryValue " +
         "FROM RequestForm R " +
         "LEFT JOIN RequestFormCategory RFC on R.requestFormIdx = RFC.requestFormIdx " +
@@ -136,6 +138,7 @@ public interface RequestFormRepository extends JpaRepository<RequestForm, Long> 
         "R.requestFormDate, R.requestConsultDate, R.requestFormAcceptDate, R.requestFormCompDate, R.requestFormRejectMessage, " +
         "R.requestFormClientReadState, R.requestFormClientReadDate, " +
         "R.requestFormDetectiveReadState, R.requestFormDetectiveReadDate, " +
+        "R.requestFormContractClientDelegate, R.requestFormContractClientAddress, R.requestFormContractClientBirth, R.requestFormContractClientContact, " +
         "GROUP_CONCAT(RFC.requestFormCategoryValue) AS requestFormCategoryValue " +
         "FROM RequestForm R " +
         "LEFT JOIN RequestFormCategory RFC on R.requestFormIdx = RFC.requestFormIdx " +
@@ -159,6 +162,11 @@ public interface RequestFormRepository extends JpaRepository<RequestForm, Long> 
     ,nativeQuery = true)
     List<RequestForm> selectRequestFormByCompanysIdx(Long companysIdx);
 
+    /**
+     * 
+     * @param requestFormIdx
+     * @return
+     */
     @Transactional
     @Modifying
     @Query(value = 
@@ -169,6 +177,12 @@ public interface RequestFormRepository extends JpaRepository<RequestForm, Long> 
     )
     int updateReadStateRead(Long requestFormIdx);
 
+    /**
+     * 
+     * @param requestFormIdx
+     * @param companysIdx
+     * @return
+     */
     @Transactional
     @Modifying
     @Query(value = 
@@ -178,4 +192,23 @@ public interface RequestFormRepository extends JpaRepository<RequestForm, Long> 
         ,nativeQuery = true
     )
     int updateReadStateReadDetective(Long requestFormIdx, Long companysIdx);
+
+    /**
+     * CLIENT 회원의 의뢰 임무 계약서 작성을 위한 정보 업데이트 레포지터리
+     * @param requestForm
+     * @return
+     */
+    @Transactional
+    @Modifying
+    @Query(value = 
+        "UPDATE RequestForm R " +
+        "SET R.requestFormContractClientDelegate = :#{#RequestForm.requestFormContractClientDelegate}, " +
+        "R.requestFormContractClientAddress = :#{#RequestForm.requestFormContractClientAddress}, " +
+        "R.requestFormContractClientBirth = :#{#RequestForm.requestFormContractClientBirth}, " +
+        "R.requestFormContractClientContact = :#{#RequestForm.requestFormContractClientContact} " +
+        "WHERE R.requestFormIdx = :#{#RequestForm.requestFormIdx} ",
+        nativeQuery = true
+    )
+    int updateRequestFormContractData(@Param("RequestForm") RequestForm requestForm);
+
 }
