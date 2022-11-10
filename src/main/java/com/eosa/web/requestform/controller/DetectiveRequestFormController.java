@@ -179,6 +179,7 @@ public class DetectiveRequestFormController {
             @RequestParam(name = "requestFormStatus") String requestFormStatus,
             @RequestParam(name = "requestFormRejectMessage", required = false) String requestFormRejectMessage
     ) throws IOException {
+        log.info("[updateRequestFormStatusByRequestFormIdx] RequestForm: {} 번에 대한 갱신 요청입니다.", requestFormIdx);
         CustomResponseData result = new CustomResponseData();
         
         RequestForm rf = detectiveRequestFormService.selectRequestFormByRequestFormIdx(requestFormIdx);

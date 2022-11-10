@@ -68,5 +68,65 @@
 			location.href = document.querySelector('.path').value;
 		});
 	});
+
+	const currentURL = window.location.href;
+	const urlObject = new URL(currentURL).searchParams;
+	const documentId = urlObject.get("documentId");
+	const requestFormIdx = urlObject.get("requestFormIdx");
+	
+	const REJECT_SIGN = "REJECT_SIGNING";
+
+	const url = `https://api.modusign.co.kr/documents/${documentId}/histories`;
+	const options = {
+	method: 'GET',
+	headers: {
+		accept: 'application/json',
+		authorization: 'Bearer Basic IHByb2plY3Rlb3NhQG5hdmVyLmNvbTpZV0V4Tm1Jek5EZ3RPR1l3TUMwMFpXSXdMVGsxT0RVdE1tSTNPVFU0TjJNMFpqVm0='
+	}
+	};
+
+	let checkDocument = () => {	
+		return fetch(url, options)
+			.then(res => res.json())
+			.then(json => {
+				let result = 0;
+				// console.log(json.histories[0]);
+				for(let i = 0; i < json.histories.length; i++) {
+					if(json.histories[i].action == REJECT_SIGN) {					
+						console.log(`${i} 에서 ${REJECT_SIGN}`);
+						result = 1;
+					}
+				}
+				return result;
+			})
+			.catch(err => console.error('error:' + err));
+	}
+	let checkDocumentResult = 0;
+	checkDocument().then(result => {
+		checkDocumentResult = result;
+		if(checkDocumentResult == 1) {
+			console.log("사용자의 계약서 서명 거절로 인한 계약 취소");
+			let subFetchURL = `http://localhost:8081/api/requestForm/updateRequestFormStatusByRequestFormIdx`;
+			let formData = new FormData();
+			formData.set("requestFormIdx", requestFormIdx);
+			formData.set("requestFormStatus", "계약취소");
+			formData.set("requestFormRejectMessage", "계약 서명 거절로 인한 계약 취소");
+			fetch(subFetchURL, {
+				method: "POST",
+				body: formData
+			})
+			.then(response => {
+				response.json();
+			})
+			.then(data => {
+				console.log(data);
+			})
+		}
+		else {
+			console.log("계약 완료 다음 수순으로");
+		}
+	})
+	
+	
 </script>
 </html>
