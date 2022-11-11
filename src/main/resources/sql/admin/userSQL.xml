@@ -60,6 +60,7 @@
                U.usersGender,
                U.usersJoinDate,
                U.usersNotice,
+               U.usersEnabled,
                U.usersDelete,
                U.provider,
                T.terminateReason,

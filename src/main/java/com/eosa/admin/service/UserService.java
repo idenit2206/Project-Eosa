@@ -93,9 +93,8 @@ public class UserService {
      * @return String
      */
     public String userDetails(Model model, long usersIdx) {
-
+        log.info("[관리자][usersDetails] 사용자번호: {} 의 회원 상세 정보를 조회합니다.", usersIdx);
         UsersTerminateDTO details = userMapper.selectUsersDetails(usersIdx);
-
         model.addAttribute("details", details);
 
         return "admin/user/details";
