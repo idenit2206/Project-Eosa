@@ -19,6 +19,8 @@ import java.sql.Timestamp;
 @Data
 public class ReviewDTO {
 
+    private long usersReviewBackupIdx;      // 리뷰 백업의 고유 번호
+
     // private long idx;                       // 리뷰의 고유 번호
     private long usersReviewIdx;            // 리뷰의 고유 번호
     private long reviewUsersIdx;            // 작성자의 고유 번호
