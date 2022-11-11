@@ -72,23 +72,23 @@ public class UserController {
         return userService.updateUser(usersDTO);
     }
 
-    // /**
-    //  * 탈퇴 회원 목록 조회 컨트롤러
-    //  *
-    //  * @param model
-    //  * @param sort
-    //  * @param search
-    //  * @param page
-    //  * @return String
-    //  */
-    // @GetMapping("/terminate/list")
-    // public String terminateList(Model model,
-    //                             @RequestParam(defaultValue = "id") String sort,
-    //                             @RequestParam(defaultValue = "") String search,
-    //                             @RequestParam(defaultValue = "1") int page) {
+    /**
+     * 탈퇴 회원 목록 조회 컨트롤러
+     *
+     * @param model
+     * @param sort
+     * @param search
+     * @param page
+     * @return String
+     */
+    @GetMapping("/terminate/list")
+    public String terminateList(Model model,
+                                @RequestParam(defaultValue = "id") String sort,
+                                @RequestParam(defaultValue = "") String search,
+                                @RequestParam(defaultValue = "1") int page) {
 
-    //     return userService.terminateList(model, sort, search, page);
-    // }
+        return userService.terminateList(model, sort, search, page);
+    }
 
     /**
      * 회원 탈퇴 컨트롤러
