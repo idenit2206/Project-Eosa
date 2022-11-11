@@ -643,7 +643,7 @@ public class UsersController {
             }
         }
         else if(deleteuserInfo.getUsersRole().equals("CLIENT")) {
-            int transaction = usersService.deleteUserInfo(usersIdx);
+            int transaction = usersService.deleteUserInfo02(usersIdx);
             if(transaction == 1) {
                 TerminateUser entity = new TerminateUser();
                 entity.setUsersIdx(usersIdx);
