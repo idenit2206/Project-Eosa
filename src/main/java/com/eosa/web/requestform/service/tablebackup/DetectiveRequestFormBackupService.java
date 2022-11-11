@@ -115,7 +115,7 @@ public class DetectiveRequestFormBackupService implements DetectiveRequestFormBa
         else if(entity.getRequestFormStatus().equals("계약진행")) {
             log.info("[BACKUP] requestFormIdx: {}, 진행상태: {}", entity.getRequestFormIdx(), entity.getRequestFormStatus());
             entity.setRequestFormAcceptDate(LocalDateTime.now());
-            entity.setRequestFormStatus("계약진행"); 
+            entity.setRequestFormStatus("임무진행"); 
         }
         else if(entity.getRequestFormStatus().equals("임무진행")) {
             log.info("[BACKUP] requestFormIdx: {}, 진행상태: {}", entity.getRequestFormIdx(), entity.getRequestFormStatus());

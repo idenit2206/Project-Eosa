@@ -264,7 +264,7 @@ public class DetectiveRequestFormController {
             rfbackup.setRequestFormStatusChangeDate(LocalDateTime.now());
             updateRows = detectiveRequestFormService.updateRequestFormByEntity(rf);
             updateBackupRows = detectiveRequestFormBackupService.updateRequestFormByEntity(rfbackup);
-        }
+        }       
         else if(rf.getRequestFormStatus().equals("임무완료")) {
             rf.setRequestFormStatusChangeDate(LocalDateTime.now());
             rfbackup.setRequestFormStatusChangeDate(LocalDateTime.now());
