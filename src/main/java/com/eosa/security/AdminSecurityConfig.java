@@ -6,6 +6,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.eosa.security.handler.adminsite.CustomAdminAuthFailureHandler;
 import com.eosa.security.handler.adminsite.CustomAdminAuthSuccessHandler;
@@ -24,6 +27,23 @@ public class AdminSecurityConfig {
         "/admin", "/admin/sign/**"
     };
 
+    /** 
+     * @return CorsConfigurationSource
+    */
+    @Bean
+    public CorsConfigurationSource customConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.addAllowedOriginPattern("*");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
     
     /** 
      * @param http
@@ -33,14 +53,18 @@ public class AdminSecurityConfig {
     @Bean
     public SecurityFilterChain adminFilterChain(HttpSecurity http) throws Exception {
 
-        http.csrf().disable();
+        http
+            .cors().disable()
+            .cors().configurationSource(customConfigurationSource())
+        .and()
+            .csrf().disable();
 
         http
             .antMatcher("/admin/**")
             .authorizeRequests()
                 .antMatchers(PERMIT_URL).permitAll()              
-                // .anyRequest().hasAnyAuthority("ADMIN", "SUPER_ADMIN")              
-                .anyRequest().permitAll()
+                .anyRequest().hasAnyAuthority("ADMIN", "SUPER_ADMIN")              
+                // .anyRequest().permitAll()
         .and()
             .formLogin()
                 .loginPage("/admin")
