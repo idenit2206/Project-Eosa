@@ -21,7 +21,7 @@ public class TempUserController {
 
     
     /** 
-     * 임시회원 회원가입 컨트롤러
+     * 비회원 회원가입 컨트롤러
      * @return CustomResponseData
      */
     @PostMapping("/insertNewTempUser")
@@ -51,27 +51,18 @@ public class TempUserController {
      * @return CustomResponseData
      */
     @PostMapping("/signIn")
-    public CustomResponseData signIn(
-        @RequestParam("usersAccount") String usersEmail,
-        @RequestParam("usersPass") String usersPass
-    ) {
+    public CustomResponseData signIn(String usersEmail) {
         log.info("[signIn] 비회원 usersEmail: {} 님이 로그인을 요청합니다.", usersEmail);
         CustomResponseData result = new CustomResponseData();
         Map<String, Object> items = new HashMap<>();
 
-        Users selectRows = tempUserService.signIn(usersEmail, usersPass);
+        Users selectRows = tempUserService.signIn(usersEmail);
 
         if(selectRows != null) {
-            log.info("[signIn]로그인에 성공했습니다.");
-            items.put("usersIdx", selectRows.getUsersIdx());
-            items.put("usersEmail", selectRows.getUsersEmail());
-            items.put("usersName", "user"+selectRows.getUsersIdx());
-            items.put("usersNick", "user"+selectRows.getUsersIdx());
-            items.put("usersRole", "TEMP");
-            log.info(items.toString());
+            log.info("[signIn] 임시사용자 account: {} 가 로그인을 시도합니다.", selectRows.getUsersAccount());
 
             result.setStatusCode(HttpStatus.OK.value());
-            result.setResultItem(items);
+            result.setResultItem(selectRows);
             result.setResponseDateTime(LocalDateTime.now());
         }
         else {

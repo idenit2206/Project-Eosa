@@ -31,7 +31,7 @@ public class TempUserService implements TempUserRepository {
      */
     @Override
     public <S extends Users> S save(S entity) {
-        entity.setUsersAccount("TEMP"+entity.getUsersEmail().split("@")[0].substring(0, 6));
+        entity.setUsersAccount("T"+entity.getUsersEmail().split("@")[0]);
         entity.setUsersPass(passwordEncoder.encode(entity.getUsersPass()));
         entity.setUsersRole("TEMP");
         entity.setUsersJoinDate(LocalDateTime.now());
@@ -47,8 +47,8 @@ public class TempUserService implements TempUserRepository {
      * @return Users
      */
     @Override
-    public Users signIn(String usersEmail, String usersPass) {
-        return tempUserRepository.signIn(usersEmail, usersPass);
+    public Users signIn(String usersEmail) {
+        return tempUserRepository.signIn(usersEmail);
     }
 
 

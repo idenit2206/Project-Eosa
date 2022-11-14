@@ -8,9 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TempUserRepository extends JpaRepository<Users, Long> {
 
-    @Query(
-        value="SELECT U.* FROM Users U WHERE U.usersEmail = ?1 AND U.usersPass = ?2", nativeQuery = true
-    )
-    Users signIn(String usersEmail, String usersPass);
+    @Query(value = "SELECT * FROM Users U WHERE U.usersEmail = ?1", nativeQuery = true)
+    Users signIn(String usersEmail);
 
 }
