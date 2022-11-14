@@ -12,6 +12,10 @@ import java.util.List;
 @Repository
 public interface CompanysPremiumRepository extends JpaRepository<CompanysPremium, Long> {
 
+    /**
+     * 활동중인 모든 제휴업체를 검색하는 레포지터리
+     * @return
+     */
     @Nullable
     @Query(
         value = "SELECT " +
@@ -36,6 +40,12 @@ public interface CompanysPremiumRepository extends JpaRepository<CompanysPremium
     )
     List<SelectCompanys> selectAllCompanysPremium();
 
+    /**
+     * companysName과 companysCeoName이 일치하는 제휴협회를 검색하는 레포지터리
+     * @param companysName
+     * @param companysCeoName
+     * @return
+     */
     @Query(value="SELECT * FROM CompanysPremium C WHERE C.companysName = ?1 AND C.companysCeoName = ?2", nativeQuery = true)
     CompanysPremium selectCompanysPremiumByCompanysNameCompanysCeoName(String companysName, String companysCeoName);
 

@@ -16,10 +16,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CompanysRepository extends JpaRepository<Companys, Long> {
 
-        /**
-         * companysIdx와 일치하는 Companys 정보(Comapnys, CompanysActiveRegion, CompanysCategory)를 출력
+        /** 
+         * companysIdx와 일치하는 Companys를 조회하는 레포지터리
          * @param companysIdx
-         * @return
+         * @return SelectCompanys
          */
         @Query(value = "SELECT " +
                         "C.companysIdx, C.companysName, C.companysCeoIdx, C.companysCeoName, " +
@@ -43,7 +43,7 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         SelectCompanys selectOneCompanysByCompanysIdxTest(Long companysIdx);
 
         /**
-         * companysIdx와 usersIdx가 일치하는 Companys테이블을 UserLikeCompany테이블과 JOIN하여 조회
+         * companysIdx와 usersIdx가 일치하는 Companys테이블을 UserLikeCompany테이블과 JOIN하여 조회하는 레포지터리
          * 
          * @param companysIdx
          * @param usersIdx
@@ -72,8 +72,16 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
                         "WHERE C.companysIdx = :companysIdx " +
                         "GROUP BY C.companysIdx", nativeQuery = true)
         SelectCompanysUserLikeCompanyEnable selectOneCompanysUserLikeCompanyEnableByCompanysIdxUsersIdx(
-                        @Param("companysIdx") Long companysIdx, @Param("usersIdx") Long usersIdx);
+                @Param("companysIdx") Long companysIdx, @Param("usersIdx") Long usersIdx
+        );
 
+        /**
+         * companysIdx가 일치하는 Companys의 정보를 업데이트하는 레포지터리
+         * @param companysIdx
+         * @param file1URL
+         * @param file1Name
+         * @return
+         */
         @Transactional
         @Modifying
         @Query(value = "UPDATE Companys " +
@@ -82,6 +90,13 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         int updateRegistCerti(@Param("companysIdx") Long companysIdx, @Param("file1URL") String file1URL,
                         @Param("file1Name") String file1Name);
 
+        /**
+         * companysIdx가 일치하는 Companys의 정보를 갱신하는 레포지터리
+         * @param companysIdx
+         * @param file2URL
+         * @param file2Name
+         * @return
+         */
         @Transactional
         @Modifying
         @Query(value = "UPDATE Companys " +
@@ -90,6 +105,15 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         int updateLicense(@Param("companysIdx") Long companysIdx, @Param("file2URL") String file2URL,
                         @Param("file2Name") String file2Name);
 
+        /**
+         * companysIdx가 일치하는 Companys의 정보를 갱신하는 레포지터리
+         * @param companysIdx
+         * @param file1URL
+         * @param file3URL
+         * @param file1Name
+         * @param file3Name
+         * @return
+         */
         @Transactional
         @Modifying
         @Query(value = "UPDATE Companys " +
@@ -101,10 +125,20 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
                         @Param("file1URL") String file1URL, @Param("file3URL") String file3URL,
                         @Param("file1Name") String file1Name, @Param("file3Name") String file3Name);
 
+        /**
+         * companysCeoIdx가 일치하는 Companys의 companysIdx를 조회하는 레포지터리
+         * @param usersIdx
+         * @return
+         */
         @Query(value = "SELECT Companys.companysIdx FROM Companys " +
                         "WHERE Companys.companysCeoIdx = ?1", nativeQuery = true)
         Long selectCompanysIdxByUsersIdx(Long usersIdx);
 
+        /**
+         * companysIdx가 일치하는 Companys의 정보를 업데이트하는 레포지터리
+         * @param entity
+         * @return
+         */
         @Transactional
         @Modifying
         @Query(value = "UPDATE Companys " +
@@ -150,9 +184,18 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
                         "WHERE companysIdx = :#{#Companys.companysIdx} ", nativeQuery = true)
         int updateCompanys02(@Param("Companys") Companys entity);
 
+        /**
+         * companysIdx가 일치하는 Companys가 존재하는 경우 1을 출력하는 레포지터리
+         * @param companysIdx
+         * @return
+         */
         @Query(value = "SELECT 1 FROM Companys WHERE companysIdx = ?1", nativeQuery = true)
         int findByCompanysIdx(Long companysIdx);
 
+        /**
+         * 모든 companysCategoryValue를 중복제거하여 조회하는 레포지터리
+         * @return
+         */
         @Query(value = "SELECT DISTINCT companysCategoryValue FROM CompanysCategory", nativeQuery = true)
         List<String> selectAllCategory();
 
@@ -169,8 +212,7 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         // int insertCompanys(Companys entity);
 
         /**
-         * 모든 업체정보를 목록으로 출력
-         * 
+         * 모든 Companys, CompanysActiveRegion, CompanysCategory를 JOIN하여 조회하는 레포지터리 
          * @return
          */
         @Query(value = "SELECT " +
@@ -194,6 +236,10 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
                         "GROUP BY C.companysIdx", nativeQuery = true)
         List<SelectCompanys> selectAllCompanys();
 
+        /**
+         * 모든 Companys, CompanysActiveRegion, CompanysCategory를 JOIN하여 임의의 순서로 조회하는 레포지터리
+         * @return
+         */
         @Query(value = "SELECT " +
                         "C.companysIdx, C.companysName, C.companysCeoIdx, C.companysCeoName, " +
                         "C.companysComment, C.companysSpec, C.companysPhone, " +
@@ -217,6 +263,12 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
                         , nativeQuery = true)
         List<SelectCompanys> selectAllCompanysRandom();
 
+        /**
+         * usersIdx가 일치하는 Users가 좋아요를 한 Companys의 정보를 조회하는 레포지터리
+         * @param usersIdx
+         * @param companysIdx
+         * @return
+         */
         @Query(value = "SELECT " +
                         "Companys.companysIdx, Companys.companysName, Companys.companysCeoIdx, Companys.companysCeoName, "
                         +
@@ -236,9 +288,15 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
                         nativeQuery = true)
         List<SelectAllCompanysList> selectAllCompanysListByUsersIdxAndCompanysIdx(Long usersIdx, Long companysIdx);
 
+        /**
+         * companysCategoryValue가 일치하는 companysIdx를 조회하는 레포지터리
+         * @param companysCategoryValue
+         * @return
+         */
         @Query(value = "SELECT companysIdx FROM CompanysCategory WHERE companysCategoryValue = ?1", nativeQuery = true)
         List<Long> selectCompanysIdxByCompanysCategory(String companysCategoryValue);
 
+       
         @Query(value = "SELECT " +
                         "Companys.companysIdx, Companys.companysName, Companys.companysCeoIdx, Companys.companysCeoName, "
                         +
@@ -275,6 +333,11 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         // nativeQuery = true)
         // SelectAllCompanysList selectCompanysByCompanysIdx(Long companysIdx);
 
+        /**
+         * companysIdx가 일치하는 Companys의 정보를 조회하는 레포지터리
+         * @param companysIdx
+         * @return
+         */
         @Query(value = 
         "SELECT " +
         "C.companysIdx, C.companysName, C.companysCeoIdx, C.companysCeoName, " +
@@ -311,9 +374,19 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
                         "GROUP BY Companys.companysIdx", nativeQuery = true)
         SelectAllCompanysList selectCompanysByCompanysIdxAndCompanysRegion1(Long companysIdx, String companysRegion1);
 
+        /**
+         * companysRegion1이 일치하는 Companys의 companysIdx를 조회하는 레포지터리
+         * @param companysRegion1
+         * @return
+         */
         @Query(value = "SELECT companysIdx FROM Companys WHERE companysRegion1 = ?1", nativeQuery = true)
         List<Long> selectCompanysIdxByRegion1(String companysRegion1);
 
+        /**
+         * companysRegion1이 일치하는 Companys의 정보를 조회하는 레포지터리
+         * @param companysRegion1
+         * @return
+         */
         @Query(value = "SELECT " +
                         "Companys.companysIdx, Companys.companysName, Companys.companysCeoIdx, Companys.companysCeoName, "
                         +
@@ -330,9 +403,19 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
                         nativeQuery = true)
         List<SelectAllCompanysList> selectCompanysByCompanysRegion1(String companysRegion1);
 
+        /**
+         * companysCeoIdx(Users.usersIdx) 가 일치하는 Companys의 정보를 조회하는 레포지터리
+         * @param companysCeoIdx
+         * @return
+         */
         @Query(value = "SELECT * FROM Companys C WHERE C.companysCeoIdx = ?1", nativeQuery = true)
         Companys selectCompanyInfoByUsersIdx(Long companysCeoIdx);
 
+        /**
+         * companysIdx가 일치하는 Companys의 정보를 조회하는 레포지터리
+         * @param companysIdx
+         * @return
+         */
         @Query(value = "SELECT " +
                         "c.companysIdx, c.companysName, c.companysCeoIdx, c.companysCeoName, " +
                         "c.companysComment, c.companysSpec, c.companysPhone, " +
@@ -352,53 +435,29 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
                         "GROUP BY c.companysIdx", nativeQuery = true)
         SelectAllCompanysForNormal selectOneCompanyInfoByCompanysIdx(Long companysIdx);
 
+        /**
+         * companysName과 companysCeoName이 일치하는 Companys의 companysIdx를 조회하는 레포지터리
+         * @param companysName
+         * @param companysCeoName
+         * @return
+         */
         @Query(value = "SELECT companysIdx FROM Companys WHERE companysName= ?1 AND companysCeoName= ?2", nativeQuery = true)
-        Long selectCompanyIdxByComapnysNameAndCompanysCeoName(String companysName, String companysCeoName);
-        // @Query(
-        // value="SELECT " +
-        // "Companys.companysIdx, Companys.companysName, " +
-        // "Companys.companysComment, Companys.companysSpec, " +
-        // "Companys.companysRegion1, Companys.companysRegion2,
-        // Companys.companysRegion3, " +
-        // "Companys.companysRegistCerti, Companys.companysProfileImage, " +
-        // "GROUP_CONCAT(DISTINCT CompanysCategory.companysCategoryValue) AS
-        // companysCategory, " +
-        // "GROUP_CONCAT(DISTINCT CompanysActiveRegion.activeRegion) AS
-        // CompanysActiveRegion, " +
-        // "GROUP_CONCAT(DISTINCT CompanysLicense.companysLicenseName) AS
-        // CompanysLicenseName " +
-        // "FROM Companys LEFT JOIN CompanysCategory ON Companys.companysIdx =
-        // CompanysCategory.companysIdx " +
-        // "LEFT JOIN CompanysActiveRegion ON Companys.companysIdx =
-        // CompanysActiveRegion.companysIdx " +
-        // "LEFT JOIN CompanysLicense ON Companys.companysIdx =
-        // CompanysLicense.companysIdx " +
-        // "WHERE Companys.companysCeoIdx = ?1 " +
-        // "GROUP BY Companys.companysIdx",
-        // nativeQuery=true
-        // )
-        // SelectCompanyInfoByUsersIdx selectCompanyInfoByUsersIdx(Long companysCeoIdx);
+        Long selectCompanyIdxByComapnysNameAndCompanysCeoName(String companysName, String companysCeoName);       
 
+        /**
+         * companysCeoIdx 가 일치하는 Companys를 조회하는 레포지터리
+         * @param companysCeoIdx
+         * @return
+         */
         @Query(value = "SELECT * FROM Companys WHERE companysCeoIdx = ?1", nativeQuery = true)
         Companys selectCompanysPremiumEnabled(Long companysCeoIdx);
 
-        // Companys의 소재지 기준으로 검색
-        // @Query(value = 
-        //         "SELECT C.companysIdx " +
-        //         "FROM Companys C " +
-        //         "LEFT JOIN CompanysActiveRegion CAR on C.companysIdx = CAR.companysIdx " +
-        //         "LEFT JOIN CompanysCategory CC on C.companysIdx = CC.companysIdx " +
-        //         "WHERE CC.companysCategoryValue LIKE CONCAT('%', ?1, '%') " +
-        //         "AND " +
-        //         "C.companysRegion1 LIKE CONCAT('%', ?2,'%') " +
-        //         // "AND " +
-        //         // "C.companysRegion2 LIKE CONCAT('%', ?3, '%') " +
-        //         "AND " +
-        //         "C.companysEnabled = 1 " + 
-        //         "GROUP BY C.companysIdx", 
-        // nativeQuery = true)
-
-        // Companys 활동지역 기준으로 검색
+        /**
+         * companysCategoryValue 가 일부 일치하는 Companys의 companysIdx를 조회하는 레포지터리
+         * @param companysCategory
+         * @param companysRegion1
+         * @return companysIdx
+         */
         @Query(value = 
                 "SELECT C.companysIdx " +
                 "FROM Companys C " +
@@ -428,6 +487,13 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         //         // "C.companysRegion2 LIKE CONCAT('%', ?3, '%') " +
         //         "GROUP BY C.companysIdx",
         // nativeQuery = true)
+
+        /**
+         * companysFlagCategory와 companysFlagRegion1이 일부 일치하는 Companys의 정보를 조회하는 레포지터리
+         * @param companysCategory
+         * @param companysRegion1
+         * @return
+         */
         @Query(value = 
         "SELECT " +
         "C.companysIdx " +

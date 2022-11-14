@@ -23,6 +23,7 @@ public class CompanysFlagRegionService implements CompanysFlagRegionRepository {
 
     
     /** 
+     * CompanysFlagRegion을 저장하는 서비스
      * @param entity
      * @return S
      */

@@ -12,6 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface CompanysMemberRepository extends JpaRepository<CompanysMember, Long> {
 
+    /**
+     * CompanysMember를 추가하는 레포지터리
+     * @param entity
+     * @return
+     */
     @Transactional
     @Modifying
     @Query(value="INSERT INTO CompanysMember" +

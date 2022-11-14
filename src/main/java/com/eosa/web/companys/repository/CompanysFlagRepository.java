@@ -11,6 +11,10 @@ import java.util.List;
 @Repository
 public interface CompanysFlagRepository extends JpaRepository<CompanysFlag, Long> {
 
+    /**
+     * 활동중인 모든 마패업체를 검색하는 레포지터리
+     * @return
+     */
     @Query(
         value = "SELECT " +
                 "C.companysIdx, C.companysName, C.companysCeoIdx, C.companysCeoName, " +
@@ -34,6 +38,11 @@ public interface CompanysFlagRepository extends JpaRepository<CompanysFlag, Long
     )
     List<SelectCompanys> selectAllCompanysFlag();
 
+    /**
+     * companysIdx가 일치하는 CompanysFlag를 조회하는 레포지터리 
+     * @param companysIdx
+     * @return
+     */
     @Query(value = "SELECT * FROM CompanysFlag WHERE companysIdx = ?1", nativeQuery = true)
     CompanysFlag selectCompanysFlagByCompanysIdx(Long companysIdx);
 

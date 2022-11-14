@@ -23,6 +23,7 @@ public class CompanysFlagCategoryService implements CompanysFlagCategoryReposito
 
     
     /** 
+     * CompanysFlagCategory를 저장하는 서비스
      * @param entity
      * @return S
      */

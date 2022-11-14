@@ -21,9 +21,9 @@ import java.util.function.Function;
 public class CompanysHiddencamService implements CompanysHiddencamRepository {
 
     @Autowired private CompanysHiddencamRepository companysHiddencamRepository;
-
     
     /** 
+     * CompanysHiddencam(불법기기 탐지 문의)를 저장하는 서비스
      * @param entity
      * @return S
      */

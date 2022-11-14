@@ -26,7 +26,7 @@ public class CompanysFlagService implements CompanysFlagRepository {
 
     
     /** 
-     * companysFlag를 저장하는 서비스
+     * companysFlag(마패업체)를 저장하는 서비스
      * @param entity
      * @return S
      */

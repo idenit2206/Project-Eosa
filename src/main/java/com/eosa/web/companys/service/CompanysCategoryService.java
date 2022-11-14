@@ -32,6 +32,7 @@ public class CompanysCategoryService implements CompanysCategoryRepository {
 
     
     /** 
+     * CompanysCategory를 저장하는 서비스
      * @param entity
      */
     @Override
@@ -41,6 +42,7 @@ public class CompanysCategoryService implements CompanysCategoryRepository {
 
     
     /** 
+     * companysIdx가 일치하는 companysCategoryValue를 List로 조회하는 서비스
      * @param companysIdx
      * @return List<String>
      */
@@ -51,6 +53,7 @@ public class CompanysCategoryService implements CompanysCategoryRepository {
 
     
     /** 
+     * companysIdx가 일치하는 CompanysCategory를 삭제하는 서비스
      * @param companysIdx
      * @return int
      */

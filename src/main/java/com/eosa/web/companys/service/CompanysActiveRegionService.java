@@ -19,9 +19,9 @@ import com.eosa.web.companys.repository.CompanysActiveRegionRepository;
 public class CompanysActiveRegionService implements CompanysActiveRegionRepository {
 
     @Autowired private CompanysActiveRegionRepository companysActiveRegionRepository;
-
     
     /** 
+     * CompanysActiveRegion을 저장하는 서비스
      * @param entity
      * @return S
      */
@@ -32,6 +32,7 @@ public class CompanysActiveRegionService implements CompanysActiveRegionReposito
 
     
     /** 
+     * CompanysActiveRegion을 저장하는 서비스
      * @param entity
      */
     @Override
@@ -41,6 +42,7 @@ public class CompanysActiveRegionService implements CompanysActiveRegionReposito
 
     
     /** 
+     * companysIdx가 일치하는 activeRegion을 List로 조회하는 서비스
      * @param companysIdx
      * @return List<String>
      */
@@ -51,6 +53,7 @@ public class CompanysActiveRegionService implements CompanysActiveRegionReposito
 
     
     /** 
+     * companysIdx가 일치하는 companysActiveRegion을 삭제하는 서비스
      * @param companysIdx
      * @return int
      */

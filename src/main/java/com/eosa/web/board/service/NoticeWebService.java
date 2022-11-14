@@ -20,10 +20,10 @@ import java.util.function.Function;
 public class NoticeWebService implements NoticeRepository {
 
     @Autowired NoticeRepository noticeRepository;
-
     
     /** 
-     * @return List<Notice>
+     * 모든 공지사항을 List로 조회하는 서비스
+     * @return List
      */
     @Override
     public List<Notice> findAll() {
@@ -32,6 +32,7 @@ public class NoticeWebService implements NoticeRepository {
 
     
     /** 
+     * idx가 일치하는 공지사항을 조회하는 서비스
      * @param idx
      * @return Notice
      */

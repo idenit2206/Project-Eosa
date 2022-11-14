@@ -13,6 +13,10 @@ import com.eosa.web.companys.entity.CompanysLicense;
 @Repository
 public interface CompanysLicenseRepository extends JpaRepository<CompanysLicense, Long> {
 
+    /**
+     * CompanysLicense를 저장하는 레포지터리
+     * @param entity
+     */
     @Transactional
     @Modifying
     @Query(

@@ -15,6 +15,10 @@ import java.util.List;
 @Repository
 public interface CompanysActiveRegionRepository extends JpaRepository<CompanysActiveRegion, Long> {
 
+    /**
+     * 새로운 companysActiveRegion 을 저장하는 레포지터리
+     * @param entity
+     */
     @Transactional
     @Modifying
     @Query(
@@ -25,9 +29,19 @@ public interface CompanysActiveRegionRepository extends JpaRepository<CompanysAc
     )
     void insertCompanysActiveRegion(@Param(value="CompanysActiveRegion") CompanysActiveRegion entity);
 
+    /**
+     * companysIdx와 일치하는 activeRegion 값을 조회하는 레포지터리
+     * @param companysIdx
+     * @return
+     */
     @Query(value="SELECT activeRegion FROM CompanysActiveRegion WHERE companysIdx = ?1", nativeQuery = true)
     List<String> selectByCompanysIdx(Long companysIdx);
 
+    /**
+     * companysIdx와 일치하는 CompanysActiveRegion 을 삭제하는 레포지터리
+     * @param companysIdx
+     * @return
+     */
     @Transactional
     @Modifying
     @Query(value="DELETE FROM CompanysActiveRegion WHERE companysIdx = ?1", nativeQuery = true)

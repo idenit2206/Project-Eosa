@@ -15,6 +15,10 @@ import java.util.List;
 @Repository
 public interface CompanysCategoryRepository extends JpaRepository<CompanysCategory, Long>{
     
+    /**
+     * 새로운 CompanysCategory를 저장하는 레포지터리
+     * @param entity
+     */
     @Transactional
     @Modifying
     @Query(
@@ -25,9 +29,19 @@ public interface CompanysCategoryRepository extends JpaRepository<CompanysCatego
     )
     void insertCompanysCategory(@Param(value="CompanysCategory") CompanysCategory entity);
 
+    /**
+     * companysIdx와 일치하는 companysCategoryValue를 출력하는 레포지터리
+     * @param companysIdx
+     * @return List
+     */
     @Query(value="SELECT companysCategoryValue FROM CompanysCategory WHERE companysIdx = ?1", nativeQuery = true)
     List<String> selectByCompanysIdx(Long companysIdx);
 
+    /**
+     * companysIdx와 일치하는 CompanysCategory를 삭제하는 레포지터리
+     * @param companysIdx
+     * @return
+     */
     @Transactional
     @Modifying
     @Query(value="DELETE FROM CompanysCategory WHERE companysIdx = ?1", nativeQuery = true)

@@ -32,6 +32,7 @@ public class CompanysMemberService implements CompanysMemberRepository {
 
     
     /** 
+     * CompanysMember를 저장하는 서비스
      * @param entity
      * @return int
      */

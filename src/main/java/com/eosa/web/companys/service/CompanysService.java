@@ -1,9 +1,7 @@
 package com.eosa.web.companys.service;
 
 import java.security.NoSuchAlgorithmException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -34,6 +32,7 @@ public class CompanysService implements CompanysRepository {
     private CompanysRepository companysRepository;
     
     /** 
+     * Companys를 저장하는 서비스
      * @param entity
      * @return S
      */
@@ -46,6 +45,8 @@ public class CompanysService implements CompanysRepository {
 
     
     /** 
+     * CompanysIdx가 일치하는 Companys의 사업자 등록증 파일과 프로필 이미지 파일을 업데이트 하는 서비스
+     * Companys를 최초로 저장할 때 사용
      * @param companysIdx
      * @param file1URL
      * @param file3URL
@@ -60,6 +61,7 @@ public class CompanysService implements CompanysRepository {
 
     
     /** 
+     * CompanysIdx가 일치하는 Companys의 사업자 등록증을 업데이트 하는 서비스
      * @param companysIdx
      * @param file1URL
      * @param file1Name
@@ -72,6 +74,7 @@ public class CompanysService implements CompanysRepository {
 
     
     /** 
+     * CompanysIdx가 일치하는 Companys의 업무관련 자격증을 업데이트 하는 서비스
      * @param companysIdx
      * @param file2URL
      * @param file2Name
@@ -84,6 +87,7 @@ public class CompanysService implements CompanysRepository {
 
     
     /** 
+     * 모든 companysCategoryValue를 중복제거하여 List로 조회하는 서비스
      * @return List<String>
      */
     @Override
@@ -91,15 +95,10 @@ public class CompanysService implements CompanysRepository {
         return companysRepository.selectAllCategory();
     }
 
-    
-    /** 
+    /**
+     * 모든 Companys를 List로 조회하는 서비스
      * @return List<SelectCompanys>
-     */
-    // @Override
-    // public int insertCompanys(Companys entity) {
-    //     return companysRepository.insertCompanys(entity);
-    // }
-
+    */
     @Override
     public List<SelectCompanys> selectAllCompanys() {
         return companysRepository.selectAllCompanys();
@@ -107,6 +106,7 @@ public class CompanysService implements CompanysRepository {
 
     
     /** 
+     * 모든 Companys를 임의의 순서 List로 조회하는 서비스
      * @return List<SelectCompanys>
      */
     @Override
@@ -116,6 +116,7 @@ public class CompanysService implements CompanysRepository {
 
     
     /** 
+     * usersIdx와 CompanysIdx가 일치하는 Companys를 List로 조회하는 서비스
      * @param usersIdx
      * @param companysIdx
      * @return List<SelectAllCompanysList>
@@ -127,6 +128,7 @@ public class CompanysService implements CompanysRepository {
 
     
     /** 
+     * companysCategoryValue가 일치하는 companysIdx List를 조회하는 서비스
      * @param companysCategoryValue
      * @return List<Long>
      */
@@ -137,6 +139,7 @@ public class CompanysService implements CompanysRepository {
 
     
     /** 
+     * companysIdx가 일치하는 Companys를 조회하는 서비스
      * @param companysIdx
      * @return SelectAllCompanysList
      */
@@ -147,6 +150,7 @@ public class CompanysService implements CompanysRepository {
 
     
     /** 
+     * companysIdx와 companysRegion1이 일치하는 Companys를 조회하는 서비스
      * @param companysIdx
      * @param companysRegion1
      * @return SelectAllCompanysList
@@ -158,6 +162,7 @@ public class CompanysService implements CompanysRepository {
 
     
     /** 
+     * companysIdx가 일치하는 Companys를 조회하는 서비스 
      * @param companysIdx
      * @return List<SelectAllCompanysList>
      */
@@ -168,6 +173,7 @@ public class CompanysService implements CompanysRepository {
 
     
     /** 
+     * companysRegion1이 일치하는 Companys의 companysIdx를 List로 조회하는 서비스
      * @param companysRegion1
      * @return List<Long>
      */
@@ -177,6 +183,7 @@ public class CompanysService implements CompanysRepository {
 
     
     /** 
+     * companysRegion1이 일치하는 Companys의 정보를 조회하는 서비스
      * @param companysRegion1
      * @return List<SelectAllCompanysList>
      */
@@ -187,6 +194,7 @@ public class CompanysService implements CompanysRepository {
 
     
     /** 
+     * companysCeoIdx(Users.usersIdx) 가 일치하는 Companys의 정보를 조회하는 서비스
      * @param usersIdx
      * @return Companys
      */
@@ -197,6 +205,7 @@ public class CompanysService implements CompanysRepository {
 
     
     /** 
+     * companysIdx가 일치하는 Companys를 조회하는 서비스
      * @param companysIdx
      * @return SelectAllCompanysForNormal
      */
@@ -219,6 +228,7 @@ public class CompanysService implements CompanysRepository {
 
     
     /** 
+     * companysIdx가 일치하는 Companys를 조회하는 서비스
      * @param companysIdx
      * @return SelectCompanys
      */

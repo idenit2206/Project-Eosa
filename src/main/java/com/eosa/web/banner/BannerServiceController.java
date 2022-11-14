@@ -19,6 +19,7 @@ public class BannerServiceController {
 
     
     /** 
+     * 메인 페이지에 사용할 모든 배너 Entity를 조회하는 컨트롤러
      * @return CustomResponseData
      */
     @GetMapping("/selectAllBanner")
@@ -42,6 +43,7 @@ public class BannerServiceController {
 
     
     /** 
+     * 탐정찾기 페이지에 사용할 모든 배너 Entity를 찾는 레퍼지토리
      * @return CustomResponseData
      */
     @GetMapping("/selectAllDetectiveBanner")

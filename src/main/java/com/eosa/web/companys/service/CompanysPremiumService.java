@@ -12,7 +12,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +37,7 @@ public class CompanysPremiumService implements CompanysPremiumRepository {
 
     
     /** 
+     * 모든 제휴협회를 목록으로 조회하는 서비스
      * @return List<SelectCompanys>
      */
     @Override
@@ -46,7 +46,7 @@ public class CompanysPremiumService implements CompanysPremiumRepository {
     }    
 
     /**
-     * companysName과 companysCeoName 이 일치하는 CompanysPremium을 검색합니다
+     * companysName과 companysCeoName 이 일치하는 CompanysPremium을 조회하는 서비스
      * @param companysName
      * @param companysCeoName
      * @return CompanysPremium

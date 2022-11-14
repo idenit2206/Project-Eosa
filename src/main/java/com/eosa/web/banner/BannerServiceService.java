@@ -16,9 +16,9 @@ import org.springframework.stereotype.Service;
 public class BannerServiceService implements BannerRepository {
 
     @Autowired private BannerRepository bannerRepository;
-
     
     /** 
+     * 메인 페이지에 사용할 모든 배너 Entity를 조회하는 서비스
      * @return List<Banner>
      */
     @Override
@@ -28,6 +28,7 @@ public class BannerServiceService implements BannerRepository {
 
     
     /** 
+     * 탐정찾기 페이지에 사용할 모든 배너 Entity를 조회하는 서비스
      * @return List<Banner>
      */
     @Override
