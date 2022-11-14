@@ -28,7 +28,7 @@ public class CustomAdminLogoutSuccessHandler implements LogoutSuccessHandler {
         HttpServletRequest request, HttpServletResponse response, Authentication authentication
     ) throws IOException, ServletException {
         if(authentication != null) { 
-            log.info("{} signOut Success FROM {}",authentication.getName());
+            log.info("{} signOut Success", authentication.getName());
             response.sendRedirect("/admin");
         }
         else {
