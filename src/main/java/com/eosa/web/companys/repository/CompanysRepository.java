@@ -489,7 +489,7 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         // nativeQuery = true)
 
         /**
-         * companysFlagCategory와 companysFlagRegion1이 일부 일치하는 Companys의 정보를 조회하는 레포지터리
+         * companysFlagCategory와 companysFlagRegion1이 일부 일치하는 Companys(마패업체)의 정보를 조회하는 레포지터리
          * @param companysCategory
          * @param companysRegion1
          * @return
@@ -506,6 +506,8 @@ public interface CompanysRepository extends JpaRepository<Companys, Long> {
         "CFR.companysFlagRegion1 LIKE CONCAT('%', ?2, '%') " +
         "AND " +
         "C.companysEnabled = 1 " + 
+        "AND " + 
+        "CF.companysFlagEnabled = 1 " +
         "GROUP BY C.companysIdx", 
         nativeQuery = true)
         List<Long> selectCompanysFlagByFilter(String companysCategory, String companysRegion1);
