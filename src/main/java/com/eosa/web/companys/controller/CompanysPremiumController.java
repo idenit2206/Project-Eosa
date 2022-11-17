@@ -20,12 +20,18 @@ import java.util.List;
 @RequestMapping("/api/companys")
 public class CompanysPremiumController {
 
-    @Autowired private CompanysService companysService;
-    @Autowired private CompanysPremiumService companysPremiumService;
+    @Autowired 
+    private CompanysService companysService;
+
+    @Autowired 
+    private CompanysPremiumService companysPremiumService;
 
     
-    /** 
-     * @return CustomResponseData
+    /**
+     * 제휴협회를 신청하는 컨트롤러
+     * @param companysName
+     * @param companysCeoName
+     * @return
      */
     @PostMapping("/insertCompanysPremium")
     public CustomResponseData insertCompanysPremium(
@@ -72,7 +78,7 @@ public class CompanysPremiumController {
     }
 
     /**
-     * companysPremium이 True인 업체를 전부 출력 == Premium업체 조회
+     * 제휴협회 업체를 조회하는 컨트롤러
      * @return
      */
     @GetMapping("/selectAllCompanysPremium")

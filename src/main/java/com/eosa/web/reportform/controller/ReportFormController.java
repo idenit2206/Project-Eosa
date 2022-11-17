@@ -17,12 +17,13 @@ import java.util.List;
 @RequestMapping("/api/reportForm")
 public class ReportFormController {
 
-    @Autowired private ReportFormService reportFormService;
-
+    @Autowired 
+    private ReportFormService reportFormService;
     
-    /** 
+    /**
+     * 새로운 신고를 저장하는 컨트롤러
      * @param reportForm
-     * @return CustomResponseData
+     * @return
      */
     @PostMapping("/insertReportForm")
     public CustomResponseData insertReportForm(ReportForm reportForm) {
@@ -39,14 +40,12 @@ public class ReportFormController {
             result.setResultItem(null);
             result.setResponseDateTime(LocalDateTime.now());
         }
-
-
         return result;
     }
-
     
-    /** 
-     * @return CustomResponseData
+    /**
+     * 모든 신고를 조회하는 컨트롤러
+     * @return
      */
     @GetMapping("/selectAllReprotForm")
     public CustomResponseData selectAllReportForm() {

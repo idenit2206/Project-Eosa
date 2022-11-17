@@ -39,7 +39,7 @@ public class CompanysController {
     private AwsS3Service awsS3Service;
 
     /**
-     * companys 등록
+     * 새로운 companys를 등록하는 컨트롤러
      * 
      * @param params
      * @param companysCategory
@@ -186,9 +186,9 @@ public class CompanysController {
         return result;
     }
 
+  
     /**
-     * CompanysCategory의 category 전부 조회
-     * 
+     * CompanysCategory의 category를 전부 조회하는 컨트롤러 
      * @return
      */
     @GetMapping("/selectAllCategory")
@@ -212,9 +212,12 @@ public class CompanysController {
     }
 
     
-    /** 
-     * @param selectAllCompanys(
-     * @return CustomResponseData
+   
+    /**
+     * 등록된 영업가능 상태의 모든 Companys를 조회하는 컨트롤러
+     * @param usersIdx
+     * @param companysIdx
+     * @return
      */
     // @Secured({"CLIENT", "DETECTIVE"})
     @GetMapping("/selectAllCompanys")
@@ -232,8 +235,10 @@ public class CompanysController {
     }
 
     
-    /** 
-     * @return CustomResponseData
+  
+    /**
+     * 등록된 영업가능 상태의 모든 Companys를 임의의 순서대로 조회하는 컨트롤러
+     * @return
      */
     @GetMapping("/selectAllCompanysRandom")
     public CustomResponseData selectAllCompanysRandom() {
@@ -254,8 +259,7 @@ public class CompanysController {
     }
 
     /**
-     * 업체검색(필터 적용)
-     * 
+     * Companys를 검색(필터 적용)하는 컨트롤러
      * @param companysCategory
      * @param companysRegion1
      * @param companysRegion2
@@ -330,8 +334,7 @@ public class CompanysController {
     }
 
     /**
-     * companysIdx와 일치하는 Companys 정보 조회
-     * 
+     * companysIdx와 일치하는 Companys 정보 조회하는 컨트롤러
      * @param companysIdx
      * @return
      */
@@ -352,8 +355,7 @@ public class CompanysController {
     }
 
     /**
-     * usersIdx와 일치하는 Companys 정보 조회
-     * 
+     * usersIdx와 일치하는 Companys 정보 조회하는 컨트롤러 
      * @param usersIdx Long type
      * @return
      */
@@ -415,15 +417,14 @@ public class CompanysController {
     /**
      * 업체 등급별 검색 일반, 마패, 제휴협회, 전체
      *
-     */
+    */
     // @GetMapping("/selectCompanysByCompanysGrade")
     // public CustomResponseData selectCompanysByCompanysGrade(
     // @RequestParam("companysGrade") String companysGrade
     // )
 
     /**
-     * usersIdx를 매개변수로 받아 해당하는 Companys의 companysIdx를 출력합니다.
-     * 
+     * usersIdx를 매개변수로 받아 해당하는 Companys의 companysIdx를 조회하는 컨트롤러
      * @param usersIdx
      * @return
      */
@@ -449,7 +450,6 @@ public class CompanysController {
 
     /**
      * 업체 정보를 수정하는 컨트롤러
-     * 
      * @param companyInfo           Companys 타입
      * @param companysCategory      List(String)
      * @param companysActiveRegions List(String)
@@ -463,13 +463,13 @@ public class CompanysController {
      */
     @PutMapping("/updateCompanys")
     public CustomResponseData updateCompanys(
-            @RequestPart("companyInfo") Companys companyInfo,
-            @RequestPart("companysCategory") List<String> companysCategory,
-            @RequestPart("companysActiveRegion") List<String> companysActiveRegions,
-            @RequestPart(value = "companysRegistCerti", required = false) MultipartFile file1,
-            @RequestPart(value = "companysLicense", required = false) MultipartFile file2,
-            @RequestPart(value = "companysProfileImage", required = false) MultipartFile file3)
-            throws JSONException, ParseException, IOException {
+        @RequestPart("companyInfo") Companys companyInfo,
+        @RequestPart("companysCategory") List<String> companysCategory,
+        @RequestPart("companysActiveRegion") List<String> companysActiveRegions,
+        @RequestPart(value = "companysRegistCerti", required = false) MultipartFile file1,
+        @RequestPart(value = "companysLicense", required = false) MultipartFile file2,
+        @RequestPart(value = "companysProfileImage", required = false) MultipartFile file3
+    ) throws JSONException, ParseException, IOException {
         CustomResponseData result = new CustomResponseData();
         log.debug("[updateCompanys] parameter companyInfo: {}", companyInfo.toString());
         log.debug("[updateCompanys] parameter companysCategory: {}, companysActiveRegion: {}",
@@ -699,7 +699,7 @@ public class CompanysController {
     }
 
     /**
-     * companysIdx 기반의 탐정업체 정보 조회(2)
+     * companysIdx와 일치하는 Companys를 조회하는 컨트롤러(2)
      * @param companysIdx
      * @return
      */
@@ -714,9 +714,11 @@ public class CompanysController {
     }
 
     
-    /** 
-     * @param selectOneCompanysUserLikeCompanyEnableByCompanysIdxUsersIdxTest(
-     * @return CustomResponseData
+    /**
+     * companysIdx와 usersIdx가 일치하는 Companys 하나를 조회하는 컨트롤러
+     * @param companysIdx
+     * @param usersIdx
+     * @return
      */
     @GetMapping("/selectOneCompanysUserLikeCompanyEnableByCompanysIdxUsersIdx")
     public CustomResponseData selectOneCompanysUserLikeCompanyEnableByCompanysIdxUsersIdxTest(
@@ -729,12 +731,13 @@ public class CompanysController {
         result.setResultItem(item);
         return result;
     }
-
     
-    /** 
-     * @param selectListCompanysUserLikeCompanyEnableByCompanysIdxUsersIdxTest(
-     * @return CustomResponseData
-     */
+    /**
+     * companysIdx와 usersIdx가 일치하는 Companys를 조회하는 컨트롤러
+     * @param companysIdxList
+     * @param usersIdx
+     * @return
+    */
     @GetMapping("/selectListCompanysUserLikeCompanyEnableByCompanysIdxUsersIdx")
     public CustomResponseData selectListCompanysUserLikeCompanyEnableByCompanysIdxUsersIdxTest(
             @RequestParam("companysIdx") List<Long> companysIdxList,
@@ -762,10 +765,10 @@ public class CompanysController {
         return result;
     }
 
-    
-    /** 
+    /**
+     * 제휴협회 업체를 조회하는 컨트롤러
      * @param usersIdx
-     * @return CustomResponseData
+     * @return
      */
     @GetMapping("/selectCompanysPremiumEnabled")
     public CustomResponseData selectCompanysPremiumEnabled(@RequestParam("usersIdx") Long usersIdx) {

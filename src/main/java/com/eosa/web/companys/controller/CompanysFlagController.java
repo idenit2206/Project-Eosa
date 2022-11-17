@@ -64,10 +64,10 @@ public class CompanysFlagController {
 
     
     /** 
-     * 마패 업체 신청
+     * 마패 업체를 신청하는 컨트롤러
      * @param companysFlag
      * @param companysFlagCategory
-     * @return CustomResponseData
+     * @return 
      */
     @PostMapping("/insertCompanysFlag")
     public CustomResponseData insertCompanysFlag(
@@ -142,10 +142,10 @@ public class CompanysFlagController {
         return result;
     }
 
-    
-    /** 
-     * @return CustomResponseData
-     */
+    /**
+     * 모든 마패업체를 조회하는 컨트롤러
+     * @return
+     */  
     @GetMapping("/selectAllCompanysFlag")
     public CustomResponseData selectAllCompanysFlag() {
         CustomResponseData result = new CustomResponseData();
@@ -165,9 +165,11 @@ public class CompanysFlagController {
         return result;
     }
 
-    
-    /** 
-     * @return CustomResponseData
+    /**
+     * Filter조건에 따라 마패 업체를 조회하는 컨트롤러
+     * @param companysCategory
+     * @param companysRegion1
+     * @return
      */
     @GetMapping("/selectCompanysFlagByFilter")
     public CustomResponseData selectCompanysFlagByFilter(

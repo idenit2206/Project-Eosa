@@ -29,13 +29,20 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/requestForm")
 public class RequestFormController {
 
-    @Autowired private RequestFormService requestFormService;
-    @Autowired private RequestFormBackupService requestFormBackupService;
-    @Autowired private RequestFormCategoryRepository requestFormCategoryRepository;
-    @Autowired private RequestFormCategoryBackupRepository requestFormCategoryBackupRepository;
+    @Autowired 
+    private RequestFormService requestFormService;
+
+    @Autowired 
+    private RequestFormBackupService requestFormBackupService;
+
+    @Autowired 
+    private RequestFormCategoryRepository requestFormCategoryRepository;
+
+    @Autowired 
+    private RequestFormCategoryBackupRepository requestFormCategoryBackupRepository;
 
     /**
-     * CLIENT회원의 의뢰하기 버튼을 통한 의뢰 신청 컨트롤러
+     * CLIENT회원의 의뢰하기 버튼을 통한 의뢰내역서(RequestForm)를 저장하는 컨트롤러
      * @param param RequestForm
      * @return
      */
@@ -101,7 +108,7 @@ public class RequestFormController {
     }
 
     /**
-     * CLIENT회원의 전화상담 버튼을 통한 의뢰신청 컨트롤러
+     * CLIENT회원의 전화상담 버튼을 통한 의뢰내역서(RequestForm)를 저장하는 컨트롤러
      * @param param
      * @param requestFormCategory
      * @return
@@ -181,7 +188,7 @@ public class RequestFormController {
     }
 
     /**
-     * CLIENT회원의 채팅상담 버튼을 통한 의뢰신청
+     * CLIENT회원의 채팅상담 버튼을 통한 의뢰내역서(RequestForm)를 저장하는 컨트롤러
      * @param param
      * @param requestFormCategory
      * @return
@@ -247,7 +254,7 @@ public class RequestFormController {
     }
 
     /**
-     * 모든 의뢰신청 내역 조회
+     * 모든 의뢰내역서(RequestForm)를 조회하는 컨트롤러
      * @return
     */
     @GetMapping("/selectAllRequestFormList")
@@ -275,7 +282,7 @@ public class RequestFormController {
     }
 
     /**
-     * 모든 의뢰신청 내역 조회 통계용 백업 데이터를 조회
+     * 모든 의뢰내역서(RequestForm)의 통계용 백업 데이터를 조회하는 컨트롤러
      * @return
     */
     @GetMapping("/selectAllRequestFormListbackup")
@@ -303,7 +310,7 @@ public class RequestFormController {
     }
 
     /**
-     * companysIdx와 일치하는 업체의 의뢰내역 조회
+     * companysIdx와 일치하는 업체의 의뢰내역서(RequestForm)을 조회하는 컨트롤러
      * @param companysIdx
      * @return List<RequestForm>
      */
@@ -333,7 +340,7 @@ public class RequestFormController {
     }
 
     /**
-     * CLIENT의 usersIdx와 일치하는 모든 의뢰신청 내역 조회
+     * CLIENT의 usersIdx와 일치하는 모든 의뢰내역서(RequestForm)를 조회하는 컨트롤러
      * @param
      */
     @GetMapping("/selectAllRequestFormListByUsersIdx")
@@ -360,7 +367,7 @@ public class RequestFormController {
     }
 
     /**
-     * CLIENT의 usersIdx와 일치하는 모든 의뢰신청 내역 조회(의뢰 신청날짜 내림차순)
+     * CLIENT의 usersIdx와 일치하는 모든 의뢰내역서(RequestForm)를 조회(의뢰 신청날짜 내림차순)하는 컨트롤러
      * @param usersIdx
      * @return
      */
@@ -418,7 +425,7 @@ public class RequestFormController {
     }
 
     /**
-     * CLIENT의 usersIdx와 일치하는 모든 의뢰신청 내역 조회(의뢰신청날짜 오름차순)
+     * CLIENT의 usersIdx와 일치하는 모든 의뢰내역서(RequestForm)을 조회(의뢰신청날짜 오름차순)하는 컨트롤러
      * @param usersIdx
      * @return
      */
@@ -447,7 +454,7 @@ public class RequestFormController {
 
     
     /** 
-     * requestFormIdx와 일치하는 requestForm 조회
+     * requestFormIdx와 일치하는 의뢰내역서(RequestForm) 조회하는 컨트롤러
      * @param requestFormIdx
      */
     @GetMapping("/selectRequestFormByRequsetFormIdx")
@@ -475,7 +482,7 @@ public class RequestFormController {
     }
 
     /**
-     * CLIENT의 의뢰 임무 계약서 작성을 위한 정보 업데이트
+     * CLIENT의 의뢰내역서(RequestForm)의 계약서(모두싸인) 작성을 위한 정보 업데이트
      * @param requestForm
      * @return
      */

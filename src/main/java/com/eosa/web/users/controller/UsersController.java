@@ -70,27 +70,34 @@ public class UsersController {
     }
     private static Map<String, Object> snsAuthKeyList = new HashMap<>();
 
-    @Autowired private SmsCertificationService smsCertificationService;
-    @Autowired private UsersService usersService;
-    @Autowired private TerminateUserService terminateUserService;
-    @Autowired private MailService mailService;
-    @Autowired private BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private SmsCertificationService smsCertificationService;
 
-    @Value("${my.service.domain}") private String myDomain;
-    @Value("${my.ui.port}") private String myUiPort;
+    @Autowired
+    private UsersService usersService;
 
-    
-    /** 
-     * @return String
-     * @throws UnknownHostException
-     */
+    @Autowired
+    private TerminateUserService terminateUserService;
+
+    @Autowired
+    private MailService mailService;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+    @Value("${my.service.domain}")
+    private String myDomain;
+
+    @Value("${my.ui.port}")
+    private String myUiPort;
+  
     @GetMapping("/sign/test01")
     public String test01() throws UnknownHostException {
         return myDomain; 
     }
 
     /**
-     * SMS인증코드 초기화 하는 메서드
+     * SMS인증코드 초기화 하는 컨트롤러
      * @param usersPhone
      * @return
      */
@@ -106,9 +113,10 @@ public class UsersController {
         return result;
     }
     
-    /** 
+    /**
+     * usersPhone의 연락처로 인증번호를 전송하는 컨트롤러
      * @param usersPhone
-     * @return CustomResponseData
+     * @return
      */
     @PostMapping(value="/sign/sendPhoneCheckMessage")
     public CustomResponseData sendOne(@RequestParam("usersPhone") String usersPhone) {
@@ -152,9 +160,11 @@ public class UsersController {
         return result;
     }
 
-    
-    /** 
-     * @return CustomResponseData
+    /**
+     * 인증번호를 검사하는 컨트롤러
+     * @param usersPhone
+     * @param passKey
+     * @return
      */
     @PostMapping(value="/sign/checkMyPhone")
     public CustomResponseData checkMyPhone(
@@ -181,7 +191,7 @@ public class UsersController {
     }
 
     /**
-     * 회원가입시 데이터가 저장되는 메서드 입니다.
+     * 사용자(Users)의 회원가입을 수행하는 컨트롤러
      * @param req
      * @param param
      * @return
@@ -267,9 +277,10 @@ public class UsersController {
         return result;
     }
 
-    
-    /** 
-     * @return CustomResponseData
+    /**
+     * 회원가입시 사용자 계정의 중복검사를 수행하는 컨트롤러
+     * @param usersAccount
+     * @return
      */
     @GetMapping("/sign/usersAccountDupliCheck")
     public CustomResponseData usersAccountDupliCheck(
@@ -317,7 +328,7 @@ public class UsersController {
     }
 
     /**
-     * 로그인에 성공했을 때 작동하는 메서드입니다. (Spring Security formLogin()을 통해 로그인을 할때 사용하는 메서드)
+     * 로그인에 성공했을때의 컨트롤러 (Spring Security formLogin()을 통해 로그인을 할때 사용하는 컨트롤러)
      * @param usersAccount
      * @return userInformation
      * @throws IOException
@@ -353,7 +364,7 @@ public class UsersController {
     }
 
     /**
-     * 로그인에 실패했을 때 작동하는 메서드입니다. (Spring Security formLogin()을 통해 로그인을 할때 사용하는 메서드)
+     * 로그인에 실패했을때의 컨트롤러 (Spring Security formLogin()을 통해 로그인을 할때 사용하는 컨트롤러)
      * @param usersAccount
      * @return userInformation
      */    
@@ -380,7 +391,7 @@ public class UsersController {
     }
 
     /**
-     * OAuth2를 활용한 SNS로그인 성공시 메서드 
+     * OAuth2를 활용한 SNS로그인 성공시의 컨트롤러
      * @param principalUserDetails
      * @return
      * @throws IOException
@@ -441,6 +452,7 @@ public class UsersController {
 
     
     /** 
+     * OAuth2를 활용한 SNS 로그인에 실패했을 시의 컨트롤러
      * @param request
      * @param response
      * @throws IOException
@@ -461,7 +473,7 @@ public class UsersController {
     }
 
     /**
-     * 사용자가 계정을 분실했을 때 활용되는 메서드 입니다.
+     * 사용자가 계정을 분실했을 때 동작하는 컨트롤러
      * 사용자의 회원가입 당시 등록한 이메일을 활용해 계정정보를 찾습니다.
      * @param usersEmail
      * @return
@@ -493,8 +505,11 @@ public class UsersController {
     }
 
     
-    /** 
-     * @return CustomResponseData
+    /**
+     * usersAccount와 usersPass가 db데이터와 일치하는지 조회하는 컨트롤러
+     * @param usersAccount
+     * @param usersPass
+     * @return
      */
     @PostMapping("/checkMyPagePass")
     public CustomResponseData checkMyPagePass(
@@ -520,9 +535,10 @@ public class UsersController {
         return result;
     }
 
-    
-    /** 
-     * @return CustomResponseData
+    /**
+     * 회원정보를 조회하는 컨트롤러
+     * @param usersAccount
+     * @return
      */
     @Operation(summary="회원정보 조회 (메인페이지 전용)")
     @GetMapping(value="/getUsersInfo")
@@ -540,7 +556,7 @@ public class UsersController {
     }
 
     /**
-     * 회원정보를 수정하는 url입니다.
+     * 회원정보를 수정하는 컨트롤러
      * @param param Users
      * @return
      */
@@ -581,7 +597,7 @@ public class UsersController {
     }
 
     /**
-     * 회원 탈퇴를 요청하는 url입니다.
+     * usersIdx와 일치하는 회원 탈퇴를 요청하는 컨트롤러
      * @param usersIdx Long
      * @param terminateReason String
      * @return
@@ -648,6 +664,7 @@ public class UsersController {
 
     
     /** 
+     * usersIdx와 일치하는 회원정보를 조회하는 컨트롤러
      * @param usersIdx
      * @return CustomResponseData
      */
@@ -692,6 +709,7 @@ public class UsersController {
 
     
     /** 
+     * usersEmail이 일치하는 회원정보를 조회하는 컨트롤러
      * @param usersEmail
      * @param me
      * @return CustomResponseData
@@ -722,7 +740,7 @@ public class UsersController {
     }
 
     /**
-     * 비밀번호를 분실 했을 때
+     * 비밀번호를 분실 했을 때 이메일로 인증코드를 발송하는 컨트롤러
      * @param usersAccount
      * @param usersEmail
      * @param me

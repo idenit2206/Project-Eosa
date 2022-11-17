@@ -21,7 +21,7 @@ public class PushNotificationController {
     @Autowired private PushNotificationService pushNotificationService;
     
     /**
-     * CLIENT 회원의 알림 조회(상담,의뢰 대상)
+     * CLIENT 회원의 알림 조회(상담,의뢰 대상)하는 컨트롤러
      * @param usersIdx
      * @return
      */
@@ -47,7 +47,7 @@ public class PushNotificationController {
         return result;
     }
     /**
-     * Detective 회원의 알림 조회(상담,의뢰 대상)
+     * Detective 회원의 알림 조회(상담,의뢰 대상)하는 컨트롤러
      * @param usersIdx
      * @return
      */
@@ -75,7 +75,7 @@ public class PushNotificationController {
 
     
     /** 
-     * 푸시알림(requestForm 대상) 상태변경(읽음으로 전환)
+     * 푸시알림(requestForm 대상) 상태변경(읽음으로 전환)하는 컨트롤러
      * @return CustomResponseData
      */
     @PutMapping("/readPushNotification")
@@ -101,7 +101,7 @@ public class PushNotificationController {
 
     
     /** 
-     * 푸시알림(requestForm 대상 Detective회원) 상태변경(읽음으로 전환)
+     * 푸시알림(requestForm 대상 Detective회원) 상태변경(읽음으로 전환)하는 컨트롤러
      * @return CustomResponseData
      */
     @PutMapping("/readPushNotificationDetective")

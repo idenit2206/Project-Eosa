@@ -26,10 +26,17 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/pushNotification")
 public class PushNotiController {
 
-    @Autowired private UsersService usersService;
+    @Autowired 
+    private UsersService usersService;
 
     private final FirebaseCloudMessage firebaseCloudMessage;
 
+    /**
+     * 모바일 어플리케이션 환경에서 푸시메시지를 보내기 위한 컨트롤러
+     * @param pushMessageRequestEntity
+     * @return
+     * @throws IOException
+     */
     @PostMapping("/pushMessage")
     public ResponseEntity<?> pushMessage(@RequestBody PushMessageRequestEntity pushMessageRequestEntity) throws IOException {
         log.info("[pushMessage] token: {}, title: {}, body: {}", pushMessageRequestEntity.getToken(), pushMessageRequestEntity.getTitle(), pushMessageRequestEntity.getBody());

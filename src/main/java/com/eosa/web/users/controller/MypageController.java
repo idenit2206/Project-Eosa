@@ -25,8 +25,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(value="/api/user")
 public class MypageController {
 
-    @Autowired private UsersService usersService;
-
+    @Autowired
+    private UsersService usersService;
     
     /** 
      * 마이페이지 접근을 위해 비밀번호를 확인하는 컨트롤러
@@ -59,8 +59,6 @@ public class MypageController {
 
         return result;
     }
-    
-
     
     /** 
      * 회원정보를 수정하는 컨트롤러

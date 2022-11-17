@@ -24,15 +24,23 @@ import java.util.List;
 @RequestMapping("/api/requestForm")
 public class DetectiveRequestFormController {
 
-    @Autowired private DetectiveRequestFormService detectiveRequestFormService;
-    @Autowired private DetectiveRequestFormBackupService detectiveRequestFormBackupService;
-    @Autowired private RequestFormCategoryService requestFormCategoryService;
-    @Autowired private RequestFormCategoryBackupService requestFormCategoryBackupService;  
-    @Autowired private UsersService usersService;
+    @Autowired 
+    private DetectiveRequestFormService detectiveRequestFormService;
+
+    @Autowired 
+    private DetectiveRequestFormBackupService detectiveRequestFormBackupService;
+
+    @Autowired 
+    private RequestFormCategoryService requestFormCategoryService;
+
+    @Autowired 
+    private RequestFormCategoryBackupService requestFormCategoryBackupService;
+
+    @Autowired 
+    private UsersService usersService;
 
     /**
-     * CompanysIdx가 일치하는 모든 RequestForm 조회
-     * 
+     * CompanysIdx가 일치하는 모든 의뢰내역서(RequestForm)를 조회하는 컨트롤러 
      * @param companysIdx
      * @return
      */
@@ -59,8 +67,7 @@ public class DetectiveRequestFormController {
     }
 
     /**
-     * CompanysIdx가 일치하는 모든 RequestForm 조회 날짜기준 내림차순 정렬
-     * 
+     * CompanysIdx가 일치하는 모든 의뢰내역서(RequestForm)를 날짜기준 내림차순 조회하는 컨트롤러
      * @param companysIdx
      * @return
      */
@@ -86,7 +93,7 @@ public class DetectiveRequestFormController {
     }
 
     /**
-     * CompanysIdx가 일치하는 모든 RequestForm 조회 날짜기준 내림차순 정렬
+     * CompanysIdx가 일치하는 모든 의뢰내역서(RequestForm)를 날짜기준 내림차순으로 조회하는 컨트롤러
      * 통계를 위해 백업 데이터를 조회합니다. 
      * @param companysIdx
      * @return
@@ -113,8 +120,7 @@ public class DetectiveRequestFormController {
     }
 
     /**
-     * CompanysIdx가 일치하는 모든 RequestForm 조회 날짜기준 오름차순 정렬
-     * 
+     * CompanysIdx가 일치하는 모든 의뢰내역서(RequestForm)를 날짜기준 오름차순으로 조회하는 컨트롤러 
      * @param companysIdx
      * @return
      */
@@ -141,7 +147,7 @@ public class DetectiveRequestFormController {
     }
 
     /**
-     * requestFormIdx가 일치하는 requestForm 상세보기
+     * requestFormIdx가 일치하는 의뢰내역서(RequestForm)의 상세보기를 수행하는 컨트롤러
      * 
      * @param requestFormIdx
      * @return
@@ -168,7 +174,7 @@ public class DetectiveRequestFormController {
 
     
     /** 
-     * requestFormIdx가 일치하는 requestForm의 데이터 변경
+     * requestFormIdx가 일치하는 의뢰내역서(RequestForm)의 데이터 변경하는 컨트롤러
      * @param updateRequestFormStatusByRequestFormIdx(
      * @return CustomResponseData
      * @throws IOException

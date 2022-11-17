@@ -22,11 +22,14 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(value="/api/usersReview")
 public class UsersReviewController {
 
-    @Autowired UsersReviewService usersReviewService;
-    @Autowired UsersReviewBackupService usersReviewBackupService;
+    @Autowired
+    UsersReviewService usersReviewService;
+
+    @Autowired
+    UsersReviewBackupService usersReviewBackupService;
     
     /** 
-     * 리뷰 작성 컨트롤러
+     * 신규 리뷰를 저장하는 컨트롤러
      * @param param
      * @return CustomResponseData
      */
@@ -65,9 +68,9 @@ public class UsersReviewController {
         return result;
     }
 
-    
-    /** 
-     * @return CustomResponseData
+    /**
+     * 모든 사용자 리뷰를 조회하는 컨트롤러
+     * @return
      */
     @GetMapping("/selectAllUsersReview")
     public CustomResponseData selectAllUsersReview() {
@@ -88,7 +91,7 @@ public class UsersReviewController {
     }
 
     /**
-     * 특정 companysIdx를 갖는 리뷰를 전부 조회
+     * 특정 companysIdx를 갖는 리뷰를 전부 조회하는 컨트롤러
      * @param companysIdx
      * @return
      */
@@ -111,7 +114,7 @@ public class UsersReviewController {
     }
 
     /**
-     * 특정 usersIdx를 갖는 리뷰를 전부 조회
+     * 특정 usersIdx를 갖는 리뷰를 전부 조회하는 컨트롤러
      * @param usersIdx
      * @return
      */
@@ -134,7 +137,7 @@ public class UsersReviewController {
     }
 
     /**
-     * requestFormIdx와 일치하는 UsersReview 조회
+     * requestFormIdx와 일치하는 UsersReview 조회하는 컨트롤러
      * @param requestFormIdx
      * @return
      */

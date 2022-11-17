@@ -48,6 +48,7 @@ public class ChatMessageController {
     List<Object> messageList = new LinkedList<>();
 
     /** 
+     * 채팅 메시지를 보내는 컨트롤러
      * @param message
      */
     @MessageMapping("/chat/message")

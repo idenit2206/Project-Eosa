@@ -24,13 +24,19 @@ import com.eosa.web.util.CustomResponseData;
 @RequestMapping("/api/price")
 public class PriceServiceController {
 
-    @Autowired private PriceServiceService priceServiceService;
-    @Autowired private CategoryService categoryService;
-    @Autowired private RegionService regionService;
+    @Autowired 
+    private PriceServiceService priceServiceService;
+
+    @Autowired 
+    private CategoryService categoryService;
+
+    @Autowired 
+    private RegionService regionService;
     
     
-    /** 
-     * @return CustomResponseData
+    /**
+     * 어사의 계좌정보를 조회하는 컨트롤러
+     * @return
      */
     @GetMapping("/selectBankInfo")
     public CustomResponseData selectBankInfo() {
@@ -51,8 +57,9 @@ public class PriceServiceController {
         return result;
     }
     
-    /** 
-     * @return CustomResponseData
+    /**
+     * 어사에서 제공하는 탐정업체의 업무지역과 업무분야를 조회하는 컨트롤러
+     * @return
      */
     @GetMapping("/selectCategoryRegion")
     public CustomResponseData selectCategoryRegion() {
@@ -77,10 +84,10 @@ public class PriceServiceController {
 
         return result;
     }
-
     
-    /** 
-     * @return CustomResponseData
+    /**
+     * 어사에서 제공하는 탐정업체의 업무분야를 조회하는 컨트롤러
+     * @return
      */
     @GetMapping("/selectCategory")
     public CustomResponseData selectCategory() {

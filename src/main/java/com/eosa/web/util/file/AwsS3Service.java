@@ -26,8 +26,12 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AwsS3Service {
 
-    @Value("${cloud.aws.s3.bucket}") private String bucket;
-    @Value("${cloud.aws.s3.bucket.url}") private String bucketURL;
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
+
+    @Value("${cloud.aws.s3.bucket.url}")
+    private String bucketURL;
+
     private final AmazonS3 amazonS3;
 
 
@@ -54,8 +58,14 @@ public class AwsS3Service {
 //        return fileURL;
 //    }
 
+    /**
+     * 단일 파일을 S3 버킷에 업로드하는 서비스
+     * @param file
+     * @param directoryName
+     * @param companysIdx
+     * @return
+     */
     public List<String> uploadSingleFile(MultipartFile file, String directoryName, Long companysIdx) {
-//        log.debug("[uploadSingleFile] contentType: {}", file.getContentType());
         String fileNameOrigin = file.getOriginalFilename();
         log.debug("[uploadSingleFile] originalFileName: {}",fileNameOrigin);
         List<String> result = new ArrayList<>();
@@ -82,6 +92,7 @@ public class AwsS3Service {
 
     
     /** 
+     * 여러개의 파일을 S3 버킷에 저장하는 컨트롤러
      * @param files
      * @param directoryName
      * @param companysIdx

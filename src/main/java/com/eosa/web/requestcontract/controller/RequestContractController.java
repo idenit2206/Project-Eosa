@@ -28,12 +28,17 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/requestContract")
 public class RequestContractController {
     
-    @Autowired private RequestContractService requestContractService;
-    @Autowired private DetectiveRequestFormService detectiveRequestFormService;
-    @Autowired private CompanysService companysService;
+    @Autowired 
+    private RequestContractService requestContractService;
+
+    @Autowired 
+    private DetectiveRequestFormService detectiveRequestFormService;
+
+    @Autowired
+    private CompanysService companysService;
 
     /**
-     * companysIdx로 계약서(RequestContract)에 기입할 업체 정보 조회
+     * companysIdx로 의뢰내역서의 계약서(RequestContract)에 기입할 업체 정보 조회하는 컨트롤러
      * @param companysIdx
      * @return
      */
@@ -69,7 +74,7 @@ public class RequestContractController {
     }
 
     /**
-     * requestFormIdx가 일치하는 RequestContract를 불러오는 컨트롤러
+     * requestFormIdx가 일치하는 의뢰내역서의 계약서(RequestContract)를 불러오는 컨트롤러
      * @param requestContract
      * @return
      */
@@ -93,7 +98,7 @@ public class RequestContractController {
     }
 
     /**
-     * RequestContract를 저장하는 컨트롤러
+     * 의뢰내역서의 계약서(RequestContract)를 저장하는 컨트롤러
      * @param requestContract
      * @return
      * @throws IOException
@@ -124,7 +129,7 @@ public class RequestContractController {
     }
 
     /**
-     * RequestContract를 수정하는 컨트롤러
+     * 의뢰내역서의 계약서(RequestContract)를 수정하는 컨트롤러
      * @param requestFormIdx
      * @param companysIdx
      * @param usersIdx

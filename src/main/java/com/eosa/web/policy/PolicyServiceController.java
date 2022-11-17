@@ -17,12 +17,13 @@ import com.eosa.web.util.CustomResponseData;
 @RequestMapping("/api/policy")
 public class PolicyServiceController {
 
-    @Autowired private PolicyService policyService;
+    @Autowired 
+    private PolicyService policyService;
     
-    
-    /** 
-     * @return CustomResponseData
-     */
+    /**
+     * 모든 정책을 조회하는 컨트롤러
+     * @return
+     */   
     @GetMapping("/selectPolicy")
     public CustomResponseData selectPolicyDTO() {
         CustomResponseData result = new CustomResponseData();

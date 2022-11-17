@@ -20,8 +20,8 @@ public class ChatBlockList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long chatBlockListIdx;
 
-    @Column private Long usersIdxBlocker;
-    @Column private Long usersIdxBlocked;
-    @Column private LocalDateTime chatBlockListDate;
+    @Column private Long usersIdxBlocker;               // 차단을 실행한 사용자의 usersIdx
+    @Column private Long usersIdxBlocked;               // 차단당한 사용자의 usersIdx
+    @Column private LocalDateTime chatBlockListDate;    // 차단당한 날짜
     
 }

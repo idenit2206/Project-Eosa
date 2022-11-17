@@ -15,12 +15,13 @@ import java.time.LocalDateTime;
 @RequestMapping("/api/companysHiddenCam")
 public class CompanysHiddencamController {
 
-    @Autowired CompanysHiddencamService companysHiddencamService;
+    @Autowired 
+    CompanysHiddencamService companysHiddencamService;
 
-    
-    /** 
+    /**
+     * 불법카메라 업체를 신청하는 컨트롤러
      * @param companysHiddencam
-     * @return CustomResponseData
+     * @return
      */
     @PostMapping("/insertCompanysHiddenCamRequest")
     public CustomResponseData insertCompanysHiddenCamRequest(CompanysHiddencam companysHiddencam) {

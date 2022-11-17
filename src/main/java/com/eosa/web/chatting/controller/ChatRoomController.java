@@ -44,8 +44,13 @@ public class ChatRoomController {
     @Autowired private UsersService usersService;
     @Autowired private CompanysService companysService;
 
-    // 채팅방 생성
-    // @PostMapping("/room")
+
+    /**
+     * 채팅방을 생성하는 컨트롤러
+     * @param usersIdx
+     * @param companysIdx
+     * @return
+     */
     @GetMapping("/createRoom")
     @ResponseBody
     public CustomResponseData createRoom(
@@ -96,7 +101,7 @@ public class ChatRoomController {
     }
 
     /**
-     * 관리자와 채팅하기
+     * 관리자(상담사)와 채팅하는 채팅방을 생성하는 컨트롤러
      * @param usersIdx
      * @param companysIdx
      * @return
@@ -549,11 +554,10 @@ public class ChatRoomController {
         return result;
     }
 
-    
-    /** 
-     * @return List<ChatRoom>
+   
+    /**
+     *  TestMethod 현재 존재하는 모든 채팅방 삭제
      */
-    // TestMethod 현재 존재하는 모든 채팅방 삭제
     // @Secured({"CLIENT", "DETECTIVE"})
     // @GetMapping("/testAllFlush")
     // @ResponseBody

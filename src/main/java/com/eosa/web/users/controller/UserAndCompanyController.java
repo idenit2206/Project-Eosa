@@ -22,12 +22,17 @@ import java.util.*;
 @RequestMapping("/api/userAndCompany")
 public class UserAndCompanyController {
 
-    @Autowired private UserLikeCompanyService userLikeCompanyService;
-    @Autowired private UserRecentCompanyService userRecentCompanyService;
-    @Autowired private CompanysService companysService;
+    @Autowired
+    private UserLikeCompanyService userLikeCompanyService;
+
+    @Autowired
+    private UserRecentCompanyService userRecentCompanyService;
+
+    @Autowired
+    private CompanysService companysService;
 
     /**
-     * CLIENT 사용자의 업체에 대한 좋아요 활성화 버튼
+     * CLIENT 사용자의 업체에 대한 좋아요를 수행하는 컨트롤러
      * @param param
      * @return
      */
@@ -52,7 +57,7 @@ public class UserAndCompanyController {
     }
 
     /**
-     * 좋아요 취소
+     * 좋아요 취소를 수행하는 컨트롤러
      * @param usersIdx Long
      * @param companysIdx Long
      * @return
@@ -80,7 +85,7 @@ public class UserAndCompanyController {
     }
 
     /**
-     * usersIdx 사용자의 좋아요 목록 출력하기
+     * usersIdx 사용자의 좋아요 목록 출력하는 컨트롤러
      */
     @GetMapping("/selectLikeCompanysListByUsersIdx")
     public CustomResponseData selectLikeCompanysListByUsersIdx(@RequestParam("usersIdx") Long usersIdx) {
@@ -104,7 +109,7 @@ public class UserAndCompanyController {
 
 
     /**
-     * 사용자가 최근에 조회한 업체를 24개까지 기록
+     * 사용자가 최근에 조회한 업체를 24개까지 저장하는 컨트롤러
      * 오래된것 부터 삭제
      * @return
      */
@@ -136,7 +141,7 @@ public class UserAndCompanyController {
     }
 
     /**
-     * usersIdx의 최근 방문 업체를 목록을 출력합니다.
+     * usersIdx의 최근 방문 업체를 목록을 조회하는 컨트롤러
      * @param usersIdx
      * @return
      */
