@@ -268,17 +268,17 @@ public class CompanyController {
     }
 
     /**
-     * 업체 마패 삭제 컨트롤러
-     * @param companysFlagIdx
+     * 업체 마패 삭제 컨트롤러 (마패업체 상세보기에서 작동)
+     * @param companysIdx
      * @return
      */
     @ResponseBody
     @PostMapping("/flag/delete")
-    public int deleteFlag(@RequestParam long companysFlagIdx) {
-        return companyService.deleteFlag(companysFlagIdx);
+    public int deleteFlag(@RequestParam long companysIdx) {
+        return companyService.deleteFlag(companysIdx);
     }
     /**
-     * 업체 마패 삭제 컨트롤러
+     * 업체 마패 삭제 컨트롤러 (마패업체 목록에서 작동)
      * @param companysFlagIdx
      * @return
      */
