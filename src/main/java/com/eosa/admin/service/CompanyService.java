@@ -495,7 +495,18 @@ public class CompanyService {
      * @return
      */
     public int deleteFlag(long companysFlagIdx) {
+        log.info("companysFlagIdx: {} 를 삭제합니다.", companysFlagIdx);
         return companyMapper.deleteFlag(companysFlagIdx);
+    }
+
+    /**
+     * 업체 마패 삭제 서비스
+     * @param companysFlagIdx
+     * @return
+     */
+    public int deleteFlag2(long companysFlagIdx) {
+        log.info("companysFlagIdx: {} 를 삭제합니다.", companysFlagIdx);
+        return companyMapper.deleteFlag2(companysFlagIdx);
     }
 
     /**

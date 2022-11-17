@@ -140,7 +140,7 @@
                         for (let i = 0; i < listCheck.length; i++) {
                             if (listCheck[i].checked) {
                                 formData.append('companysFlagIdx', companysFlagIdx[i].value);
-                                fetchApi('/admin/manage/company/flag/delete', 'post', formData, '삭제되었습니다.');
+                                fetchApi('/admin/manage/company/flag/delete2', 'post', formData, '삭제되었습니다.');
                             }
                         }
                     }

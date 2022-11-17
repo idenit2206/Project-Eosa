@@ -351,6 +351,11 @@
         <!-- WHERE companysFlagIdx = #{companysFlagIdx} -->
         WHERE companysIdx = #{companysIdx}
     </delete>
+    <!-- 업체관리 광고목록 에서 마패업체삭제 -->
+    <delete id="deleteFlag2" parameterType="long">
+        DELETE FROM CompanysFlag
+        WHERE companysFlagIdx = #{companysFlagIdx}
+    </delete>
 
     <!-- 업체 광고 상태 변경 -->
     <update id="updateAd" parameterType="hashmap">

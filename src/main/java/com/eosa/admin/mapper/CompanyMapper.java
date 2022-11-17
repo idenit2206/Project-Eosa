@@ -208,6 +208,13 @@ public interface CompanyMapper {
     int deleteFlag(long companysFlagIdx);
 
     /**
+     * 업체 마패 삭제 매퍼
+     * @param companysFlagIdx
+     * @return
+     */
+    int deleteFlag2(long companysFlagIdx);
+
+    /**
      * 업체 광고 상태 변경 매퍼
      *
      * @param map
