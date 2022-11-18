@@ -817,41 +817,41 @@ public class CompanyService {
     
             for (int i = 0; i < requestDTOListMale.size(); i++) {
                 if(requestDTOListMale.get(i).getUsersAge() == 10) {
-                    mAgeAllChart[0] = (mAgeAllChart[0] + 1) / countAllCompanys;
+                    mAgeAllChart[0] = (mAgeAllChart[0] + 1);
                 } else if(requestDTOListMale.get(i).getUsersAge() == 20) {
-                    mAgeAllChart[1] = (mAgeAllChart[1] + 1) / countAllCompanys;
+                    mAgeAllChart[1] = (mAgeAllChart[1] + 1);
                 } else if(requestDTOListMale.get(i).getUsersAge() == 30) {
-                    mAgeAllChart[2] = (mAgeAllChart[2] + 1) / countAllCompanys;
+                    mAgeAllChart[2] = (mAgeAllChart[2] + 1);
                 } else if(requestDTOListMale.get(i).getUsersAge() == 40) {
-                    mAgeAllChart[3] = (mAgeAllChart[3] + 1) / countAllCompanys;
+                    mAgeAllChart[3] = (mAgeAllChart[3] + 1);
                 } else if(requestDTOListMale.get(i).getUsersAge() == 50) {
-                    mAgeAllChart[4] = (mAgeAllChart[4] + 1) / countAllCompanys;
+                    mAgeAllChart[4] = (mAgeAllChart[4] + 1);
                 } else if(requestDTOListMale.get(i).getUsersAge() == 60) {
-                    mAgeAllChart[5] = (mAgeAllChart[5] + 1) / countAllCompanys;
+                    mAgeAllChart[5] = (mAgeAllChart[5] + 1);
                 } else if(requestDTOListMale.get(i).getUsersAge() == 70) {
-                    mAgeAllChart[6] = (mAgeAllChart[6] + 1) / countAllCompanys;
+                    mAgeAllChart[6] = (mAgeAllChart[6] + 1);
                 } else if(requestDTOListMale.get(i).getUsersAge() == 80) {
-                    mAgeAllChart[7] = (mAgeAllChart[7] + 1) / countAllCompanys;
+                    mAgeAllChart[7] = (mAgeAllChart[7] + 1);
                 }
             }
     
             for (int i = 0; i < requestDTOListFemale.size(); i++) {
                 if(requestDTOListFemale.get(i).getUsersAge() == 10) {
-                    fAgeAllChart[0] = (fAgeAllChart[0] + 1) / countAllCompanys;
+                    fAgeAllChart[0] = (fAgeAllChart[0] + 1);
                 } else if(requestDTOListFemale.get(i).getUsersAge() == 20) {
-                    fAgeAllChart[1] = (fAgeAllChart[1] + 1) / countAllCompanys;
+                    fAgeAllChart[1] = (fAgeAllChart[1] + 1);
                 } else if(requestDTOListFemale.get(i).getUsersAge() == 30) {
-                    fAgeAllChart[2] = (fAgeAllChart[2] + 1) / countAllCompanys;
+                    fAgeAllChart[2] = (fAgeAllChart[2] + 1);
                 } else if(requestDTOListFemale.get(i).getUsersAge() == 40) {
-                    fAgeAllChart[3] = (fAgeAllChart[3] + 1) / countAllCompanys;
+                    fAgeAllChart[3] = (fAgeAllChart[3] + 1);
                 } else if(requestDTOListFemale.get(i).getUsersAge() == 50) {
-                    fAgeAllChart[4] = (fAgeAllChart[4] + 1) / countAllCompanys;
+                    fAgeAllChart[4] = (fAgeAllChart[4] + 1);
                 } else if(requestDTOListFemale.get(i).getUsersAge() == 60) {
-                    fAgeAllChart[5] = (fAgeAllChart[5] + 1) / countAllCompanys;
+                    fAgeAllChart[5] = (fAgeAllChart[5] + 1);
                 } else if(requestDTOListFemale.get(i).getUsersAge() == 70) {
-                    fAgeAllChart[6] = (fAgeAllChart[6] + 1) / countAllCompanys;
+                    fAgeAllChart[6] = (fAgeAllChart[6] + 1);
                 } else if(requestDTOListFemale.get(i).getUsersAge() == 80) {
-                    fAgeAllChart[7] = (fAgeAllChart[7] + 1) / countAllCompanys;
+                    fAgeAllChart[7] = (fAgeAllChart[7] + 1);
                 }
             }
     
@@ -862,102 +862,102 @@ public class CompanyService {
     
                 // 연령
                 if (list.get(i).getUsersAge() == 10) {
-                    ageAllChart[0] = (ageAllChart[0] + 1) / countAllCompanys ;
+                    ageAllChart[0] = (ageAllChart[0] + 1);
                 } else if (list.get(i).getUsersAge() == 20) {
-                    ageAllChart[1] = (ageAllChart[1] + 1) / countAllCompanys;
+                    ageAllChart[1] = (ageAllChart[1] + 1);
                 } else if (list.get(i).getUsersAge() == 30) {
-                    ageAllChart[2] = (ageAllChart[2] + 1) / countAllCompanys;
+                    ageAllChart[2] = (ageAllChart[2] + 1);
                 } else if (list.get(i).getUsersAge() == 40) {
-                    ageAllChart[3] = (ageAllChart[3] + 1) / countAllCompanys;
+                    ageAllChart[3] = (ageAllChart[3] + 1);
                 } else if (list.get(i).getUsersAge() == 50) {
-                    ageAllChart[4] = (ageAllChart[4] + 1) / countAllCompanys;
+                    ageAllChart[4] = (ageAllChart[4] + 1);
                 } else if (list.get(i).getUsersAge() == 60) {
-                    ageAllChart[5] = (ageAllChart[5] + 1) / countAllCompanys;
+                    ageAllChart[5] = (ageAllChart[5] + 1);
                 } else if (list.get(i).getUsersAge() == 70) {
-                    ageAllChart[6] = (ageAllChart[6] + 1) / countAllCompanys;
+                    ageAllChart[6] = (ageAllChart[6] + 1);
                 } else if (list.get(i).getUsersAge() == 80) {
-                    ageAllChart[7] = (ageAllChart[7] + 1) / countAllCompanys;
+                    ageAllChart[7] = (ageAllChart[7] + 1);
                 }
     
                 // 시간
                 String fTime = hour.format(list.get(i).getRequestFormDate());
                 if (fTime.equals("07") || fTime.equals("08")) {
-                    timeAllChart[0] = (timeAllChart[0] + 1) / countAllCompanys;
+                    timeAllChart[0] = (timeAllChart[0] + 1);
                 } else if (fTime.equals("09") || fTime.equals("10")) {
-                    timeAllChart[1] = (timeAllChart[1] + 1) / countAllCompanys;
+                    timeAllChart[1] = (timeAllChart[1] + 1);
                 } else if (fTime.equals("11") || fTime.equals("12")) {
-                    timeAllChart[2] = (timeAllChart[2] + 1) / countAllCompanys;
+                    timeAllChart[2] = (timeAllChart[2] + 1);
                 } else if (fTime.equals("13") || fTime.equals("14")) {
-                    timeAllChart[3] = (timeAllChart[3] + 1) / countAllCompanys;
+                    timeAllChart[3] = (timeAllChart[3] + 1);
                 } else if (fTime.equals("15") || fTime.equals("16")) {
-                    timeAllChart[4] = (timeAllChart[4] + 1) / countAllCompanys;
+                    timeAllChart[4] = (timeAllChart[4] + 1);
                 } else if (fTime.equals("17") || fTime.equals("18")) {
-                    timeAllChart[5] = (timeAllChart[5] + 1) / countAllCompanys;
+                    timeAllChart[5] = (timeAllChart[5] + 1);
                 } else if (fTime.equals("19") || fTime.equals("20")) {
-                    timeAllChart[6] = (timeAllChart[6] + 1) / countAllCompanys;
+                    timeAllChart[6] = (timeAllChart[6] + 1);
                 } else if (fTime.equals("21") || fTime.equals("22")) {
-                    timeAllChart[7] = (timeAllChart[7] + 1) / countAllCompanys;
+                    timeAllChart[7] = (timeAllChart[7] + 1);
                 } else if (fTime.equals("23") || fTime.equals("00")) {
-                    timeAllChart[8] = (timeAllChart[8] + 1) / countAllCompanys;
+                    timeAllChart[8] = (timeAllChart[8] + 1);
                 } else if (fTime.equals("01") || fTime.equals("02")) {
-                    timeAllChart[9] = (timeAllChart[9] + 1) / countAllCompanys;
+                    timeAllChart[9] = (timeAllChart[9] + 1);
                 } else if (fTime.equals("03") || fTime.equals("04")) {
-                    timeAllChart[10] = (timeAllChart[10] + 1) / countAllCompanys;
+                    timeAllChart[10] = (timeAllChart[10] + 1);
                 } else if (fTime.equals("05") || fTime.equals("06")) {
-                    timeAllChart[11] = (timeAllChart[11] + 1) / countAllCompanys;
+                    timeAllChart[11] = (timeAllChart[11] + 1);
                 }
     
                 // 지역
                 if (list.get(i).getRequestFormRegion1().equals("서울")) {
-                    regionAllChart[0] = (regionAllChart[0] + 1) / countAllCompanys;
+                    regionAllChart[0] = (regionAllChart[0] + 1);
                 } else if (list.get(i).getRequestFormRegion1().equals("경기")) {
-                    regionAllChart[1] = (regionAllChart[1] + 1) / countAllCompanys;
+                    regionAllChart[1] = (regionAllChart[1] + 1);
                 } else if (list.get(i).getRequestFormRegion1().equals("대전/충남/세종")) {
-                    regionAllChart[2] = (regionAllChart[2] + 1) / countAllCompanys;
+                    regionAllChart[2] = (regionAllChart[2] + 1);
                 } else if (list.get(i).getRequestFormRegion1().equals("인천/부천")) {
-                    regionAllChart[3] = (regionAllChart[3] + 1) / countAllCompanys;
+                    regionAllChart[3] = (regionAllChart[3] + 1);
                 } else if (list.get(i).getRequestFormRegion1().equals("강원")) {
-                    regionAllChart[4] = (regionAllChart[4] + 1) / countAllCompanys;
+                    regionAllChart[4] = (regionAllChart[4] + 1);
                 } else if (list.get(i).getRequestFormRegion1().equals("전주/전북")) {
-                    regionAllChart[5] = (regionAllChart[5] + 1) / countAllCompanys;
+                    regionAllChart[5] = (regionAllChart[5] + 1);
                 } else if (list.get(i).getRequestFormRegion1().equals("청주/충북")) {
-                    regionAllChart[6] = (regionAllChart[6] + 1) / countAllCompanys;
+                    regionAllChart[6] = (regionAllChart[6] + 1);
                 } else if (list.get(i).getRequestFormRegion1().equals("대구/경북")) {
-                    regionAllChart[7] = (regionAllChart[7] + 1) / countAllCompanys;
+                    regionAllChart[7] = (regionAllChart[7] + 1);
                 } else if (list.get(i).getRequestFormRegion1().equals("부산/울산/경남")) {
-                    regionAllChart[8] = (regionAllChart[8] + 1) / countAllCompanys;
+                    regionAllChart[8] = (regionAllChart[8] + 1);
                 } else if (list.get(i).getRequestFormRegion1().equals("광주/전남")) {
-                    regionAllChart[9] = (regionAllChart[9] + 1) / countAllCompanys;
+                    regionAllChart[9] = (regionAllChart[9] + 1);
                 } else if (list.get(i).getRequestFormRegion1().equals("제주")) {
-                    regionAllChart[10] = (regionAllChart[10] + 1) / countAllCompanys;
+                    regionAllChart[10] = (regionAllChart[10] + 1);
                 }    
               
                 // 월
                 String fMonth = mFormat.format(list.get(i).getRequestFormDate());
                 if (fMonth.equals("01")) {
-                    monthAllChart[0] = (monthAllChart[0] + 1) / countAllCompanys;
+                    monthAllChart[0] = (monthAllChart[0] + 1);
                 } else if (fMonth.equals("02")) {
-                    monthAllChart[1] = (monthAllChart[1] + 1) / countAllCompanys;
+                    monthAllChart[1] = (monthAllChart[1] + 1);
                 } else if (fMonth.equals("03")) {
-                    monthAllChart[2] = (monthAllChart[2] + 1) / countAllCompanys;
+                    monthAllChart[2] = (monthAllChart[2] + 1);
                 } else if (fMonth.equals("04")) {
-                    monthAllChart[3] = (monthAllChart[3] + 1) / countAllCompanys;
+                    monthAllChart[3] = (monthAllChart[3] + 1);
                 } else if (fMonth.equals("05")) {
-                    monthAllChart[4] = (monthAllChart[4] + 1) / countAllCompanys;
+                    monthAllChart[4] = (monthAllChart[4] + 1);
                 } else if (fMonth.equals("06")) {
-                    monthAllChart[5] = (monthAllChart[5] + 1) / countAllCompanys;
+                    monthAllChart[5] = (monthAllChart[5] + 1);
                 } else if (fMonth.equals("07")) {
-                    monthAllChart[6] = (monthAllChart[6] + 1) / countAllCompanys;
+                    monthAllChart[6] = (monthAllChart[6] + 1);
                 } else if (fMonth.equals("08")) {
-                    monthAllChart[7] = (monthAllChart[7] + 1) / countAllCompanys;
+                    monthAllChart[7] = (monthAllChart[7] + 1);
                 } else if (fMonth.equals("09")) {
-                    monthAllChart[8] = (monthAllChart[8] + 1) / countAllCompanys;
+                    monthAllChart[8] = (monthAllChart[8] + 1);
                 } else if (fMonth.equals("10")) {
-                    monthAllChart[9] = (monthAllChart[9] + 1) / countAllCompanys;
+                    monthAllChart[9] = (monthAllChart[9] + 1);
                 } else if (fMonth.equals("11")) {
-                    monthAllChart[10] = (monthAllChart[10] + 1) / countAllCompanys;
+                    monthAllChart[10] = (monthAllChart[10] + 1);
                 } else if (fMonth.equals("12")) {
-                    monthAllChart[11] = (monthAllChart[11] + 1) / countAllCompanys;
+                    monthAllChart[11] = (monthAllChart[11] + 1);
                 }
     
             }
@@ -966,8 +966,7 @@ public class CompanyService {
                 categoryAllChart.add(cateList.get(i).getCategoryName());
                 // 총 개수를 출력
                 // categoryNumAllChart.add(cateList.get(i).getNum());
-                // 평균을 출력
-                    categoryNumAllChart.add(cateList.get(i).getNum() / countAllCompanys);
+                categoryNumAllChart.add(cateList.get(i).getNum() / countAllCompanys);
             }
     
             log.info("전체 의뢰상담 개수: {}", requestDTOList.size());
@@ -1208,6 +1207,30 @@ public class CompanyService {
         // map.put("monthAllChart", monthAllChart);
         // map.put("yearMonthAllChart", yearMonthAllChart);
         // map.put("categoryNumAllChart", categoryNumAllChart);
+
+        for(int i = 0; i < ageAllChart.length; i++) {
+            ageAllChart[i] = ageAllChart[i] / countAllCompanys;
+        }
+
+        for(int i = 0; i < mAgeAllChart.length; i++) {
+            mAgeAllChart[i] = mAgeAllChart[i] / countAllCompanys;
+        }
+
+        for(int i = 0; i < fAgeAllChart.length; i++) {
+            fAgeAllChart[i] = fAgeAllChart[i] / countAllCompanys;
+        }
+
+        for(int i = 0; i < timeAllChart.length; i++) {
+            timeAllChart[i] = timeAllChart[i] / countAllCompanys;
+        }
+
+        for(int i = 0; i < regionAllChart.length; i++) {
+            regionAllChart[i] = regionAllChart[i] / countAllCompanys;
+        }
+
+        for(int i = 0; i < monthAllChart.length; i++) {
+            monthAllChart[i] = monthAllChart[i] / countAllCompanys;
+        }
 
         // 전체 통계(전체 평균)
         map.put("countAllCompanys", countAllCompanys);
