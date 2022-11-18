@@ -256,6 +256,62 @@ const monthChartData = (param) => {
     return tempArrArr;
 }
 
+const monthChartData2 = (count, param) => {
+    let tempArrArr = [];    // yearMonth에서 year만 추출한 2차원 배열
+    let tempArr = [];
+
+    for(let i = 0; i < param.length; i++) {
+        // console.log(i, param[i]);
+        const tempDate = new Date(param[i]);               
+        tempArr.push(tempDate.getFullYear());
+    }
+    let tempYearSet = new Set(tempArr);
+    tempArr = [];
+    // console.log(tempYearSet);
+    tempYearSet.forEach(item => {
+        let tempArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        tempArray[0] = item;
+        tempArrArr.push(tempArray);
+    })
+    // console.log(tempArrArr);
+
+    for(let i = 0; i < param.length; i++) {
+        for(let j = 0; j < tempArrArr.length; j++) {
+            const tempDate = new Date(param[i]);
+            if(tempDate.getFullYear() == tempArrArr[j][0]) {
+                if(tempDate.getMonth() == 0) {
+                    tempArrArr[j][1] = (tempArrArr[j][1] + 1) / count;
+                } else if(tempDate.getMonth() == 1) {
+                    tempArrArr[j][2] = (tempArrArr[j][2] + 1) / count;
+                } else if(tempDate.getMonth() == 2) {
+                    tempArrArr[j][3] = (tempArrArr[j][3] + 1) / count;
+                } else if(tempDate.getMonth() == 3) {
+                    tempArrArr[j][4] = (tempArrArr[j][4] + 1) / count;
+                } else if(tempDate.getMonth() == 4) {
+                    tempArrArr[j][5] = (tempArrArr[j][5] + 1) / count;
+                } else if(tempDate.getMonth() == 5) {
+                    tempArrArr[j][6] = (tempArrArr[j][6] + 1) / count;
+                } else if(tempDate.getMonth() == 6) {
+                    tempArrArr[j][7] = (tempArrArr[j][7] + 1) / count;
+                } else if(tempDate.getMonth() == 7) {
+                    tempArrArr[j][8] = (tempArrArr[j][8] + 1) / count;
+                } else if(tempDate.getMonth() == 8) {
+                    tempArrArr[j][9] = (tempArrArr[j][9] + 1) / count;
+                } else if(tempDate.getMonth() == 9) {
+                    tempArrArr[j][10] = (tempArrArr[j][10] + 1) / count;
+                } else if(tempDate.getMonth() == 10) {
+                    tempArrArr[j][11] = (tempArrArr[j][11] + 1) / count;
+                } else if(tempDate.getMonth() == 11) {
+                    tempArrArr[j][12] = (tempArrArr[j][12] + 1) / count;
+                }                        
+            }
+        }
+    }
+    // console.log(tempArrArr);
+    tempArrArr.reverse();
+    return tempArrArr;
+}
+
 async function createChart(sort) {
 
     const formData = new FormData();
@@ -280,7 +336,7 @@ async function createChart(sort) {
             yearMonthWhole = data.yearMonthAllChart;
             
             yearMonth2 = monthChartData(data.yearMonth);
-            yearMonthWhole2 = monthChartData(data.yearMonthAllChart);
+            yearMonthWhole2 = monthChartData2(data.countAllCompanys, data.yearMonthAllChart);
 
             // console.log(yearMonthWhole2[0]);
 

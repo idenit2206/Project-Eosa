@@ -955,7 +955,10 @@ public class CompanyService {
     
             for (int i = 0; i < cateList.size(); i++) {
                 categoryAllChart.add(cateList.get(i).getCategoryName());
-                categoryNumAllChart.add(cateList.get(i).getNum());
+                // 총 개수를 출력
+                // categoryNumAllChart.add(cateList.get(i).getNum());
+                // 평균을 출력
+                    categoryNumAllChart.add(cateList.get(i).getNum() / countAllCompanys);
             }
     
             log.info("전체 의뢰상담 개수: {}", requestDTOList.size());
@@ -1188,6 +1191,7 @@ public class CompanyService {
         // map.put("categoryNumAllChart", categoryNumAllChart);
 
         // 전체 통계(전체 평균)
+        map.put("countAllCompanys", countAllCompanys);
         map.put("ageAllChart", ageAllChart);
         map.put("mAgeAllChart", mAgeAllChart);
         map.put("fAgeAllChart", fAgeAllChart);
