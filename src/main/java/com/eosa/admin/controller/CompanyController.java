@@ -392,7 +392,6 @@ public class CompanyController {
     @ResponseBody
     @PostMapping("/chart/whole/data")
     public Map<String, Object> chartData(@RequestParam String sort, @RequestParam long companysIdx) {
-
         return companyService.chartData(sort, companysIdx);
     }
 

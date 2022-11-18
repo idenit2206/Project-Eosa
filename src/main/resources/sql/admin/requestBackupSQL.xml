@@ -109,8 +109,8 @@
         JOIN (SELECT RFC.requestFormBackupIdx,
                     GROUP_CONCAT(RFC.requestFormCategoryValue SEPARATOR '|') requestFormCategoryValue
                 FROM RequestFormCategoryBackup RFC GROUP BY RFC.requestFormBackupIdx) rc ON r.requestFormBackupIdx = rc.requestFormBackupIdx
-        JOIN Users u ON r.usersIdx = u.usersIdx
-        JOIN Companys c ON r.companysIdx = c.companysIdx
+        LEFT JOIN Users u ON r.usersIdx = u.usersIdx
+        LEFT JOIN Companys c ON r.companysIdx = c.companysIdx
         WHERE r.companysIdx = #{companysIdx}
     </select>
 

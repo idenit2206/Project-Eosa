@@ -751,10 +751,12 @@ public class CompanyService {
         int requestContractRate = 0;
         int requestSuccessRate = 0;
 
-        int[] ageAllChart = new int[8];
+        // int[] ageAllChart = new int[8];
+        float[] ageAllChart = new float[8];
         int[] mAgeAllChart = new int[8];
         int[] fAgeAllChart = new int[8];
-        int[] timeAllChart = new int[12];
+        // int[] timeAllChart = new int[12];
+        float[] timeAllChart = new float[12];
         int[] regionAllChart = new int[11];
         int[] monthAllChart = new int[12];
         List<String> yearMonthAllChart = new ArrayList<>();
@@ -787,7 +789,14 @@ public class CompanyService {
     
             for(int i = 0; i < requestDTOList.size(); i++) {
                 // 상담에서 계약까지 성사된 RequestDTO의 수를 구합니다.
-                if(requestDTOList.get(i).getRequestFormStatus().equals("임무진행") || requestDTOList.get(i).getRequestFormStatus().equals("임무완료")) {
+                // if(requestDTOList.get(i).getRequestFormStatus().equals("임무진행") || requestDTOList.get(i).getRequestFormStatus().equals("임무완료")) {
+                if(requestDTOList.get(i).getRequestFormStatus().equals("임무진행") || 
+                requestDTOList.get(i).getRequestFormStatus().equals("임무완료") ||
+                requestDTOList.get(i).getRequestFormStatus().equals("계약진행") ||
+                requestDTOList.get(i).getRequestFormStatus().equals("계약취소") ||
+                requestDTOList.get(i).getRequestFormStatus().equals("의뢰취소") ||
+                requestDTOList.get(i).getRequestFormStatus().equals("의뢰대기")
+                ) {
                    contractedRequestCount = contractedRequestCount + 1;
                 }
     
@@ -978,7 +987,14 @@ public class CompanyService {
                 // log.info("requestDTO idx: {}", requestDTOList.get(i).getRequestFormIdx());
 
                 // requestFormIdx 가 실제로 계약을 하고 임무를 진행중인 상담인가?
-                if(requestDTOList.get(i).getRequestFormStatus().equals("임무진행") || requestDTOList.get(i).getRequestFormStatus().equals("임무완료")) {
+                // if(requestDTOList.get(i).getRequestFormStatus().equals("임무진행") || requestDTOList.get(i).getRequestFormStatus().equals("임무완료")) {
+                if(requestDTOList.get(i).getRequestFormStatus().equals("임무진행") || 
+                    requestDTOList.get(i).getRequestFormStatus().equals("임무완료") ||
+                    requestDTOList.get(i).getRequestFormStatus().equals("계약진행") ||
+                    requestDTOList.get(i).getRequestFormStatus().equals("계약취소") ||
+                    requestDTOList.get(i).getRequestFormStatus().equals("의뢰취소") ||
+                    requestDTOList.get(i).getRequestFormStatus().equals("의뢰대기")
+                ) {
                     contractedRequestCount = contractedRequestCount + 1;
                 }
 
@@ -998,11 +1014,11 @@ public class CompanyService {
             requestContractRate = (int) Math.round((float) contractedRequestCount / requestDTOList.size() * 100);
             requestSuccessRate = (int) Math.round((float) successRequestDTO / requestDTOList.size() * 100);
             
-            log.info("companysIdx {} 의 의뢰상담 개수: {}", companysIdx, requestDTOList.size());
-            log.info("companysIdx {} 의 임무시작한 의뢰의 개수: {}", companysIdx, contractedRequestCount);
-            log.info("companysIdx {} 의 임무 완료한 의뢰의 개수: {}", companysIdx, successRequestDTO);
-            log.info("의뢰 성사율: {} %", requestContractRate);
-            log.info("의뢰 성공률: {} %", requestSuccessRate);
+            // log.info("companysIdx {} 의 의뢰상담 개수: {}", companysIdx, requestDTOList.size());
+            // log.info("companysIdx {} 의 임무시작한 의뢰의 개수: {}", companysIdx, contractedRequestCount);
+            // log.info("companysIdx {} 의 임무 완료한 의뢰의 개수: {}", companysIdx, successRequestDTO);
+            // log.info("의뢰 성사율: {} %", requestContractRate);
+            // log.info("의뢰 성공률: {} %", requestSuccessRate);
 
         }
 
@@ -1164,6 +1180,9 @@ public class CompanyService {
             category.add(cateList.get(i).getCategoryName());
             categoryNum.add(cateList.get(i).getNum());
         }
+
+        log.info("업체번호 {} 의 상담 개수: {}", companysIdx, list.size());
+        log.info("{}", categoryNum);
 
         Map<String, Object> map = new HashMap<>();
         map.put("size", list.size());
