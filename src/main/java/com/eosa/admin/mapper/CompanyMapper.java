@@ -309,6 +309,12 @@ public interface CompanyMapper {
     int countCompany();
 
     /**
+     * 전체 평균 통계를 위한 업체 개수 Count 매퍼
+     * @return int
+     */
+    int countCompany2();
+
+    /**
      * 전체 통계 조회 매퍼
      *
      * @return ChartDTO

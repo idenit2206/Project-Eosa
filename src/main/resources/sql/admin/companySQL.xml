@@ -578,6 +578,11 @@
         FROM UsersReviewBackup
     </select>
 
+    <!-- 전체 평균 통계를 위한 업체 개수 조회 -->
+    <select id="countCompany2" resultType="int">
+        SELECT COUNT(*) FROM Companys WHERE companysEnabled = 1
+    </select>
+
     <!-- 전체 통계 조회 -->
     <select id="selectChart" resultType="ChartDTO">
         SELECT RF.requestFormRegion1,
